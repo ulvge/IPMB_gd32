@@ -1,0 +1,7 @@
+
+#ifndef __PLATFORM_AND_OS_DETECTION_H__
+#define __PLATFORM_AND_OS_DETECTION_H__
+
+
+
+#endif /* __PLATFORM_AND_OS_DETECTION_H__ */

@@ -1,0 +1,33 @@
+{
+    "configurations": [
+        {
+            "name": "Win32",
+            "includePath": [
+                "${workspaceFolder}/**",
+                "${workspaceFolder}/firmware/CMSIS/GD/GD32F10x/Include/**",
+                "${workspaceFolder}/Firmware/GD32F10x_standard_peripheral/Include/**",
+                "${workspaceFolder}/Firmware/CMSIS/**",
+                "${workspaceFolder}/core/**",
+                "${workspaceFolder}/user/**",
+                "${workspaceFolder}/bsp/**",
+                "${workspaceFolder}/api/**",
+                "${workspaceFolder}/freertos/include/**",
+                "${workspaceFolder}/freertos/portable/RVDS/ARM_CM3/**"
+            ],
+            "defines": [
+                "_DEBUG",
+                "UNICODE",
+                "_UNICODE"
+            ],
+            "intelliSenseMode": "msvc-x64",
+            "compilerArgs": [],
+            "browse": {
+                "path": [
+                    "${workspaceFolder}/**"
+                ],
+                "limitSymbolsToIncludedHeaders": true
+            }
+        }
+    ],
+    "version": 4
+}
