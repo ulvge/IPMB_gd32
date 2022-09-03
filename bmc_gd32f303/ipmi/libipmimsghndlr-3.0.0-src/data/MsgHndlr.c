@@ -163,7 +163,6 @@ void MsgHndlrInit()
 
 static void vTaskResponseDatWrite(void *pvParameters)
 {
-    int i = 0;
     char buff[sizeof(MsgPkt_T)];
     MsgPkt_T *ResMsg = (MsgPkt_T *)buff;
     ResponseDatMsg_Queue = xQueueCreate(10, sizeof(MsgPkt_T));
@@ -185,17 +184,17 @@ static void vTaskResponseDatWrite(void *pvParameters)
             break;
         case LAN_REQUEST:
             // LOG_RAW("LAN write->:");
-            SendLANPkt(ResMsg);
+            //SendLANPkt(ResMsg);
             break;
         default:
             break;
         }
 
-        // for(i=0; i<ResMsg->Size; i++)
-        // {
-        //     LOG_RAW("%02x ", ResMsg->Data[i]);
-        // }
-        // LOG_RAW("\r\n");
+        for(int i=0; i<ResMsg->Size; i++)
+        {
+             LOG_RAW("%02x ", ResMsg->Data[i]);
+        }
+        LOG_RAW("\r\n");
     }
 }
 
@@ -210,7 +209,7 @@ void *MsgHndlr(void *pArg)
     char buff[sizeof(MsgPkt_T)];
     MsgPkt_T* Req = (MsgPkt_T*)buff;
     BaseType_t err = pdFALSE;
-    int i;
+    __attribute__((unused)) int i;
 
     MsgHndlrInit();
     device_addr_set();
@@ -239,7 +238,7 @@ void *MsgHndlr(void *pArg)
             ProcessSerialReq(Req, &Res);
             break;
         case LAN_REQUEST:
-            ProcessLANReq(Req, &Res);
+            //ProcessLANReq(Req, &Res);
             break;
         default :
             break;

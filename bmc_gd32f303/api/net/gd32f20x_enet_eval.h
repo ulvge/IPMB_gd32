@@ -26,7 +26,6 @@ bool        enet_hardware_init     (void);
 bool        enet_software_init     (void);
 uint8_t     get_phy_addr           (void);
 void        set_phy_mode           (void);
-bool        enet_get_link_status   (void);
 	 
 	 
 #ifdef __cplusplus

@@ -385,7 +385,7 @@ ProcessBridgeMsg (const MsgPkt_T* pReq)
 {
     MsgPkt_T        ResPkt;
     INT16U          PayLoadLen   = 0;
-    INT8U           PayLoadType  = 0;
+    __attribute__((unused)) INT8U           PayLoadType  = 0;
     // BMCInfo_t *pBMCInfo = &g_BMCInfo;
 
     IPMI_DBG_PRINT ("LANIfc: Bridge Request\n");

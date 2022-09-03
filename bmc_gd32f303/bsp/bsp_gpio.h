@@ -2,7 +2,7 @@
 #define	__BSP_GPIO_H_
 
 
-#include "gd32f20x.h"
+#include "project_select.h"
 #include <stdbool.h>
 #include "main.h"
 

@@ -44,16 +44,14 @@ OF SUCH DAMAGE.
 #endif
 
 #include "bsp_uart3.h"
-#include "bsp_uart7.h"
-
+					  
 #define    BMC_VERSION    "SVN 1575"
 
-//#define NET_LOG_ENABLE
 //#define USE_BMC_BOARD
 
 #ifdef USE_BMC_BOARD
 	#define USE_UART3_ENABLE 1
-	#define USE_UART7_ENABLE 1
+	#define USE_UART7_ENABLE 0
 		
 	#define USE_UART3_DEBUG  1
 	#define USE_UART7_COM      1
@@ -85,6 +83,9 @@ OF SUCH DAMAGE.
 	
 #endif
 
+#ifdef USE_UART7_ENABLE
+#include "bsp_uart7.h"
+#endif
 
 
 #define  CPU_IntDisable()           { __set_PRIMASK(0xFFFF); }	/* Interrupt Disable */

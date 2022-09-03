@@ -80,9 +80,8 @@ extern INT16U CalculateUDPChkSum (_NEAR_ UDPPseudoHdr_T* pUDPPseudoHdr, _FAR_ UD
 extern INT16U CalculateIPChkSum	(_FAR_ IPHdr_T* pIPHdr);
 
 
-extern void LANIfcTask (void *arg);
-extern int SendLANPkt (MsgPkt_T *pRes);
-extern void ProcessLANReq (const MsgPkt_T* pReq, _NEAR_ MsgPkt_T *pRes);
+//extern int SendLANPkt (MsgPkt_T *pRes);
+//extern void ProcessLANReq (const MsgPkt_T* pReq, _NEAR_ MsgPkt_T *pRes);
 
 //extern int SendSOLPkt  (INT8U* pSOLPkt, INT16U Len);
 /** @} */

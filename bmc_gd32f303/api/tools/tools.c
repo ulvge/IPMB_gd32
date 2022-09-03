@@ -16,23 +16,18 @@
 #include "shell_ext.h"
 #include "shell_port.h"
 #include "shell_port.h"
-#include "gd32f20x.h"
+#include "project_select.h"
 #include "debug_print.h"
 #include "main.h"
 #include "bsp_i2c.h"
 #include "utc/api_utc.h"
-#include "lwip/sockets.h"
-#include "net/netconf.h"
-#include "net/gd32f20x_enet_eval.h"
 //#include "stdlib.h"
 
 static int operation_mode = -1;
-static int bus = 0;
+__attribute__((unused)) static int bus = 0;
 static uint8_t host_addr;
 
 extern int8_t g_temperature_raw[4];
-
-extern __IO bool g_net_init_flag;
 
 unsigned char MAC_ADDR0;
 unsigned char MAC_ADDR1;
@@ -240,11 +235,13 @@ static int do_reset(uint8_t bus)
         i2c_channel_init(I2C1);
         LOG_RAW("I2C1 reset");
         break;
+	#ifdef I2C2
     case 2:
         i2c_deinit(I2C2);
         i2c_channel_init(I2C2);
         LOG_RAW("I2C2 reset");
         break;
+	#endif
     default:
         break;
     }
@@ -315,10 +312,12 @@ static int do_set_host(uint8_t bus)
         i2c1_set_as_slave_device_addr(host_addr);
         LOG_RAW("I2C%d:       SLAVE_ADDRESS: %02x\n\r", bus, I2C1_SLAVE_ADDRESS7);
         break;
+#ifdef  I2C2
     case 2:
         i2c2_set_as_slave_device_addr(host_addr);
         LOG_RAW("I2C%d:        SLAVE_ADDRESS: %02x\n\r", bus, host_addr);
         break;
+#endif
     default:
         break;
     }
@@ -397,131 +396,133 @@ SHELL_EXPORT_CMD(SHELL_CMD_PERMISSION(0) | SHELL_CMD_TYPE(SHELL_TYPE_CMD_MAIN) |
 //      ***2.configure ip and gateway address: ifconfig ************************
 int ifconfig(int argc, char *argv[])
 {
-    int index = argc;
-    switch (index)
-    {
-    case 1:
+	UNUSED(argc);
+	UNUSED(argv);
+//    int index = argc;
+//    switch (index)
+//    {
+//    case 1:
 
-        /******if ip configure success that it echo  list all ip info,otherwise, no echo****************************
-         * *******example: ifconfig   *******************************
-        */
-        if (g_net_init_flag == true)
-        {
-            char buf[ETH_MAX_BYTES] = {0};
-            // MAC address
-            sprintf(buf, "HwADDR:             	     %02x:%02x:%02x:%2x:%02x:%02x", MAC_ADDR0, MAC_ADDR1, MAC_ADDR2, MAC_ADDR3, MAC_ADDR4, MAC_ADDR5);
-            LOG_RAW("%s\n\r", buf);
-            //static IP address
-            sprintf(buf, "Inet addr：                   %d.%d.%d.%d", IP_ADDR0, IP_ADDR1, IP_ADDR2, IP_ADDR3);
-            LOG_RAW("%s\n\r", buf);
-            //remote IP address
-            //sprintf(buf, "Remote inet addr：            %d.%d.%d.%d", IP_S_ADDR0, IP_S_ADDR1, IP_S_ADDR2, IP_S_ADDR3);
-           // LOG_RAW("%s\n\r", buf);
-            //net mask
-            sprintf(buf, "Mask：                        %d.%d.%d.%d", NETMASK_ADDR0, NETMASK_ADDR1, NETMASK_ADDR2, NETMASK_ADDR3);
-            LOG_RAW("%s\n\r", buf);
-            //gateway address
-            sprintf(buf, "Gateway address：             %d.%d.%d.%d", GW_ADDR0, GW_ADDR1, GW_ADDR2, GW_ADDR3);
-            LOG_RAW("%s", buf);
-        }
-        else
-        {
-            LOG_RAW("Link no detected \n\r");
-        }
-        break;
-    case 2:
-        /*******configure PHY ip addr:*************************************
-         * ****example:  ifconfig  192.168.2.100 **********************/
+//        /******if ip configure success that it echo  list all ip info,otherwise, no echo****************************
+//         * *******example: ifconfig   *******************************
+//        */
+//        if (g_net_init_flag == true)
+//        {
+//            char buf[ETH_MAX_BYTES] = {0};
+//            // MAC address
+//            sprintf(buf, "HwADDR:             	     %02x:%02x:%02x:%2x:%02x:%02x", MAC_ADDR0, MAC_ADDR1, MAC_ADDR2, MAC_ADDR3, MAC_ADDR4, MAC_ADDR5);
+//            LOG_RAW("%s\n\r", buf);
+//            //static IP address
+//            sprintf(buf, "Inet addr：                   %d.%d.%d.%d", IP_ADDR0, IP_ADDR1, IP_ADDR2, IP_ADDR3);
+//            LOG_RAW("%s\n\r", buf);
+//            //remote IP address
+//            //sprintf(buf, "Remote inet addr：            %d.%d.%d.%d", IP_S_ADDR0, IP_S_ADDR1, IP_S_ADDR2, IP_S_ADDR3);
+//           // LOG_RAW("%s\n\r", buf);
+//            //net mask
+//            sprintf(buf, "Mask：                        %d.%d.%d.%d", NETMASK_ADDR0, NETMASK_ADDR1, NETMASK_ADDR2, NETMASK_ADDR3);
+//            LOG_RAW("%s\n\r", buf);
+//            //gateway address
+//            sprintf(buf, "Gateway address：             %d.%d.%d.%d", GW_ADDR0, GW_ADDR1, GW_ADDR2, GW_ADDR3);
+//            LOG_RAW("%s", buf);
+//        }
+//        else
+//        {
+//            LOG_RAW("Link no detected \n\r");
+//        }
+//        break;
+//    case 2:
+//        /*******configure PHY ip addr:*************************************
+//         * ****example:  ifconfig  192.168.2.100 **********************/
 
-        if (("-G" != argv[argc - 1]) || ("-g" != argv[argc - 1]))
-        {
-            char *ipstr = argv[argc - 1];
-            int num = 0;
-            char *p[4] = {0};
-            num = split(ipstr, ".", p);
-            if (num == 4)
-            {
-                if (-1 == parameterChecked(atoi(p[0]), atoi(p[1]), atoi(p[2]), atoi(p[3])))
-                {
-                    LOG_RAW("input IP error!");
-                }
-                else
-                {
-                    IP_ADDR0 = atoi(p[0]);
-                    IP_ADDR1 = atoi(p[1]);
-                    IP_ADDR2 = atoi(p[2]);
-                    IP_ADDR3 = atoi(p[3]);
+//        if (("-G" != argv[argc - 1]) || ("-g" != argv[argc - 1]))
+//        {
+//            char *ipstr = argv[argc - 1];
+//            int num = 0;
+//            char *p[4] = {0};
+//            num = split(ipstr, ".", p);
+//            if (num == 4)
+//            {
+//                if (-1 == parameterChecked(atoi(p[0]), atoi(p[1]), atoi(p[2]), atoi(p[3])))
+//                {
+//                    LOG_RAW("input IP error!");
+//                }
+//                else
+//                {
+//                    IP_ADDR0 = atoi(p[0]);
+//                    IP_ADDR1 = atoi(p[1]);
+//                    IP_ADDR2 = atoi(p[2]);
+//                    IP_ADDR3 = atoi(p[3]);
 
-                    /* initilaize the LwIP stack */
-                    if (enet_software_init())
-                    {
-                        g_net_init_flag = true;
-                        /* initilaize the LwIP IP */
-                        lwip_ip_init();
-                    }
-                    LOG_RAW("rebuild ip addr: %d.%d.%d.%d\r\n", IP_ADDR0, IP_ADDR1, IP_ADDR2, IP_ADDR3);
-                }
-            }
-            else
-            {
-                LOG_E("input  ip  parameter error!");
-            }
-        }
-        else
-        {
-            LOG_RAW("configure ip addr parameter input error!");
-        }
+//                    /* initilaize the LwIP stack */
+//                    if (enet_software_init())
+//                    {
+//                        g_net_init_flag = true;
+//                        /* initilaize the LwIP IP */
+//                        lwip_ip_init();
+//                    }
+//                    LOG_RAW("rebuild ip addr: %d.%d.%d.%d\r\n", IP_ADDR0, IP_ADDR1, IP_ADDR2, IP_ADDR3);
+//                }
+//            }
+//            else
+//            {
+//                LOG_E("input  ip  parameter error!");
+//            }
+//        }
+//        else
+//        {
+//            LOG_RAW("configure ip addr parameter input error!");
+//        }
 
-        break;
+//        break;
 
-    case 3:
-        /*******configure gateway addr:*************************************
-         * ****example:  ifconfig  -g (-G)  192.168.2.100 **********************/
+//    case 3:
+//        /*******configure gateway addr:*************************************
+//         * ****example:  ifconfig  -g (-G)  192.168.2.100 **********************/
 
-        if (("-G" != argv[argc - 2]) || ("-g" != argv[argc - 2]))
-        {
-            char *gatewaystr = argv[argc - 1];
-            int num = 0;
-            char *p[4] = {0};
-            num = split(gatewaystr, ".", p);
-            if (num == 4)
-            {
-							
-                if (-1 == parameterChecked(atoi(p[0]), atoi(p[1]), atoi(p[2]), atoi(p[3])))
-                {
-                    LOG_RAW("input IP error!");
-                }
-                else
-                {
-                    GW_ADDR0 = atoi(p[0]);
-                    GW_ADDR1 = atoi(p[1]);
-                    GW_ADDR2 = atoi(p[2]);
-                    GW_ADDR3 = atoi(p[3]);
+//        if (("-G" != argv[argc - 2]) || ("-g" != argv[argc - 2]))
+//        {
+//            char *gatewaystr = argv[argc - 1];
+//            int num = 0;
+//            char *p[4] = {0};
+//            num = split(gatewaystr, ".", p);
+//            if (num == 4)
+//            {
+//							
+//                if (-1 == parameterChecked(atoi(p[0]), atoi(p[1]), atoi(p[2]), atoi(p[3])))
+//                {
+//                    LOG_RAW("input IP error!");
+//                }
+//                else
+//                {
+//                    GW_ADDR0 = atoi(p[0]);
+//                    GW_ADDR1 = atoi(p[1]);
+//                    GW_ADDR2 = atoi(p[2]);
+//                    GW_ADDR3 = atoi(p[3]);
 
-                    /* initilaize the LwIP stack */
-                    if (enet_software_init())
-                    {
-                        g_net_init_flag = true;
-                        /* initilaize the LwIP IP */
-                        lwip_ip_init();
-                    }
-                    printf("rebuild gateway addr: %d.%d.%d.%d\r\n", GW_ADDR0, GW_ADDR1, GW_ADDR2, GW_ADDR3);
-                }
-            }
-            else
-            {
-                LOG_E("gateway  error!");
-            }
-        }
-        else
-        {
-            LOG_RAW("configure gateway parameter input error!");
-        }
-        break;
+//                    /* initilaize the LwIP stack */
+//                    if (enet_software_init())
+//                    {
+//                        g_net_init_flag = true;
+//                        /* initilaize the LwIP IP */
+//                        lwip_ip_init();
+//                    }
+//                    printf("rebuild gateway addr: %d.%d.%d.%d\r\n", GW_ADDR0, GW_ADDR1, GW_ADDR2, GW_ADDR3);
+//                }
+//            }
+//            else
+//            {
+//                LOG_E("gateway  error!");
+//            }
+//        }
+//        else
+//        {
+//            LOG_RAW("configure gateway parameter input error!");
+//        }
+//        break;
 
-    default:
-        break;
-    }
+//    default:
+//        break;
+//    }
     return 0;
 }
 
@@ -535,7 +536,7 @@ int shell_exit(int argc, char *argv[])
 }
 SHELL_EXPORT_CMD(SHELL_CMD_PERMISSION(0) | SHELL_CMD_TYPE(SHELL_TYPE_CMD_MAIN) | SHELL_CMD_DISABLE_RETURN, exit, shell_exit, exit shell);
 
-static int parameterChecked(int para1, int para2, int para3, int para4)
+__attribute__((unused)) static int parameterChecked(int para1, int para2, int para3, int para4)
 {
 	if(((para1>=0) && (para1<=255)) && ((para2>=0) && (para2<=255)) && ((para3>=0) && (para3<=255)) && ((para4>=0) && (para4<=255)))
   {

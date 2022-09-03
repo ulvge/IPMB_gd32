@@ -1,7 +1,7 @@
 #ifndef _BSP_I2C_GPIO_H
 #define _BSP_I2C_GPIO_H
 
-#include "gd32f20x.h"
+#include "project_select.h"
 #include <inttypes.h>
 #include <stdbool.h>
 

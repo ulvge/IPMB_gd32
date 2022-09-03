@@ -13,7 +13,7 @@
 #ifndef GD25QXX_H
 #define GD25QXX_H
 
-#include "gd32f20x.h"
+#include "project_select.h"
 
 
 #ifdef USE_BMC_BOARD

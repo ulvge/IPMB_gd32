@@ -27,7 +27,7 @@
 
 void     MonitorPassword(int BMCInst);
 
-extern INT32U TimeUpdate();
+//extern INT32U TimeUpdate();
 
 extern int GenerateLockEvent(INT8U Channel,INT8U UserID, int BMCInst);
 

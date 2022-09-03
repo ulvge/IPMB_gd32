@@ -35,8 +35,8 @@ WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWIS
 ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY 
 OF SUCH DAMAGE.
 */
-
-#include "gd32f20x.h"
+					
+#include "project_select.h"
 #include "systick.h"
 
 volatile static uint32_t delay;

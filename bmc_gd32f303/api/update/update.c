@@ -309,7 +309,7 @@ typedef void (*pFunction)(void);
 uint32_t JumpAddress = 0;
 pFunction Jump_To_Application;
 
-void Jump_To_Update_Main()
+__attribute__((unused)) void Jump_To_Update_Main()
 {
     if (((*(__IO uint32_t *)ApplicationAddress) & 0x2FFE0000) == 0x20000000)
     {

@@ -86,7 +86,7 @@ static int      ProcessBridgeReq        (_NEAR_ MsgPkt_T* pReq,  MsgPkt_T *pRes)
 static INT16U   EncodeSerialPkt         (_NEAR_ INT8U* Pkt, INT16U Len, _NEAR_ INT8U* EnPkt);
 static INT16U   DecodeSerialPkt         (_NEAR_ INT8U* Pkt, INT16U Len);
 static void     OnBasicModeByteReceived (INT8U byte,int BMCInst);
-static void     CreatTerminalTask (int BMCInst);
+//static void     CreatTerminalTask (int BMCInst);
 
 /**
  * @brief Waits for Request from MsgHndlr and Sends the req for processing
@@ -120,7 +120,7 @@ void ProcessSerialReq (_NEAR_ MsgPkt_T *pReq, _NEAR_ MsgPkt_T *pRes)
  * @Param BMCInst holds the instance value of BMC
  * @Return 0 if Initialization is success else -1
  **/
-int
+__attribute__((unused)) int
 InitSerialPort (int BMCInst)
 {
     return 0;
@@ -154,7 +154,7 @@ INT8U SendSerialPkt (int Port, _FAR_ INT8U* pBuf, INT16U Size,int BMCInst)
  * @brief Receives data from serial port
  * .@Param pArg pointer to the BMCInst value
  **/
-static void*  RecvSerialPkt (void* pArg)
+__attribute__((unused)) static void*  RecvSerialPkt (void* pArg)
 {
  
     return 0;
@@ -217,7 +217,7 @@ ProcessSerPortReq (_NEAR_ MsgPkt_T* pReq,  MsgPkt_T *pRes)  // get ipmitool msg 
  * @param pReq Pointer to Request Message packet
  * @param BMCInst holds the Instance value of BMC
  **/
-static int
+__attribute__((unused)) static int
 ProcessBridgeReq (_NEAR_ MsgPkt_T* pReq,  MsgPkt_T *pRes)  // recv I2C msg and send to ipmitool
 {
     pRes->Size = EncodeSerialPkt (pReq->Data, pReq->Size, pRes->Data);
@@ -235,7 +235,7 @@ ProcessBridgeReq (_NEAR_ MsgPkt_T* pReq,  MsgPkt_T *pRes)  // recv I2C msg and s
  * @param byte a byte received through serial interface
  * @param BMCInst holds the Instance value of BMC
  **/
-static void
+__attribute__((unused)) static void
 OnBasicModeByteReceived (INT8U byte,int BMCInst)
 {
  

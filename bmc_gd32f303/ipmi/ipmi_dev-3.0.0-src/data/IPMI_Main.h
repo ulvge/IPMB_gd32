@@ -189,10 +189,6 @@ extern void *IPMBIfcTask (void *Addr);
 **/
 extern void *KCSIfcTask (void *Addr);
 
-/**
- * @brief LANIfc Task when used as a thread.
-**/
-//extern void *LANIfcTask (void *Addr);  
 
 /**
  * @brief SOLIfc Task when used as a thread.

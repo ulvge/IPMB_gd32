@@ -68,6 +68,8 @@ void fan_ctrl_loop(void)
     int32_t pid_out = 0;
     int i;
 
+	UNUSED(curent_rpm);
+	UNUSED(pid_out);
     xTimersFanWatchdog = xTimerCreate("Timer", 1000/portTICK_RATE_MS, pdTRUE, (void*)1, vTimerFanWatchdogCallback); 
     xTimerStart(xTimersFanWatchdog, portMAX_DELAY);	
 

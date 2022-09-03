@@ -70,7 +70,7 @@ extern int SetDefaultTimezone (INT8U *TimeZone, int BMCInst);
 
 /** @} */
 #ifndef CONFIG_SPX_FEATURE_IPMI_NO_YAFU_SUPPORT
-int InitYafuVar();
+//int InitYafuVar();
 extern int AMIYAFUSwitchFlashDevice ( _NEAR_ INT8U *pReq, INT32U ReqLen, _NEAR_ INT8U *pRes ,_NEAR_ int BMCInst);
 extern int AMIYAFUActivateFlashDevice ( _NEAR_ INT8U *pReq, INT32U ReqLen, _NEAR_ INT8U *pRes ,_NEAR_ int BMCInst);
 extern int AMIYAFURestoreFlashDevice ( _NEAR_ INT8U *pReq, INT32U ReqLen, _NEAR_ INT8U *pRes ,_NEAR_ int BMCInst); 
@@ -135,7 +135,7 @@ extern int AMIVirtualDeviceSetStatus(_NEAR_ INT8U *pReq, INT32U ReqLen, _NEAR_ I
 
 int GetUBootParam (char*, char* );
 int SetUBootParam (char*, char* );
-int GetAllUBootParam();
+//int GetAllUBootParam();
 int DefaultSettingsForDualImageSupport(int BMCInst);
 void CheckFirmwareChange(int BMCInst);
 

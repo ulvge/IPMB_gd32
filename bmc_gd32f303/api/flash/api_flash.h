@@ -14,7 +14,7 @@
 #define SPI_FLASH_H
 
 #include "bsp_gd25qxx.h"
-#include "gd32f20x.h"
+#include "project_select.h"
 
 #include "diskio.h"
 #include "integer.h"

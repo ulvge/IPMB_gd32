@@ -42,7 +42,6 @@ OF SUCH DAMAGE.
 #include "bsp_usart0.h"
 #include "bsp_usart1.h"
 #include "bsp_uart3.h"
-#include "bsp_uart7.h"
 #include "bsp_i2c.h"
 
 #include "fan/api_fan.h"
@@ -56,36 +55,24 @@ OF SUCH DAMAGE.
 
 #include "MsgHndlr.h"
 
-#include "gd32f20x_enet_eval.h"
-#include "netconf.h"
-#include "lwip/tcp.h"
-#include "hello_gigadevice.h"
-#include "tcp_client.h"
-#include "udp_echo.h"
-#include "LANIfc.h"
 #include "update/update.h" 
-#include "net_print/net_print.h"
 #include "bsp_timer.h"
 
 
 #define FAN_TASK_PRIO       22
-#define ENET_TASK_PRIO      20
 #define TEST_TASK_PRIO      9
 #define COM_TASK_PRIO       21
 #define LANIFC_TASK_PRIO    23
 
 void start_task(void *pvParameters);
 void fan_task(void *pvParameters);
-void enet_task(void *pvParameters);
 void test_task(void *pvParameters);
 void com_task(void *pvParameters);
 void led_task(void *pvParameters);
 
-bool net_init(void);
 static void watch_dog_init(void);
 
 __IO uint32_t g_localtime = 0; /* for creating a time reference incremented by 10ms */
-__IO bool g_net_init_flag = false;
 __IO uint64_t g_utc_time_bmc_firmware_build = 0;
 __IO uint16_t g_bmc_firmware_version = 0;
 
@@ -135,13 +122,9 @@ int main(void)
 	
 	timer_config_init();
   led_init();
-  g_net_init_flag = net_init();
-#ifdef NET_LOG_ENABLE	
-  xTaskCreate(netPrintTask, "netPrintTask", configMINIMAL_STACK_SIZE*2, NULL, 5, NULL);
-#endif
   xTaskCreate(start_task, "start", configMINIMAL_STACK_SIZE*2, NULL, 1, NULL);
   xTaskCreate(led_task, "led", configMINIMAL_STACK_SIZE, NULL, 26, NULL); 
-	//watch_dog_init();
+	watch_dog_init();
 	vTaskStartScheduler(); 
   while (1)
   {}
@@ -163,15 +146,11 @@ void start_task(void *pvParameters)
 
   //xTaskCreate(fan_task, "fan", configMINIMAL_STACK_SIZE*2, NULL, FAN_TASK_PRIO, NULL);
 
-  xTaskCreate(enet_task, "enet", configMINIMAL_STACK_SIZE*2, NULL, ENET_TASK_PRIO, NULL);
-
   //xTaskCreate(test_task, "test", configMINIMAL_STACK_SIZE, NULL, TEST_TASK_PRIO, NULL);
 
   xTaskCreate(com_task, "com", configMINIMAL_STACK_SIZE*4, NULL, COM_TASK_PRIO, NULL);
 
-  xTaskCreate(LANIfcTask, "LANIfcTask", configMINIMAL_STACK_SIZE*3, NULL, LANIFC_TASK_PRIO, NULL);
-
-  xTaskCreate(updateTask, "updateTask", configMINIMAL_STACK_SIZE*3, NULL, 18, NULL);
+  //xTaskCreate(updateTask, "updateTask", configMINIMAL_STACK_SIZE*3, NULL, 18, NULL);
 
   xTaskCreate(tmpSampleTask, "tmpSampleTask", configMINIMAL_STACK_SIZE*2, NULL, 12, NULL);
 
@@ -187,33 +166,6 @@ void start_task(void *pvParameters)
 void fan_task(void *pvParameters)
 {
   fan_ctrl_loop(); 
-}
-
-void enet_task(void *pvParameters)
-{
-  bool link_status = false;
-  // if(!enet_hardware_init()){
-  //   printf("enet hardware init failed!\n");
-  //   vTaskDelete(NULL);
-  // }
-  while (1)
-  {
-    link_status = enet_get_link_status();
-    if(link_status == true)
-    {
-      if(g_net_init_flag != true)  
-      {
-        printf("init phy chip... \r\n");
-        if(enet_software_init()){
-          g_net_init_flag = true;
-          /* initilaize the LwIP stack */
-          lwip_stack_init();
-          printf("phy init finished!\r\n");
-        }
-      }
-    } 
-    vTaskDelay(2000);
-  }
 }
 
 void test_task(void *pvParameters)
@@ -252,29 +204,6 @@ void time_update(void)
     g_localtime += portTICK_PERIOD_MS;
 }
 
-
-bool net_init()
-{
-    if(!enet_hardware_init()){
-      printf("enet hardware init failed!\r\n");
-      return false;
-    }
-    if(!enet_get_link_status())
-    {
-      printf("phy not linked!\r\n");
-      return false;
-    }
-
-    printf("init phy chip... \r\n");
-    if(!enet_software_init()){
-      return false;
-    } 
-    /* initilaize the LwIP stack */
-    lwip_stack_init();
-    printf("phy init finished!\r\n");
- 
-    return true;
-}
 
 /*!
     \brief     task idle hook functions

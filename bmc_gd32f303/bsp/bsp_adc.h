@@ -2,7 +2,7 @@
 #ifndef __BSP_ADC_H
 #define	__BSP_ADC_H
 
-#include "gd32f20x.h"
+#include "project_select.h"
 #include "systick.h"
 #include "stdint.h"
 #include "main.h"

@@ -5,7 +5,7 @@
  extern "C" {
 #endif
 
-#include "gd32f20x.h"
+#include "project_select.h"
 #include <stdio.h>
 #include <stdbool.h>
 

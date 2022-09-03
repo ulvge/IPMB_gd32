@@ -1,7 +1,7 @@
 #ifndef __BSP_PWM_H
 #define __BSP_PWM_H
 
-#include "gd32f20x.h"
+#include "project_select.h"
 #include <stdio.h>
 
 

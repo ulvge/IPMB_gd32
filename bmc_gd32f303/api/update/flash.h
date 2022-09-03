@@ -1,7 +1,7 @@
 #ifndef __FLASH_H
 #define __FLASH_H
 
-#include "gd32f20x.h"
+#include "project_select.h"
 
 typedef enum {FAILED = 0, PASSED = !FAILED} TestStatus;
 

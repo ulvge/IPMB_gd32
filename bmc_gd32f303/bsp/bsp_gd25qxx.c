@@ -12,7 +12,7 @@
 
 #include "bsp_gd25qxx.h"
 #include <string.h>
-#include "gd32f20x.h"
+#include "project_select.h"
 #include "main.h"
 
 #define WRITE            0x02     /* write to memory instruction */

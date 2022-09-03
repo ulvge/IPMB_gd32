@@ -6,7 +6,7 @@
 */
 
 #include "bsp_i2c.h"
-#include "gd32f20x_i2c.h"
+#include "project_select.h"
 #include <string.h>
 #include "main.h"
 #include "OSPort.h"
@@ -17,7 +17,6 @@
 
 static void i2c0_int(void);
 static void i2c1_int(void);
-static void i2c2_int(void);
 
 static void i2c0_config(void);
 #ifdef  I2C0_INTERRUPT_ENALBE
@@ -32,22 +31,29 @@ static void i2c1_nvic_config(void);
 #endif
 static void i2c1_gpio_config(void);
 static void i2c1_rcu_config(void);
-
+#ifdef I2C2
+static void i2c2_int(void);
 static void i2c2_config(void);
 static void i2c2_nvic_config(void);
 static void i2c2_gpio_config(void);
-static void i2c2_rcu_config(void);
+static void i2c2_rcu_config(void);    
+#endif
 
 static bool i2c_bytes_write(uint32_t i2cx, uint8_t device_addr, const uint8_t *p_buffer, uint16_t len, int time_out);
 static bool i2c_bytes_read(uint32_t i2cx, uint8_t device_addr, uint8_t read_addr, uint8_t *p_buffer, uint16_t len, int time_out);
 static void i2c_set_as_slave_device_addr(uint32_t i2c_periph, uint8_t device_addr);
-
+		
+uint8_t g_device0_addr=0;
+uint8_t g_device1_addr=0;
+uint8_t g_device2_addr=0;
 void i2c_int(void)
 {
     i2c_channel_init(I2C0);
 #ifdef USE_BMC_BOARD
     i2c_channel_init(I2C1);
-    i2c_channel_init(I2C2);
+#ifdef I2C2
+    i2c_channel_init(I2C2); 
+#endif
 #endif
 }
 
@@ -61,10 +67,12 @@ void i2c_channel_init(uint32_t i2cx)
     case I2C1:
         i2c1_int();
         break;
+#ifdef I2C2
     case I2C2:
         i2c2_int();
         LOG_I("i2c2_int");
         break;
+#endif
     default:
         break;
     }
@@ -90,14 +98,6 @@ static void i2c1_int(void)
     i2c1_config();
 }
 
-static void i2c2_int(void)
-{
-    i2c2_rcu_config();
-    i2c2_gpio_config();
-    i2c2_nvic_config();
-    i2c2_config();
-}
-
 static void i2c0_rcu_config(void)
 {
     /* enable I2C0 clock */
@@ -118,15 +118,6 @@ static void i2c1_rcu_config(void)
     rcu_periph_clock_enable(I2C1_SDA_GPIO_CLK);
 }
 
-static void i2c2_rcu_config(void)
-{
-    /* enable I2C2 clock */
-    rcu_periph_clock_enable(RCU_I2C2);
-
-    /* enable GPIO clock */
-    rcu_periph_clock_enable(I2C2_SCL_GPIO_CLK);
-    rcu_periph_clock_enable(I2C2_SDA_GPIO_CLK);
-}
 
 /*!
     \brief      cofigure the GPIO ports.
@@ -157,25 +148,12 @@ static void i2c1_gpio_config(void)
     gpio_init(I2C1_SCL_GPIO_PORT, GPIO_MODE_AF_OD, GPIO_OSPEED_50MHZ, I2C1_SCL_PIN);
     gpio_init(I2C1_SDA_GPIO_PORT, GPIO_MODE_AF_OD, GPIO_OSPEED_50MHZ, I2C1_SDA_PIN);
 #ifdef I2C1_REMAP
+	#ifndef GD32F1x
     gpio_pin_remap1_config(GPIO_PCF5, GPIO_PCF5_I2C1_REMAP1, ENABLE);
+	#endif
 #endif
 }
 
-/*!
-    \brief      cofigure the GPIO ports.
-    \param[in]  none
-    \param[out] none
-    \retval     none
-*/
-static void i2c2_gpio_config(void)
-{
-    /* connect I2C2_SCL I2C2_SDA*/
-    gpio_init(I2C2_SCL_GPIO_PORT, GPIO_MODE_AF_OD, GPIO_OSPEED_50MHZ, I2C2_SCL_PIN);
-    gpio_init(I2C2_SDA_GPIO_PORT, GPIO_MODE_AF_OD, GPIO_OSPEED_50MHZ, I2C2_SDA_PIN);
-#ifdef I2C2_REMAP
-    gpio_pin_remap1_config(GPIO_PCF5, GPIO_PCF5_I2C2_REMAP0, ENABLE);
-#endif
-}
 
 /*!
     \brief      cofigure the I2C0 and I2C1 interfaces..
@@ -228,28 +206,6 @@ static void i2c1_config(void)
 #endif
 }
 
-/*!
-    \brief      cofigure the I2C0 and I2C1 interfaces..
-    \param[in]  none
-    \param[out] none
-    \retval     none
-*/
-static void i2c2_config(void)
-{
-    // **************************** I2C2 *********************************************
-    i2c_clock_config(I2C2, 100000, I2C_DTCY_2);
-    /* I2C address configure */
-    i2c_mode_addr_config(I2C2, I2C_I2CMODE_ENABLE, I2C_ADDFORMAT_7BITS, I2C2_SLAVE_ADDRESS7);
-    /* enable I2C1 */
-    i2c_enable(I2C2);
-    /* enable acknowledge */
-    i2c_ack_config(I2C2, I2C_ACK_ENABLE);
-        /* enable the I2C0 interrupt */
-    i2c_interrupt_enable(I2C2, I2C_INT_ERR);
-    i2c_interrupt_enable(I2C2, I2C_INT_EV);
-    i2c_interrupt_enable(I2C2, I2C_INT_BUF);
-}
-
 
 #ifdef  I2C0_INTERRUPT_ENALBE
 /*!
@@ -279,17 +235,6 @@ static void i2c1_nvic_config(void)
 }
 #endif
 
-/*!
-    \brief      cofigure the NVIC peripheral
-    \param[in]  none
-    \param[out] none
-    \retval     none
-*/
-static void i2c2_nvic_config(void)
-{
-    nvic_irq_enable(I2C2_EV_IRQn, 3, 0);
-    nvic_irq_enable(I2C2_ER_IRQn, 8, 0);
-}
 
 /**
   * @brief   
@@ -614,11 +559,6 @@ bool i2c1_bytes_write(const uint8_t *p_buffer, uint16_t len)
     return i2c_bytes_write(I2C1, p_buffer[0], &p_buffer[1], len-1, 20000);
 }
 
-bool i2c2_bytes_write(const uint8_t *p_buffer, uint16_t len)
-{
-    return i2c_bytes_write(I2C2, p_buffer[0], &p_buffer[1], len-1, 20000);
-}
-
 bool i2c0_bytes_read(const uint8_t device_addr, const uint8_t read_addr, uint8_t* p_buffer, uint16_t len)
 {
     return i2c_bytes_read(I2C0, device_addr, read_addr, p_buffer, len, 1000);
@@ -627,11 +567,6 @@ bool i2c0_bytes_read(const uint8_t device_addr, const uint8_t read_addr, uint8_t
 bool i2c1_bytes_read(const uint8_t device_addr, const uint8_t read_addr, uint8_t* p_buffer, uint16_t len)
 {
     return i2c_bytes_read(I2C1, device_addr, read_addr, p_buffer, len, 10000);
-}
-
-bool i2c2_bytes_read(const uint8_t device_addr, const uint8_t read_addr, uint8_t* p_buffer, uint16_t len)
-{
-    return i2c_bytes_read(I2C2, device_addr, read_addr, p_buffer, len, 10000);
 }
 
 extern xQueueHandle RecvDatMsg_Queue;
@@ -923,6 +858,71 @@ bool i2c1_get_slave_device_data(uint8_t *p_buffer, uint32_t *len)
 }
 
 #endif
+#ifdef I2C2
+ 
+static void i2c2_int(void)
+{
+    i2c2_rcu_config();
+    i2c2_gpio_config();
+    i2c2_nvic_config();
+    i2c2_config();
+}
+
+static void i2c2_rcu_config(void)
+{
+    /* enable I2C2 clock */
+    rcu_periph_clock_enable(RCU_I2C2);
+
+    /* enable GPIO clock */
+    rcu_periph_clock_enable(I2C2_SCL_GPIO_CLK);
+    rcu_periph_clock_enable(I2C2_SDA_GPIO_CLK);
+}
+/*!
+    \brief      cofigure the GPIO ports.
+    \param[in]  none
+    \param[out] none
+    \retval     none
+*/
+static void i2c2_gpio_config(void)
+{
+    /* connect I2C2_SCL I2C2_SDA*/
+    gpio_init(I2C2_SCL_GPIO_PORT, GPIO_MODE_AF_OD, GPIO_OSPEED_50MHZ, I2C2_SCL_PIN);
+    gpio_init(I2C2_SDA_GPIO_PORT, GPIO_MODE_AF_OD, GPIO_OSPEED_50MHZ, I2C2_SDA_PIN);
+#ifdef I2C2_REMAP
+    gpio_pin_remap1_config(GPIO_PCF5, GPIO_PCF5_I2C2_REMAP0, ENABLE);
+#endif
+}
+bool i2c2_bytes_write(const uint8_t *p_buffer, uint16_t len)
+{
+    return i2c_bytes_write(I2C2, p_buffer[0], &p_buffer[1], len-1, 20000);
+}
+
+/*!
+    \brief      cofigure the I2C0 and I2C1 interfaces..
+    \param[in]  none
+    \param[out] none
+    \retval     none
+*/
+static void i2c2_config(void)
+{
+    // **************************** I2C2 *********************************************
+    i2c_clock_config(I2C2, 100000, I2C_DTCY_2);
+    /* I2C address configure */
+    i2c_mode_addr_config(I2C2, I2C_I2CMODE_ENABLE, I2C_ADDFORMAT_7BITS, I2C2_SLAVE_ADDRESS7);
+    /* enable I2C1 */
+    i2c_enable(I2C2);
+    /* enable acknowledge */
+    i2c_ack_config(I2C2, I2C_ACK_ENABLE);
+        /* enable the I2C0 interrupt */
+    i2c_interrupt_enable(I2C2, I2C_INT_ERR);
+    i2c_interrupt_enable(I2C2, I2C_INT_EV);
+    i2c_interrupt_enable(I2C2, I2C_INT_BUF);
+}
+
+bool i2c2_bytes_read(const uint8_t device_addr, const uint8_t read_addr, uint8_t* p_buffer, uint16_t len)
+{
+    return i2c_bytes_read(I2C2, device_addr, read_addr, p_buffer, len, 10000);
+}
 
 /*!
     \brief      handle I2C1 event interrupt request
@@ -1062,7 +1062,25 @@ bool i2c2_get_slave_device_data(uint8_t *p_buffer, uint32_t *len)
 
     return false;
 }
+   
+void i2c2_set_as_slave_device_addr(uint8_t device_addr)
+{
+      g_device2_addr = device_addr;
+    i2c_set_as_slave_device_addr(I2C2, device_addr);
+}
 
+/*!
+    \brief      cofigure the NVIC peripheral
+    \param[in]  none
+    \param[out] none
+    \retval     none
+*/
+static void i2c2_nvic_config(void)
+{
+    nvic_irq_enable(I2C2_EV_IRQn, 3, 0);
+    nvic_irq_enable(I2C2_ER_IRQn, 8, 0);
+}
+#endif
 static void i2c_set_as_slave_device_addr(uint32_t i2c_periph, uint8_t device_addr)
 {
     /* I2C address configure */
@@ -1073,9 +1091,6 @@ static void i2c_set_as_slave_device_addr(uint32_t i2c_periph, uint8_t device_add
     i2c_ack_config(i2c_periph, I2C_ACK_ENABLE);
 }
 
-uint8_t g_device0_addr=0;
-uint8_t g_device1_addr=0;
-uint8_t g_device2_addr=0;
 
 void i2c0_set_as_slave_device_addr(uint8_t device_addr)
 {
@@ -1089,11 +1104,6 @@ void i2c1_set_as_slave_device_addr(uint8_t device_addr)
     i2c_set_as_slave_device_addr(I2C1, device_addr);
 }
 
-void i2c2_set_as_slave_device_addr(uint8_t device_addr)
-{
-      g_device2_addr = device_addr;
-    i2c_set_as_slave_device_addr(I2C2, device_addr);
-}
 
 
 uint8_t get_device_addr(uint8_t bus) 

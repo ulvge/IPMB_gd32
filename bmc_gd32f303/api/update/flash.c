@@ -12,8 +12,7 @@
     2017-06-19, V3.1.0, firmware update for GD32F1x0(x=3,5,7,9)
 */
 
-#include "gd32f20x.h" 
-#include "gd32f20x_gpio.h"
+#include "project_select.h"
 #include "flash.h"
 
 
