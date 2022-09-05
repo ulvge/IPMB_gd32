@@ -70,39 +70,39 @@ ARM Macro Assembler    Page 2
 
 
    42 00000000         
-   43 00000000 00000500 
+   43 00000000 00000200 
                        Stack_Size
-                               EQU              0x00000500
+                               EQU              0x0000200
    44 00000000         
    45 00000000                 AREA             STACK, NOINIT, READWRITE, ALIGN
  = 3
    46 00000000         Stack_Mem
                                SPACE            Stack_Size
-   47 00000500         __initial_sp
-   48 00000500         
-   49 00000500         
-   50 00000500         ; <h> Heap Configuration
-   51 00000500         ;   <o>  Heap Size (in Bytes) <0x0-0xFFFFFFFF:8>
-   52 00000500         ; </h>
-   53 00000500         
-   54 00000500 00000500 
+   47 00000200         __initial_sp
+   48 00000200         
+   49 00000200         
+   50 00000200         ; <h> Heap Configuration
+   51 00000200         ;   <o>  Heap Size (in Bytes) <0x0-0xFFFFFFFF:8>
+   52 00000200         ; </h>
+   53 00000200         
+   54 00000200 00000200 
                        Heap_Size
-                               EQU              0x00000500
-   55 00000500         
-   56 00000500                 AREA             HEAP, NOINIT, READWRITE, ALIGN 
+                               EQU              0x0000200
+   55 00000200         
+   56 00000200                 AREA             HEAP, NOINIT, READWRITE, ALIGN 
 = 3
    57 00000000         __heap_base
    58 00000000         Heap_Mem
                                SPACE            Heap_Size
-   59 00000500         __heap_limit
-   60 00000500         
-   61 00000500         
-   62 00000500                 PRESERVE8
-   63 00000500                 THUMB
-   64 00000500         
-   65 00000500         ;                   /* reset Vector Mapped to at Address
+   59 00000200         __heap_limit
+   60 00000200         
+   61 00000200         
+   62 00000200                 PRESERVE8
+   63 00000200                 THUMB
+   64 00000200         
+   65 00000200         ;                   /* reset Vector Mapped to at Address
                         0 */
-   66 00000500                 AREA             RESET, DATA, READONLY
+   66 00000200                 AREA             RESET, DATA, READONLY
    67 00000000                 EXPORT           __Vectors
    68 00000000                 EXPORT           __Vectors_End
    69 00000000                 EXPORT           __Vectors_Size
@@ -288,9 +288,9 @@ ARM Macro Assembler    Page 5
    [WEAK]
   159 00000000                 IMPORT           __main
   160 00000000                 IMPORT           SystemInit
-  161 00000000 4809            LDR              R0, =SystemInit
+  161 00000000 4806            LDR              R0, =SystemInit
   162 00000002 4780            BLX              R0
-  163 00000004 4809            LDR              R0, =__main
+  163 00000004 4806            LDR              R0, =__main
   164 00000006 4700            BX               R0
   165 00000008                 ENDP
   166 00000008         
@@ -580,43 +580,30 @@ ARM Macro Assembler    Page 9
   346 0000001C         ; user Initial Stack & Heap
   347 0000001C         
   348 0000001C                 IF               :DEF:__MICROLIB
-  355 0000001C         
-  356 0000001C                 IMPORT           __use_two_region_memory
-  357 0000001C                 EXPORT           __user_initial_stackheap
+  349 0000001C         
+  350 0000001C                 EXPORT           __initial_sp
+  351 0000001C                 EXPORT           __heap_base
 
 
 
 ARM Macro Assembler    Page 10 
 
 
-  358 0000001C         
-  359 0000001C         __user_initial_stackheap
-                               PROC
-  360 0000001C 4804            LDR              R0, =  Heap_Mem
-  361 0000001E 4905            LDR              R1, =(Stack_Mem + Stack_Size)
-  362 00000020 4A05            LDR              R2, = (Heap_Mem +  Heap_Size)
-  363 00000022 4B06            LDR              R3, = Stack_Mem
-  364 00000024 4770            BX               LR
-  365 00000026                 ENDP
-  366 00000026         
-  367 00000026 00 00           ALIGN
-  368 00000028         
-  369 00000028                 ENDIF
-  370 00000028         
-  371 00000028                 END
+  352 0000001C                 EXPORT           __heap_limit
+  353 0000001C         
+  354 0000001C                 ELSE
+  369                          ENDIF
+  370 0000001C         
+  371 0000001C                 END
               00000000 
-              00000000 
-              00000000 
-              00000500 
-              00000500 
               00000000 
 Command Line: --debug --xref --diag_suppress=9931 --cpu=Cortex-M3 --apcs=interw
 ork --depend=.\output\startup_gd32f10x_hd.d -o.\output\startup_gd32f10x_hd.o -I
 d:\Users\Arm\Packs\GigaDevice\GD32F10x_DFP\2.0.2\Device\Include -Id:\Keil_v5\AR
-M\CMSIS\Include --predefine="__UVISION_VERSION SETA 535" --predefine="GD32F10X_
-MD SETA 1" --predefine="USE_STDPERIPH_DRIVER SETA 1" --list=.\output\list\start
-up_gd32f10x_hd.lst ..\firmware\GD32F10x\CMSIS\GD\GD32F10x\Source\ARM\startup_gd
-32f10x_hd.s
+M\CMSIS\Include --predefine="__MICROLIB SETA 1" --predefine="__UVISION_VERSION 
+SETA 535" --predefine="GD32F10X_MD SETA 1" --predefine="USE_STDPERIPH_DRIVER SE
+TA 1" --list=.\output\list\startup_gd32f10x_hd.lst ..\firmware\GD32F10x\CMSIS\G
+D\GD32F10x\Source\ARM\startup_gd32f10x_hd.s
 
 
 
@@ -639,12 +626,9 @@ Symbol: Stack_Mem
       At line 46 in file ..\firmware\GD32F10x\CMSIS\GD\GD32F10x\Source\ARM\star
 tup_gd32f10x_hd.s
    Uses
-      At line 361 in file ..\firmware\GD32F10x\CMSIS\GD\GD32F10x\Source\ARM\sta
-rtup_gd32f10x_hd.s
-      At line 363 in file ..\firmware\GD32F10x\CMSIS\GD\GD32F10x\Source\ARM\sta
-rtup_gd32f10x_hd.s
-
-__initial_sp 00000500
+      None
+Comment: Stack_Mem unused
+__initial_sp 00000200
 
 Symbol: __initial_sp
    Definitions
@@ -653,7 +637,9 @@ tup_gd32f10x_hd.s
    Uses
       At line 71 in file ..\firmware\GD32F10x\CMSIS\GD\GD32F10x\Source\ARM\star
 tup_gd32f10x_hd.s
-Comment: __initial_sp used once
+      At line 350 in file ..\firmware\GD32F10x\CMSIS\GD\GD32F10x\Source\ARM\sta
+rtup_gd32f10x_hd.s
+
 3 symbols
 
 
@@ -677,11 +663,8 @@ Symbol: Heap_Mem
       At line 58 in file ..\firmware\GD32F10x\CMSIS\GD\GD32F10x\Source\ARM\star
 tup_gd32f10x_hd.s
    Uses
-      At line 360 in file ..\firmware\GD32F10x\CMSIS\GD\GD32F10x\Source\ARM\sta
-rtup_gd32f10x_hd.s
-      At line 362 in file ..\firmware\GD32F10x\CMSIS\GD\GD32F10x\Source\ARM\sta
-rtup_gd32f10x_hd.s
-
+      None
+Comment: Heap_Mem unused
 __heap_base 00000000
 
 Symbol: __heap_base
@@ -689,17 +672,19 @@ Symbol: __heap_base
       At line 57 in file ..\firmware\GD32F10x\CMSIS\GD\GD32F10x\Source\ARM\star
 tup_gd32f10x_hd.s
    Uses
-      None
-Comment: __heap_base unused
-__heap_limit 00000500
+      At line 351 in file ..\firmware\GD32F10x\CMSIS\GD\GD32F10x\Source\ARM\sta
+rtup_gd32f10x_hd.s
+Comment: __heap_base used once
+__heap_limit 00000200
 
 Symbol: __heap_limit
    Definitions
       At line 59 in file ..\firmware\GD32F10x\CMSIS\GD\GD32F10x\Source\ARM\star
 tup_gd32f10x_hd.s
    Uses
-      None
-Comment: __heap_limit unused
+      At line 352 in file ..\firmware\GD32F10x\CMSIS\GD\GD32F10x\Source\ARM\sta
+rtup_gd32f10x_hd.s
+Comment: __heap_limit used once
 4 symbols
 
 
@@ -1689,24 +1674,14 @@ tup_gd32f10x_hd.s
       At line 215 in file ..\firmware\GD32F10x\CMSIS\GD\GD32F10x\Source\ARM\sta
 rtup_gd32f10x_hd.s
 
-__user_initial_stackheap 0000001C
-
-Symbol: __user_initial_stackheap
-   Definitions
-      At line 359 in file ..\firmware\GD32F10x\CMSIS\GD\GD32F10x\Source\ARM\sta
-rtup_gd32f10x_hd.s
-   Uses
-      At line 357 in file ..\firmware\GD32F10x\CMSIS\GD\GD32F10x\Source\ARM\sta
-rtup_gd32f10x_hd.s
-Comment: __user_initial_stackheap used once
-73 symbols
+72 symbols
 
 
 
 ARM Macro Assembler    Page 1 Alphabetic symbol ordering
 Absolute symbols
 
-Heap_Size 00000500
+Heap_Size 00000200
 
 Symbol: Heap_Size
    Definitions
@@ -1715,10 +1690,8 @@ tup_gd32f10x_hd.s
    Uses
       At line 58 in file ..\firmware\GD32F10x\CMSIS\GD\GD32F10x\Source\ARM\star
 tup_gd32f10x_hd.s
-      At line 362 in file ..\firmware\GD32F10x\CMSIS\GD\GD32F10x\Source\ARM\sta
-rtup_gd32f10x_hd.s
-
-Stack_Size 00000500
+Comment: Heap_Size used once
+Stack_Size 00000200
 
 Symbol: Stack_Size
    Definitions
@@ -1727,9 +1700,7 @@ tup_gd32f10x_hd.s
    Uses
       At line 46 in file ..\firmware\GD32F10x\CMSIS\GD\GD32F10x\Source\ARM\star
 tup_gd32f10x_hd.s
-      At line 361 in file ..\firmware\GD32F10x\CMSIS\GD\GD32F10x\Source\ARM\sta
-rtup_gd32f10x_hd.s
-
+Comment: Stack_Size used once
 __Vectors_Size 00000130
 
 Symbol: __Vectors_Size
@@ -1767,14 +1738,5 @@ rtup_gd32f10x_hd.s
       At line 163 in file ..\firmware\GD32F10x\CMSIS\GD\GD32F10x\Source\ARM\sta
 rtup_gd32f10x_hd.s
 Comment: __main used once
-__use_two_region_memory 00000000
-
-Symbol: __use_two_region_memory
-   Definitions
-      At line 356 in file ..\firmware\GD32F10x\CMSIS\GD\GD32F10x\Source\ARM\sta
-rtup_gd32f10x_hd.s
-   Uses
-      None
-Comment: __use_two_region_memory unused
-3 symbols
-426 symbols in table
+2 symbols
+423 symbols in table

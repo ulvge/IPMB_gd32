@@ -523,7 +523,7 @@ typedef struct
     SEL_T SELConfig;
     SDR_T SDRConfig;
     IPMB_T IPMBConfig;
-    SOL_T SOLConfig;
+    ///SOL_T SOLConfig;
  //   LAN_T LANConfig;
     MSGHNDLR_T Msghndlr;
     SENSOR_T SenConfig;

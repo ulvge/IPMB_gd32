@@ -199,11 +199,11 @@ static void vTaskResponseDatWrite(void *pvParameters)
 }
 
 /**
-*@fn MsgHndlr
+*@fn MsgCoreHndlr
 *@brief Message Handler Task
 *       Starting Main function of MsgHndlr task
 */
-void *MsgHndlr(void *pArg)
+void *MsgCoreHndlr(void *pArg)
 {
     MsgPkt_T Res;
     char buff[sizeof(MsgPkt_T)];
@@ -214,12 +214,17 @@ void *MsgHndlr(void *pArg)
     MsgHndlrInit();
     device_addr_set();
 
-    xTaskCreate(vTaskResponseDatWrite, "Task ResponseDatWrite", 256, NULL, 24, &xHandleTaskResponseDatWrite);
-	
+    if (errCOULD_NOT_ALLOCATE_REQUIRED_MEMORY ==                                             
+		xTaskCreate(vTaskResponseDatWrite, "Task ResponseDatWrite", 256, NULL, 24, &xHandleTaskResponseDatWrite)) {
+        LOG_E("vTaskResponseDatWrite create task ERR!");
+    }
     // xTimersSlaveMasterSwitch = xTimerCreate("Timer", 1000/portTICK_RATE_MS, pdTRUE, 0, vTimerCallback); 
     // xTimerStart(xTimersSlaveMasterSwitch, portMAX_DELAY);	
 
-    RecvDatMsg_Queue = xQueueCreate(10, sizeof(MsgPkt_T));                
+    RecvDatMsg_Queue = xQueueCreate(2, sizeof(MsgPkt_T));  
+    if (RecvDatMsg_Queue ==  NULL) {
+        LOG_E("RecvDatMsg_Queue create ERR!");
+    }              
 
     while (1)
     {

@@ -69,7 +69,7 @@
 ".\output\shell_companion.o"
 ".\output\shell_ext.o"
 ".\output\shell_port.o"
---strict --scatter ".\output\bmc_rom.sct"
+--library_type=microlib --strict --scatter ".\output\bmc_rom.sct"
 --summary_stderr --info summarysizes --map --load_addr_map_info --xref --callgraph --symbols
 --info sizes --info totals --info unused --info veneers
 --list ".\output\list\bmc_rom.map" -o .\output\bmc_rom.axf

@@ -53,7 +53,8 @@ extern void SystemInit(void);
 /* update the SystemCoreClock with current core clock retrieved from cpu registers */
 extern void SystemCoreClockUpdate(void);
 
-#define configTOTAL_HEAP_SIZE					((size_t)(3*1024))
+//#define configTOTAL_HEAP_SIZE					((size_t)(10*1024))
+#define configTOTAL_HEAP_SIZE					((size_t)(10*1024+ 5*0x100))
 #ifdef __cplusplus
 }
 #endif

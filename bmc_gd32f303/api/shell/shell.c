@@ -1722,7 +1722,10 @@ void shellTask(void *param)
     char data;
 #if SHELL_TASK_WHILE == 1
 		uart_queue = xQueueCreate(50, 1);
-		userShellInit();
+	if (uart_queue == NULL) {
+		while(1);
+	}
+	userShellInit();
     while(1)
     {
 #endif

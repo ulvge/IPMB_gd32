@@ -373,7 +373,7 @@ extern void RespondSendMessage ( _NEAR_ MsgPkt_T* pReq, INT8U Status, int BMCIns
 */
 extern int GetUTC_Offset(void);
 
-extern void *MsgHndlr(void *pArg);
+extern void *MsgCoreHndlr(void *pArg);
 
 extern void
 ProcessIPMIReq(_NEAR_ MsgPkt_T *pReq, _NEAR_ MsgPkt_T *pRes);

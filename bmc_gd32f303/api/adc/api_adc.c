@@ -10,17 +10,16 @@ void sample_init()
 /*get temprate value */
 float get_temprate_convers_value(uint16_t channel)
 {
-	  uint16_t adcx;
-	  float  temperate;
-	  adcx = get_adc_average_convers_value(channel,TIMES);
-	  
-		temperate = (float)adcx*(VREFVOL/ADC_BIT);
-	
-	  /* get temperate conversion value */
-		temperate =(SENSOR_V25_VALUE-temperate)/SENSOR_AVG_SLOPE+SENSOR_TEMP25_VALUE;
-	
-	  return temperate;
-	
+	uint16_t adcx;
+	float temperate;
+	adcx = get_adc_average_convers_value(channel, TIMES);
+
+	temperate = (float)adcx * (VREFVOL / ADC_BIT);
+
+	/* get temperate conversion value */
+	temperate = (SENSOR_V25_VALUE - temperate) / SENSOR_AVG_SLOPE + SENSOR_TEMP25_VALUE;
+
+	return temperate;
 }
 
 /* get vref voltage value*/
