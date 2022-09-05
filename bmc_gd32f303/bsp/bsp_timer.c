@@ -67,7 +67,7 @@ void timer_config(void)
   */
 void nvic_config(void)
 {
-    nvic_irq_enable(TIMER4_IRQn, 15, 0);
+    //nvic_irq_enable(TIMER4_IRQn, 15, 0);
 }
 
 

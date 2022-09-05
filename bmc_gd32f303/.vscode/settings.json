@@ -33,6 +33,12 @@
         "message.h": "c",
         "util.h": "c",
         "ipmiconf.h": "c",
-        "bsp_usart1.h": "c"
+        "bsp_usart1.h": "c",
+        "system_gd32f10x.h": "c",
+        "gd32f10x_it.h": "c",
+        "system_gd32f20x.h": "c",
+        "gd32f20x_it.h": "c",
+        "gd32f30x_it.h": "c",
+        "system_gd32f30x.h": "c"
     }
 }

@@ -53,7 +53,7 @@ static void capture_nvic_configuration(void)
 {
  //   nvic_priority_group_set(NVIC_PRIGROUP_PRE2_SUB2); // NVIC_PRIGROUP_PRE1_SUB3
     nvic_irq_enable(TIMER1_IRQn, 6, 0);
-    nvic_irq_enable(TIMER7_BRK_TIMER11_IRQn, 6, 0);
+    //nvic_irq_enable(TIMER7_BRK_TIMER11_IRQn, 6, 0);
     // nvic_irq_enable(TIMER3_IRQn, 6, 0);
 }
 
@@ -159,7 +159,7 @@ static void capture_timer11_config(void)
     timer_ic_parameter_struct timer_icinitpara;
     timer_parameter_struct timer_initpara;
 
-    rcu_periph_clock_enable(RCU_TIMER11);
+    //rcu_periph_clock_enable(RCU_TIMER11);
 
     timer_deinit(TIMER11);
 

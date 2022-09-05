@@ -33,7 +33,7 @@ void com3_init()
     usart_enable(COM3);
 
     /* USART interrupt configuration */
-    nvic_irq_enable(UART3_IRQn, 5, 0);
+    //nvic_irq_enable(UART3_IRQn, 5, 0);
     /* enable USART TBE interrupt */
     usart_interrupt_enable(COM3, USART_INT_RBNE);
 }

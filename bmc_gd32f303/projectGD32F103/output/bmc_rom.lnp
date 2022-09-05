@@ -55,7 +55,7 @@
 ".\output\gd32f10x_timer.o"
 ".\output\gd32f10x_usart.o"
 ".\output\gd32f10x_wwdgt.o"
-".\output\startup_gd32f20x_cl.o"
+".\output\startup_gd32f10x_hd.o"
 ".\output\croutine.o"
 ".\output\event_groups.o"
 ".\output\list.o"
@@ -69,7 +69,7 @@
 ".\output\shell_companion.o"
 ".\output\shell_ext.o"
 ".\output\shell_port.o"
---library_type=microlib --strict --scatter ".\output\bmc_rom.sct"
+--strict --scatter ".\output\bmc_rom.sct"
 --summary_stderr --info summarysizes --map --load_addr_map_info --xref --callgraph --symbols
 --info sizes --info totals --info unused --info veneers
 --list ".\output\list\bmc_rom.map" -o .\output\bmc_rom.axf
