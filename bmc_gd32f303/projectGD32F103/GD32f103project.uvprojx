@@ -381,6 +381,9 @@
       </TargetOption>
       <Groups>
         <Group>
+          <GroupName>platform</GroupName>
+        </Group>
+        <Group>
           <GroupName>app</GroupName>
           <Files>
             <File>

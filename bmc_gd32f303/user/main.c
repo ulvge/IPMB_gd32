@@ -89,7 +89,10 @@ const char* shellText =
 	"\r\n"
 ;
 
+__weak void platform_init(void)
+{
 
+}
 /*!
     \brief      main function
     \param[in]  none
@@ -102,7 +105,9 @@ int main(void)
 	//nvic_vector_table_set(NVIC_VECTTAB_FLASH, 0x16000);
   systick_config();
   nvic_priority_group_set(NVIC_PRIGROUP_PRE4_SUB0);
-	
+
+  platform_init();
+
 #ifdef USE_UART0_ENABLE
 	com0_init();
 #endif

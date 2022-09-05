@@ -17,9 +17,9 @@
 #define     VREFVOL                           3.3
 #define 		TIMES                             1
 #define 		ADC_BIT                           4096    //12 bit adc
-#define 		SENSOR_V25_VALUE									1.43
+#define 		SENSOR_V25_VALUE									1.43f
 #define 		SENSOR_TEMP25_VALUE								25
-#define 		SENSOR_AVG_SLOPE									4.3    
+#define 		SENSOR_AVG_SLOPE									4.3f    
 
 #define     PARTIAL_PRESSURE_CONFF1           20
 #define     PARTIAL_PRESSURE_CONFF2           10

@@ -148,7 +148,7 @@ static void i2c1_gpio_config(void)
     gpio_init(I2C1_SCL_GPIO_PORT, GPIO_MODE_AF_OD, GPIO_OSPEED_50MHZ, I2C1_SCL_PIN);
     gpio_init(I2C1_SDA_GPIO_PORT, GPIO_MODE_AF_OD, GPIO_OSPEED_50MHZ, I2C1_SDA_PIN);
 #ifdef I2C1_REMAP
-	#ifndef GD32F1x
+	#ifdef GD32F2x
     gpio_pin_remap1_config(GPIO_PCF5, GPIO_PCF5_I2C1_REMAP1, ENABLE);
 	#endif
 #endif

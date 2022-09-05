@@ -1,5 +1,6 @@
 #include "utc/api_utc.h"
-#include <string.h>
+#include <string.h>  
+#include <stdlib.h>
 #include "debug_print.h"
 
 // #define Q_INT64_C(c) c ## i64

@@ -1,0 +1,5 @@
+--c99 -c --cpu Cortex-M3 -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I ..\firmware\GD32F20x\GD32F20x_standard_peripheral\Include -I ..\firmware\GD32F20x\CMSIS\GD\GD32F20x\Include -I ..\firmware\GD32F20x\CMSIS -I ..\user -I ..\bsp -I ..\ipmi -I ..\ipmi\data -I ..\ipmi\ipmi_dev-3.0.0-src -I ..\ipmi\ipmi_dev-3.0.0-src\data -I ..\ipmi\ipmi_common -I ..\ipmi\libipmi-3.1.0-src\data\include -I ..\ipmb -I ..\api -I ..\freertos\include -I ..\freertos\portable -I ..\freertos\portable\RVDS\ARM_CM3 -I ..\api\shell -I ..\ff10 -I ..\api\flash -I ..\firmware --diag_suppress=177,550
+-Id:\Users\Arm\Packs\GigaDevice\GD32F20x_DFP\2.2.3\Device\Include
+-Id:\Keil_v5\ARM\CMSIS\Include
+-D__UVISION_VERSION="535" -DGD32F20X_CL -DARM_MATH_CM3 -D__CC_ARM -DGD32F2x
+-o .\output\api_utc.o --omf_browse .\output\api_utc.crf --depend .\output\api_utc.d "..\api\utc\api_utc.c"

@@ -120,7 +120,7 @@
         <SetRegEntry>
           <Number>0</Number>
           <Key>UL2CM3</Key>
-          <Name>UL2CM3(-S0 -C0 -P0 )  -FN1 -FC1000 -FD20000000 -FF0GD32F20x_CL -FL0100000 -FS08000000 -FP0($$Device:GD32F207VG$Flash\GD32F20x_CL.FLM)</Name>
+          <Name>UL2CM3(-S0 -C0 -P0 )  -FN1 -FC1000 -FD20000000 -FF0GD32F30x_XD -FL0100000 -FS08000000 -FP0($$Device:GD32F303VG$Flash\GD32F30x_XD.FLM)</Name>
         </SetRegEntry>
       </TargetDriverDllRegistry>
       <Breakpoint/>
@@ -171,7 +171,7 @@
 
   <Group>
     <GroupName>app</GroupName>
-    <tvExp>0</tvExp>
+    <tvExp>1</tvExp>
     <tvExpOptDlg>0</tvExpOptDlg>
     <cbSel>0</cbSel>
     <RteFlg>0</RteFlg>
@@ -182,8 +182,8 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>..\user\gd32f20x_it.c</PathWithFileName>
-      <FilenameWithoutPath>gd32f20x_it.c</FilenameWithoutPath>
+      <PathWithFileName>..\firmware\GD32F30x\GD32F30x_standard_peripheral\Source\gd32f30x_it.c</PathWithFileName>
+      <FilenameWithoutPath>gd32f30x_it.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>
@@ -191,7 +191,7 @@
       <GroupNumber>1</GroupNumber>
       <FileNumber>2</FileNumber>
       <FileType>1</FileType>
-      <tvExp>1</tvExp>
+      <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
       <PathWithFileName>..\user\main.c</PathWithFileName>
@@ -211,6 +211,18 @@
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>
+    <File>
+      <GroupNumber>1</GroupNumber>
+      <FileNumber>4</FileNumber>
+      <FileType>1</FileType>
+      <tvExp>0</tvExp>
+      <tvExpOptDlg>0</tvExpOptDlg>
+      <bDave2>0</bDave2>
+      <PathWithFileName>..\firmware\GD32F30x\GD32F30x_standard_peripheral\Source\gd32f30x_platform.c</PathWithFileName>
+      <FilenameWithoutPath>gd32f30x_platform.c</FilenameWithoutPath>
+      <RteFlg>0</RteFlg>
+      <bShared>0</bShared>
+    </File>
   </Group>
 
   <Group>
@@ -221,7 +233,7 @@
     <RteFlg>0</RteFlg>
     <File>
       <GroupNumber>2</GroupNumber>
-      <FileNumber>4</FileNumber>
+      <FileNumber>5</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
@@ -233,7 +245,7 @@
     </File>
     <File>
       <GroupNumber>2</GroupNumber>
-      <FileNumber>5</FileNumber>
+      <FileNumber>6</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
@@ -245,7 +257,7 @@
     </File>
     <File>
       <GroupNumber>2</GroupNumber>
-      <FileNumber>6</FileNumber>
+      <FileNumber>7</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
@@ -257,7 +269,7 @@
     </File>
     <File>
       <GroupNumber>2</GroupNumber>
-      <FileNumber>7</FileNumber>
+      <FileNumber>8</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
@@ -269,7 +281,7 @@
     </File>
     <File>
       <GroupNumber>2</GroupNumber>
-      <FileNumber>8</FileNumber>
+      <FileNumber>9</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
@@ -281,7 +293,7 @@
     </File>
     <File>
       <GroupNumber>2</GroupNumber>
-      <FileNumber>9</FileNumber>
+      <FileNumber>10</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
@@ -293,7 +305,7 @@
     </File>
     <File>
       <GroupNumber>2</GroupNumber>
-      <FileNumber>10</FileNumber>
+      <FileNumber>11</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
@@ -305,7 +317,7 @@
     </File>
     <File>
       <GroupNumber>2</GroupNumber>
-      <FileNumber>11</FileNumber>
+      <FileNumber>12</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
@@ -317,25 +329,13 @@
     </File>
     <File>
       <GroupNumber>2</GroupNumber>
-      <FileNumber>12</FileNumber>
+      <FileNumber>13</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
       <PathWithFileName>..\api\tools\tools.c</PathWithFileName>
       <FilenameWithoutPath>tools.c</FilenameWithoutPath>
-      <RteFlg>0</RteFlg>
-      <bShared>0</bShared>
-    </File>
-    <File>
-      <GroupNumber>2</GroupNumber>
-      <FileNumber>13</FileNumber>
-      <FileType>1</FileType>
-      <tvExp>0</tvExp>
-      <tvExpOptDlg>0</tvExpOptDlg>
-      <bDave2>0</bDave2>
-      <PathWithFileName>..\api\flash\api_flash.c</PathWithFileName>
-      <FilenameWithoutPath>api_flash.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>
@@ -698,18 +698,6 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>..\bsp\bsp_uart7.c</PathWithFileName>
-      <FilenameWithoutPath>bsp_uart7.c</FilenameWithoutPath>
-      <RteFlg>0</RteFlg>
-      <bShared>0</bShared>
-    </File>
-    <File>
-      <GroupNumber>7</GroupNumber>
-      <FileNumber>41</FileNumber>
-      <FileType>1</FileType>
-      <tvExp>0</tvExp>
-      <tvExpOptDlg>0</tvExpOptDlg>
-      <bDave2>0</bDave2>
       <PathWithFileName>..\bsp\bsp_usart0.c</PathWithFileName>
       <FilenameWithoutPath>bsp_usart0.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
@@ -717,7 +705,7 @@
     </File>
     <File>
       <GroupNumber>7</GroupNumber>
-      <FileNumber>42</FileNumber>
+      <FileNumber>41</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
@@ -729,7 +717,7 @@
     </File>
     <File>
       <GroupNumber>7</GroupNumber>
-      <FileNumber>43</FileNumber>
+      <FileNumber>42</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
@@ -741,7 +729,7 @@
     </File>
     <File>
       <GroupNumber>7</GroupNumber>
-      <FileNumber>44</FileNumber>
+      <FileNumber>43</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
@@ -753,7 +741,7 @@
     </File>
     <File>
       <GroupNumber>7</GroupNumber>
-      <FileNumber>45</FileNumber>
+      <FileNumber>44</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
@@ -763,35 +751,23 @@
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>
-    <File>
-      <GroupNumber>7</GroupNumber>
-      <FileNumber>46</FileNumber>
-      <FileType>1</FileType>
-      <tvExp>0</tvExp>
-      <tvExpOptDlg>0</tvExpOptDlg>
-      <bDave2>0</bDave2>
-      <PathWithFileName>..\bsp\bsp_gd25qxx.c</PathWithFileName>
-      <FilenameWithoutPath>bsp_gd25qxx.c</FilenameWithoutPath>
-      <RteFlg>0</RteFlg>
-      <bShared>0</bShared>
-    </File>
   </Group>
 
   <Group>
     <GroupName>cmsis</GroupName>
-    <tvExp>1</tvExp>
+    <tvExp>0</tvExp>
     <tvExpOptDlg>0</tvExpOptDlg>
     <cbSel>0</cbSel>
     <RteFlg>0</RteFlg>
     <File>
       <GroupNumber>8</GroupNumber>
-      <FileNumber>47</FileNumber>
+      <FileNumber>45</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>..\firmware\GD32F20x\CMSIS\GD\GD32F20x\Source\system_gd32f20x.c</PathWithFileName>
-      <FilenameWithoutPath>system_gd32f20x.c</FilenameWithoutPath>
+      <PathWithFileName>..\firmware\GD32F30x\CMSIS\GD\GD32F30x\Source\system_gd32f30x.c</PathWithFileName>
+      <FilenameWithoutPath>system_gd32f30x.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>
@@ -799,10 +775,34 @@
 
   <Group>
     <GroupName>peripherals</GroupName>
-    <tvExp>1</tvExp>
+    <tvExp>0</tvExp>
     <tvExpOptDlg>0</tvExpOptDlg>
     <cbSel>0</cbSel>
     <RteFlg>0</RteFlg>
+    <File>
+      <GroupNumber>9</GroupNumber>
+      <FileNumber>46</FileNumber>
+      <FileType>1</FileType>
+      <tvExp>0</tvExp>
+      <tvExpOptDlg>0</tvExpOptDlg>
+      <bDave2>0</bDave2>
+      <PathWithFileName>..\firmware\GD32F30x\GD32F30x_standard_peripheral\Source\gd32f30x_adc.c</PathWithFileName>
+      <FilenameWithoutPath>gd32f30x_adc.c</FilenameWithoutPath>
+      <RteFlg>0</RteFlg>
+      <bShared>0</bShared>
+    </File>
+    <File>
+      <GroupNumber>9</GroupNumber>
+      <FileNumber>47</FileNumber>
+      <FileType>1</FileType>
+      <tvExp>0</tvExp>
+      <tvExpOptDlg>0</tvExpOptDlg>
+      <bDave2>0</bDave2>
+      <PathWithFileName>..\firmware\GD32F30x\GD32F30x_standard_peripheral\Source\gd32f30x_bkp.c</PathWithFileName>
+      <FilenameWithoutPath>gd32f30x_bkp.c</FilenameWithoutPath>
+      <RteFlg>0</RteFlg>
+      <bShared>0</bShared>
+    </File>
     <File>
       <GroupNumber>9</GroupNumber>
       <FileNumber>48</FileNumber>
@@ -810,8 +810,8 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>..\firmware\GD32F20x\GD32F20x_standard_peripheral\Source\gd32f20x_adc.c</PathWithFileName>
-      <FilenameWithoutPath>gd32f20x_adc.c</FilenameWithoutPath>
+      <PathWithFileName>..\firmware\GD32F30x\GD32F30x_standard_peripheral\Source\gd32f30x_dma.c</PathWithFileName>
+      <FilenameWithoutPath>gd32f30x_dma.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>
@@ -822,8 +822,8 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>..\firmware\GD32F20x\GD32F20x_standard_peripheral\Source\gd32f20x_bkp.c</PathWithFileName>
-      <FilenameWithoutPath>gd32f20x_bkp.c</FilenameWithoutPath>
+      <PathWithFileName>..\firmware\GD32F30x\GD32F30x_standard_peripheral\Source\gd32f30x_exti.c</PathWithFileName>
+      <FilenameWithoutPath>gd32f30x_exti.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>
@@ -834,8 +834,8 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>..\firmware\GD32F20x\GD32F20x_standard_peripheral\Source\gd32f20x_cau.c</PathWithFileName>
-      <FilenameWithoutPath>gd32f20x_cau.c</FilenameWithoutPath>
+      <PathWithFileName>..\firmware\GD32F30x\GD32F30x_standard_peripheral\Source\gd32f30x_gpio.c</PathWithFileName>
+      <FilenameWithoutPath>gd32f30x_gpio.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>
@@ -846,8 +846,8 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>..\firmware\GD32F20x\GD32F20x_standard_peripheral\Source\gd32f20x_dma.c</PathWithFileName>
-      <FilenameWithoutPath>gd32f20x_dma.c</FilenameWithoutPath>
+      <PathWithFileName>..\firmware\GD32F30x\GD32F30x_standard_peripheral\Source\gd32f30x_fwdgt.c</PathWithFileName>
+      <FilenameWithoutPath>gd32f30x_fwdgt.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>
@@ -858,8 +858,8 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>..\firmware\GD32F20x\GD32F20x_standard_peripheral\Source\gd32f20x_exti.c</PathWithFileName>
-      <FilenameWithoutPath>gd32f20x_exti.c</FilenameWithoutPath>
+      <PathWithFileName>..\firmware\GD32F30x\GD32F30x_standard_peripheral\Source\gd32f30x_fmc.c</PathWithFileName>
+      <FilenameWithoutPath>gd32f30x_fmc.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>
@@ -870,8 +870,8 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>..\firmware\GD32F20x\GD32F20x_standard_peripheral\Source\gd32f20x_gpio.c</PathWithFileName>
-      <FilenameWithoutPath>gd32f20x_gpio.c</FilenameWithoutPath>
+      <PathWithFileName>..\firmware\GD32F30x\GD32F30x_standard_peripheral\Source\gd32f30x_i2c.c</PathWithFileName>
+      <FilenameWithoutPath>gd32f30x_i2c.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>
@@ -882,8 +882,8 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>..\firmware\GD32F20x\GD32F20x_standard_peripheral\Source\gd32f20x_fwdgt.c</PathWithFileName>
-      <FilenameWithoutPath>gd32f20x_fwdgt.c</FilenameWithoutPath>
+      <PathWithFileName>..\firmware\GD32F30x\GD32F30x_standard_peripheral\Source\gd32f30x_rtc.c</PathWithFileName>
+      <FilenameWithoutPath>gd32f30x_rtc.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>
@@ -894,8 +894,8 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>..\firmware\GD32F20x\GD32F20x_standard_peripheral\Source\gd32f20x_fmc.c</PathWithFileName>
-      <FilenameWithoutPath>gd32f20x_fmc.c</FilenameWithoutPath>
+      <PathWithFileName>..\firmware\GD32F30x\GD32F30x_standard_peripheral\Source\gd32f30x_rcu.c</PathWithFileName>
+      <FilenameWithoutPath>gd32f30x_rcu.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>
@@ -906,8 +906,8 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>..\firmware\GD32F20x\GD32F20x_standard_peripheral\Source\gd32f20x_i2c.c</PathWithFileName>
-      <FilenameWithoutPath>gd32f20x_i2c.c</FilenameWithoutPath>
+      <PathWithFileName>..\firmware\GD32F30x\GD32F30x_standard_peripheral\Source\gd32f30x_spi.c</PathWithFileName>
+      <FilenameWithoutPath>gd32f30x_spi.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>
@@ -918,8 +918,8 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>..\firmware\GD32F20x\GD32F20x_standard_peripheral\Source\gd32f20x_rcu.c</PathWithFileName>
-      <FilenameWithoutPath>gd32f20x_rcu.c</FilenameWithoutPath>
+      <PathWithFileName>..\firmware\GD32F30x\GD32F30x_standard_peripheral\Source\gd32f30x_timer.c</PathWithFileName>
+      <FilenameWithoutPath>gd32f30x_timer.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>
@@ -930,8 +930,8 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>..\firmware\GD32F20x\GD32F20x_standard_peripheral\Source\gd32f20x_misc.c</PathWithFileName>
-      <FilenameWithoutPath>gd32f20x_misc.c</FilenameWithoutPath>
+      <PathWithFileName>..\firmware\GD32F30x\GD32F30x_standard_peripheral\Source\gd32f30x_misc.c</PathWithFileName>
+      <FilenameWithoutPath>gd32f30x_misc.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>
@@ -942,8 +942,8 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>..\firmware\GD32F20x\GD32F20x_standard_peripheral\Source\gd32f20x_spi.c</PathWithFileName>
-      <FilenameWithoutPath>gd32f20x_spi.c</FilenameWithoutPath>
+      <PathWithFileName>..\firmware\GD32F30x\GD32F30x_standard_peripheral\Source\gd32f30x_usart.c</PathWithFileName>
+      <FilenameWithoutPath>gd32f30x_usart.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>
@@ -954,32 +954,8 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>..\firmware\GD32F20x\GD32F20x_standard_peripheral\Source\gd32f20x_timer.c</PathWithFileName>
-      <FilenameWithoutPath>gd32f20x_timer.c</FilenameWithoutPath>
-      <RteFlg>0</RteFlg>
-      <bShared>0</bShared>
-    </File>
-    <File>
-      <GroupNumber>9</GroupNumber>
-      <FileNumber>61</FileNumber>
-      <FileType>1</FileType>
-      <tvExp>0</tvExp>
-      <tvExpOptDlg>0</tvExpOptDlg>
-      <bDave2>0</bDave2>
-      <PathWithFileName>..\firmware\GD32F20x\GD32F20x_standard_peripheral\Source\gd32f20x_usart.c</PathWithFileName>
-      <FilenameWithoutPath>gd32f20x_usart.c</FilenameWithoutPath>
-      <RteFlg>0</RteFlg>
-      <bShared>0</bShared>
-    </File>
-    <File>
-      <GroupNumber>9</GroupNumber>
-      <FileNumber>62</FileNumber>
-      <FileType>1</FileType>
-      <tvExp>0</tvExp>
-      <tvExpOptDlg>0</tvExpOptDlg>
-      <bDave2>0</bDave2>
-      <PathWithFileName>..\firmware\GD32F20x\GD32F20x_standard_peripheral\Source\gd32f20x_wwdgt.c</PathWithFileName>
-      <FilenameWithoutPath>gd32f20x_wwdgt.c</FilenameWithoutPath>
+      <PathWithFileName>..\firmware\GD32F30x\GD32F30x_standard_peripheral\Source\gd32f30x_wwdgt.c</PathWithFileName>
+      <FilenameWithoutPath>gd32f30x_wwdgt.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>
@@ -993,13 +969,13 @@
     <RteFlg>0</RteFlg>
     <File>
       <GroupNumber>10</GroupNumber>
-      <FileNumber>63</FileNumber>
+      <FileNumber>61</FileNumber>
       <FileType>2</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>..\firmware\GD32F20x\CMSIS\GD\GD32F20x\Source\ARM\startup_gd32f20x_cl.s</PathWithFileName>
-      <FilenameWithoutPath>startup_gd32f20x_cl.s</FilenameWithoutPath>
+      <PathWithFileName>..\firmware\GD32F30x\CMSIS\GD\GD32F30x\Source\ARM\startup_gd32f30x_cl.s</PathWithFileName>
+      <FilenameWithoutPath>startup_gd32f30x_cl.s</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>
@@ -1007,13 +983,13 @@
 
   <Group>
     <GroupName>freertos</GroupName>
-    <tvExp>1</tvExp>
+    <tvExp>0</tvExp>
     <tvExpOptDlg>0</tvExpOptDlg>
     <cbSel>0</cbSel>
     <RteFlg>0</RteFlg>
     <File>
       <GroupNumber>11</GroupNumber>
-      <FileNumber>64</FileNumber>
+      <FileNumber>62</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
@@ -1025,7 +1001,7 @@
     </File>
     <File>
       <GroupNumber>11</GroupNumber>
-      <FileNumber>65</FileNumber>
+      <FileNumber>63</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
@@ -1037,7 +1013,7 @@
     </File>
     <File>
       <GroupNumber>11</GroupNumber>
-      <FileNumber>66</FileNumber>
+      <FileNumber>64</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
@@ -1049,7 +1025,7 @@
     </File>
     <File>
       <GroupNumber>11</GroupNumber>
-      <FileNumber>67</FileNumber>
+      <FileNumber>65</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
@@ -1061,7 +1037,7 @@
     </File>
     <File>
       <GroupNumber>11</GroupNumber>
-      <FileNumber>68</FileNumber>
+      <FileNumber>66</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
@@ -1073,7 +1049,7 @@
     </File>
     <File>
       <GroupNumber>11</GroupNumber>
-      <FileNumber>69</FileNumber>
+      <FileNumber>67</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
@@ -1085,7 +1061,7 @@
     </File>
     <File>
       <GroupNumber>11</GroupNumber>
-      <FileNumber>70</FileNumber>
+      <FileNumber>68</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
@@ -1097,7 +1073,7 @@
     </File>
     <File>
       <GroupNumber>11</GroupNumber>
-      <FileNumber>71</FileNumber>
+      <FileNumber>69</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
@@ -1111,13 +1087,13 @@
 
   <Group>
     <GroupName>shell</GroupName>
-    <tvExp>1</tvExp>
+    <tvExp>0</tvExp>
     <tvExpOptDlg>0</tvExpOptDlg>
     <cbSel>0</cbSel>
     <RteFlg>0</RteFlg>
     <File>
       <GroupNumber>12</GroupNumber>
-      <FileNumber>72</FileNumber>
+      <FileNumber>70</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
@@ -1129,7 +1105,7 @@
     </File>
     <File>
       <GroupNumber>12</GroupNumber>
-      <FileNumber>73</FileNumber>
+      <FileNumber>71</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
@@ -1141,7 +1117,7 @@
     </File>
     <File>
       <GroupNumber>12</GroupNumber>
-      <FileNumber>74</FileNumber>
+      <FileNumber>72</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
@@ -1153,7 +1129,7 @@
     </File>
     <File>
       <GroupNumber>12</GroupNumber>
-      <FileNumber>75</FileNumber>
+      <FileNumber>73</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
@@ -1165,57 +1141,13 @@
     </File>
     <File>
       <GroupNumber>12</GroupNumber>
-      <FileNumber>76</FileNumber>
+      <FileNumber>74</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
       <PathWithFileName>..\api\shell\shell_port.c</PathWithFileName>
       <FilenameWithoutPath>shell_port.c</FilenameWithoutPath>
-      <RteFlg>0</RteFlg>
-      <bShared>0</bShared>
-    </File>
-  </Group>
-
-  <Group>
-    <GroupName>fatfs</GroupName>
-    <tvExp>1</tvExp>
-    <tvExpOptDlg>0</tvExpOptDlg>
-    <cbSel>0</cbSel>
-    <RteFlg>0</RteFlg>
-    <File>
-      <GroupNumber>13</GroupNumber>
-      <FileNumber>77</FileNumber>
-      <FileType>1</FileType>
-      <tvExp>0</tvExp>
-      <tvExpOptDlg>0</tvExpOptDlg>
-      <bDave2>0</bDave2>
-      <PathWithFileName>..\ff10\diskio.c</PathWithFileName>
-      <FilenameWithoutPath>diskio.c</FilenameWithoutPath>
-      <RteFlg>0</RteFlg>
-      <bShared>0</bShared>
-    </File>
-    <File>
-      <GroupNumber>13</GroupNumber>
-      <FileNumber>78</FileNumber>
-      <FileType>1</FileType>
-      <tvExp>0</tvExp>
-      <tvExpOptDlg>0</tvExpOptDlg>
-      <bDave2>0</bDave2>
-      <PathWithFileName>..\ff10\ff.c</PathWithFileName>
-      <FilenameWithoutPath>ff.c</FilenameWithoutPath>
-      <RteFlg>0</RteFlg>
-      <bShared>0</bShared>
-    </File>
-    <File>
-      <GroupNumber>13</GroupNumber>
-      <FileNumber>79</FileNumber>
-      <FileType>1</FileType>
-      <tvExp>0</tvExp>
-      <tvExpOptDlg>0</tvExpOptDlg>
-      <bDave2>0</bDave2>
-      <PathWithFileName>..\ff10\option\cc936.c</PathWithFileName>
-      <FilenameWithoutPath>cc936.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>

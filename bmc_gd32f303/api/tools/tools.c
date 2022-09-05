@@ -21,7 +21,7 @@
 #include "main.h"
 #include "bsp_i2c.h"
 #include "utc/api_utc.h"
-//#include "stdlib.h"
+#include "stdlib.h"
 
 static int operation_mode = -1;
 __attribute__((unused)) static int bus = 0;
