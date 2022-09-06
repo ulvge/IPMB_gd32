@@ -37,15 +37,13 @@
     #define ipmb_read(pbuf, len)                 i2c2_get_slave_device_data(pbuf, len)
 #endif
 
-#ifndef USE_BMC_BOARD
 #define I2C0_INTERRUPT_ENALBE
-#define I2C0_REMAP
-#endif
+//#define I2C0_REMAP
 
-#define I2C1_INTERRUPT_ENALBE
+//#define I2C1_INTERRUPT_ENALBE
 
-#define I2C1_REMAP
-#define I2C2_REMAP
+//#define I2C1_REMAP
+//#define I2C2_REMAP
 
 #ifdef I2C0_REMAP
     #define I2C0_SCL_PIN                 GPIO_PIN_8

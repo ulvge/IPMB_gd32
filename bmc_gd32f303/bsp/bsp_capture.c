@@ -70,10 +70,8 @@ static void capture_timer1_gpio_config(void)
     rcu_periph_clock_enable(RCU_AF);
 
     /*configure PA0-3 (timer1 CH0 CH3) as alternate function*/
-		gpio_init(GPIOA, GPIO_MODE_IN_FLOATING, GPIO_OSPEED_50MHZ, GPIO_PIN_0);
-#ifndef USE_BMC_BOARD
-    gpio_init(GPIOA, GPIO_MODE_IN_FLOATING, GPIO_OSPEED_50MHZ, GPIO_PIN_3);	
-#endif
+	gpio_init(GPIOA, GPIO_MODE_IN_FLOATING, GPIO_OSPEED_50MHZ, GPIO_PIN_0);
+    //gpio_init(GPIOA, GPIO_MODE_IN_FLOATING, GPIO_OSPEED_50MHZ, GPIO_PIN_3);
 }
 
 /**

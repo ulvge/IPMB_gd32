@@ -102,19 +102,11 @@ uint16_t  get_adc_convers_value(uint8_t channel)
 {
     switch(channel)
     {
-#ifndef USE_BMC_BOARD
     case 0:
         adc_regular_channel_config(ADC_MODULE, 0, ADC_CHANNEL_8, ADC_SAMPLETIME_239POINT5);
         break;
     case 1:
         adc_regular_channel_config(ADC_MODULE, 0, ADC_CHANNEL_9, ADC_SAMPLETIME_239POINT5);
-        break;
-#else
-    case 0:
-        adc_regular_channel_config(ADC_MODULE, 0, ADC_CHANNEL_7, ADC_SAMPLETIME_239POINT5);
-        break;
-    case 1:
-        adc_regular_channel_config(ADC_MODULE, 0, ADC_CHANNEL_4, ADC_SAMPLETIME_239POINT5);
         break;
     case 2:
         adc_regular_channel_config(ADC_MODULE, 0, ADC_CHANNEL_9, ADC_SAMPLETIME_239POINT5);
@@ -131,7 +123,6 @@ uint16_t  get_adc_convers_value(uint8_t channel)
     case 6:
         adc_regular_channel_config(ADC_MODULE, 0, ADC_CHANNEL_6, ADC_SAMPLETIME_239POINT5);
         break;
-#endif
     default:
         return 0;
     }

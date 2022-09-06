@@ -1,5 +1,5 @@
 /*!
-    \file  gd25qxx.h
+    \file  bsp_gd25qxx.h
     \brief the header file of SPI flash gd25qxx driver
 */
 
@@ -16,17 +16,10 @@
 #include "project_select.h"
 
 
-#ifdef USE_BMC_BOARD
-    #define  SPI_PERIPH    SPI2
-    #define  SPI_RCU       RCU_SPI2
-    #define  SPI_FLASH_CS_LOW()        gpio_bit_reset(GPIOE,GPIO_PIN_3)
-    #define  SPI_FLASH_CS_HIGH()       gpio_bit_set(GPIOE,GPIO_PIN_3)
-#else
-    #define  SPI_PERIPH    SPI0
-    #define  SPI_RCU       RCU_SPI0
-    #define  SPI_FLASH_CS_LOW()        gpio_bit_reset(GPIOE,GPIO_PIN_3)
-    #define  SPI_FLASH_CS_HIGH()       gpio_bit_set(GPIOE,GPIO_PIN_3)
-#endif
+#define  SPI_PERIPH    SPI0
+#define  SPI_RCU       RCU_SPI0
+#define  SPI_FLASH_CS_LOW()        gpio_bit_reset(GPIOE,GPIO_PIN_3)
+#define  SPI_FLASH_CS_HIGH()       gpio_bit_set(GPIOE,GPIO_PIN_3)
 
 #define  SPI_FLASH_PAGE_SIZE       0x100
 

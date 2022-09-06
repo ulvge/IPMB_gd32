@@ -40,12 +40,14 @@ void com1_init()
     usart_transmit_config(COM1, USART_TRANSMIT_ENABLE);
     usart_enable(COM1);
 
+#if 1
     uart1_dma_init();
-
-//    /* USART interrupt configuration */
-//    nvic_irq_enable(USART1_IRQn, 3, 0);
-//    /* enable USART TBE interrupt */
-//    usart_interrupt_enable(COM1, USART_INT_RBNE);
+#else
+    /* USART interrupt configuration */
+    nvic_irq_enable(USART1_IRQn, 3, 0);
+    /* enable USART TBE interrupt */
+    usart_interrupt_enable(COM1, USART_INT_RBNE);
+#endif
 }
 
 #ifdef USE_UART1_COM

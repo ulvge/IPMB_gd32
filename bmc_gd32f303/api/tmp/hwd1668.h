@@ -1,3 +1,8 @@
+/*!
+    \file  hwd1668.h
+    \brief 
+*/
+
 #ifndef __HWD1688_H
 #define __HWD1688_H
 
@@ -19,11 +24,7 @@
 #define HWD1668_DEVICE_ID_REG          0xFF
 
 /* registers definitions */
-#ifdef USE_BMC_BOARD
-    #define  tmp_i2c_read(dev, addr, dat, len)    i2c0_bytes_read(dev, addr, dat, len)  
-#else
-    #define  tmp_i2c_read(dev, addr, dat, len)    i2c1_bytes_read(dev, addr, dat, len) 
-#endif
+#define  tmp_i2c_read(dev, addr, dat, len)    i2c1_bytes_read(dev, addr, dat, len) 
 
 /* funcitons declare */
 bool hwd1668_init(void);

@@ -211,7 +211,7 @@ static void vTimerCallback(xTimerHandle pxTimer)
 	{
 	case 0: // software timer0
 		g_CPUStatus = false;
-		LOG_I("CPU NOT RESPONSE.");
+		//LOG_I("CPU NOT RESPONSE.");
 		xTimerStop(xTimerCPUTick, portMAX_DELAY);
 		break;
 	default:

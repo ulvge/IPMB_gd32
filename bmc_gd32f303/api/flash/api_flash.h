@@ -1,5 +1,5 @@
 /*!
-    \file  gd25qxx.h
+    \file  api_flash.h
     \brief the header file of SPI flash gd25qxx driver
 */
 

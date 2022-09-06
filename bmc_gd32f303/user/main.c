@@ -49,7 +49,6 @@ OF SUCH DAMAGE.
 #include "tmp/api_tmp.h"
 #include "cpu/api_cpu.h"
 #include "utc/api_utc.h"
-#include "flash/api_flash.h"
 
 #include "shell_port.h"
 
@@ -84,7 +83,7 @@ const char *shellText =
     "  "__TIME__
     "\r\n"
     "Version:  " BMC_VERSION " \r\n"
-    "Copyright: (c) ZKCC\r\n"
+    "Copyright: (c) HXZY\r\n"
     "********************************************\r\n"
     "********************************************\r\n"
     "\r\n";
@@ -200,7 +199,8 @@ void led_task(void *pvParameters)
         led1_set(1);
         vTaskDelay(70);
         led1_set(0);
-        vTaskDelay(700);
+		printf("abcde\r\n");
+        vTaskDelay(5000);
     }
 }
 

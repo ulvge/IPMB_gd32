@@ -39,6 +39,13 @@
         "system_gd32f20x.h": "c",
         "gd32f20x_it.h": "c",
         "gd32f30x_it.h": "c",
-        "system_gd32f30x.h": "c"
+        "system_gd32f30x.h": "c",
+        "api_flash.h": "c",
+        "bit": "c",
+        "compare": "c",
+        "cstddef": "c",
+        "limits": "c",
+        "type_traits": "c",
+        "xutility": "c"
     }
 }

@@ -47,46 +47,24 @@ OF SUCH DAMAGE.
 					  
 #define    BMC_VERSION    "SVN 1575"
 
-//#define USE_BMC_BOARD
-
-#ifdef USE_BMC_BOARD
-	#define USE_UART3_ENABLE 1
-	#define USE_UART7_ENABLE 0
-		
-	#define USE_UART3_DEBUG  1
-	#define USE_UART7_COM      1
-	// #define USE_UART3_AS_IPMI  1
-	#define USE_UART7_AS_FT_COM  1
-	
-	#define USE_I2C2_AS_IPMB 1
-
-	#define MII_MODE
-	
-	// #define  ft_uart_write(x, len)    uart3_send_dat(x, len)
-	#define  ft_uart_write(x, len)    
-
-#else  // EVAL BORAD
 	#define USE_UART0_ENABLE 1
 	#define USE_UART1_ENABLE 1
 	
-	#define USE_UART0_DEBUG    1
+	//#define USE_UART0_DEBUG    1
+	#define USE_UART1_DEBUG    1
+	
 	#define USE_UART1_COM      1
 	// #define USE_UART1_AS_IPMI  1
-	#define USE_UART1_AS_FT_COM  1
+	#define USE_UART1_AS_FT_COM  1   
 
 	#define USE_I2C0_AS_IPMB 1
-	// #define FATFS_ENABLE
+	// #define FATFS_ENABLE    
+	// #define  ft_uart_write(x, len)    uart3_send_dat(x, len)
 
 	#define RMII_MODE
 	
 	#define  ft_uart_write(x, len)    uart1_send_dat(x, len)
 	
-#endif
-
-#ifdef USE_UART7_ENABLE
-#include "bsp_uart7.h"
-#endif
-
 
 #define  CPU_IntDisable()           { __set_PRIMASK(0xFFFF); }	/* Interrupt Disable */
 #define  CPU_IntEnable()            { __set_PRIMASK(0x0000); }	/* Interrupt Enable  */
@@ -142,19 +120,6 @@ extern unsigned char  GW_ADDR0;
 extern unsigned char  GW_ADDR1;
 extern unsigned char  GW_ADDR2;
 extern unsigned char  GW_ADDR3; 
-/*
-#define  GW_ADDR0 192
-#define  GW_ADDR1 168
-#define GW_ADDR2 2
-#define GW_ADDR3 1 
-*/
-/* MII and RMII mode selection */
-//#define RMII_MODE  // user have to provide the 50 MHz clock by soldering a 50 MHz oscillator
-
-/* clock the PHY from external 25MHz crystal (only for MII mode) */
-#ifdef  MII_MODE
-#define PHY_CLOCK_MCO
-#endif
 
 
 /* function declarations */

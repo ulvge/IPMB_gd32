@@ -49,11 +49,9 @@ uint8_t g_device2_addr=0;
 void i2c_int(void)
 {
     i2c_channel_init(I2C0);
-#ifdef USE_BMC_BOARD
     i2c_channel_init(I2C1);
 #ifdef I2C2
     i2c_channel_init(I2C2); 
-#endif
 #endif
 }
 

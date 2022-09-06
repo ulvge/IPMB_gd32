@@ -46,7 +46,7 @@ OF SUCH DAMAGE.
 /* use IRC8M */
 //#define __SYSTEM_CLOCK_48M_PLL_IRC8M            (uint32_t)(48000000)
 //#define __SYSTEM_CLOCK_72M_PLL_IRC8M            (uint32_t)(72000000)
-#define __SYSTEM_CLOCK_108M_PLL_IRC8M           (uint32_t)(108000000)
+//#define __SYSTEM_CLOCK_108M_PLL_IRC8M           (uint32_t)(108000000)
 
 /* use HXTAL (XD series CK_HXTAL = 8M, CL series CK_HXTAL = 25M) */
 //#define __SYSTEM_CLOCK_HXTAL                    (uint32_t)(__HXTAL)
@@ -55,7 +55,7 @@ OF SUCH DAMAGE.
 //#define __SYSTEM_CLOCK_48M_PLL_HXTAL            (uint32_t)(48000000)
 //#define __SYSTEM_CLOCK_56M_PLL_HXTAL            (uint32_t)(56000000)
 //#define __SYSTEM_CLOCK_72M_PLL_HXTAL            (uint32_t)(72000000)
-//#define __SYSTEM_CLOCK_96M_PLL_HXTAL            (uint32_t)(96000000)
+#define __SYSTEM_CLOCK_96M_PLL_HXTAL            (uint32_t)(96000000)
 //#define __SYSTEM_CLOCK_108M_PLL_HXTAL           (uint32_t)(108000000)
 
 #define SEL_IRC8M       0x00U
@@ -167,7 +167,7 @@ void SystemInit(void)
     RCU_CFG1 = 0x00000000U;
 #else
     RCU_CFG0 &= ~(RCU_CFG0_PLLSEL | RCU_CFG0_PREDV0 | RCU_CFG0_PLLMF |
-                  RCU_CFG0_USBDPSC | RCU_CFG0_PLLMF_4);
+                  RCU_CFG0_USBDPSC | RCU_CFG0_PLLMF_4); 
 #endif /* GD32F10X_CL */
 
 #if (defined(GD32F10X_MD) || defined(GD32F10X_HD) || defined(GD32F10X_XD))
@@ -743,11 +743,12 @@ static void system_clock_96m_hxtal(void)
 #if (defined(GD32F10X_MD) || defined(GD32F10X_HD) || defined(GD32F10X_XD))
     /* select HXTAL/2 as clock source */
     RCU_CFG0 &= ~(RCU_CFG0_PLLSEL | RCU_CFG0_PREDV0);
-    RCU_CFG0 |= (RCU_PLLSRC_HXTAL | RCU_CFG0_PREDV0);
+    //RCU_CFG0 |= (RCU_PLLSRC_HXTAL | RCU_CFG0_PREDV0);
+    RCU_CFG0 |= (RCU_PLLSRC_HXTAL);
 
     /* CK_PLL = (CK_HXTAL/2) * 24 = 96 MHz */
     RCU_CFG0 &= ~(RCU_CFG0_PLLMF | RCU_CFG0_PLLMF_4);
-    RCU_CFG0 |= RCU_PLL_MUL24;
+    RCU_CFG0 |= RCU_PLL_MUL12;
 
 #elif defined(GD32F10X_CL)
     /* CK_PLL = (CK_PREDIV0) * 24 = 96 MHz */
