@@ -17,14 +17,14 @@
 			return ch;
 	}
 #elif USE_UART1_DEBUG
-	int fputc(int ch, FILE *f)
-	{
-			usart_data_transmit(USART1, (uint8_t)ch);
-			while (RESET == usart_flag_get(USART1, USART_FLAG_TBE))
-					;
+//	int fputc(int ch, FILE *f)
+//	{
+//			usart_data_transmit(USART1, (uint8_t)ch);
+//			while (RESET == usart_flag_get(USART1, USART_FLAG_TBE))
+//					;
 
-			return ch;
-	}
+//			return ch;
+//	}
 #elif USE_UART3_DEBUG
 	int fputc(int ch, FILE *f)
 	{

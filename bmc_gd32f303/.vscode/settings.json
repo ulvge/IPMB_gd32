@@ -46,6 +46,10 @@
         "cstddef": "c",
         "limits": "c",
         "type_traits": "c",
-        "xutility": "c"
+        "xutility": "c",
+        "stdint.h": "c",
+        "freertos.h": "c",
+        "task.h": "c",
+        "list.h": "c"
     }
 }

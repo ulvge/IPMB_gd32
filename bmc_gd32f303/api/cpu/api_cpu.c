@@ -75,7 +75,7 @@ static void vTaskFTUartWrite(void *pvParameters)
 			continue;
 		}
 
-		ft_uart_write(Msg->Data, Msg->Size);
+		// ft_uart_write(Msg->Data, Msg->Size); // A0 00 00 00 00 00 00 00 00 04 00 FC A5
 
 		switch(Msg->Cmd)
 		{

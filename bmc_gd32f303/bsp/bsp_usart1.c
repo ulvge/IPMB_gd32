@@ -4,14 +4,23 @@
 #include "mcro_def.h"
 #include "OSPort.h"
 #include "Message.h"
-#include "MsgHndlr.h"
+#include "MsgHndlr.h"    
+#include "FIFO.h"
 
 #define USART1_DATA_ADDRESS    ((uint32_t)&USART_DATA(USART1))
 
 static void uart1_dma_init(void);
 
+static FIFO_Buf_STRUCT		g_FifoUART1;
+
+#define SendCmdBuf_size 	(50)
+static INT8U g_buffSend[400];	 
+static INT8U g_buffRec[SendCmdBuf_size];
+
 void com1_init()
 {
+	FIFO_Init(&g_FifoUART1.sfifo, g_buffSend, sizeof(g_buffSend));	
+	FIFO_Init(&g_FifoUART1.rfifo, g_buffRec, sizeof(g_buffRec));
     /* enable GPIO clock */
     rcu_periph_clock_enable(COM1_GPIO_CLK);
 
@@ -40,14 +49,12 @@ void com1_init()
     usart_transmit_config(COM1, USART_TRANSMIT_ENABLE);
     usart_enable(COM1);
 
-#if 1
-    uart1_dma_init();
-#else
+    //uart1_dma_init();
     /* USART interrupt configuration */
-    nvic_irq_enable(USART1_IRQn, 3, 0);
+    nvic_irq_enable(USART1_IRQn, 3, 0); // USART1_IRQHandler
     /* enable USART TBE interrupt */
-    usart_interrupt_enable(COM1, USART_INT_RBNE);
-#endif
+    usart_interrupt_enable(COM1, USART_INT_RBNE | USART_INT_TBE | USART_INT_TC);
+
 }
 
 #ifdef USE_UART1_COM
@@ -60,99 +67,83 @@ extern xQueueHandle RecvDatMsg_Queue;
 extern xQueueHandle FTUartRead_Queue;
 #endif
 
-#if 0
+
+INT8U USART1_SendFinally(uint32_t usart_periph, FIFO_Buf_STRUCT *fifoUart)
+{
+    INT8U data;
+    if(FIFO_Empty(&(fifoUart->sfifo)))
+	{				
+		fifoUart->status &= ~UART_SENDING;                            
+		usart_interrupt_disable(usart_periph, USART_INT_TBE | USART_INT_TC); 
+		return false ;	
+	} else {  
+		if(fifoUart->status != UART_SENDING) {	  
+			fifoUart->status |= UART_SENDING;                      
+			usart_interrupt_enable(usart_periph, USART_INT_TBE | USART_INT_TC); 
+		}
+		if(FIFO_Read(&(fifoUart->sfifo), &data) == true) {	//sending data   
+		    usart_data_transmit(usart_periph, data);
+        }
+		return true;
+	}
+}
+#if 1
 void USART1_IRQHandler(void)
 {
     uint8_t res;
-    
-#ifdef USE_UART1_COM
-	
-    BaseType_t err;
-    static bool is_start = false;
-    static BaseType_t xHigherPriorityTaskWoken;  // must set xHigherPriorityTaskWoken as a static variable, why?
-
-    if (RESET != usart_interrupt_flag_get(COM1, USART_INT_FLAG_RBNE))
+	if (RESET != usart_interrupt_flag_get(COM1, USART_INT_FLAG_TBE))
     {
-        /* receive data */
-        res = usart_data_receive(COM1);
-        if (res == START_BYTE)
-        { // start
-            is_start = true;
-            g_uart_Req.Size = 0;
-        }
-        else if (res == STOP_BYTE && is_start == true)
-        { // stop
-            is_start = false;
-#ifdef USE_UART1_AS_IPMI
-            // usart_data_transmit(USART1, HAND_SHAKE_BYTE); // BMC hand shake
-            if (RecvDatMsg_Queue != NULL)
-            {
-                g_uart_Req.Param = SERIAL_REQUEST;
-                err = xQueueSendFromISR(RecvDatMsg_Queue, (char*)&g_uart_Req, &xHigherPriorityTaskWoken);
-                if (err == pdFAIL)
-                {
-                    LOG_E("uart1 IPMI msg send failed!");
-                }
-                portYIELD_FROM_ISR(xHigherPriorityTaskWoken);
-            }
-#elif USE_UART1_AS_FT_COM
-            if (FTUartRead_Queue != NULL)
-            {
-                g_uart_Req.Param = FTCPU_RESPONSE;
-                err = xQueueSendFromISR(FTUartRead_Queue, (char*)&g_uart_Req, &xHigherPriorityTaskWoken);
-                portYIELD_FROM_ISR(xHigherPriorityTaskWoken);
-                if (err == pdFAIL)
-                {
-                    LOG_E("uart1 FT_COM msg send failed!");
-                }
-            }
-#endif
-        }
-        else
-        {
-            g_uart_Req.Data[g_uart_Req.Size++] = usart_data_receive(COM1);
-            if (g_uart_Req.Size > sizeof(g_uart_Req.Data) - 3)
-            {
-                is_start = false;
-                g_uart_Req.Size = 0;
-                LOG_E("uart recv overlap!");
-            }
-        }
+        /* send data continue */
+		USART1_SendFinally(COM1, &g_FifoUART1);
     }
-#else
+    if (RESET != usart_interrupt_flag_get(COM1, USART_INT_FLAG_TC))
+    {
+        /* send data continue */
+		USART1_SendFinally(COM1, &g_FifoUART1);
+    }
     if (RESET != usart_interrupt_flag_get(COM1, USART_INT_FLAG_RBNE))
     {
         /* receive data */
         res = usart_data_receive(COM1);
         res = res;
     }
-
-#endif
 }
 
 #endif
-
+int fputc(int ch, FILE *f)
+{
+    FIFO_Write(&g_FifoUART1.sfifo, (INT8U)ch); 
+	if(g_FifoUART1.status != UART_SENDING) {
+		USART1_SendFinally(COM1, &g_FifoUART1);
+	}
+	return ch;
+}
 void uart1_send_dat(uint8_t *str, uint16_t len)
 {
-    int i = 0;
-    for (i = 0; i < len; i++)
-    {
-        usart_data_transmit(USART1, str[i]);
-        while (RESET == usart_flag_get(USART1, USART_FLAG_TBE))
-            ;
-    }
+    // int i = 0;
+    // for (i = 0; i < len; i++)
+    // {
+    //     usart_data_transmit(USART1, str[i]);
+    //     while (RESET == usart_flag_get(USART1, USART_FLAG_TBE))
+    //         ;
+    // }
+    FIFO_Writes(&g_FifoUART1.sfifo, str , len);
+	
+	if(g_FifoUART1.status != UART_SENDING) {
+		USART1_SendFinally(COM1, &g_FifoUART1);
+	}
 }
 
 void uart1_send_string(char *str)
 {
-    unsigned int k = 0;
-    do
-    {
-        usart_data_transmit(USART1, *(str + k));
-        while (RESET == usart_flag_get(USART1, USART_FLAG_TBE))
-            ;
-        k++;
-    } while (*(str + k) != '\0');
+    // unsigned int k = 0;
+    // do
+    // {
+    //     usart_data_transmit(USART1, *(str + k));
+    //     while (RESET == usart_flag_get(USART1, USART_FLAG_TBE))
+    //         ;
+    //     k++;
+    // } while (*(str + k) != '\0');
 }
 
 bool uart1_get_data(uint8_t *p_buffer, uint32_t *len)

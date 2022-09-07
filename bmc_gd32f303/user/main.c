@@ -97,7 +97,7 @@ __weak void platform_init(void)
     \param[out] none
     \retval     none
 */
-
+ 
 int main(void)
 {
     // nvic_vector_table_set(NVIC_VECTTAB_FLASH, 0x16000);
@@ -119,7 +119,7 @@ int main(void)
     com7_init();
 #endif
 
-    printf("%s", shellText);
+    printf("%s", shellText); 
     g_utc_time_bmc_firmware_build = currentSecsSinceEpoch(__DATE__, __TIME__);
     g_bmc_firmware_version = GetBmcFirmwareVersion(BMC_VERSION);
 
@@ -165,10 +165,10 @@ void start_task(void *pvParameters)
     //     errCreateTask |= 2;
     // }
 
-    if (errCOULD_NOT_ALLOCATE_REQUIRED_MEMORY == 
-        xTaskCreate(cpuGetInfoTask, "cpu", configMINIMAL_STACK_SIZE * 2, NULL, 11, NULL)) {
-        errCreateTask |= 4;
-    }
+//    if (errCOULD_NOT_ALLOCATE_REQUIRED_MEMORY == 
+//        xTaskCreate(cpuGetInfoTask, "cpu", configMINIMAL_STACK_SIZE * 2, NULL, 11, NULL)) {
+//        errCreateTask |= 4;
+//    }
     if (errCOULD_NOT_ALLOCATE_REQUIRED_MEMORY == 
         xTaskCreate(shellTask, "shellTask", 512, &shell, 2, NULL)) {
         errCreateTask |= 8;
@@ -200,7 +200,7 @@ void led_task(void *pvParameters)
         vTaskDelay(70);
         led1_set(0);
 		printf("abcde\r\n");
-        vTaskDelay(5000);
+        vTaskDelay(1000);
     }
 }
 

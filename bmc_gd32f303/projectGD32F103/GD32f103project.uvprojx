@@ -313,7 +313,7 @@
           </ArmAdsMisc>
           <Cads>
             <interw>1</interw>
-            <Optim>1</Optim>
+            <Optim>2</Optim>
             <oTime>0</oTime>
             <SplitLS>0</SplitLS>
             <OneElfS>1</OneElfS>
@@ -339,7 +339,7 @@
               <MiscControls>--diag_suppress=177,550</MiscControls>
               <Define>ARM_MATH_CM3,__CC_ARM,GD32F1x</Define>
               <Undefine></Undefine>
-              <IncludePath>..\firmware;..\firmware\GD32F10x\GD32F10x_standard_peripheral\Include;..\firmware\GD32F10x\CMSIS\GD\GD32F10x\Include;..\firmware\GD32F10x\CMSIS;..\user;..\bsp;..\ipmi;..\ipmi\data;..\ipmi\ipmi_dev-3.0.0-src;..\ipmi\ipmi_dev-3.0.0-src\data;..\ipmi\ipmi_common;..\ipmi\libipmi-3.1.0-src\data\include;..\ipmb;..\api;..\freertos\include;..\freertos\portable;..\freertos\portable\RVDS\ARM_CM3;..\api\shell;..\ff10;..\api\flash</IncludePath>
+              <IncludePath>..\firmware;..\firmware\GD32F10x\GD32F10x_standard_peripheral\Include;..\firmware\GD32F10x\CMSIS\GD\GD32F10x\Include;..\firmware\GD32F10x\CMSIS;..\user;..\bsp;..\ipmi;..\ipmi\data;..\ipmi\ipmi_dev-3.0.0-src;..\ipmi\ipmi_dev-3.0.0-src\data;..\ipmi\ipmi_common;..\ipmi\libipmi-3.1.0-src\data\include;..\ipmb;..\api;..\api\flash;..\api\shell;..\api\tools;..\freertos\include;..\freertos\portable;..\freertos\portable\RVDS\ARM_CM3;..\ff10</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -422,11 +422,6 @@
               <FilePath>..\api\pid\pid.c</FilePath>
             </File>
             <File>
-              <FileName>hwd1668.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\api\tmp\hwd1668.c</FilePath>
-            </File>
-            <File>
               <FileName>api_tmp.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\api\tmp\api_tmp.c</FilePath>
@@ -445,6 +440,21 @@
               <FileName>tools.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\api\tools\tools.c</FilePath>
+            </File>
+            <File>
+              <FileName>FIFO.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\api\tools\FIFO.c</FilePath>
+            </File>
+            <File>
+              <FileName>FILO.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\api\tools\FILO.c</FilePath>
+            </File>
+            <File>
+              <FileName>hwd1668.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\api\tmp\hwd1668.c</FilePath>
             </File>
           </Files>
         </Group>

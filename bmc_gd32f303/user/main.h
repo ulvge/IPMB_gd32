@@ -45,7 +45,7 @@ OF SUCH DAMAGE.
 
 #include "bsp_uart3.h"
 					  
-#define    BMC_VERSION    "SVN 1575"
+#define    BMC_VERSION    "SVN 0.0.1"
 
 	#define USE_UART0_ENABLE 1
 	#define USE_UART1_ENABLE 1
