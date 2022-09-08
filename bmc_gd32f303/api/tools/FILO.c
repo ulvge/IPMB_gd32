@@ -7,8 +7,6 @@
 #include "FreeRTOS.h"
 #include "task.h"
 	
-#define OS_ENTER_CRITICAL() 		 taskENTER_CRITICAL()
-#define OS_EXIT_CRITICAL 		 taskEXIT_CRITICAL
 /******************************************************************
    FILO
 ******************************************************************/

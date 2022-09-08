@@ -26,7 +26,8 @@
  *        使能此宏后，可以使用`SHELL_EXPORT_CMD()`等导出命令
  *        定义shell命令，关闭此宏的情况下，需要使用命令表的方式
  */
-#define     SHELL_USING_CMD_EXPORT      1
+///#define     SHELL_USING_CMD_EXPORT      1
+#define     SHELL_USING_CMD_EXPORT      0
 
 /**
  * @brief 是否使用shell伴生对象
@@ -144,13 +145,13 @@
 /**
  * @brief shell默认用户
  */
-#define     SHELL_DEFAULT_USER          "zkcc"
+#define     SHELL_DEFAULT_USER          "admin"
 
 /**
  * @brief shell默认用户密码
  *        若默认用户不需要密码，设为""
  */
-#define     SHELL_DEFAULT_USER_PASSWORD "zkcc"
+#define     SHELL_DEFAULT_USER_PASSWORD "root"
 
 /**
  * @brief shell自动锁定超时

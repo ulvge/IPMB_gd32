@@ -7,8 +7,6 @@
 #include "FreeRTOS.h"
 #include "task.h"
 
-#define OS_ENTER_CRITICAL() 		 taskENTER_CRITICAL()
-#define OS_EXIT_CRITICAL 		 taskEXIT_CRITICAL
 		
 /************************************************************************************************************
    FIFO  底层接口层
@@ -35,13 +33,13 @@ BOOLEAN FIFO_Write(FIFO *fifo, INT8U data)
     if (fifo->occupy >= fifo->deepth) {
 		return FALSE;
     }
-	OS_ENTER_CRITICAL();
+    uint32_t x=taskENTER_CRITICAL_FROM_ISR();
     *fifo->wp++ = data;
     if (fifo->wp >= fifo->limit) {
 		fifo->wp = fifo->array;
 	}
     fifo->occupy++;
-    OS_EXIT_CRITICAL();
+    taskEXIT_CRITICAL_FROM_ISR(x);
     return TRUE;
 }
 
@@ -50,7 +48,7 @@ BOOLEAN FIFO_Writes(FIFO *fifo, INT8U *data, INT16U dataSize)
     if (dataSize > (fifo->deepth - fifo->occupy)) {
 		return FALSE;
 	}
-    OS_ENTER_CRITICAL();
+    uint32_t x=taskENTER_CRITICAL_FROM_ISR();
     for (; dataSize > 0; dataSize--) { 
        *fifo->wp++ = *data++;
        if (fifo->wp >= fifo->limit){
@@ -58,7 +56,7 @@ BOOLEAN FIFO_Writes(FIFO *fifo, INT8U *data, INT16U dataSize)
 	   }
        fifo->occupy++;
     }
-    OS_EXIT_CRITICAL();    
+    taskEXIT_CRITICAL_FROM_ISR(x);   
     return TRUE;
 }
 
@@ -83,6 +81,29 @@ BOOLEAN FIFO_Read(FIFO *fifo, INT8U *data)
 		fifo->rp = fifo->array;
 	}
     fifo->occupy--;
+    taskEXIT_CRITICAL_FROM_ISR(x);
+    return true;
+}
+
+BOOLEAN FIFO_ReadN(FIFO *fifo, INT8U *data, INT16U dataSize, INT16U *readLen)
+{
+    if (fifo->occupy == 0) {
+		return false;
+	}
+    uint32_t x=taskENTER_CRITICAL_FROM_ISR();
+    if (dataSize < fifo->occupy) {
+        *readLen = dataSize;
+    } else {
+        *readLen = fifo->occupy;
+    }
+    INT16U tmpLen = *readLen;
+    while (tmpLen--) {
+        *data++ = *fifo->rp++;
+        if (fifo->rp >= fifo->limit) {
+            fifo->rp = fifo->array;
+        }
+    }
+    fifo->occupy -= *readLen;
     taskEXIT_CRITICAL_FROM_ISR(x);
     return true;
 }

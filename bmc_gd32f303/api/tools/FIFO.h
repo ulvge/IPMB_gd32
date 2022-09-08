@@ -51,5 +51,6 @@ EXT_FIFO	BOOLEAN		FIFO_Write(FIFO *fifo, INT8U unit);
 EXT_FIFO	BOOLEAN		FIFO_Writes(FIFO *fifo, INT8U *data, INT16U dataSize);
 EXT_FIFO	BOOLEAN		FIFO_Empty(FIFO *fifo);
 EXT_FIFO    BOOLEAN     FIFO_Read(FIFO *fifo, INT8U *data);
+EXT_FIFO    BOOLEAN     FIFO_ReadN(FIFO *fifo, INT8U *data, INT16U dataSize, INT16U *len);
 
 #endif

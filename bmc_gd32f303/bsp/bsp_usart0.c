@@ -80,8 +80,6 @@ void com0_init()
 #ifdef USE_UART0_AS_IPMI
 extern xQueueHandle RecvDatMsg_Queue;
 static MsgPkt_T    g_uart_Req;
-#else 
-extern QueueHandle_t uart_queue;
 #endif
 
 void USART0_IRQHandler(void)
@@ -133,12 +131,6 @@ void USART0_IRQHandler(void)
     if (RESET != usart_interrupt_flag_get(COM0, USART_INT_FLAG_RBNE))
     {
         /* receive data */
-        res = usart_data_receive(COM0);
-				if(uart_queue)
-				{
-					xQueueSendFromISR(uart_queue, &res, &xHigherPriorityTaskWoken);
-					portYIELD_FROM_ISR(xHigherPriorityTaskWoken);				
-				}
     }
 #endif
 }

@@ -13,6 +13,7 @@
 #include "bsp_usart0.h"
 #include "FreeRTOS.h"
 #include "queue.h"
+#include "Types.h"
 
 Shell shell;
 char shellBuffer[512];
@@ -25,11 +26,10 @@ char shellBuffer[512];
  */
 void userShellWrite(char data)
 {
-	uart0_send_byte(data);
+	uart1_send_byte(data);
 }
 
 
-extern QueueHandle_t uart_queue;
 /**
  * @brief 用户shell读
  * 
@@ -38,17 +38,13 @@ extern QueueHandle_t uart_queue;
  */
 signed char userShellRead(char *data)
 {
-		BaseType_t err = pdFALSE;
-	
-		err = xQueueReceive(uart_queue, data, portMAX_DELAY);
-		if(err == pdFALSE)
-		{
-			return -1;
-		}
-		else
-		{
-			return 0;
-		}
+    uint32_t len=0;
+    if (uart1_get_data((INT8U *)data, sizeof(shellBuffer), &len) == true){
+		//uart1_send_dat(data, len);
+		return 0;
+    } else {
+        return -1;
+    }
 }
 
 

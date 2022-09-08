@@ -917,7 +917,7 @@ ShellCommand* shellSeekCommand(Shell *shell,
         {
             continue;
         }
-        name = shellGetCommandName(&base[i]);
+        name = shellGetCommandName(&base[i]); //shellCommandList
         if (!compareLength)
         {
             if (strcmp(cmd, name) == 0)
@@ -1715,27 +1715,20 @@ void shellWriteEndLine(Shell *shell, char *buffer, int len)
  * @param param 参数(shell对象)
  * 
  */
-QueueHandle_t uart_queue = NULL;
 void shellTask(void *param)
 {
     Shell *shell = (Shell *)param;
     char data;
-#if SHELL_TASK_WHILE == 1
-		uart_queue = xQueueCreate(50, 1);
-	if (uart_queue == NULL) {
-		while(1);
-	}
+	
 	userShellInit();
     while(1)
     {
-#endif
+        vTaskDelay(30);
         if (shell->read && shell->read(&data) == 0)
         {
             shellHandler(shell, data);
         }
-#if SHELL_TASK_WHILE == 1
     }
-#endif
 }
 
 

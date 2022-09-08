@@ -74,7 +74,7 @@ __IO uint32_t g_localtime = 0; /* for creating a time reference incremented by 1
 __IO uint64_t g_utc_time_bmc_firmware_build = 0;
 __IO uint16_t g_bmc_firmware_version = 0;
 
-const char *shellText =
+static const char *projectInfo =
     "\r\n"
     "********************************************\r\n"
     "************      BMC INFO      ************\r\n"
@@ -119,7 +119,7 @@ int main(void)
     com7_init();
 #endif
 
-    printf("%s", shellText); 
+    printf("%s", projectInfo); 
     g_utc_time_bmc_firmware_build = currentSecsSinceEpoch(__DATE__, __TIME__);
     g_bmc_firmware_version = GetBmcFirmwareVersion(BMC_VERSION);
 
@@ -173,8 +173,11 @@ void start_task(void *pvParameters)
         xTaskCreate(shellTask, "shellTask", 512, &shell, 2, NULL)) {
         errCreateTask |= 8;
     }
-    LOG_I("finished create task error = %d\r\n", errCreateTask);
-
+	if (errCreateTask == 0){
+		LOG_I("finished create task succeed\r\n");
+	} else {
+		LOG_I("finished create task error = %d\r\n", errCreateTask);
+	}
     vTaskDelete(NULL);
     taskEXIT_CRITICAL();
 }
@@ -199,7 +202,7 @@ void led_task(void *pvParameters)
         led1_set(1);
         vTaskDelay(70);
         led1_set(0);
-		printf("abcde\r\n");
+		//printf("abcde\r\n");
         vTaskDelay(1000);
     }
 }

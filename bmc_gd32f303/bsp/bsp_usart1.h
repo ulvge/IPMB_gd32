@@ -31,10 +31,11 @@
 
 void com1_init(void);
 
+void uart1_send_byte(char dat);
 void uart1_send_dat( uint8_t *str, uint16_t len);
 void uart1_send_string( char *str);
 
-bool uart1_get_data(uint8_t *p_buffer, uint32_t *len);
+bool uart1_get_data(uint8_t *p_buffer, uint32_t buffSize, uint32_t *retLen);
 void uart1_dma_enable(uint8_t len);
 
 #endif /* __BSP_USART2_H */

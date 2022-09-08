@@ -743,12 +743,13 @@ static void system_clock_96m_hxtal(void)
 #if (defined(GD32F10X_MD) || defined(GD32F10X_HD) || defined(GD32F10X_XD))
     /* select HXTAL/2 as clock source */
     RCU_CFG0 &= ~(RCU_CFG0_PLLSEL | RCU_CFG0_PREDV0);
-    //RCU_CFG0 |= (RCU_PLLSRC_HXTAL | RCU_CFG0_PREDV0);
-    RCU_CFG0 |= (RCU_PLLSRC_HXTAL);
+    RCU_CFG0 |= (RCU_PLLSRC_HXTAL | RCU_CFG0_PREDV0);
+    ////RCU_CFG0 |= (RCU_PLLSRC_HXTAL);
 
     /* CK_PLL = (CK_HXTAL/2) * 24 = 96 MHz */
     RCU_CFG0 &= ~(RCU_CFG0_PLLMF | RCU_CFG0_PLLMF_4);
-    RCU_CFG0 |= RCU_PLL_MUL12;
+    ///RCU_CFG0 |= RCU_PLL_MUL12;
+    RCU_CFG0 |= RCU_PLL_MUL24;
 
 #elif defined(GD32F10X_CL)
     /* CK_PLL = (CK_PREDIV0) * 24 = 96 MHz */
