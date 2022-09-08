@@ -5,7 +5,8 @@
 #include "project_select.h"
 #include "systick.h"
 #include "stdint.h"
-#include "main.h"
+#include "main.h" 
+#include "Types.h"
 
 
 #ifdef DEBUG
@@ -25,20 +26,26 @@
 
     #define   ADC_MODULE       ADC2
     #define   ADC_MODULE_CLK   RCU_ADC2
-    #define   ADC_GPIO_CLK     RCU_GPIOF
     #define   ADC_GPIO_PORT    GPIOF
+    #define   ADC_GPIO_CLK     RCU_GPIOF
     #define   ADC_GPIO_PIN     GPIO_PIN_3 | GPIO_PIN_4 | GPIO_PIN_5 | GPIO_PIN_6 | GPIO_PIN_7 | GPIO_PIN_8 | GPIO_PIN_9 | GPIO_PIN_10
 
     #define   ADC_CHANNEL_NUM   8
 #endif
 
+typedef struct {
+    INT32U      			adcPeriph;
+    rcu_periph_enum			adcPeriphClk;
+    INT32U      			gpioPort;
+    rcu_periph_enum      	gpioClk;
+    INT32U      			Pin;
+    char *      			alias;
+} ADCChannles; 
 
 
 void adc_init(void);
 
-/*get ADC channel value of conversion*/
 uint16_t  get_adc_convers_value(uint8_t channel);
-
 /*get ADC channel value of average conversion*/
 uint16_t  get_adc_average_convers_value(uint8_t channel,uint8_t times);
 

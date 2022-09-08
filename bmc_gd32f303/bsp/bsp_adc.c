@@ -1,19 +1,42 @@
 #include "bsp_adc.h"
 #include "OSPort.h"
 
-static void rcu_config(void);
-static void gpio_config(void);
+static void rcu_config(const ADCChannles *chan);
 static void adc_config(uint32_t adc_periph);
 
-
+const static ADCChannles  g_adcChannl[] = {
+	#if 0
+    {ADC0, RCU_ADC0, GPIOA, RCU_GPIOA, GPIO_PIN_0, "P0V9 VCC"},
+    {ADC0, RCU_ADC0, GPIOA, RCU_GPIOA, GPIO_PIN_1, "P2V5"},
+    {ADC0, RCU_ADC0, GPIOA, RCU_GPIOA, GPIO_PIN_2, "VBat"}, 
+    {ADC0, RCU_ADC0, GPIOA, RCU_GPIOA, GPIO_PIN_5, "workTemp"},
+    {ADC0, RCU_ADC0, GPIOA, RCU_GPIOA, GPIO_PIN_6, "P12V"},
+    {ADC0, RCU_ADC0, GPIOA, RCU_GPIOA, GPIO_PIN_7, "P3V3"},
+	
+    {ADC0, RCU_ADC0, GPIOB, RCU_GPIOB, GPIO_PIN_1, "P1V8"},  
+	
+    {ADC0, RCU_ADC0, GPIOC, RCU_GPIOC, GPIO_PIN_0, "P0V75 Vcore"},
+    {ADC0, RCU_ADC0, GPIOC, RCU_GPIOC, GPIO_PIN_1, "VTT"},
+    {ADC0, RCU_ADC0, GPIOC, RCU_GPIOC, GPIO_PIN_3, "P1V2 VDDQ"},
+    {ADC0, RCU_ADC0, GPIOC, RCU_GPIOC, GPIO_PIN_4, "CPUTemp"}
+#else
+    {ADC0, RCU_ADC0, GPIOA, RCU_GPIOA, GPIO_PIN_0, "P1V8 VCC"},
+    {ADC0, RCU_ADC0, GPIOB, RCU_GPIOB, GPIO_PIN_0, "X100 temp"}, 
+    {ADC0, RCU_ADC0, GPIOC, RCU_GPIOC, GPIO_PIN_0, "P12V standby"},
+#endif
+};
 void adc_init(void)
 {
-	/*configure system clocks*/	
-	rcu_config();
-    /* GPIO configuration */
-    gpio_config();
-	/* ADC configuration */
-    adc_config(ADC_MODULE);
+	const ADCChannles  *chan;
+	for (UINT8 i=0; i< sizeof(g_adcChannl)/sizeof(g_adcChannl[0]);i++){
+		chan = &g_adcChannl[i];
+		/*configure system clocks*/	
+		rcu_config(chan);
+        /* config the GPIO as analog mode */
+        gpio_init(chan->gpioPort, GPIO_MODE_AIN, GPIO_OSPEED_50MHZ, chan->Pin); 
+        /* ADC configuration */
+        adc_config(chan->adcPeriph);
+	}
 }
 
 
@@ -24,37 +47,17 @@ void adc_init(void)
     \param[out] none
     \retval     none
 */
-static void rcu_config()
+static void rcu_config(const ADCChannles *chan)
 {
     /* enable ADC GPIO clock */
-    rcu_periph_clock_enable(ADC_GPIO_CLK);
-#ifdef DEBUG
-    rcu_periph_clock_enable(ADC_GPIO2_CLK);
-#endif
+    rcu_periph_clock_enable(chan->gpioClk);
     /* enable ADC clock */
-    rcu_periph_clock_enable(ADC_MODULE_CLK);
+    rcu_periph_clock_enable(chan->adcPeriphClk);
 	/* enable AF clock */
     rcu_periph_clock_enable(RCU_AF);
     /* config ADC clock */
     rcu_adc_clock_config(RCU_CKADC_CKAPB2_DIV6);
 }
-
-/*!
-    \brief      configure the GPIO peripheral
-    \param[in]  gpio_periph:
-    \param[out] none
-    \retval     none
-*/
-static void gpio_config()
-{
-    /* config the GPIO as analog mode */
-    gpio_init(ADC_GPIO_PORT, GPIO_MODE_AIN, GPIO_OSPEED_50MHZ, ADC_GPIO_PIN); 
-#ifdef DEBUG
-    gpio_init(ADC_GPIO2_PORT, GPIO_MODE_AIN, GPIO_OSPEED_50MHZ, ADC_GPIO2_PIN); 
-#endif
-	
-}
-
 
 /*!
     \brief      configure the ADC peripheral
@@ -152,11 +155,11 @@ uint16_t  get_adc_average_convers_value(uint8_t channel,uint8_t times)
 	if(!times)
 		return 0;
 	
-	  for(iter=0;iter<times;iter++)
-	 {
-		 temp_val += get_adc_convers_value(channel);
-		 delay_ms(5);
-	 }
+    for(iter=0;iter<times;iter++)
+    {
+        temp_val += get_adc_convers_value(channel);
+        delay_ms(5);
+    }
   return temp_val/times;
 
 }
