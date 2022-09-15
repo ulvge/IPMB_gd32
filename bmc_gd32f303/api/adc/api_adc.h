@@ -41,6 +41,7 @@ float get_vref_voltage_convers_value(uint16_t channel);
 /*get ADC channel raw value of conversion*/
 bool get_raw_adc_data_value(uint16_t channel, uint16_t* value);
 
+void adc_sample_all(void);
 #ifdef __cplusplus
 }
 #endif

@@ -54,8 +54,9 @@ void com1_init()
     /* USART interrupt configuration */
     nvic_irq_enable(USART1_IRQn, 3, 0); // USART1_IRQHandler
     /* enable USART TBE interrupt */
-    usart_interrupt_enable(COM1, USART_INT_RBNE | USART_INT_TBE | USART_INT_TC);
     usart_interrupt_enable(COM1, USART_INT_RBNE);
+    usart_interrupt_enable(COM1, USART_INT_TBE);
+    usart_interrupt_enable(COM1, USART_INT_TC);
 
 }
 
@@ -76,11 +77,13 @@ INT8U USART1_SendFinally(uint32_t usart_periph, FIFO_Buf_STRUCT *fifoUart)
     if(FIFO_Empty(&(fifoUart->sfifo)))
 	{				
 		fifoUart->status &= ~UART_SENDING;                            
-		usart_interrupt_disable(usart_periph, USART_INT_TBE | USART_INT_TC); 
+		usart_interrupt_disable(usart_periph, USART_INT_TBE); 
+		usart_interrupt_disable(usart_periph, USART_INT_TC); 
 		return false ;	
 	} else {  
-		if(fifoUart->status != UART_SENDING) {	
-			usart_interrupt_enable(usart_periph, USART_INT_TBE | USART_INT_TC);   
+		if(fifoUart->status != UART_SENDING) {	                            
+			usart_interrupt_enable(usart_periph, USART_INT_TBE);  
+			usart_interrupt_enable(usart_periph, USART_INT_TC);   
 			fifoUart->status |= UART_SENDING;                      
 			//usart_transmit_config(usart_periph, USART_TRANSMIT_ENABLE);
 		}

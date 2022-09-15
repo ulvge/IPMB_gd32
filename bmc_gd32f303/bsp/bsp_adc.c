@@ -1,41 +1,20 @@
 #include "bsp_adc.h"
 #include "OSPort.h"
 
-static void rcu_config(const ADCChannles *chan);
+static void rcu_config(const ADCChannlesConfig *cfg);
 static void adc_config(uint32_t adc_periph);
 
-const static ADCChannles  g_adcChannl[] = {
-	#if 0
-    {ADC0, RCU_ADC0, GPIOA, RCU_GPIOA, GPIO_PIN_0, "P0V9 VCC"},
-    {ADC0, RCU_ADC0, GPIOA, RCU_GPIOA, GPIO_PIN_1, "P2V5"},
-    {ADC0, RCU_ADC0, GPIOA, RCU_GPIOA, GPIO_PIN_2, "VBat"}, 
-    {ADC0, RCU_ADC0, GPIOA, RCU_GPIOA, GPIO_PIN_5, "workTemp"},
-    {ADC0, RCU_ADC0, GPIOA, RCU_GPIOA, GPIO_PIN_6, "P12V"},
-    {ADC0, RCU_ADC0, GPIOA, RCU_GPIOA, GPIO_PIN_7, "P3V3"},
-	
-    {ADC0, RCU_ADC0, GPIOB, RCU_GPIOB, GPIO_PIN_1, "P1V8"},  
-	
-    {ADC0, RCU_ADC0, GPIOC, RCU_GPIOC, GPIO_PIN_0, "P0V75 Vcore"},
-    {ADC0, RCU_ADC0, GPIOC, RCU_GPIOC, GPIO_PIN_1, "VTT"},
-    {ADC0, RCU_ADC0, GPIOC, RCU_GPIOC, GPIO_PIN_3, "P1V2 VDDQ"},
-    {ADC0, RCU_ADC0, GPIOC, RCU_GPIOC, GPIO_PIN_4, "CPUTemp"}
-#else
-    {ADC0, RCU_ADC0, GPIOA, RCU_GPIOA, GPIO_PIN_0, "P1V8 VCC"},
-    {ADC0, RCU_ADC0, GPIOB, RCU_GPIOB, GPIO_PIN_0, "X100 temp"}, 
-    {ADC0, RCU_ADC0, GPIOC, RCU_GPIOC, GPIO_PIN_0, "P12V standby"},
-#endif
-};
-void adc_init(void)
+void adc_init(const ADCChannlesConfig  *adcChannlConfig, UINT8 num)
 {
-	const ADCChannles  *chan;
-	for (UINT8 i=0; i< sizeof(g_adcChannl)/sizeof(g_adcChannl[0]);i++){
-		chan = &g_adcChannl[i];
+	const ADCChannlesConfig  *chanCfg;
+	for (UINT8 i=0; i< num;i++){
+		chanCfg = &adcChannlConfig[i];
 		/*configure system clocks*/	
-		rcu_config(chan);
+		rcu_config(chanCfg);
         /* config the GPIO as analog mode */
-        gpio_init(chan->gpioPort, GPIO_MODE_AIN, GPIO_OSPEED_50MHZ, chan->Pin); 
+        gpio_init(chanCfg->gpioPort, GPIO_MODE_AIN, GPIO_OSPEED_50MHZ, chanCfg->Pin); 
         /* ADC configuration */
-        adc_config(chan->adcPeriph);
+        adc_config(chanCfg->adcPeriph);
 	}
 }
 
@@ -47,12 +26,12 @@ void adc_init(void)
     \param[out] none
     \retval     none
 */
-static void rcu_config(const ADCChannles *chan)
+static void rcu_config(const ADCChannlesConfig *chanCfg)
 {
     /* enable ADC GPIO clock */
-    rcu_periph_clock_enable(chan->gpioClk);
+    rcu_periph_clock_enable(chanCfg->gpioClk);
     /* enable ADC clock */
-    rcu_periph_clock_enable(chan->adcPeriphClk);
+    rcu_periph_clock_enable(chanCfg->adcPeriphClk);
 	/* enable AF clock */
     rcu_periph_clock_enable(RCU_AF);
     /* config ADC clock */
@@ -74,10 +53,10 @@ static void adc_config(uint32_t adc_periph)
     /* ADC data alignment config */
     adc_data_alignment_config(adc_periph, ADC_DATAALIGN_RIGHT);
     /* ADC continous function enable */
-    // adc_special_function_config(adc_periph, ADC_CONTINUOUS_MODE, DISABLE);  
-    // adc_special_function_config(adc_periph, ADC_SCAN_MODE, ENABLE); 
+    // adc_special_function_config(adc_periph, ADC_CONTINUOUS_MODE, DISABLE);
+    // adc_special_function_config(adc_periph, ADC_SCAN_MODE, ENABLE);
     /* ADC temperature and Vrefint enable */
-    //adc_tempsensor_vrefint_enable();
+    // adc_tempsensor_vrefint_enable();
     /* ADC channel length config */
     adc_channel_length_config(adc_periph, ADC_REGULAR_CHANNEL, 1);
 
@@ -87,7 +66,7 @@ static void adc_config(uint32_t adc_periph)
 
     /* ADC discontinuous mode */
     adc_discontinuous_mode_config(adc_periph, ADC_REGULAR_CHANNEL, 1);
-    
+
     /* enable ADC interface */
     adc_enable(adc_periph);
     delay_ms(1);
@@ -95,71 +74,20 @@ static void adc_config(uint32_t adc_periph)
     adc_calibration_enable(adc_periph);
 }
 
-/*!
-    \brief      get ADC channel value of conversion
-    \param[in]  adc_channel: the selected ADC channel  0-16
-    \param[out] none
-    \retval     the conversion value
-*/
-uint16_t  get_adc_convers_value(uint8_t channel)
+uint16_t adc_get_value(const ADCChannlesConfig *chanCfg)
 {
-    switch(channel)
-    {
-    case 0:
-        adc_regular_channel_config(ADC_MODULE, 0, ADC_CHANNEL_8, ADC_SAMPLETIME_239POINT5);
-        break;
-    case 1:
-        adc_regular_channel_config(ADC_MODULE, 0, ADC_CHANNEL_9, ADC_SAMPLETIME_239POINT5);
-        break;
-    case 2:
-        adc_regular_channel_config(ADC_MODULE, 0, ADC_CHANNEL_9, ADC_SAMPLETIME_239POINT5);
-        break;
-    case 3:
-        adc_regular_channel_config(ADC_MODULE, 0, ADC_CHANNEL_14, ADC_SAMPLETIME_239POINT5);
-        break;
-    case 4:
-        adc_regular_channel_config(ADC_MODULE, 0, ADC_CHANNEL_15, ADC_SAMPLETIME_239POINT5);
-        break;
-    case 5:
-        adc_regular_channel_config(ADC_MODULE, 0, ADC_CHANNEL_8, ADC_SAMPLETIME_239POINT5);
-        break;
-    case 6:
-        adc_regular_channel_config(ADC_MODULE, 0, ADC_CHANNEL_6, ADC_SAMPLETIME_239POINT5);
-        break;
-    default:
+    if (chanCfg->adcChannl > ADC_CHANNEL_17) {
         return 0;
     }
 
+    adc_regular_channel_config(chanCfg->adcPeriph, 0, chanCfg->adcChannl, ADC_SAMPLETIME_239POINT5);
+
 	/* ADC software trigger enable */
-    adc_software_trigger_enable(ADC_MODULE, ADC_REGULAR_CHANNEL);
-    adc_flag_clear(ADC_MODULE, ADC_FLAG_EOC);
-    while(SET != adc_flag_get(ADC_MODULE, ADC_FLAG_EOC)){
+    adc_software_trigger_enable(chanCfg->adcPeriph, ADC_REGULAR_CHANNEL);
+    adc_flag_clear(chanCfg->adcPeriph, ADC_FLAG_EOC);
+    while(SET != adc_flag_get(chanCfg->adcPeriph, ADC_FLAG_EOC)){
     }
-        
 
     /*read ADC regular group data register */
-    return adc_regular_data_read(ADC_MODULE);
-}
-
-/*!
-    \brief      get ADC channel value of average conversion
-    \param[in]  adc_channel: the selected ADC channel  0-16
-    \param[out] none
-    \retval     the  average conversion value
-*/
-uint16_t  get_adc_average_convers_value(uint8_t channel,uint8_t times)
-{
-	  uint16_t temp_val=0;
-	  uint8_t iter;
-	   
-	if(!times)
-		return 0;
-	
-    for(iter=0;iter<times;iter++)
-    {
-        temp_val += get_adc_convers_value(channel);
-        delay_ms(5);
-    }
-  return temp_val/times;
-
+    return adc_regular_data_read(chanCfg->adcPeriph);
 }

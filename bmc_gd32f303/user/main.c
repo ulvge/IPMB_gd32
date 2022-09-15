@@ -202,7 +202,8 @@ void led_task(void *pvParameters)
         led1_set(1);
         vTaskDelay(70);
         led1_set(0);
-		//printf("abcde\r\n");
+        adc_sample_all();
+        //printf("abcde\r\n");
         vTaskDelay(1000);
     }
 }

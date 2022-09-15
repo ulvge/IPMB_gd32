@@ -316,7 +316,7 @@
             <Optim>1</Optim>
             <oTime>0</oTime>
             <SplitLS>0</SplitLS>
-            <OneElfS>1</OneElfS>
+            <OneElfS>0</OneElfS>
             <Strict>0</Strict>
             <EnumInt>0</EnumInt>
             <PlainCh>0</PlainCh>
@@ -337,9 +337,9 @@
             <v6Rtti>0</v6Rtti>
             <VariousControls>
               <MiscControls>--diag_suppress=177,550</MiscControls>
-              <Define>ARM_MATH_CM3,__CC_ARM,GD32F3x</Define>
+              <Define>ARM_MATH_CM4,__CC_ARM,GD32F3x</Define>
               <Undefine></Undefine>
-              <IncludePath>..\firmware\GD32F30x\GD32F30x_standard_peripheral\Include;..\firmware\GD32F30x\CMSIS\GD\GD32F30x\Include;..\firmware\GD32F30x\CMSIS;..\user;..\bsp;..\ipmi;..\ipmi\data;..\ipmi\ipmi_dev-3.0.0-src;..\ipmi\ipmi_dev-3.0.0-src\data;..\ipmi\ipmi_common;..\ipmi\libipmi-3.1.0-src\data\include;..\ipmb;..\api;..\freertos\include;..\freertos\portable;..\freertos\portable\RVDS\ARM_CM4F;..\api\shell;..\ff10;..\api\flash;..\firmware</IncludePath>
+              <IncludePath>..\firmware;..\firmware\GD32F30x\GD32F30x_standard_peripheral\Include;..\firmware\GD32F30x\CMSIS\GD\GD32F30x\Include;..\firmware\GD32F30x\CMSIS;..\user;..\bsp;..\ipmi;..\ipmi\data;..\ipmi\ipmi_dev-3.0.0-src;..\ipmi\ipmi_dev-3.0.0-src\data;..\ipmi\ipmi_common;..\ipmi\libipmi-3.1.0-src\data\include;..\ipmb;..\api;..\api\flash;..\api\shell;..\api\tools;..\freertos\include;..\freertos\portable;..\freertos\portable\RVDS\ARM_CM4F;..\ff10</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -424,19 +424,9 @@
               <FilePath>..\api\pid\pid.c</FilePath>
             </File>
             <File>
-              <FileName>hwd1668.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\api\tmp\hwd1668.c</FilePath>
-            </File>
-            <File>
               <FileName>api_tmp.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\api\tmp\api_tmp.c</FilePath>
-            </File>
-            <File>
-              <FileName>flash.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\api\update\flash.c</FilePath>
             </File>
             <File>
               <FileName>api_cpu.c</FileName>
@@ -454,9 +444,9 @@
               <FilePath>..\api\tools\tools.c</FilePath>
             </File>
             <File>
-              <FileName>fatfs_tools.c</FileName>
+              <FileName>hwd1668.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\api\tools\fatfs_tools.c</FilePath>
+              <FilePath>..\api\tmp\hwd1668.c</FilePath>
             </File>
           </Files>
         </Group>

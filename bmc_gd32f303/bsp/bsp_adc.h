@@ -16,14 +16,14 @@
     #define   ADC_GPIO_CLK     RCU_GPIOB
     #define   ADC_GPIO_PORT    GPIOB
     #define   ADC_GPIO_PIN     GPIO_PIN_0 | GPIO_PIN_1
-
+	d
     #define   ADC_GPIO2_CLK     RCU_GPIOA
     #define   ADC_GPIO2_PORT    GPIOA
     #define   ADC_GPIO2_PIN     GPIO_PIN_4
 
     #define   ADC_CHANNEL_NUM   2 
 #else
-
+		 
     #define   ADC_MODULE       ADC2
     #define   ADC_MODULE_CLK   RCU_ADC2
     #define   ADC_GPIO_PORT    GPIOF
@@ -34,20 +34,18 @@
 #endif
 
 typedef struct {
+    uint8_t      			adcChannl;
     INT32U      			adcPeriph;
     rcu_periph_enum			adcPeriphClk;
     INT32U      			gpioPort;
     rcu_periph_enum      	gpioClk;
     INT32U      			Pin;
     char *      			alias;
-} ADCChannles; 
+} ADCChannlesConfig;
 
-
-void adc_init(void);
-
-uint16_t  get_adc_convers_value(uint8_t channel);
+void adc_init(const ADCChannlesConfig *adcChannlConfig, UINT8 num);
 /*get ADC channel value of average conversion*/
-uint16_t  get_adc_average_convers_value(uint8_t channel,uint8_t times);
+uint16_t adc_get_value(const ADCChannlesConfig *chanCfg);
 
 #endif /* __BSP_ADC_H */
 
