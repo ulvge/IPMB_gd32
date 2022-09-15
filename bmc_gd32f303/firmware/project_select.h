@@ -29,7 +29,7 @@ ram:    20k     0x5000=20,480
 #ifdef GD32F2x
 #include "gd32f20x_it.h"
 #include "system_gd32f20x.h"
-#include "flash/api_flash.h"
+//#include "flash/api_flash.h"
 #endif
 
 
@@ -43,7 +43,7 @@ ram:    96k     0x1 8000
 */
 #include "gd32f30x_it.h"
 #include "system_gd32f30x.h"
-#include "flash/api_flash.h"
+//#include "flash/api_flash.h"
 #endif
 
 
