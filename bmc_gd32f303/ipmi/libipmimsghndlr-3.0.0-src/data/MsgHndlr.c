@@ -228,6 +228,10 @@ void *MsgCoreHndlr(void *pArg)
 
     while (1)
     {
+		if (RecvDatMsg_Queue == NULL) {
+			vTaskDelay(1000);
+			continue;
+		}
         err = xQueueReceive(RecvDatMsg_Queue, buff, portMAX_DELAY);
         if (err == pdFALSE)
         {

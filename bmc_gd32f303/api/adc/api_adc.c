@@ -18,13 +18,15 @@ const static ADCChannlesConfig g_adcChannlConfig[] = {
     {ADC0, RCU_ADC0, GPIOC, RCU_GPIOC, GPIO_PIN_4, "CPUTemp"}
 #else
     {ADC_CHANNEL_0, ADC0, RCU_ADC0, GPIOA, RCU_GPIOA, GPIO_PIN_0, "P1V8 VCC"},
-    {ADC_CHANNEL_1, ADC0, RCU_ADC0, GPIOB, RCU_GPIOB, GPIO_PIN_0, "X100 temp"},
-    {ADC_CHANNEL_2, ADC0, RCU_ADC0, GPIOC, RCU_GPIOC, GPIO_PIN_0, "P12V standby"},
+    {ADC_CHANNEL_8, ADC0, RCU_ADC0, GPIOB, RCU_GPIOB, GPIO_PIN_0, "X100 temp"},
+    {ADC_CHANNEL_10, ADC0, RCU_ADC0, GPIOC, RCU_GPIOC, GPIO_PIN_0, "P12V standby"},
 #endif
 };
 #define ADC_CHANNLE_CONFIG_NUM (sizeof(g_adcChannlConfig) / sizeof(g_adcChannlConfig[0]))
 static uint16_t g_adcVals[ADC_CHANNLE_CONFIG_NUM] = {0};
 
+static void adc_test(void);
+	
 void sample_init(void)
 {
     adc_init(g_adcChannlConfig, sizeof(g_adcChannlConfig) / sizeof(g_adcChannlConfig[0]));
@@ -128,4 +130,10 @@ void adc_sample_all(void)
         }
         g_adcVals[j] = sum / ADC_SAMPLE_TIMES;
     }
+    adc_test();
+}
+
+static void adc_test(void)
+{
+    get_temprate_convers_value(ADC_CHANNEL_8);
 }

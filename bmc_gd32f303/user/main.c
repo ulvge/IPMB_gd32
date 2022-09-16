@@ -65,6 +65,7 @@ OF SUCH DAMAGE.
 void start_task(void *pvParameters);
 void fan_task(void *pvParameters);
 void test_task(void *pvParameters);
+TaskHandle_t ComTask_Handler;
 void com_task(void *pvParameters);
 void led_task(void *pvParameters);
 
@@ -153,10 +154,10 @@ void start_task(void *pvParameters)
 
     // xTaskCreate(test_task, "test", configMINIMAL_STACK_SIZE, NULL, TEST_TASK_PRIO, NULL);
 
-//    if (errCOULD_NOT_ALLOCATE_REQUIRED_MEMORY == 
-//        xTaskCreate(com_task, "com", configMINIMAL_STACK_SIZE * 2, NULL, COM_TASK_PRIO, NULL)) {
-//        errCreateTask |= 1;
-//    }
+   if (errCOULD_NOT_ALLOCATE_REQUIRED_MEMORY == 
+       xTaskCreate(com_task, "com", configMINIMAL_STACK_SIZE * 2, NULL, COM_TASK_PRIO, (TaskHandle_t *)&ComTask_Handler)) {
+       errCreateTask |= 1;
+   }
 
     // xTaskCreate(updateTask, "updateTask", configMINIMAL_STACK_SIZE*3, NULL, 18, NULL);
 

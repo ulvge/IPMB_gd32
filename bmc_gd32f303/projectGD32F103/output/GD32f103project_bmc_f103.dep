@@ -1,9 +1,9 @@
 Dependencies for Project 'GD32f103project', Target 'bmc_f103': (DO NOT MODIFY !)
 CompilerVersion: 5060960::V5.06 update 7 (build 960)::.\ARMCC
-F (..\user\main.c)(0x6323158F)(--c99 -c --cpu Cortex-M3 -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I ..\firmware -I ..\firmware\GD32F10x\GD32F10x_standard_peripheral\Include -I ..\firmware\GD32F10x\CMSIS\GD\GD32F10x\Include -I ..\firmware\GD32F10x\CMSIS -I ..\user -I ..\bsp -I ..\ipmi -I ..\ipmi\data -I ..\ipmi\ipmi_dev-3.0.0-src -I ..\ipmi\ipmi_dev-3.0.0-src\data -I ..\ipmi\ipmi_common -I ..\ipmi\libipmi-3.1.0-src\data\include -I ..\ipmb -I ..\api -I ..\api\flash -I ..\api\shell -I ..\api\tools -I ..\freertos\include -I ..\freertos\portable -I ..\freertos\portable\RVDS\ARM_CM3 -I ..\ff10 --diag_suppress=177,550-Id:\Users\Arm\Packs\GigaDevice\GD32F10x_DFP\2.0.2\Device\Include-Id:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="535" -DGD32F10X_MD -DUSE_STDPERIPH_DRIVER -DARM_MATH_CM3 -D__CC_ARM -DGD32F1x-o .\output\main.o --omf_browse .\output\main.crf --depend .\output\main.d)
+F (..\user\main.c)(0x6324125A)(--c99 -c --cpu Cortex-M3 -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I ..\firmware -I ..\firmware\GD32F10x\GD32F10x_standard_peripheral\Include -I ..\firmware\GD32F10x\CMSIS\GD\GD32F10x\Include -I ..\firmware\GD32F10x\CMSIS -I ..\user -I ..\bsp -I ..\ipmi -I ..\ipmi\data -I ..\ipmi\ipmi_dev-3.0.0-src -I ..\ipmi\ipmi_dev-3.0.0-src\data -I ..\ipmi\ipmi_common -I ..\ipmi\libipmi-3.1.0-src\data\include -I ..\ipmb -I ..\api -I ..\api\flash -I ..\api\shell -I ..\api\tools -I ..\freertos\include -I ..\freertos\portable -I ..\freertos\portable\RVDS\ARM_CM3 -I ..\ff10 --diag_suppress=177,550-Id:\Users\Arm\Packs\GigaDevice\GD32F10x_DFP\2.0.2\Device\Include-Id:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="535" -DGD32F10X_MD -DUSE_STDPERIPH_DRIVER -DARM_MATH_CM3 -D__CC_ARM -DGD32F1x-o .\output\main.o --omf_browse .\output\main.crf --depend .\output\main.d)
 I (d:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x60252374)
 I (d:\Keil_v5\ARM\ARMCC\include\stdbool.h)(0x6025237C)
-I (..\user\main.h)(0x6323158F)
+I (..\user\main.h)(0x6323CDBA)
 I (..\bsp\bsp_uart3.h)(0x631312B1)
 I (..\firmware\project_select.h)(0x632315C7)
 I (..\firmware\GD32F10x\GD32F10x_standard_peripheral\Include\gd32f10x_it.h)(0x604ABF6A)
@@ -61,7 +61,7 @@ I (..\api\net_print/net_print.h)(0x604ABF58)
 I (..\user\systick.h)(0x604ABF58)
 I (..\bsp\bsp_led.h)(0x632314FE)
 I (..\bsp\bsp_usart0.h)(0x63131260)
-I (..\bsp\bsp_i2c.h)(0x632314FE)
+I (..\bsp\bsp_i2c.h)(0x6323E6B5)
 I (..\api\fan/api_fan.h)(0x631312AF)
 I (..\bsp\bsp_pwm.h)(0x63131273)
 I (..\bsp\bsp_capture.h)(0x6313128D)
@@ -73,7 +73,7 @@ I (..\api\cpu/api_cpu.h)(0x604ABF58)
 I (..\api\utc/api_utc.h)(0x604ABF58)
 I (..\api\shell\shell_port.h)(0x604ABF58)
 I (..\api\shell\shell.h)(0x604ABF58)
-I (..\api\shell\shell_cfg.h)(0x6323158F)
+I (..\api\shell\shell_cfg.h)(0x632413CC)
 I (..\ipmi\ipmi_dev-3.0.0-src\data\MsgHndlr.h)(0x6323103E)
 I (..\ipmi\ipmi_dev-3.0.0-src\data\Message.h)(0x604ABF59)
 I (..\ipmi\ipmi_dev-3.0.0-src\data\IPMIDefs.h)(0x604ABF59)
@@ -147,7 +147,7 @@ I (..\firmware\GD32F10x\GD32F10x_standard_peripheral\Include\gd32f10x_can.h)(0x6
 I (..\firmware\GD32F10x\GD32F10x_standard_peripheral\Include\gd32f10x_enet.h)(0x604ABF72)
 I (d:\Keil_v5\ARM\ARMCC\include\stdlib.h)(0x60252374)
 I (..\firmware\GD32F10x\GD32F10x_standard_peripheral\Include\gd32f10x_misc.h)(0x604ABF72)
-I (..\user\main.h)(0x6323158F)
+I (..\user\main.h)(0x6323CDBA)
 I (..\bsp\bsp_uart3.h)(0x631312B1)
 I (..\firmware\project_select.h)(0x632315C7)
 I (d:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x60252374)
@@ -164,7 +164,7 @@ I (..\freertos\portable\RVDS\ARM_CM3\portmacro.h)(0x604ABF58)
 I (..\freertos\include\mpu_wrappers.h)(0x604ABF58)
 I (..\freertos\include\task.h)(0x604ABF58)
 I (..\freertos\include\list.h)(0x604ABF58)
-F (..\api\adc\api_adc.c)(0x6323158F)(--c99 -c --cpu Cortex-M3 -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I ..\firmware -I ..\firmware\GD32F10x\GD32F10x_standard_peripheral\Include -I ..\firmware\GD32F10x\CMSIS\GD\GD32F10x\Include -I ..\firmware\GD32F10x\CMSIS -I ..\user -I ..\bsp -I ..\ipmi -I ..\ipmi\data -I ..\ipmi\ipmi_dev-3.0.0-src -I ..\ipmi\ipmi_dev-3.0.0-src\data -I ..\ipmi\ipmi_common -I ..\ipmi\libipmi-3.1.0-src\data\include -I ..\ipmb -I ..\api -I ..\api\flash -I ..\api\shell -I ..\api\tools -I ..\freertos\include -I ..\freertos\portable -I ..\freertos\portable\RVDS\ARM_CM3 -I ..\ff10 --diag_suppress=177,550-Id:\Users\Arm\Packs\GigaDevice\GD32F10x_DFP\2.0.2\Device\Include-Id:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="535" -DGD32F10X_MD -DUSE_STDPERIPH_DRIVER -DARM_MATH_CM3 -D__CC_ARM -DGD32F1x-o .\output\api_adc.o --omf_browse .\output\api_adc.crf --depend .\output\api_adc.d)
+F (..\api\adc\api_adc.c)(0x632418EA)(--c99 -c --cpu Cortex-M3 -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I ..\firmware -I ..\firmware\GD32F10x\GD32F10x_standard_peripheral\Include -I ..\firmware\GD32F10x\CMSIS\GD\GD32F10x\Include -I ..\firmware\GD32F10x\CMSIS -I ..\user -I ..\bsp -I ..\ipmi -I ..\ipmi\data -I ..\ipmi\ipmi_dev-3.0.0-src -I ..\ipmi\ipmi_dev-3.0.0-src\data -I ..\ipmi\ipmi_common -I ..\ipmi\libipmi-3.1.0-src\data\include -I ..\ipmb -I ..\api -I ..\api\flash -I ..\api\shell -I ..\api\tools -I ..\freertos\include -I ..\freertos\portable -I ..\freertos\portable\RVDS\ARM_CM3 -I ..\ff10 --diag_suppress=177,550-Id:\Users\Arm\Packs\GigaDevice\GD32F10x_DFP\2.0.2\Device\Include-Id:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="535" -DGD32F10X_MD -DUSE_STDPERIPH_DRIVER -DARM_MATH_CM3 -D__CC_ARM -DGD32F1x-o .\output\api_adc.o --omf_browse .\output\api_adc.crf --depend .\output\api_adc.d)
 I (..\api\adc/api_adc.h)(0x6323158F)
 I (d:\Keil_v5\ARM\ARMCC\include\stdbool.h)(0x6025237C)
 I (..\bsp\bsp_adc.h)(0x6323158F)
@@ -202,7 +202,7 @@ I (..\firmware\GD32F10x\GD32F10x_standard_peripheral\Include\gd32f10x_enet.h)(0x
 I (d:\Keil_v5\ARM\ARMCC\include\stdlib.h)(0x60252374)
 I (..\firmware\GD32F10x\GD32F10x_standard_peripheral\Include\gd32f10x_misc.h)(0x604ABF72)
 I (..\user\systick.h)(0x604ABF58)
-I (..\user\main.h)(0x6323158F)
+I (..\user\main.h)(0x6323CDBA)
 I (..\bsp\bsp_uart3.h)(0x631312B1)
 I (d:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x60252374)
 I (..\ipmi\ipmi_common\Types.h)(0x6312AC8D)
@@ -291,8 +291,8 @@ I (d:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x60252374)
 I (d:\Keil_v5\ARM\ARMCC\include\stdbool.h)(0x6025237C)
 I (d:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x6312AC9B)
 I (d:\Keil_v5\ARM\ARMCC\include\string.h)(0x6025237E)
-I (..\api\tmp/hwd1668.h)(0x632314FE)
-I (..\user\main.h)(0x6323158F)
+I (..\api\tmp/hwd1668.h)(0x6323E676)
+I (..\user\main.h)(0x6323CDBA)
 I (..\bsp\bsp_uart3.h)(0x631312B1)
 I (..\firmware\project_select.h)(0x632315C7)
 I (..\firmware\GD32F10x\GD32F10x_standard_peripheral\Include\gd32f10x_it.h)(0x604ABF6A)
@@ -402,10 +402,10 @@ I (..\freertos\include\event_groups.h)(0x604ABF58)
 I (..\freertos\include\timers.h)(0x604ABF58)
 I (..\ipmi\ipmi_common\debug_print.h)(0x604ABF5B)
 I (..\api\net_print/net_print.h)(0x604ABF58)
-I (..\user\main.h)(0x6323158F)
+I (..\user\main.h)(0x6323CDBA)
 I (..\bsp\bsp_uart3.h)(0x631312B1)
 I (..\ipmi\ipmi_dev-3.0.0-src\data\Message.h)(0x604ABF59)
-I (..\ipmi\ipmi_common\ipmi_common.h)(0x604ABF5C)
+I (..\ipmi\ipmi_common\ipmi_common.h)(0x6323CD3F)
 I (..\ipmi\ipmi_dev-3.0.0-src\data\IPMIDefs.h)(0x604ABF59)
 I (..\api\utc/api_utc.h)(0x604ABF58)
 F (..\api\utc\api_utc.c)(0x63155E67)(--c99 -c --cpu Cortex-M3 -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I ..\firmware -I ..\firmware\GD32F10x\GD32F10x_standard_peripheral\Include -I ..\firmware\GD32F10x\CMSIS\GD\GD32F10x\Include -I ..\firmware\GD32F10x\CMSIS -I ..\user -I ..\bsp -I ..\ipmi -I ..\ipmi\data -I ..\ipmi\ipmi_dev-3.0.0-src -I ..\ipmi\ipmi_dev-3.0.0-src\data -I ..\ipmi\ipmi_common -I ..\ipmi\libipmi-3.1.0-src\data\include -I ..\ipmb -I ..\api -I ..\api\flash -I ..\api\shell -I ..\api\tools -I ..\freertos\include -I ..\freertos\portable -I ..\freertos\portable\RVDS\ARM_CM3 -I ..\ff10 --diag_suppress=177,550-Id:\Users\Arm\Packs\GigaDevice\GD32F10x_DFP\2.0.2\Device\Include-Id:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="535" -DGD32F10X_MD -DUSE_STDPERIPH_DRIVER -DARM_MATH_CM3 -D__CC_ARM -DGD32F1x-o .\output\api_utc.o --omf_browse .\output\api_utc.crf --depend .\output\api_utc.d)
@@ -449,11 +449,11 @@ I (..\firmware\GD32F10x\GD32F10x_standard_peripheral\Include\gd32f10x_enet.h)(0x
 I (..\firmware\GD32F10x\GD32F10x_standard_peripheral\Include\gd32f10x_misc.h)(0x604ABF72)
 I (d:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x60252374)
 I (..\api\net_print/net_print.h)(0x604ABF58)
-I (..\user\main.h)(0x6323158F)
+I (..\user\main.h)(0x6323CDBA)
 I (..\bsp\bsp_uart3.h)(0x631312B1)
-F (..\api\tools\tools.c)(0x63155E86)(--c99 -c --cpu Cortex-M3 -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I ..\firmware -I ..\firmware\GD32F10x\GD32F10x_standard_peripheral\Include -I ..\firmware\GD32F10x\CMSIS\GD\GD32F10x\Include -I ..\firmware\GD32F10x\CMSIS -I ..\user -I ..\bsp -I ..\ipmi -I ..\ipmi\data -I ..\ipmi\ipmi_dev-3.0.0-src -I ..\ipmi\ipmi_dev-3.0.0-src\data -I ..\ipmi\ipmi_common -I ..\ipmi\libipmi-3.1.0-src\data\include -I ..\ipmb -I ..\api -I ..\api\flash -I ..\api\shell -I ..\api\tools -I ..\freertos\include -I ..\freertos\portable -I ..\freertos\portable\RVDS\ARM_CM3 -I ..\ff10 --diag_suppress=177,550-Id:\Users\Arm\Packs\GigaDevice\GD32F10x_DFP\2.0.2\Device\Include-Id:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="535" -DGD32F10X_MD -DUSE_STDPERIPH_DRIVER -DARM_MATH_CM3 -D__CC_ARM -DGD32F1x-o .\output\tools.o --omf_browse .\output\tools.crf --depend .\output\tools.d)
+F (..\api\tools\tools.c)(0x6324139E)(--c99 -c --cpu Cortex-M3 -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I ..\firmware -I ..\firmware\GD32F10x\GD32F10x_standard_peripheral\Include -I ..\firmware\GD32F10x\CMSIS\GD\GD32F10x\Include -I ..\firmware\GD32F10x\CMSIS -I ..\user -I ..\bsp -I ..\ipmi -I ..\ipmi\data -I ..\ipmi\ipmi_dev-3.0.0-src -I ..\ipmi\ipmi_dev-3.0.0-src\data -I ..\ipmi\ipmi_common -I ..\ipmi\libipmi-3.1.0-src\data\include -I ..\ipmb -I ..\api -I ..\api\flash -I ..\api\shell -I ..\api\tools -I ..\freertos\include -I ..\freertos\portable -I ..\freertos\portable\RVDS\ARM_CM3 -I ..\ff10 --diag_suppress=177,550-Id:\Users\Arm\Packs\GigaDevice\GD32F10x_DFP\2.0.2\Device\Include-Id:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="535" -DGD32F10X_MD -DUSE_STDPERIPH_DRIVER -DARM_MATH_CM3 -D__CC_ARM -DGD32F1x-o .\output\tools.o --omf_browse .\output\tools.crf --depend .\output\tools.d)
 I (..\api\tools\tools.h)(0x604ABF58)
-I (..\api\shell\shell_cfg.h)(0x6323158F)
+I (..\api\shell\shell_cfg.h)(0x632413CC)
 I (..\user\systick.h)(0x604ABF58)
 I (d:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x6312AC9B)
 I (d:\Keil_v5\ARM\ARMCC\include\stdbool.h)(0x6025237C)
@@ -498,9 +498,9 @@ I (..\firmware\GD32F10x\GD32F10x_standard_peripheral\Include\gd32f10x_misc.h)(0x
 I (..\ipmi\ipmi_common\debug_print.h)(0x604ABF5B)
 I (..\bsp\bsp_usart1.h)(0x6323158F)
 I (..\api\net_print/net_print.h)(0x604ABF58)
-I (..\user\main.h)(0x6323158F)
+I (..\user\main.h)(0x6323CDBA)
 I (..\bsp\bsp_uart3.h)(0x631312B1)
-I (..\bsp\bsp_i2c.h)(0x632314FE)
+I (..\bsp\bsp_i2c.h)(0x6323E6B5)
 I (..\api\utc/api_utc.h)(0x604ABF58)
 F (..\api\tools\FIFO.c)(0x6323158F)(--c99 -c --cpu Cortex-M3 -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I ..\firmware -I ..\firmware\GD32F10x\GD32F10x_standard_peripheral\Include -I ..\firmware\GD32F10x\CMSIS\GD\GD32F10x\Include -I ..\firmware\GD32F10x\CMSIS -I ..\user -I ..\bsp -I ..\ipmi -I ..\ipmi\data -I ..\ipmi\ipmi_dev-3.0.0-src -I ..\ipmi\ipmi_dev-3.0.0-src\data -I ..\ipmi\ipmi_common -I ..\ipmi\libipmi-3.1.0-src\data\include -I ..\ipmb -I ..\api -I ..\api\flash -I ..\api\shell -I ..\api\tools -I ..\freertos\include -I ..\freertos\portable -I ..\freertos\portable\RVDS\ARM_CM3 -I ..\ff10 --diag_suppress=177,550-Id:\Users\Arm\Packs\GigaDevice\GD32F10x_DFP\2.0.2\Device\Include-Id:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="535" -DGD32F10X_MD -DUSE_STDPERIPH_DRIVER -DARM_MATH_CM3 -D__CC_ARM -DGD32F1x-o .\output\fifo.o --omf_browse .\output\fifo.crf --depend .\output\fifo.d)
 I (..\api\tools\FIFO.h)(0x6323158F)
@@ -600,12 +600,12 @@ I (..\freertos\portable\RVDS\ARM_CM3\portmacro.h)(0x604ABF58)
 I (..\freertos\include\mpu_wrappers.h)(0x604ABF58)
 I (..\freertos\include\task.h)(0x604ABF58)
 I (..\freertos\include\list.h)(0x604ABF58)
-F (..\api\tmp\hwd1668.c)(0x604ABF58)(--c99 -c --cpu Cortex-M3 -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I ..\firmware -I ..\firmware\GD32F10x\GD32F10x_standard_peripheral\Include -I ..\firmware\GD32F10x\CMSIS\GD\GD32F10x\Include -I ..\firmware\GD32F10x\CMSIS -I ..\user -I ..\bsp -I ..\ipmi -I ..\ipmi\data -I ..\ipmi\ipmi_dev-3.0.0-src -I ..\ipmi\ipmi_dev-3.0.0-src\data -I ..\ipmi\ipmi_common -I ..\ipmi\libipmi-3.1.0-src\data\include -I ..\ipmb -I ..\api -I ..\api\flash -I ..\api\shell -I ..\api\tools -I ..\freertos\include -I ..\freertos\portable -I ..\freertos\portable\RVDS\ARM_CM3 -I ..\ff10 --diag_suppress=177,550-Id:\Users\Arm\Packs\GigaDevice\GD32F10x_DFP\2.0.2\Device\Include-Id:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="535" -DGD32F10X_MD -DUSE_STDPERIPH_DRIVER -DARM_MATH_CM3 -D__CC_ARM -DGD32F1x-o .\output\hwd1668.o --omf_browse .\output\hwd1668.crf --depend .\output\hwd1668.d)
-I (..\api\tmp/hwd1668.h)(0x632314FE)
+F (..\api\tmp\hwd1668.c)(0x6323E4CD)(--c99 -c --cpu Cortex-M3 -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I ..\firmware -I ..\firmware\GD32F10x\GD32F10x_standard_peripheral\Include -I ..\firmware\GD32F10x\CMSIS\GD\GD32F10x\Include -I ..\firmware\GD32F10x\CMSIS -I ..\user -I ..\bsp -I ..\ipmi -I ..\ipmi\data -I ..\ipmi\ipmi_dev-3.0.0-src -I ..\ipmi\ipmi_dev-3.0.0-src\data -I ..\ipmi\ipmi_common -I ..\ipmi\libipmi-3.1.0-src\data\include -I ..\ipmb -I ..\api -I ..\api\flash -I ..\api\shell -I ..\api\tools -I ..\freertos\include -I ..\freertos\portable -I ..\freertos\portable\RVDS\ARM_CM3 -I ..\ff10 --diag_suppress=177,550-Id:\Users\Arm\Packs\GigaDevice\GD32F10x_DFP\2.0.2\Device\Include-Id:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="535" -DGD32F10X_MD -DUSE_STDPERIPH_DRIVER -DARM_MATH_CM3 -D__CC_ARM -DGD32F1x-o .\output\hwd1668.o --omf_browse .\output\hwd1668.crf --depend .\output\hwd1668.d)
+I (..\api\tmp/hwd1668.h)(0x6323E676)
 I (d:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x60252374)
 I (d:\Keil_v5\ARM\ARMCC\include\stdbool.h)(0x6025237C)
 I (d:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x6312AC9B)
-I (..\user\main.h)(0x6323158F)
+I (..\user\main.h)(0x6323CDBA)
 I (..\bsp\bsp_uart3.h)(0x631312B1)
 I (..\firmware\project_select.h)(0x632315C7)
 I (..\firmware\GD32F10x\GD32F10x_standard_peripheral\Include\gd32f10x_it.h)(0x604ABF6A)
@@ -640,7 +640,7 @@ I (..\firmware\GD32F10x\GD32F10x_standard_peripheral\Include\gd32f10x_enet.h)(0x
 I (d:\Keil_v5\ARM\ARMCC\include\stdlib.h)(0x60252374)
 I (..\firmware\GD32F10x\GD32F10x_standard_peripheral\Include\gd32f10x_misc.h)(0x604ABF72)
 I (d:\Keil_v5\ARM\ARMCC\include\string.h)(0x6025237E)
-I (..\bsp\bsp_i2c.h)(0x632314FE)
+I (..\bsp\bsp_i2c.h)(0x6323E6B5)
 I (..\ipmi\ipmi_dev-3.0.0-src\data\OSPort.h)(0x604ABF59)
 I (..\ipmi\ipmi_common\Types.h)(0x6312AC8D)
 I (..\freertos\include\FreeRTOS.h)(0x604ABF58)
@@ -660,8 +660,8 @@ I (..\freertos\include\event_groups.h)(0x604ABF58)
 I (..\freertos\include\timers.h)(0x604ABF58)
 I (..\ipmi\ipmi_common\debug_print.h)(0x604ABF5B)
 I (..\api\net_print/net_print.h)(0x604ABF58)
-F (..\ipmi\ipmi_common\ipmi_common.c)(0x604ABF5C)(--c99 -c --cpu Cortex-M3 -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I ..\firmware -I ..\firmware\GD32F10x\GD32F10x_standard_peripheral\Include -I ..\firmware\GD32F10x\CMSIS\GD\GD32F10x\Include -I ..\firmware\GD32F10x\CMSIS -I ..\user -I ..\bsp -I ..\ipmi -I ..\ipmi\data -I ..\ipmi\ipmi_dev-3.0.0-src -I ..\ipmi\ipmi_dev-3.0.0-src\data -I ..\ipmi\ipmi_common -I ..\ipmi\libipmi-3.1.0-src\data\include -I ..\ipmb -I ..\api -I ..\api\flash -I ..\api\shell -I ..\api\tools -I ..\freertos\include -I ..\freertos\portable -I ..\freertos\portable\RVDS\ARM_CM3 -I ..\ff10 --diag_suppress=177,550-Id:\Users\Arm\Packs\GigaDevice\GD32F10x_DFP\2.0.2\Device\Include-Id:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="535" -DGD32F10X_MD -DUSE_STDPERIPH_DRIVER -DARM_MATH_CM3 -D__CC_ARM -DGD32F1x-o .\output\ipmi_common.o --omf_browse .\output\ipmi_common.crf --depend .\output\ipmi_common.d)
-I (..\ipmi\ipmi_common\ipmi_common.h)(0x604ABF5C)
+F (..\ipmi\ipmi_common\ipmi_common.c)(0x6323CD1E)(--c99 -c --cpu Cortex-M3 -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I ..\firmware -I ..\firmware\GD32F10x\GD32F10x_standard_peripheral\Include -I ..\firmware\GD32F10x\CMSIS\GD\GD32F10x\Include -I ..\firmware\GD32F10x\CMSIS -I ..\user -I ..\bsp -I ..\ipmi -I ..\ipmi\data -I ..\ipmi\ipmi_dev-3.0.0-src -I ..\ipmi\ipmi_dev-3.0.0-src\data -I ..\ipmi\ipmi_common -I ..\ipmi\libipmi-3.1.0-src\data\include -I ..\ipmb -I ..\api -I ..\api\flash -I ..\api\shell -I ..\api\tools -I ..\freertos\include -I ..\freertos\portable -I ..\freertos\portable\RVDS\ARM_CM3 -I ..\ff10 --diag_suppress=177,550-Id:\Users\Arm\Packs\GigaDevice\GD32F10x_DFP\2.0.2\Device\Include-Id:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="535" -DGD32F10X_MD -DUSE_STDPERIPH_DRIVER -DARM_MATH_CM3 -D__CC_ARM -DGD32F1x-o .\output\ipmi_common.o --omf_browse .\output\ipmi_common.crf --depend .\output\ipmi_common.d)
+I (..\ipmi\ipmi_common\ipmi_common.h)(0x6323CD3F)
 I (..\ipmi\ipmi_common\Types.h)(0x6312AC8D)
 I (d:\Keil_v5\ARM\ARMCC\include\stdbool.h)(0x6025237C)
 I (..\ipmi\ipmi_dev-3.0.0-src\data\IPMIDefs.h)(0x604ABF59)
@@ -739,7 +739,7 @@ I (..\freertos\include\event_groups.h)(0x604ABF58)
 I (..\freertos\include\timers.h)(0x604ABF58)
 I (..\ipmi\ipmi_common\debug_print.h)(0x604ABF5B)
 I (..\api\net_print/net_print.h)(0x604ABF58)
-I (..\user\main.h)(0x6323158F)
+I (..\user\main.h)(0x6323CDBA)
 I (..\bsp\bsp_uart3.h)(0x631312B1)
 I (..\ipmi\ipmi_dev-3.0.0-src\data\PMConfig.h)(0x604ABF5B)
 I (..\ipmi\ipmi_dev-3.0.0-src\data\IPMI_AppDevice.h)(0x604ABF59)
@@ -814,7 +814,7 @@ I (d:\Keil_v5\ARM\ARMCC\include\stdlib.h)(0x60252374)
 I (..\firmware\GD32F10x\GD32F10x_standard_peripheral\Include\gd32f10x_misc.h)(0x604ABF72)
 I (d:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x60252374)
 I (..\api\net_print/net_print.h)(0x604ABF58)
-I (..\user\main.h)(0x6323158F)
+I (..\user\main.h)(0x6323CDBA)
 I (..\bsp\bsp_uart3.h)(0x631312B1)
 I (..\ipmi\ipmi_dev-3.0.0-src\data\Support.h)(0x604ABF59)
 I (..\ipmi\ipmi_dev-3.0.0-src\data\IPMDevice.h)(0x604ABF59)
@@ -953,7 +953,7 @@ I (..\freertos\include\event_groups.h)(0x604ABF58)
 I (..\freertos\include\timers.h)(0x604ABF58)
 I (..\ipmi\ipmi_common\debug_print.h)(0x604ABF5B)
 I (..\api\net_print/net_print.h)(0x604ABF58)
-I (..\user\main.h)(0x6323158F)
+I (..\user\main.h)(0x6323CDBA)
 I (..\bsp\bsp_uart3.h)(0x631312B1)
 I (..\ipmi\ipmi_dev-3.0.0-src\data\SensorMonitor.h)(0x6323103E)
 I (..\ipmi\ipmi_dev-3.0.0-src\data\IPMI_SDRRecord.h)(0x604ABF59)
@@ -1036,7 +1036,7 @@ I (..\freertos\include\event_groups.h)(0x604ABF58)
 I (..\freertos\include\timers.h)(0x604ABF58)
 I (..\ipmi\ipmi_common\debug_print.h)(0x604ABF5B)
 I (..\api\net_print/net_print.h)(0x604ABF58)
-I (..\user\main.h)(0x6323158F)
+I (..\user\main.h)(0x6323CDBA)
 I (..\bsp\bsp_uart3.h)(0x631312B1)
 I (..\ipmi\ipmi_dev-3.0.0-src\data\Session.h)(0x604ABF5B)
 I (..\ipmi\ipmi_dev-3.0.0-src\data\PMConfig.h)(0x604ABF5B)
@@ -1086,12 +1086,12 @@ I (..\ipmi\ipmi_dev-3.0.0-src\data\Badpasswd.h)(0x6312B546)
 I (..\ipmi\ipmi_dev-3.0.0-src\data\PendTask.h)(0x604ABF5B)
 I (..\ipmi\ipmi_dev-3.0.0-src\data\SEL.h)(0x604ABF5B)
 I (..\ipmi\ipmi_dev-3.0.0-src\data\AMIDevice.h)(0x6312B555)
-F (..\ipmi\libipmimsghndlr-3.0.0-src\data\MsgHndlr.c)(0x6323103E)(--c99 -c --cpu Cortex-M3 -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I ..\firmware -I ..\firmware\GD32F10x\GD32F10x_standard_peripheral\Include -I ..\firmware\GD32F10x\CMSIS\GD\GD32F10x\Include -I ..\firmware\GD32F10x\CMSIS -I ..\user -I ..\bsp -I ..\ipmi -I ..\ipmi\data -I ..\ipmi\ipmi_dev-3.0.0-src -I ..\ipmi\ipmi_dev-3.0.0-src\data -I ..\ipmi\ipmi_common -I ..\ipmi\libipmi-3.1.0-src\data\include -I ..\ipmb -I ..\api -I ..\api\flash -I ..\api\shell -I ..\api\tools -I ..\freertos\include -I ..\freertos\portable -I ..\freertos\portable\RVDS\ARM_CM3 -I ..\ff10 --diag_suppress=177,550-Id:\Users\Arm\Packs\GigaDevice\GD32F10x_DFP\2.0.2\Device\Include-Id:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="535" -DGD32F10X_MD -DUSE_STDPERIPH_DRIVER -DARM_MATH_CM3 -D__CC_ARM -DGD32F1x-o .\output\msghndlr.o --omf_browse .\output\msghndlr.crf --depend .\output\msghndlr.d)
+F (..\ipmi\libipmimsghndlr-3.0.0-src\data\MsgHndlr.c)(0x632411B6)(--c99 -c --cpu Cortex-M3 -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I ..\firmware -I ..\firmware\GD32F10x\GD32F10x_standard_peripheral\Include -I ..\firmware\GD32F10x\CMSIS\GD\GD32F10x\Include -I ..\firmware\GD32F10x\CMSIS -I ..\user -I ..\bsp -I ..\ipmi -I ..\ipmi\data -I ..\ipmi\ipmi_dev-3.0.0-src -I ..\ipmi\ipmi_dev-3.0.0-src\data -I ..\ipmi\ipmi_common -I ..\ipmi\libipmi-3.1.0-src\data\include -I ..\ipmb -I ..\api -I ..\api\flash -I ..\api\shell -I ..\api\tools -I ..\freertos\include -I ..\freertos\portable -I ..\freertos\portable\RVDS\ARM_CM3 -I ..\ff10 --diag_suppress=177,550-Id:\Users\Arm\Packs\GigaDevice\GD32F10x_DFP\2.0.2\Device\Include-Id:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="535" -DGD32F10X_MD -DUSE_STDPERIPH_DRIVER -DARM_MATH_CM3 -D__CC_ARM -DGD32F1x-o .\output\msghndlr.o --omf_browse .\output\msghndlr.crf --depend .\output\msghndlr.d)
 I (d:\Keil_v5\ARM\ARMCC\include\string.h)(0x6025237E)
 I (d:\Keil_v5\ARM\ARMCC\include\limits.h)(0x60252376)
 I (..\ipmi\ipmi_common\Types.h)(0x6312AC8D)
 I (d:\Keil_v5\ARM\ARMCC\include\stdbool.h)(0x6025237C)
-I (..\ipmi\ipmi_common\ipmi_common.h)(0x604ABF5C)
+I (..\ipmi\ipmi_common\ipmi_common.h)(0x6323CD3F)
 I (..\ipmi\ipmi_dev-3.0.0-src\data\IPMIDefs.h)(0x604ABF59)
 I (..\ipmi\ipmi_dev-3.0.0-src\data\Support.h)(0x604ABF59)
 I (..\ipmi\ipmi_dev-3.0.0-src\data\IPMDevice.h)(0x604ABF59)
@@ -1165,7 +1165,7 @@ I (..\freertos\include\event_groups.h)(0x604ABF58)
 I (..\freertos\include\timers.h)(0x604ABF58)
 I (..\ipmi\ipmi_common\debug_print.h)(0x604ABF5B)
 I (..\api\net_print/net_print.h)(0x604ABF58)
-I (..\user\main.h)(0x6323158F)
+I (..\user\main.h)(0x6323CDBA)
 I (..\bsp\bsp_uart3.h)(0x631312B1)
 I (..\ipmi\ipmi_dev-3.0.0-src\data\PMConfig.h)(0x604ABF5B)
 I (..\ipmi\ipmi_dev-3.0.0-src\data\IPMI_AppDevice.h)(0x604ABF59)
@@ -1202,7 +1202,7 @@ I (..\ipmi\ipmi_dev-3.0.0-src\data\IPMI_IPM.h)(0x604ABF59)
 I (..\ipmi\ipmi_dev-3.0.0-src\data\MBMCInfo.h)(0x604ABF5B)
 I (..\ipmi\ipmi_dev-3.0.0-src\data\LANIfc.h)(0x6312FADE)
 I (..\ipmi\ipmi_dev-3.0.0-src\data\IPMI_LANIfc.h)(0x604ABF59)
-I (..\bsp\bsp_i2c.h)(0x632314FE)
+I (..\bsp\bsp_i2c.h)(0x6323E6B5)
 I (..\bsp\bsp_gpio.h)(0x63131283)
 F (..\ipmi\libipmimsghndlr-3.0.0-src\data\App\App.c)(0x604ABF5B)(--c99 -c --cpu Cortex-M3 -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I ..\firmware -I ..\firmware\GD32F10x\GD32F10x_standard_peripheral\Include -I ..\firmware\GD32F10x\CMSIS\GD\GD32F10x\Include -I ..\firmware\GD32F10x\CMSIS -I ..\user -I ..\bsp -I ..\ipmi -I ..\ipmi\data -I ..\ipmi\ipmi_dev-3.0.0-src -I ..\ipmi\ipmi_dev-3.0.0-src\data -I ..\ipmi\ipmi_common -I ..\ipmi\libipmi-3.1.0-src\data\include -I ..\ipmb -I ..\api -I ..\api\flash -I ..\api\shell -I ..\api\tools -I ..\freertos\include -I ..\freertos\portable -I ..\freertos\portable\RVDS\ARM_CM3 -I ..\ff10 --diag_suppress=177,550-Id:\Users\Arm\Packs\GigaDevice\GD32F10x_DFP\2.0.2\Device\Include-Id:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="535" -DGD32F10X_MD -DUSE_STDPERIPH_DRIVER -DARM_MATH_CM3 -D__CC_ARM -DGD32F1x-o .\output\app.o --omf_browse .\output\app.crf --depend .\output\app.d)
 I (..\ipmi\ipmi_common\Types.h)(0x6312AC8D)
@@ -1280,11 +1280,11 @@ I (..\freertos\include\event_groups.h)(0x604ABF58)
 I (..\freertos\include\timers.h)(0x604ABF58)
 I (..\ipmi\ipmi_common\debug_print.h)(0x604ABF5B)
 I (..\api\net_print/net_print.h)(0x604ABF58)
-I (..\user\main.h)(0x6323158F)
+I (..\user\main.h)(0x6323CDBA)
 I (..\bsp\bsp_uart3.h)(0x631312B1)
 I (..\ipmi\ipmi_dev-3.0.0-src\data\Message.h)(0x604ABF59)
 I (..\ipmi\ipmi_dev-3.0.0-src\data\IPMIDefs.h)(0x604ABF59)
-I (..\ipmi\ipmi_common\ipmi_common.h)(0x604ABF5C)
+I (..\ipmi\ipmi_common\ipmi_common.h)(0x6323CD3F)
 I (..\ipmi\ipmi_dev-3.0.0-src\data\MsgHndlr.h)(0x6323103E)
 I (..\ipmi\ipmi_dev-3.0.0-src\data\IPMI_IPM.h)(0x604ABF59)
 I (..\ipmi\ipmi_dev-3.0.0-src\data\IPMI_AppDevice.h)(0x604ABF59)
@@ -1392,7 +1392,7 @@ I (..\ipmi\ipmi_dev-3.0.0-src\data\IPMI_IPM.h)(0x604ABF59)
 I (..\ipmi\ipmi_dev-3.0.0-src\data\SensorMonitor.h)(0x6323103E)
 I (..\api\cpu/api_cpu.h)(0x604ABF58)
 I (..\bsp\bsp_gpio.h)(0x63131283)
-I (..\user\main.h)(0x6323158F)
+I (..\user\main.h)(0x6323CDBA)
 I (..\bsp\bsp_uart3.h)(0x631312B1)
 F (..\ipmi\libipmimsghndlr-3.0.0-src\data\SensorEvent\SensorEvent.c)(0x604ABF5B)(--c99 -c --cpu Cortex-M3 -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I ..\firmware -I ..\firmware\GD32F10x\GD32F10x_standard_peripheral\Include -I ..\firmware\GD32F10x\CMSIS\GD\GD32F10x\Include -I ..\firmware\GD32F10x\CMSIS -I ..\user -I ..\bsp -I ..\ipmi -I ..\ipmi\data -I ..\ipmi\ipmi_dev-3.0.0-src -I ..\ipmi\ipmi_dev-3.0.0-src\data -I ..\ipmi\ipmi_common -I ..\ipmi\libipmi-3.1.0-src\data\include -I ..\ipmb -I ..\api -I ..\api\flash -I ..\api\shell -I ..\api\tools -I ..\freertos\include -I ..\freertos\portable -I ..\freertos\portable\RVDS\ARM_CM3 -I ..\ff10 --diag_suppress=177,550-Id:\Users\Arm\Packs\GigaDevice\GD32F10x_DFP\2.0.2\Device\Include-Id:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="535" -DGD32F10X_MD -DUSE_STDPERIPH_DRIVER -DARM_MATH_CM3 -D__CC_ARM -DGD32F1x-o .\output\sensorevent.o --omf_browse .\output\sensorevent.crf --depend .\output\sensorevent.d)
 I (..\ipmi\ipmi_dev-3.0.0-src\data\MsgHndlr.h)(0x6323103E)
@@ -1454,7 +1454,7 @@ I (d:\Keil_v5\ARM\ARMCC\include\stdlib.h)(0x60252374)
 I (..\firmware\GD32F10x\GD32F10x_standard_peripheral\Include\gd32f10x_misc.h)(0x604ABF72)
 I (d:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x60252374)
 I (..\api\net_print/net_print.h)(0x604ABF58)
-I (..\user\main.h)(0x6323158F)
+I (..\user\main.h)(0x6323CDBA)
 I (..\bsp\bsp_uart3.h)(0x631312B1)
 I (..\ipmi\ipmi_dev-3.0.0-src\data\MsgHndlr.h)(0x6323103E)
 I (..\ipmi\ipmi_dev-3.0.0-src\data\Message.h)(0x604ABF59)
@@ -1592,7 +1592,7 @@ I (d:\Keil_v5\ARM\ARMCC\include\stdlib.h)(0x60252374)
 I (..\firmware\GD32F10x\GD32F10x_standard_peripheral\Include\gd32f10x_misc.h)(0x604ABF72)
 I (d:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x60252374)
 I (..\api\net_print/net_print.h)(0x604ABF58)
-I (..\user\main.h)(0x6323158F)
+I (..\user\main.h)(0x6323CDBA)
 I (..\bsp\bsp_uart3.h)(0x631312B1)
 I (..\ipmi\ipmi_dev-3.0.0-src\data\MsgHndlr.h)(0x6323103E)
 I (..\ipmi\ipmi_dev-3.0.0-src\data\Message.h)(0x604ABF59)
@@ -1745,7 +1745,7 @@ I (..\freertos\include\event_groups.h)(0x604ABF58)
 I (..\freertos\include\timers.h)(0x604ABF58)
 I (..\ipmi\ipmi_common\debug_print.h)(0x604ABF5B)
 I (..\api\net_print/net_print.h)(0x604ABF58)
-I (..\user\main.h)(0x6323158F)
+I (..\user\main.h)(0x6323CDBA)
 I (..\bsp\bsp_uart3.h)(0x631312B1)
 I (..\ipmi\ipmi_dev-3.0.0-src\data\Session.h)(0x604ABF5B)
 I (..\ipmi\ipmi_dev-3.0.0-src\data\SensorMonitor.h)(0x6323103E)
@@ -1864,7 +1864,7 @@ I (..\freertos\include\event_groups.h)(0x604ABF58)
 I (..\freertos\include\timers.h)(0x604ABF58)
 I (..\ipmi\ipmi_common\debug_print.h)(0x604ABF5B)
 I (..\api\net_print/net_print.h)(0x604ABF58)
-I (..\user\main.h)(0x6323158F)
+I (..\user\main.h)(0x6323CDBA)
 I (..\bsp\bsp_uart3.h)(0x631312B1)
 I (..\ipmi\ipmi_dev-3.0.0-src\data\Session.h)(0x604ABF5B)
 I (..\ipmi\ipmi_dev-3.0.0-src\data\SensorMonitor.h)(0x6323103E)
@@ -1929,7 +1929,7 @@ I (..\firmware\GD32F10x\GD32F10x_standard_peripheral\Include\gd32f10x_can.h)(0x6
 I (..\firmware\GD32F10x\GD32F10x_standard_peripheral\Include\gd32f10x_enet.h)(0x604ABF72)
 I (..\firmware\GD32F10x\GD32F10x_standard_peripheral\Include\gd32f10x_misc.h)(0x604ABF72)
 I (..\api\net_print/net_print.h)(0x604ABF58)
-I (..\user\main.h)(0x6323158F)
+I (..\user\main.h)(0x6323CDBA)
 I (..\bsp\bsp_uart3.h)(0x631312B1)
 I (..\ipmi\ipmi_dev-3.0.0-src\data\IPMI_SDRRecord.h)(0x604ABF59)
 I (..\ipmi\ipmi_common\Types.h)(0x6312AC8D)
@@ -1988,7 +1988,7 @@ I (..\firmware\GD32F10x\GD32F10x_standard_peripheral\Include\gd32f10x_enet.h)(0x
 I (d:\Keil_v5\ARM\ARMCC\include\stdlib.h)(0x60252374)
 I (..\firmware\GD32F10x\GD32F10x_standard_peripheral\Include\gd32f10x_misc.h)(0x604ABF72)
 I (..\user\systick.h)(0x604ABF58)
-I (..\user\main.h)(0x6323158F)
+I (..\user\main.h)(0x6323CDBA)
 I (..\bsp\bsp_uart3.h)(0x631312B1)
 I (d:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x60252374)
 I (d:\Keil_v5\ARM\ARMCC\include\stdbool.h)(0x6025237C)
@@ -2069,13 +2069,13 @@ I (..\freertos\include\event_groups.h)(0x604ABF58)
 I (..\freertos\include\timers.h)(0x604ABF58)
 I (..\ipmi\ipmi_common\debug_print.h)(0x604ABF5B)
 I (..\api\net_print/net_print.h)(0x604ABF58)
-I (..\user\main.h)(0x6323158F)
+I (..\user\main.h)(0x6323CDBA)
 I (..\bsp\bsp_uart3.h)(0x631312B1)
-F (..\bsp\bsp_i2c.c)(0x632314FE)(--c99 -c --cpu Cortex-M3 -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I ..\firmware -I ..\firmware\GD32F10x\GD32F10x_standard_peripheral\Include -I ..\firmware\GD32F10x\CMSIS\GD\GD32F10x\Include -I ..\firmware\GD32F10x\CMSIS -I ..\user -I ..\bsp -I ..\ipmi -I ..\ipmi\data -I ..\ipmi\ipmi_dev-3.0.0-src -I ..\ipmi\ipmi_dev-3.0.0-src\data -I ..\ipmi\ipmi_common -I ..\ipmi\libipmi-3.1.0-src\data\include -I ..\ipmb -I ..\api -I ..\api\flash -I ..\api\shell -I ..\api\tools -I ..\freertos\include -I ..\freertos\portable -I ..\freertos\portable\RVDS\ARM_CM3 -I ..\ff10 --diag_suppress=177,550-Id:\Users\Arm\Packs\GigaDevice\GD32F10x_DFP\2.0.2\Device\Include-Id:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="535" -DGD32F10X_MD -DUSE_STDPERIPH_DRIVER -DARM_MATH_CM3 -D__CC_ARM -DGD32F1x-o .\output\bsp_i2c.o --omf_browse .\output\bsp_i2c.crf --depend .\output\bsp_i2c.d)
-I (..\bsp\bsp_i2c.h)(0x632314FE)
+F (..\bsp\bsp_i2c.c)(0x6323E550)(--c99 -c --cpu Cortex-M3 -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I ..\firmware -I ..\firmware\GD32F10x\GD32F10x_standard_peripheral\Include -I ..\firmware\GD32F10x\CMSIS\GD\GD32F10x\Include -I ..\firmware\GD32F10x\CMSIS -I ..\user -I ..\bsp -I ..\ipmi -I ..\ipmi\data -I ..\ipmi\ipmi_dev-3.0.0-src -I ..\ipmi\ipmi_dev-3.0.0-src\data -I ..\ipmi\ipmi_common -I ..\ipmi\libipmi-3.1.0-src\data\include -I ..\ipmb -I ..\api -I ..\api\flash -I ..\api\shell -I ..\api\tools -I ..\freertos\include -I ..\freertos\portable -I ..\freertos\portable\RVDS\ARM_CM3 -I ..\ff10 --diag_suppress=177,550-Id:\Users\Arm\Packs\GigaDevice\GD32F10x_DFP\2.0.2\Device\Include-Id:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="535" -DGD32F10X_MD -DUSE_STDPERIPH_DRIVER -DARM_MATH_CM3 -D__CC_ARM -DGD32F1x-o .\output\bsp_i2c.o --omf_browse .\output\bsp_i2c.crf --depend .\output\bsp_i2c.d)
+I (..\bsp\bsp_i2c.h)(0x6323E6B5)
 I (d:\Keil_v5\ARM\ARMCC\include\stdbool.h)(0x6025237C)
 I (d:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x6312AC9B)
-I (..\user\main.h)(0x6323158F)
+I (..\user\main.h)(0x6323CDBA)
 I (..\bsp\bsp_uart3.h)(0x631312B1)
 I (..\firmware\project_select.h)(0x632315C7)
 I (..\firmware\GD32F10x\GD32F10x_standard_peripheral\Include\gd32f10x_it.h)(0x604ABF6A)
@@ -2207,7 +2207,7 @@ I (..\firmware\GD32F10x\GD32F10x_standard_peripheral\Include\gd32f10x_enet.h)(0x
 I (d:\Keil_v5\ARM\ARMCC\include\stdlib.h)(0x60252374)
 I (..\firmware\GD32F10x\GD32F10x_standard_peripheral\Include\gd32f10x_misc.h)(0x604ABF72)
 I (d:\Keil_v5\ARM\ARMCC\include\stdbool.h)(0x6025237C)
-I (..\user\main.h)(0x6323158F)
+I (..\user\main.h)(0x6323CDBA)
 I (..\bsp\bsp_uart3.h)(0x631312B1)
 I (d:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x60252374)
 F (..\bsp\bsp_pwm.c)(0x604ABF58)(--c99 -c --cpu Cortex-M3 -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I ..\firmware -I ..\firmware\GD32F10x\GD32F10x_standard_peripheral\Include -I ..\firmware\GD32F10x\CMSIS\GD\GD32F10x\Include -I ..\firmware\GD32F10x\CMSIS -I ..\user -I ..\bsp -I ..\ipmi -I ..\ipmi\data -I ..\ipmi\ipmi_dev-3.0.0-src -I ..\ipmi\ipmi_dev-3.0.0-src\data -I ..\ipmi\ipmi_common -I ..\ipmi\libipmi-3.1.0-src\data\include -I ..\ipmb -I ..\api -I ..\api\flash -I ..\api\shell -I ..\api\tools -I ..\freertos\include -I ..\freertos\portable -I ..\freertos\portable\RVDS\ARM_CM3 -I ..\ff10 --diag_suppress=177,550-Id:\Users\Arm\Packs\GigaDevice\GD32F10x_DFP\2.0.2\Device\Include-Id:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="535" -DGD32F10X_MD -DUSE_STDPERIPH_DRIVER -DARM_MATH_CM3 -D__CC_ARM -DGD32F1x-o .\output\bsp_pwm.o --omf_browse .\output\bsp_pwm.crf --depend .\output\bsp_pwm.d)
@@ -2247,7 +2247,7 @@ I (d:\Keil_v5\ARM\ARMCC\include\stdlib.h)(0x60252374)
 I (..\firmware\GD32F10x\GD32F10x_standard_peripheral\Include\gd32f10x_misc.h)(0x604ABF72)
 I (d:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x60252374)
 I (d:\Keil_v5\ARM\ARMCC\include\stdbool.h)(0x6025237C)
-I (..\user\main.h)(0x6323158F)
+I (..\user\main.h)(0x6323CDBA)
 I (..\bsp\bsp_uart3.h)(0x631312B1)
 F (..\bsp\bsp_uart3.c)(0x63156D64)(--c99 -c --cpu Cortex-M3 -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I ..\firmware -I ..\firmware\GD32F10x\GD32F10x_standard_peripheral\Include -I ..\firmware\GD32F10x\CMSIS\GD\GD32F10x\Include -I ..\firmware\GD32F10x\CMSIS -I ..\user -I ..\bsp -I ..\ipmi -I ..\ipmi\data -I ..\ipmi\ipmi_dev-3.0.0-src -I ..\ipmi\ipmi_dev-3.0.0-src\data -I ..\ipmi\ipmi_common -I ..\ipmi\libipmi-3.1.0-src\data\include -I ..\ipmb -I ..\api -I ..\api\flash -I ..\api\shell -I ..\api\tools -I ..\freertos\include -I ..\freertos\portable -I ..\freertos\portable\RVDS\ARM_CM3 -I ..\ff10 --diag_suppress=177,550-Id:\Users\Arm\Packs\GigaDevice\GD32F10x_DFP\2.0.2\Device\Include-Id:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="535" -DGD32F10X_MD -DUSE_STDPERIPH_DRIVER -DARM_MATH_CM3 -D__CC_ARM -DGD32F1x-o .\output\bsp_uart3.o --omf_browse .\output\bsp_uart3.crf --depend .\output\bsp_uart3.d)
 I (..\bsp\bsp_uart3.h)(0x631312B1)
@@ -2287,7 +2287,7 @@ I (..\firmware\GD32F10x\GD32F10x_standard_peripheral\Include\gd32f10x_misc.h)(0x
 I (d:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x60252374)
 I (d:\Keil_v5\ARM\ARMCC\include\stdbool.h)(0x6025237C)
 I (d:\Keil_v5\ARM\ARMCC\include\string.h)(0x6025237E)
-I (..\user\main.h)(0x6323158F)
+I (..\user\main.h)(0x6323CDBA)
 I (..\ipmb\mcro_def.h)(0x604ABF5D)
 I (..\ipmi\ipmi_dev-3.0.0-src\data\OSPort.h)(0x604ABF59)
 I (..\ipmi\ipmi_common\Types.h)(0x6312AC8D)
@@ -2349,7 +2349,7 @@ I (..\firmware\GD32F10x\GD32F10x_standard_peripheral\Include\gd32f10x_misc.h)(0x
 I (d:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x60252374)
 I (d:\Keil_v5\ARM\ARMCC\include\stdbool.h)(0x6025237C)
 I (d:\Keil_v5\ARM\ARMCC\include\string.h)(0x6025237E)
-I (..\user\main.h)(0x6323158F)
+I (..\user\main.h)(0x6323CDBA)
 I (..\bsp\bsp_uart3.h)(0x631312B1)
 I (..\ipmb\mcro_def.h)(0x604ABF5D)
 I (..\ipmi\ipmi_dev-3.0.0-src\data\OSPort.h)(0x604ABF59)
@@ -2412,7 +2412,7 @@ I (..\firmware\GD32F10x\GD32F10x_standard_peripheral\Include\gd32f10x_misc.h)(0x
 I (d:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x60252374)
 I (d:\Keil_v5\ARM\ARMCC\include\stdbool.h)(0x6025237C)
 I (d:\Keil_v5\ARM\ARMCC\include\string.h)(0x6025237E)
-I (..\user\main.h)(0x6323158F)
+I (..\user\main.h)(0x6323CDBA)
 I (..\bsp\bsp_uart3.h)(0x631312B1)
 I (..\ipmb\mcro_def.h)(0x604ABF5D)
 I (..\ipmi\ipmi_dev-3.0.0-src\data\OSPort.h)(0x604ABF59)
@@ -2473,10 +2473,10 @@ I (..\firmware\GD32F10x\GD32F10x_standard_peripheral\Include\gd32f10x_enet.h)(0x
 I (d:\Keil_v5\ARM\ARMCC\include\stdlib.h)(0x60252374)
 I (..\firmware\GD32F10x\GD32F10x_standard_peripheral\Include\gd32f10x_misc.h)(0x604ABF72)
 I (d:\Keil_v5\ARM\ARMCC\include\stdbool.h)(0x6025237C)
-I (..\user\main.h)(0x6323158F)
+I (..\user\main.h)(0x6323CDBA)
 I (..\bsp\bsp_uart3.h)(0x631312B1)
 I (d:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x60252374)
-I (..\bsp\bsp_i2c.h)(0x632314FE)
+I (..\bsp\bsp_i2c.h)(0x6323E6B5)
 F (..\bsp\bsp_net_gpio.c)(0x604ABF58)(--c99 -c --cpu Cortex-M3 -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I ..\firmware -I ..\firmware\GD32F10x\GD32F10x_standard_peripheral\Include -I ..\firmware\GD32F10x\CMSIS\GD\GD32F10x\Include -I ..\firmware\GD32F10x\CMSIS -I ..\user -I ..\bsp -I ..\ipmi -I ..\ipmi\data -I ..\ipmi\ipmi_dev-3.0.0-src -I ..\ipmi\ipmi_dev-3.0.0-src\data -I ..\ipmi\ipmi_common -I ..\ipmi\libipmi-3.1.0-src\data\include -I ..\ipmb -I ..\api -I ..\api\flash -I ..\api\shell -I ..\api\tools -I ..\freertos\include -I ..\freertos\portable -I ..\freertos\portable\RVDS\ARM_CM3 -I ..\ff10 --diag_suppress=177,550-Id:\Users\Arm\Packs\GigaDevice\GD32F10x_DFP\2.0.2\Device\Include-Id:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="535" -DGD32F10X_MD -DUSE_STDPERIPH_DRIVER -DARM_MATH_CM3 -D__CC_ARM -DGD32F1x-o .\output\bsp_net_gpio.o --omf_browse .\output\bsp_net_gpio.crf --depend .\output\bsp_net_gpio.d)
 I (..\bsp\bsp_net_gpio.h)(0x63131276)
 I (..\firmware\project_select.h)(0x632315C7)
@@ -2513,7 +2513,7 @@ I (..\firmware\GD32F10x\GD32F10x_standard_peripheral\Include\gd32f10x_enet.h)(0x
 I (d:\Keil_v5\ARM\ARMCC\include\stdlib.h)(0x60252374)
 I (..\firmware\GD32F10x\GD32F10x_standard_peripheral\Include\gd32f10x_misc.h)(0x604ABF72)
 I (d:\Keil_v5\ARM\ARMCC\include\stdbool.h)(0x6025237C)
-I (..\user\main.h)(0x6323158F)
+I (..\user\main.h)(0x6323CDBA)
 I (..\bsp\bsp_uart3.h)(0x631312B1)
 I (d:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x60252374)
 F (..\bsp\bsp_timer.c)(0x63156C0A)(--c99 -c --cpu Cortex-M3 -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I ..\firmware -I ..\firmware\GD32F10x\GD32F10x_standard_peripheral\Include -I ..\firmware\GD32F10x\CMSIS\GD\GD32F10x\Include -I ..\firmware\GD32F10x\CMSIS -I ..\user -I ..\bsp -I ..\ipmi -I ..\ipmi\data -I ..\ipmi\ipmi_dev-3.0.0-src -I ..\ipmi\ipmi_dev-3.0.0-src\data -I ..\ipmi\ipmi_common -I ..\ipmi\libipmi-3.1.0-src\data\include -I ..\ipmb -I ..\api -I ..\api\flash -I ..\api\shell -I ..\api\tools -I ..\freertos\include -I ..\freertos\portable -I ..\freertos\portable\RVDS\ARM_CM3 -I ..\ff10 --diag_suppress=177,550-Id:\Users\Arm\Packs\GigaDevice\GD32F10x_DFP\2.0.2\Device\Include-Id:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="535" -DGD32F10X_MD -DUSE_STDPERIPH_DRIVER -DARM_MATH_CM3 -D__CC_ARM -DGD32F1x-o .\output\bsp_timer.o --omf_browse .\output\bsp_timer.crf --depend .\output\bsp_timer.d)
@@ -2556,7 +2556,7 @@ I (d:\Keil_v5\ARM\ARMCC\include\stdbool.h)(0x6025237C)
 I (..\ipmi\ipmi_common\debug_print.h)(0x604ABF5B)
 I (..\bsp\bsp_usart1.h)(0x6323158F)
 I (..\api\net_print/net_print.h)(0x604ABF58)
-I (..\user\main.h)(0x6323158F)
+I (..\user\main.h)(0x6323CDBA)
 I (..\bsp\bsp_uart3.h)(0x631312B1)
 F (..\firmware\GD32F10x\CMSIS\GD\GD32F10x\Source\system_gd32f10x.c)(0x6323158F)(--c99 -c --cpu Cortex-M3 -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I ..\firmware -I ..\firmware\GD32F10x\GD32F10x_standard_peripheral\Include -I ..\firmware\GD32F10x\CMSIS\GD\GD32F10x\Include -I ..\firmware\GD32F10x\CMSIS -I ..\user -I ..\bsp -I ..\ipmi -I ..\ipmi\data -I ..\ipmi\ipmi_dev-3.0.0-src -I ..\ipmi\ipmi_dev-3.0.0-src\data -I ..\ipmi\ipmi_common -I ..\ipmi\libipmi-3.1.0-src\data\include -I ..\ipmb -I ..\api -I ..\api\flash -I ..\api\shell -I ..\api\tools -I ..\freertos\include -I ..\freertos\portable -I ..\freertos\portable\RVDS\ARM_CM3 -I ..\ff10 --diag_suppress=177,550-Id:\Users\Arm\Packs\GigaDevice\GD32F10x_DFP\2.0.2\Device\Include-Id:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="535" -DGD32F10X_MD -DUSE_STDPERIPH_DRIVER -DARM_MATH_CM3 -D__CC_ARM -DGD32F1x-o .\output\system_gd32f10x.o --omf_browse .\output\system_gd32f10x.crf --depend .\output\system_gd32f10x.d)
 I (..\firmware\GD32F10x\CMSIS\GD\GD32F10x\Include\gd32f10x.h)(0x6316FED4)
@@ -3182,7 +3182,7 @@ I (..\freertos\include\deprecated_definitions.h)(0x604ABF58)
 I (..\freertos\portable\RVDS\ARM_CM3\portmacro.h)(0x604ABF58)
 I (..\freertos\include\mpu_wrappers.h)(0x604ABF58)
 I (..\freertos\include\list.h)(0x604ABF58)
-F (..\freertos\queue.c)(0x604ABF59)(--c99 -c --cpu Cortex-M3 -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I ..\firmware -I ..\firmware\GD32F10x\GD32F10x_standard_peripheral\Include -I ..\firmware\GD32F10x\CMSIS\GD\GD32F10x\Include -I ..\firmware\GD32F10x\CMSIS -I ..\user -I ..\bsp -I ..\ipmi -I ..\ipmi\data -I ..\ipmi\ipmi_dev-3.0.0-src -I ..\ipmi\ipmi_dev-3.0.0-src\data -I ..\ipmi\ipmi_common -I ..\ipmi\libipmi-3.1.0-src\data\include -I ..\ipmb -I ..\api -I ..\api\flash -I ..\api\shell -I ..\api\tools -I ..\freertos\include -I ..\freertos\portable -I ..\freertos\portable\RVDS\ARM_CM3 -I ..\ff10 --diag_suppress=177,550-Id:\Users\Arm\Packs\GigaDevice\GD32F10x_DFP\2.0.2\Device\Include-Id:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="535" -DGD32F10X_MD -DUSE_STDPERIPH_DRIVER -DARM_MATH_CM3 -D__CC_ARM -DGD32F1x-o .\output\queue.o --omf_browse .\output\queue.crf --depend .\output\queue.d)
+F (..\freertos\queue.c)(0x63241187)(--c99 -c --cpu Cortex-M3 -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I ..\firmware -I ..\firmware\GD32F10x\GD32F10x_standard_peripheral\Include -I ..\firmware\GD32F10x\CMSIS\GD\GD32F10x\Include -I ..\firmware\GD32F10x\CMSIS -I ..\user -I ..\bsp -I ..\ipmi -I ..\ipmi\data -I ..\ipmi\ipmi_dev-3.0.0-src -I ..\ipmi\ipmi_dev-3.0.0-src\data -I ..\ipmi\ipmi_common -I ..\ipmi\libipmi-3.1.0-src\data\include -I ..\ipmb -I ..\api -I ..\api\flash -I ..\api\shell -I ..\api\tools -I ..\freertos\include -I ..\freertos\portable -I ..\freertos\portable\RVDS\ARM_CM3 -I ..\ff10 --diag_suppress=177,550-Id:\Users\Arm\Packs\GigaDevice\GD32F10x_DFP\2.0.2\Device\Include-Id:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="535" -DGD32F10X_MD -DUSE_STDPERIPH_DRIVER -DARM_MATH_CM3 -D__CC_ARM -DGD32F1x-o .\output\queue.o --omf_browse .\output\queue.crf --depend .\output\queue.d)
 I (d:\Keil_v5\ARM\ARMCC\include\stdlib.h)(0x60252374)
 I (d:\Keil_v5\ARM\ARMCC\include\string.h)(0x6025237E)
 I (..\freertos\include\FreeRTOS.h)(0x604ABF58)
@@ -3426,7 +3426,7 @@ I (..\freertos\include\task.h)(0x604ABF58)
 I (..\freertos\include\list.h)(0x604ABF58)
 F (..\api\shell\shell.c)(0x6323158F)(--c99 -c --cpu Cortex-M3 -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I ..\firmware -I ..\firmware\GD32F10x\GD32F10x_standard_peripheral\Include -I ..\firmware\GD32F10x\CMSIS\GD\GD32F10x\Include -I ..\firmware\GD32F10x\CMSIS -I ..\user -I ..\bsp -I ..\ipmi -I ..\ipmi\data -I ..\ipmi\ipmi_dev-3.0.0-src -I ..\ipmi\ipmi_dev-3.0.0-src\data -I ..\ipmi\ipmi_common -I ..\ipmi\libipmi-3.1.0-src\data\include -I ..\ipmb -I ..\api -I ..\api\flash -I ..\api\shell -I ..\api\tools -I ..\freertos\include -I ..\freertos\portable -I ..\freertos\portable\RVDS\ARM_CM3 -I ..\ff10 --diag_suppress=177,550-Id:\Users\Arm\Packs\GigaDevice\GD32F10x_DFP\2.0.2\Device\Include-Id:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="535" -DGD32F10X_MD -DUSE_STDPERIPH_DRIVER -DARM_MATH_CM3 -D__CC_ARM -DGD32F1x-o .\output\shell.o --omf_browse .\output\shell.crf --depend .\output\shell.d)
 I (..\api\shell\shell.h)(0x604ABF58)
-I (..\api\shell\shell_cfg.h)(0x6323158F)
+I (..\api\shell\shell_cfg.h)(0x632413CC)
 I (..\user\systick.h)(0x604ABF58)
 I (d:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x6312AC9B)
 I (d:\Keil_v5\ARM\ARMCC\include\string.h)(0x6025237E)
@@ -3481,23 +3481,23 @@ I (..\freertos\include\queue.h)(0x604ABF58)
 I (..\api\shell\shell_port.h)(0x604ABF58)
 F (..\api\shell\shell_cmd_list.c)(0x63193DDF)(--c99 -c --cpu Cortex-M3 -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I ..\firmware -I ..\firmware\GD32F10x\GD32F10x_standard_peripheral\Include -I ..\firmware\GD32F10x\CMSIS\GD\GD32F10x\Include -I ..\firmware\GD32F10x\CMSIS -I ..\user -I ..\bsp -I ..\ipmi -I ..\ipmi\data -I ..\ipmi\ipmi_dev-3.0.0-src -I ..\ipmi\ipmi_dev-3.0.0-src\data -I ..\ipmi\ipmi_common -I ..\ipmi\libipmi-3.1.0-src\data\include -I ..\ipmb -I ..\api -I ..\api\flash -I ..\api\shell -I ..\api\tools -I ..\freertos\include -I ..\freertos\portable -I ..\freertos\portable\RVDS\ARM_CM3 -I ..\ff10 --diag_suppress=177,550-Id:\Users\Arm\Packs\GigaDevice\GD32F10x_DFP\2.0.2\Device\Include-Id:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="535" -DGD32F10X_MD -DUSE_STDPERIPH_DRIVER -DARM_MATH_CM3 -D__CC_ARM -DGD32F1x-o .\output\shell_cmd_list.o --omf_browse .\output\shell_cmd_list.crf --depend .\output\shell_cmd_list.d)
 I (..\api\shell\shell.h)(0x604ABF58)
-I (..\api\shell\shell_cfg.h)(0x6323158F)
+I (..\api\shell\shell_cfg.h)(0x632413CC)
 I (..\user\systick.h)(0x604ABF58)
 I (d:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x6312AC9B)
 F (..\api\shell\shell_companion.c)(0x604ABF58)(--c99 -c --cpu Cortex-M3 -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I ..\firmware -I ..\firmware\GD32F10x\GD32F10x_standard_peripheral\Include -I ..\firmware\GD32F10x\CMSIS\GD\GD32F10x\Include -I ..\firmware\GD32F10x\CMSIS -I ..\user -I ..\bsp -I ..\ipmi -I ..\ipmi\data -I ..\ipmi\ipmi_dev-3.0.0-src -I ..\ipmi\ipmi_dev-3.0.0-src\data -I ..\ipmi\ipmi_common -I ..\ipmi\libipmi-3.1.0-src\data\include -I ..\ipmb -I ..\api -I ..\api\flash -I ..\api\shell -I ..\api\tools -I ..\freertos\include -I ..\freertos\portable -I ..\freertos\portable\RVDS\ARM_CM3 -I ..\ff10 --diag_suppress=177,550-Id:\Users\Arm\Packs\GigaDevice\GD32F10x_DFP\2.0.2\Device\Include-Id:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="535" -DGD32F10X_MD -DUSE_STDPERIPH_DRIVER -DARM_MATH_CM3 -D__CC_ARM -DGD32F1x-o .\output\shell_companion.o --omf_browse .\output\shell_companion.crf --depend .\output\shell_companion.d)
 I (..\api\shell\shell.h)(0x604ABF58)
-I (..\api\shell\shell_cfg.h)(0x6323158F)
+I (..\api\shell\shell_cfg.h)(0x632413CC)
 I (..\user\systick.h)(0x604ABF58)
 I (d:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x6312AC9B)
 F (..\api\shell\shell_ext.c)(0x604ABF58)(--c99 -c --cpu Cortex-M3 -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I ..\firmware -I ..\firmware\GD32F10x\GD32F10x_standard_peripheral\Include -I ..\firmware\GD32F10x\CMSIS\GD\GD32F10x\Include -I ..\firmware\GD32F10x\CMSIS -I ..\user -I ..\bsp -I ..\ipmi -I ..\ipmi\data -I ..\ipmi\ipmi_dev-3.0.0-src -I ..\ipmi\ipmi_dev-3.0.0-src\data -I ..\ipmi\ipmi_common -I ..\ipmi\libipmi-3.1.0-src\data\include -I ..\ipmb -I ..\api -I ..\api\flash -I ..\api\shell -I ..\api\tools -I ..\freertos\include -I ..\freertos\portable -I ..\freertos\portable\RVDS\ARM_CM3 -I ..\ff10 --diag_suppress=177,550-Id:\Users\Arm\Packs\GigaDevice\GD32F10x_DFP\2.0.2\Device\Include-Id:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="535" -DGD32F10X_MD -DUSE_STDPERIPH_DRIVER -DARM_MATH_CM3 -D__CC_ARM -DGD32F1x-o .\output\shell_ext.o --omf_browse .\output\shell_ext.crf --depend .\output\shell_ext.d)
-I (..\api\shell\shell_cfg.h)(0x6323158F)
+I (..\api\shell\shell_cfg.h)(0x632413CC)
 I (..\user\systick.h)(0x604ABF58)
 I (d:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x6312AC9B)
 I (..\api\shell\shell.h)(0x604ABF58)
 I (..\api\shell\shell_ext.h)(0x604ABF58)
 F (..\api\shell\shell_port.c)(0x6323158F)(--c99 -c --cpu Cortex-M3 -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I ..\firmware -I ..\firmware\GD32F10x\GD32F10x_standard_peripheral\Include -I ..\firmware\GD32F10x\CMSIS\GD\GD32F10x\Include -I ..\firmware\GD32F10x\CMSIS -I ..\user -I ..\bsp -I ..\ipmi -I ..\ipmi\data -I ..\ipmi\ipmi_dev-3.0.0-src -I ..\ipmi\ipmi_dev-3.0.0-src\data -I ..\ipmi\ipmi_common -I ..\ipmi\libipmi-3.1.0-src\data\include -I ..\ipmb -I ..\api -I ..\api\flash -I ..\api\shell -I ..\api\tools -I ..\freertos\include -I ..\freertos\portable -I ..\freertos\portable\RVDS\ARM_CM3 -I ..\ff10 --diag_suppress=177,550-Id:\Users\Arm\Packs\GigaDevice\GD32F10x_DFP\2.0.2\Device\Include-Id:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="535" -DGD32F10X_MD -DUSE_STDPERIPH_DRIVER -DARM_MATH_CM3 -D__CC_ARM -DGD32F1x-o .\output\shell_port.o --omf_browse .\output\shell_port.crf --depend .\output\shell_port.d)
 I (..\api\shell\shell.h)(0x604ABF58)
-I (..\api\shell\shell_cfg.h)(0x6323158F)
+I (..\api\shell\shell_cfg.h)(0x632413CC)
 I (..\user\systick.h)(0x604ABF58)
 I (d:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x6312AC9B)
 I (..\bsp\bsp_usart0.h)(0x63131260)

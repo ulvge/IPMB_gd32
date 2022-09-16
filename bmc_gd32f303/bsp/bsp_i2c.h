@@ -37,7 +37,6 @@
     #define ipmb_read(pbuf, len)                 i2c2_get_slave_device_data(pbuf, len)
 #endif
 
-#define I2C0_INTERRUPT_ENALBE
 //#define I2C0_REMAP
 
 //#define I2C1_INTERRUPT_ENALBE
@@ -97,27 +96,22 @@ void i2c_channel_init(uint32_t i2cx);
 void i2c_int(void);
 
 bool i2c0_bytes_write(const uint8_t* p_buffer, uint16_t len);
-bool i2c1_bytes_write(const uint8_t* p_buffer, uint16_t len);
-bool i2c2_bytes_write(const uint8_t* p_buffer, uint16_t len);
-
 bool i2c0_bytes_read(const uint8_t device_addr, const uint8_t read_addr, uint8_t* p_buffer, uint16_t len);
-bool i2c1_bytes_read(const uint8_t device_addr, const uint8_t read_addr, uint8_t* p_buffer, uint16_t len);
-bool i2c2_bytes_read(const uint8_t device_addr, const uint8_t read_addr, uint8_t* p_buffer, uint16_t len);
-
-#ifdef  I2C0_INTERRUPT_ENALBE
 bool i2c0_get_slave_device_data(uint8_t* p_buffer, uint32_t* len);
-#endif
-
-#ifdef  I2C0_INTERRUPT_ENALBE
-bool i2c1_get_slave_device_data(uint8_t* p_buffer, uint32_t* len);
-#endif
-
-bool i2c2_get_slave_device_data(uint8_t* p_buffer, uint32_t* len);
-
-
 void i2c0_set_as_slave_device_addr(uint8_t device_addr);
+
+
+bool i2c1_bytes_write(const uint8_t* p_buffer, uint16_t len);
+bool i2c1_bytes_read(const uint8_t device_addr, const uint8_t read_addr, uint8_t* p_buffer, uint16_t len);
+bool i2c1_get_slave_device_data(uint8_t* p_buffer, uint32_t* len);
 void i2c1_set_as_slave_device_addr(uint8_t device_addr);
+
+#ifdef I2C2
+bool i2c2_bytes_write(const uint8_t* p_buffer, uint16_t len);
+bool i2c2_bytes_read(const uint8_t device_addr, const uint8_t read_addr, uint8_t* p_buffer, uint16_t len);
+bool i2c2_get_slave_device_data(uint8_t* p_buffer, uint32_t* len);
 void i2c2_set_as_slave_device_addr(uint8_t device_addr);
+#endif
 
 uint8_t get_device_addr(uint8_t bus); 
 

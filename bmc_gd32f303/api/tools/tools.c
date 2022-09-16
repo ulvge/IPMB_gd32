@@ -330,14 +330,16 @@ static int do_get_host(uint8_t bus)
     switch (bus)
     {
     case 0:
-        LOG_I("I2C%d:         SLAVE_ADDRESS: %02x", bus, get_device_addr(bus));
+        LOG_I("I2C%d:         SLAVE_ADDRESS: %02x", bus, I2C_SADDR0(I2C0));
         break;
     case 1:
-        LOG_I("I2C%d:        SLAVE_ADDRESS: %02x", bus, get_device_addr(bus));
-        break;
+        LOG_I("I2C%d:        SLAVE_ADDRESS: %02x", bus, I2C_SADDR0(I2C1));
+        break; 
+#ifdef  I2C2
     case 2:
-        LOG_I("I2C%d:        SLAVE_ADDRESS: %02x", bus, get_device_addr(bus));
-        break;
+        LOG_I("I2C%d:        SLAVE_ADDRESS: %02x", bus, I2C_SADDR0(I2C2));
+        break;   
+#endif
     default:
         break;
     }

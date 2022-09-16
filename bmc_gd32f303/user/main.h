@@ -121,6 +121,14 @@ extern unsigned char  GW_ADDR1;
 extern unsigned char  GW_ADDR2;
 extern unsigned char  GW_ADDR3; 
 
+#define MSG_I2C_BIT   0x00000001
+#define MSG_UART_BIT  0x00000010
+
+typedef enum 
+{ 
+    MSG_SRC_I2C = 1,
+    MSG_SRC_UART = 1
+}IPMI_MSG_SRC;
 
 /* function declarations */
 /* updates the system local time */
