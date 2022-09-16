@@ -39,7 +39,9 @@ void userShellWrite(char data)
 signed char userShellRead(char *data)
 {
     uint32_t len=0;
-    if (uart1_get_data((INT8U *)data, sizeof(shellBuffer), &len) == true){
+    
+    if (uart1_get_data((INT8U *)data) == true) {
+    //if (uart1_get_data((INT8U *)data, sizeof(shellBuffer), &len) == true){
 		//uart1_send_dat(data, len);
 		return 0;
     } else {

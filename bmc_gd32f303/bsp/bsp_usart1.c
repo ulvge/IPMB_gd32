@@ -145,11 +145,14 @@ void uart1_send_string(char *str)
 	uart1_send_dat((uint8_t *)str, strlen(str)+1);
 }
 
-bool uart1_get_data(uint8_t *p_buffer, uint32_t buffSize, uint32_t *retLen)
+bool uart1_get_dataN(uint8_t *p_buffer, uint32_t buffSize, uint32_t *retLen)
 {
     return FIFO_ReadN(&g_FifoUART1.rfifo, p_buffer, buffSize, (INT16U *)retLen);
 }
-
+bool uart1_get_data(uint8_t *p_buffer)
+{
+    return FIFO_Read(&g_FifoUART1.rfifo, p_buffer);
+}
 
 static void uart1_dma_init(void)
 {

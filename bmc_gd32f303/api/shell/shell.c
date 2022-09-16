@@ -744,6 +744,10 @@ void shellInsertByte(Shell *shell, char data)
     /* 插入数据 */
     if (shell->parser.cursor == shell->parser.length)
     {
+		// 在命令起始位置，不插入特殊字符
+		if ((shell->parser.length == 0) && ((data == KEY_CR) || (data == KEY_LF))) {
+			return;
+		}
         shell->parser.buffer[shell->parser.length++] = data;
         shell->parser.buffer[shell->parser.length] = 0;
         shell->parser.cursor++;
@@ -1723,10 +1727,11 @@ void shellTask(void *param)
 	userShellInit();
     while(1)
     {
-        vTaskDelay(30);
         if (shell->read && shell->read(&data) == 0)
         {
             shellHandler(shell, data);
+        } else {
+            vTaskDelay(30);
         }
     }
 }
