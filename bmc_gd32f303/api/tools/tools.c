@@ -24,7 +24,7 @@
 #include "stdlib.h"
 
 static int operation_mode = -1;
-__attribute__((unused)) static int bus = 0;
+static int g_bus = 0;
 static uint8_t host_addr;
 
 extern int8_t g_temperature_raw[4];
@@ -88,25 +88,9 @@ int i2cTest(int argc, char *argv[])
     /* Read and interpret the arguments */
     parse_arguments(argc, argv);
 
-    switch (operation_mode)
+    if (operation_mode == SCAN_MODE)
     {
-    case RESET_MODE:
-        retval = do_reset(atoi(argv[argc - 1]));
-        break;
-    case SCAN_MODE:
-        retval = do_scan(atoi(argv[argc - 1]));
-        break;
-
-    case SETH_MODE:
-        retval = do_set_host(atoi(argv[argc - 1]));
-        break;
-
-    case GETH_MODE:
-        retval = do_get_host(atoi(argv[argc - 1]));
-        break;
-    default:
-        printf("Unknown operation mode: %d\r\n", operation_mode);
-        return false;
+        retval = do_scan(g_bus);
     }
 
     if (retval < 0)
@@ -171,7 +155,7 @@ static void parse_arguments(int argc, char **argv)
 static int busArgHandler(int argc, char **argv, int index)
 {
     if (index + 1 <= argc)
-        bus = (uint8_t)strtol(argv[index + 1], NULL, 10);
+        g_bus = (uint8_t)strtol(argv[index + 1], NULL, 10);
     else
     {
         printf("Missing argument to -b\r\n");
@@ -183,9 +167,7 @@ static int busArgHandler(int argc, char **argv, int index)
 
 static int getHostArgHandler(int argc, char **argv, int index)
 {
-    operation_mode = GETH_MODE;
-
-    return (0);
+    return do_get_host(atoi(argv[argc - 1]));
 }
 
 static int setHostArgHandler(int argc, char **argv, int index)
@@ -204,15 +186,12 @@ static int setHostArgHandler(int argc, char **argv, int index)
         return -1;
     }
 
-    operation_mode = SETH_MODE;
-
-    return (1);
+    return do_set_host(atoi(argv[argc - 1]));
 }
 
 static int resetArgHandler(int argc, char **argv, int index)
 {
-    operation_mode = RESET_MODE;
-    return (0);
+    return do_reset(atoi(argv[argc - 1]));
 }
 
 static int scanArgHandler(int argc, char **argv, int index)
@@ -257,13 +236,30 @@ static int do_scan(uint8_t bus)
     int retval, k;
     int j = (uint8_t)0;
     uint8_t valid_slaves[Max_SALVES];
-    printf("Scanning the I2C Bus...this may take a while...\n\r");
+    printf("Scanning the I2C Bus...this may take a while\n\r");
 
     // Valid Address 7-bit Range
     for (k = 0x00; k <= 0x7F; k += 1)
     {
-        retval = (int)i2c0_bytes_write(write_buffer, 0);
-
+        switch (bus)
+        {
+			case 0:
+				retval = (int)i2c0_bytes_write(write_buffer, 0);
+				break;
+			case 1:
+				retval = (int)i2c1_bytes_write(write_buffer, 0);
+				break;
+				#ifdef I2C2
+			case 2:
+				retval = (int)i2c2_bytes_write(write_buffer, 0);
+				break;
+				#endif
+			default:
+				return false;
+        }      
+        if ((k % 16) == 0) {
+            printf("\n 0x%d0\t", (k / 16));
+		}
         if (retval > 0)
         {
             printf("X");
@@ -275,24 +271,18 @@ static int do_scan(uint8_t bus)
                 j += (uint8_t)1;
             }
         }
-        else if (0 == retval)
-        {
-            printf("\nHealth monitoring is suspended\n\r");
-            return true;
-        }
         else
         {
             printf(".");
             (void)fflush(stdout);
         }
 
-        if ((k % 86) == 0)
-            printf("\n");
     }
 
     printf("\nDone!  Found %i valid slave address(es)\n\r", (int)j);
-    printf("Slave list:\n\r");
-
+    if (j != 0) {
+		printf("Slave list:\n\r");
+	}
     /*@-usedef@*/
     for (k = 0; k < (int)j; k += 1)
         printf("0x%02x\n\r", (unsigned int)valid_slaves[k] << 1);

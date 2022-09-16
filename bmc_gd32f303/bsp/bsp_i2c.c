@@ -327,7 +327,7 @@ __exit:
     i2c_deinit(i2cx);
     i2c_channel_init(i2cx);
     taskEXIT_CRITICAL();
-    LOG_E("I2C write err code: %d.", err_code);
+    //LOG_E("I2C write err code: %d.", err_code);
     return false;
 }
 
