@@ -427,11 +427,6 @@
               <FilePath>..\api\tmp\api_tmp.c</FilePath>
             </File>
             <File>
-              <FileName>api_cpu.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\api\cpu\api_cpu.c</FilePath>
-            </File>
-            <File>
               <FileName>api_utc.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\api\utc\api_utc.c</FilePath>
@@ -455,6 +450,11 @@
               <FileName>hwd1668.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\api\tmp\hwd1668.c</FilePath>
+            </File>
+            <File>
+              <FileName>api_cpu.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\api\cpu\api_cpu.c</FilePath>
             </File>
           </Files>
         </Group>

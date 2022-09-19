@@ -105,7 +105,7 @@ bool i2c1_bytes_write(const uint8_t* p_buffer, uint16_t len);
 bool i2c1_bytes_read(const uint8_t device_addr, const uint8_t read_addr, uint8_t* p_buffer, uint16_t len);
 bool i2c1_get_slave_device_data(uint8_t* p_buffer, uint32_t* len);
 void i2c1_set_as_slave_device_addr(uint8_t device_addr);
-
+ 
 #ifdef I2C2
 bool i2c2_bytes_write(const uint8_t* p_buffer, uint16_t len);
 bool i2c2_bytes_read(const uint8_t device_addr, const uint8_t read_addr, uint8_t* p_buffer, uint16_t len);

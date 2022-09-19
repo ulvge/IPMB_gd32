@@ -19,12 +19,16 @@ static void i2c0_int(void);
 static void i2c1_int(void);
 
 static void i2c0_config(void);
+#ifdef  I2C0_INTERRUPT_ENALBE
 static void i2c0_nvic_config(void);
+#endif
 static void i2c0_gpio_config(void);
 static void i2c0_rcu_config(void);
 
 static void i2c1_config(void);
+#ifdef  I2C1_INTERRUPT_ENALBE
 static void i2c1_nvic_config(void);
+#endif
 static void i2c1_gpio_config(void);
 static void i2c1_rcu_config(void);
 #ifdef I2C2
@@ -38,7 +42,10 @@ static void i2c2_rcu_config(void);
 static bool i2c_bytes_write(uint32_t i2cx, uint8_t device_addr, const uint8_t *p_buffer, uint16_t len, int time_out);
 static bool i2c_bytes_read(uint32_t i2cx, uint8_t device_addr, uint8_t read_addr, uint8_t *p_buffer, uint16_t len, int time_out);
 static void i2c_set_as_slave_device_addr(uint32_t i2c_periph, uint8_t device_addr);
-
+		
+uint8_t g_device0_addr=0;
+uint8_t g_device1_addr=0;
+uint8_t g_device2_addr=0;
 void i2c_int(void)
 {
     i2c_channel_init(I2C0);
@@ -73,7 +80,9 @@ static void i2c0_int(void)
 {
     i2c0_rcu_config();
     i2c0_gpio_config();
+#ifdef  I2C0_INTERRUPT_ENALBE
     i2c0_nvic_config();
+#endif
     i2c0_config();
 }
 
@@ -81,7 +90,9 @@ static void i2c1_int(void)
 {
     i2c1_rcu_config();
     i2c1_gpio_config();
+#ifdef  I2C1_INTERRUPT_ENALBE
     i2c1_nvic_config();
+#endif
     i2c1_config();
 }
 
@@ -160,10 +171,12 @@ static void i2c0_config(void)
     /* enable acknowledge */
     i2c_ack_config(I2C0, I2C_ACK_ENABLE);
 
+#ifdef  I2C0_INTERRUPT_ENALBE
     /* enable the I2C0 interrupt */
     i2c_interrupt_enable(I2C0, I2C_INT_ERR);
     i2c_interrupt_enable(I2C0, I2C_INT_EV);
     i2c_interrupt_enable(I2C0, I2C_INT_BUF);
+#endif
 }
 
 /*!
@@ -183,13 +196,16 @@ static void i2c1_config(void)
     /* enable acknowledge */
     i2c_ack_config(I2C1, I2C_ACK_ENABLE);
 
+#ifdef  I2C1_INTERRUPT_ENALBE
     /* enable the I2C0 interrupt */
     i2c_interrupt_enable(I2C1, I2C_INT_ERR);
     i2c_interrupt_enable(I2C1, I2C_INT_EV);
     i2c_interrupt_enable(I2C1, I2C_INT_BUF);
+#endif
 }
 
 
+#ifdef  I2C0_INTERRUPT_ENALBE
 /*!
     \brief      cofigure the NVIC peripheral
     \param[in]  none
@@ -201,7 +217,9 @@ static void i2c0_nvic_config(void)
     nvic_irq_enable(I2C0_EV_IRQn, 3, 0);
     nvic_irq_enable(I2C0_ER_IRQn, 8, 0);
 }
+#endif
 
+#ifdef  I2C1_INTERRUPT_ENALBE
 /*!
     \brief      cofigure the NVIC peripheral
     \param[in]  none
@@ -213,6 +231,7 @@ static void i2c1_nvic_config(void)
     nvic_irq_enable(I2C1_EV_IRQn, 3, 0);
     nvic_irq_enable(I2C1_ER_IRQn, 8, 0);
 }
+#endif
 
 
 /**
@@ -327,7 +346,7 @@ __exit:
     i2c_deinit(i2cx);
     i2c_channel_init(i2cx);
     taskEXIT_CRITICAL();
-    //LOG_E("I2C write err code: %d.", err_code);
+    LOG_E("I2C write err code: %d.", err_code);
     return false;
 }
 
@@ -548,17 +567,18 @@ bool i2c1_bytes_read(const uint8_t device_addr, const uint8_t read_addr, uint8_t
     return i2c_bytes_read(I2C1, device_addr, read_addr, p_buffer, len, 10000);
 }
 
-static uint8_t g_i2c0_buff_rx[100];
-static uint32_t g_i2c0_rx_count = 0;
-static bool g_i2c0_recv_is_updated = false;
-extern TaskHandle_t ComTask_Handler;
+extern xQueueHandle RecvDatMsg_Queue;
+extern xQueueHandle RecvForwardI2CDatMsg_Queue;
+static MsgPkt_T    g_i2c_Req;
 
+#ifdef  I2C0_INTERRUPT_ENALBE
 /*!
     \brief      handle I2C0 event interrupt request
     \param[in]  none
     \param[out] none
     \retval     none
 */
+
 void I2C0_EV_IRQHandler(void)
 {
 #ifdef USE_I2C0_AS_IPMB
@@ -569,32 +589,55 @@ void I2C0_EV_IRQHandler(void)
     {
         /* clear the ADDSEND bit */
         i2c_interrupt_flag_clear(I2C0, I2C_INT_FLAG_ADDSEND);
-        g_i2c0_rx_count = 0; // start, clear recv count
-        g_i2c0_buff_rx[g_i2c0_rx_count++] = GetDevAddr();
+        g_i2c_Req.Size = 0;; // start, clear recv count
+        g_i2c_Req.Data[g_i2c_Req.Size++] = GetDevAddr();
     }
     else if (i2c_interrupt_flag_get(I2C0, I2C_INT_FLAG_RBNE))
     {
         /* if reception data register is not empty ,I2C0 will read a data from I2C_DATA */
-        if (g_i2c0_rx_count < sizeof(g_i2c0_buff_rx)) {
-            g_i2c0_buff_rx[g_i2c0_rx_count++] = i2c_data_receive(I2C0);
-        }
+        g_i2c_Req.Data[g_i2c_Req.Size++] = i2c_data_receive(I2C0);
     }
     else if (i2c_interrupt_flag_get(I2C0, I2C_INT_FLAG_STPDET))
     {
-        // status = SUCCESS;
-        g_i2c0_recv_is_updated = true;
         /* clear the STPDET bit */
         i2c_enable(I2C0);
-        err = xTaskNotifyFromISR((TaskHandle_t)ComTask_Handler,
-                                 (uint32_t)MSG_SRC_I2C,
-                                 (eNotifyAction)eSetValueWithoutOverwrite,
-                                 (BaseType_t *)xHigherPriorityTaskWoken);
-        portYIELD_FROM_ISR(xHigherPriorityTaskWoken);
-        if (err == pdFAIL)
+        g_i2c_Req.Param = IPMI_REQUEST;
+        if(RecvForwardI2CDatMsg_Queue != NULL && RecvDatMsg_Queue != NULL)
         {
-            printf("iic send failed!\r\n");
+            if((g_i2c_Req.Data[1] & 0x04) == 0) // netFn even
+            {
+                err = xQueueSendFromISR(RecvDatMsg_Queue, (char*)&g_i2c_Req, &xHigherPriorityTaskWoken);
+            }
+            else  // odd
+            {
+                err = xQueueSendFromISR(RecvForwardI2CDatMsg_Queue, (char*)&g_i2c_Req, &xHigherPriorityTaskWoken);
+            }
+
+            portYIELD_FROM_ISR(xHigherPriorityTaskWoken);
+            if (err == pdFAIL)
+            {
+                LOG_E("iic xQueueSendFromISR failed!");
+            }
         }
     }
+
+#else
+    if (i2c_interrupt_flag_get(I2C0, I2C_INT_FLAG_ADDSEND))
+    {
+        /* clear the ADDSEND bit */
+        i2c_interrupt_flag_clear(I2C0, I2C_INT_FLAG_ADDSEND);
+    }
+    else if (i2c_interrupt_flag_get(I2C0, I2C_INT_FLAG_RBNE))
+    {
+        /* if reception data register is not empty ,I2C0 will read a data from I2C_DATA */
+        //*i2c_rxbuffer++ = i2c_data_receive(I2C0);
+    }
+    else if (i2c_interrupt_flag_get(I2C0, I2C_INT_FLAG_STPDET))
+    {
+        /* clear the STPDET bit */
+        i2c_enable(I2C0);
+    }
+
 #endif
 }
 
@@ -657,11 +700,21 @@ void I2C0_ER_IRQHandler(void)
     i2c_channel_init(I2C0);
 }
 
-#ifdef USE_I2C1_AS_IPMB
-static uint8_t g_i2c1_buff_rx[80];
+bool i2c0_get_slave_device_data(uint8_t *p_buffer, uint32_t *len)
+{
+    // if (!g_i2c0_recv_is_updated)
+    // {
+    //     return false;
+    // }
+    // memcpy(p_buffer, g_i2c0_buff_rx, g_i2c0_rx_count);
+    // *len = g_i2c0_rx_count;
+    // g_i2c0_recv_is_updated = false; // has read
+
+    return false;
+}
+
 #endif
-static int g_i2c1_rx_count = 0;
-static bool g_i2c1_recv_is_updated = false;
+
 /*!
     \brief      handle I2C1 event interrupt request
     \param[in]  none
@@ -678,32 +731,55 @@ void I2C1_EV_IRQHandler(void)
     {
         /* clear the ADDSEND bit */
         i2c_interrupt_flag_clear(I2C1, I2C_INT_FLAG_ADDSEND);
-        g_i2c1_rx_count = 0; // start, clear recv count
-        g_i2c1_buff_rx[g_i2c1_rx_count++] = GetDevAddr();
+        g_i2c_Req.Size = 0;; // start, clear recv count
+        g_i2c_Req.Data[g_i2c_Req.Size++] = GetDevAddr();
     }
     else if (i2c_interrupt_flag_get(I2C1, I2C_INT_FLAG_RBNE))
     {
         /* if reception data register is not empty ,I2C0 will read a data from I2C_DATA */
-        if (g_i2c1_rx_count < sizeof(g_i2c1_buff_rx)) {
-            g_i2c1_buff_rx[g_i2c1_rx_count++] = i2c_data_receive(I2C1);
-        }
+        g_i2c_Req.Data[g_i2c_Req.Size++] = i2c_data_receive(I2C1);
     }
     else if (i2c_interrupt_flag_get(I2C1, I2C_INT_FLAG_STPDET))
     {
-        // status = SUCCESS;
-        g_i2c1_recv_is_updated = true;
         /* clear the STPDET bit */
         i2c_enable(I2C1);
-        err = xTaskNotifyFromISR((TaskHandle_t)ComTask_Handler,
-                                 (uint32_t)MSG_SRC_I2C,
-                                 (eNotifyAction)eSetValueWithoutOverwrite,
-                                 (BaseType_t *)xHigherPriorityTaskWoken);
-        portYIELD_FROM_ISR(xHigherPriorityTaskWoken);
-        if (err == pdFAIL)
+        g_i2c_Req.Param = IPMI_REQUEST;
+        if(RecvForwardI2CDatMsg_Queue != NULL && RecvDatMsg_Queue != NULL)
         {
-            printf("iic send failed!\r\n");
+            if((g_i2c_Req.Data[1] & 0x04) == 0) // netFn even
+            {
+                err = xQueueSendFromISR(RecvDatMsg_Queue, (char*)&g_i2c_Req, &xHigherPriorityTaskWoken);
+            }
+            else  // odd
+            {
+                err = xQueueSendFromISR(RecvForwardI2CDatMsg_Queue, (char*)&g_i2c_Req, &xHigherPriorityTaskWoken);
+            }
+
+            portYIELD_FROM_ISR(xHigherPriorityTaskWoken);
+            if (err == pdFAIL)
+            {
+                LOG_E("iic xQueueSendFromISR failed!");
+            }
         }
     }
+
+#else
+    if (i2c_interrupt_flag_get(I2C1, I2C_INT_FLAG_ADDSEND))
+    {
+        /* clear the ADDSEND bit */
+        i2c_interrupt_flag_clear(I2C1, I2C_INT_FLAG_ADDSEND);
+    }
+    else if (i2c_interrupt_flag_get(I2C1, I2C_INT_FLAG_RBNE))
+    {
+        /* if reception data register is not empty ,I2C0 will read a data from I2C_DATA */
+        //*i2c_rxbuffer++ = i2c_data_receive(I2C1);
+    }
+    else if (i2c_interrupt_flag_get(I2C1, I2C_INT_FLAG_STPDET))
+    {
+        /* clear the STPDET bit */
+        i2c_enable(I2C1);
+    }
+
 #endif
 }
 
@@ -765,39 +841,20 @@ void I2C1_ER_IRQHandler(void)
     i2c_deinit(I2C1);
     i2c_channel_init(I2C1);
 }
-
-bool i2c0_get_slave_device_data(uint8_t *p_buffer, uint32_t *len)
-{
-    if (!g_i2c0_recv_is_updated)
-    {
-        return false;
-    }
-    memcpy(p_buffer, g_i2c0_buff_rx, g_i2c0_rx_count);
-    *len = g_i2c0_rx_count;
-    g_i2c0_recv_is_updated = false; // has read
-
-    return true;
-}
-
 bool i2c1_get_slave_device_data(uint8_t *p_buffer, uint32_t *len)
 {
-    if (!g_i2c1_recv_is_updated)
-    {
-        return false;
-    }
-#ifdef USE_I2C1_AS_IPMB
-    memcpy(p_buffer, g_i2c1_buff_rx, g_i2c1_rx_count);
-#endif
-    *len = g_i2c1_rx_count;
-    g_i2c1_recv_is_updated = false; // has read
+    // if (!g_i2c1_recv_is_updated)
+    // {
+    //     return false;
+    // }
+    // memcpy(p_buffer, g_i2c1_buff_rx, g_i2c1_rx_count);
+    // *len = g_i2c1_rx_count;
+    // g_i2c1_recv_is_updated = false; // has read
 
-    return true;
+    return false;
 }
 
 #ifdef I2C2
-static uint8_t g_i2c2_buff_rx[80];
-static int g_i2c2_rx_count = 0;
-static bool g_i2c2_recv_is_updated = false;
  
 static void i2c2_int(void)
 {
@@ -858,19 +915,6 @@ static void i2c2_config(void)
     i2c_interrupt_enable(I2C2, I2C_INT_BUF);
 }
 
-bool i2c2_get_slave_device_data(uint8_t *p_buffer, uint32_t *len)
-{
-    if (!g_i2c2_recv_is_updated)
-    {
-        return false;
-    }
-    memcpy(p_buffer, g_i2c2_buff_rx, g_i2c2_rx_count);
-    *len = g_i2c2_rx_count;
-    g_i2c2_recv_is_updated = false; // has read
-
-    return true;
-}
-
 bool i2c2_bytes_read(const uint8_t device_addr, const uint8_t read_addr, uint8_t* p_buffer, uint16_t len)
 {
     return i2c_bytes_read(I2C2, device_addr, read_addr, p_buffer, len, 10000);
@@ -892,29 +936,53 @@ void I2C2_EV_IRQHandler(void)
     {
         /* clear the ADDSEND bit */
         i2c_interrupt_flag_clear(I2C2, I2C_INT_FLAG_ADDSEND);
-        g_i2c2_rx_count = 0; // start, clear recv count
-        g_i2c2_buff_rx[g_i2c2_rx_count++] = GetDevAddr();
+        g_i2c_Req.Size = 0;; // start, clear recv count
+        g_i2c_Req.Data[g_i2c_Req.Size++] = GetDevAddr();
     }
     else if (i2c_interrupt_flag_get(I2C2, I2C_INT_FLAG_RBNE))
     {
         /* if reception data register is not empty ,I2C0 will read a data from I2C_DATA */
-        g_i2c2_buff_rx[g_i2c2_rx_count++] = i2c_data_receive(I2C2);
+        //*i2c_rxbuffer++ = i2c_data_receive(I2C0);
+        g_i2c_Req.Data[g_i2c_Req.Size++] = i2c_data_receive(I2C2);
     }
     else if (i2c_interrupt_flag_get(I2C2, I2C_INT_FLAG_STPDET))
     {
-        // status = SUCCESS;
-        g_i2c2_recv_is_updated = true;
         /* clear the STPDET bit */
         i2c_enable(I2C2);
-        err = xTaskNotifyFromISR((TaskHandle_t)ComTask_Handler,
-                                 (uint32_t)MSG_SRC_I2C,
-                                 (eNotifyAction)eSetValueWithoutOverwrite,
-                                 (BaseType_t *)xHigherPriorityTaskWoken);
-        portYIELD_FROM_ISR(xHigherPriorityTaskWoken);
-        if (err == pdFAIL)
+        g_i2c_Req.Param = IPMI_REQUEST;
+        if(RecvForwardI2CDatMsg_Queue != NULL && RecvDatMsg_Queue != NULL)
         {
-            printf("iic send failed!\r\n");
+            if((g_i2c_Req.Data[1] & 0x04) == 0) // netFn even
+            {
+                err = xQueueSendFromISR(RecvDatMsg_Queue, (char*)&g_i2c_Req, &xHigherPriorityTaskWoken);
+            }
+            else  // odd
+            {
+                err = xQueueSendFromISR(RecvForwardI2CDatMsg_Queue, (char*)&g_i2c_Req, &xHigherPriorityTaskWoken);
+            }
+
+            portYIELD_FROM_ISR(xHigherPriorityTaskWoken);
+            if (err == pdFAIL)
+            {
+                LOG_E("iic xQueueSendFromISR failed!");
+            }
         }
+    }
+#else
+    if (i2c_interrupt_flag_get(I2C2, I2C_INT_FLAG_ADDSEND))
+    {
+        /* clear the ADDSEND bit */
+        i2c_interrupt_flag_clear(I2C2, I2C_INT_FLAG_ADDSEND);
+    }
+    else if (i2c_interrupt_flag_get(I2C2, I2C_INT_FLAG_RBNE))
+    {
+        /* if reception data register is not empty ,I2C0 will read a data from I2C_DATA */
+        //*i2c_rxbuffer++ = i2c_data_receive(I2C0);
+    }
+    else if (i2c_interrupt_flag_get(I2C2, I2C_INT_FLAG_STPDET))
+    {
+        /* clear the STPDET bit */
+        i2c_enable(I2C2);
     }
 #endif
 }
@@ -970,6 +1038,10 @@ void I2C2_ER_IRQHandler(void)
     }
 
     /* disable the error interrupt */
+    i2c_interrupt_disable(I2C2, I2C_INT_ERR);
+    i2c_interrupt_disable(I2C2, I2C_INT_BUF);
+    i2c_interrupt_disable(I2C2, I2C_INT_EV);
+
     i2c_deinit(I2C2);
     i2c_channel_init(I2C2);
 }
@@ -989,6 +1061,7 @@ bool i2c2_get_slave_device_data(uint8_t *p_buffer, uint32_t *len)
    
 void i2c2_set_as_slave_device_addr(uint8_t device_addr)
 {
+      g_device2_addr = device_addr;
     i2c_set_as_slave_device_addr(I2C2, device_addr);
 }
 
@@ -1017,10 +1090,34 @@ static void i2c_set_as_slave_device_addr(uint32_t i2c_periph, uint8_t device_add
 
 void i2c0_set_as_slave_device_addr(uint8_t device_addr)
 {
+    g_device0_addr = device_addr;
     i2c_set_as_slave_device_addr(I2C0, device_addr);
 }
 
 void i2c1_set_as_slave_device_addr(uint8_t device_addr)
 {
+	g_device1_addr = device_addr;
     i2c_set_as_slave_device_addr(I2C1, device_addr);
 }
+
+
+
+uint8_t get_device_addr(uint8_t bus) 
+{
+   if(0 == bus)
+   {
+        return  g_device0_addr;
+   }else if(1 == bus)
+   {
+        return  g_device1_addr;
+   }else if(2 == bus)
+   {
+       return  g_device2_addr;
+   }else
+   {
+       return  0;
+   }
+   
+}
+
+

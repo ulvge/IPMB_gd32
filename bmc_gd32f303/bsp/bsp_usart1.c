@@ -54,21 +54,18 @@ void com1_init()
     /* USART interrupt configuration */
     nvic_irq_enable(USART1_IRQn, 3, 0); // USART1_IRQHandler
     /* enable USART TBE interrupt */
-    usart_interrupt_enable(COM1, USART_INT_RBNE);
+    usart_interrupt_enable(COM1, USART_INT_RBNE);   
     usart_interrupt_enable(COM1, USART_INT_TBE);
     usart_interrupt_enable(COM1, USART_INT_TC);
 
 }
 
-#ifdef USE_UART1_COM
+#if USE_UART1_AS_IPMI
 static MsgPkt_T    g_uart_Req;
+extern xQueueHandle RecvDatMsg_Queue;
 #endif
 
-#if USE_UART1_AS_IPMI
-extern xQueueHandle RecvDatMsg_Queue;
-#elif USE_UART1_COM
 extern xQueueHandle FTUartRead_Queue;
-#endif
 
 
 INT8U USART1_SendFinally(uint32_t usart_periph, FIFO_Buf_STRUCT *fifoUart)
@@ -93,10 +90,60 @@ INT8U USART1_SendFinally(uint32_t usart_periph, FIFO_Buf_STRUCT *fifoUart)
 		return true;
 	}
 }
-#if 1
 void USART1_IRQHandler(void)
 {
     uint8_t res;
+	static BaseType_t xHigherPriorityTaskWoken;  // must set xHigherPriorityTaskWoken as a static variable, why?
+    BaseType_t err;
+    static bool is_start = false;
+
+    if (RESET != usart_interrupt_flag_get(COM1, USART_INT_FLAG_RBNE))
+    {                        
+        res = usart_data_receive(COM1);
+#if USE_UART1_AS_IPMI
+        usart_interrupt_flag_clear(COM1, USART_INT_FLAG_RBNE);
+        /* receive data */
+        if (res == START_BYTE)
+        { // start
+            is_start = true;
+            g_uart_Req.Size = 0;
+        }
+        else if (res == STOP_BYTE && is_start == true)
+        { // stop
+            is_start = false;
+            // usart_data_transmit(USART1, HAND_SHAKE_BYTE); // BMC hand shake
+            if (RecvDatMsg_Queue != NULL)
+            {
+                g_uart_Req.Param = SERIAL_REQUEST;
+                err = xQueueSendFromISR(RecvDatMsg_Queue, (char*)&g_uart_Req, &xHigherPriorityTaskWoken);
+                portYIELD_FROM_ISR(xHigherPriorityTaskWoken);
+                if (err == pdFAIL)
+                {
+                    LOG_E("uart queue msg send failed!");
+                }
+            }
+        }
+        else
+        {
+            g_uart_Req.Data[g_uart_Req.Size++] = res;
+            if (g_uart_Req.Size > sizeof(g_uart_Req.Data) - 3)
+            {
+                is_start = false;
+                g_uart_Req.Size = 0;
+                //    LOG_E("uart recv overlap!");
+            }
+        }
+
+	// use FIFO store all  
+		if (is_start == false)
+		{
+			/* receive data */
+			FIFO_Write(&g_FifoUART1.rfifo, (INT8U)res);
+			//fputc(res, NULL);     //loopback
+		}
+#endif
+	}
+
 	if (RESET != usart_interrupt_flag_get(COM1, USART_INT_FLAG_TBE))
     {
         /* send data continue */
@@ -107,16 +154,9 @@ void USART1_IRQHandler(void)
         /* send data continue */
 		USART1_SendFinally(COM1, &g_FifoUART1);
     }
-    if (RESET != usart_interrupt_flag_get(COM1, USART_INT_FLAG_RBNE))
-    {
-        /* receive data */
-        res = usart_data_receive(COM1);
-        FIFO_Write(&g_FifoUART1.rfifo, (INT8U)res);
-		//fputc(res, NULL);     //loopback
-    }
 }
 
-#endif
+#if 1  //use FIFO
 int fputc(int ch, FILE *f)
 {
     FIFO_Write(&g_FifoUART1.sfifo, (INT8U)ch); 
@@ -125,6 +165,16 @@ int fputc(int ch, FILE *f)
 	}
 	return ch;
 }
+#else
+int fputc(int ch, FILE *f)
+{
+	usart_data_transmit(USART1, (uint8_t)ch);
+	while (RESET == usart_flag_get(USART1, USART_FLAG_TBE))
+	;
+
+	return ch;
+}
+#endif
 
 void uart1_send_byte(char dat)
 {

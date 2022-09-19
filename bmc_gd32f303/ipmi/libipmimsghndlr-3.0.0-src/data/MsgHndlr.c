@@ -218,10 +218,7 @@ void *MsgCoreHndlr(void *pArg)
 		xTaskCreate(vTaskResponseDatWrite, "Task ResponseDatWrite", 256, NULL, 24, &xHandleTaskResponseDatWrite)) {
         LOG_E("vTaskResponseDatWrite create task ERR!");
     }
-    // xTimersSlaveMasterSwitch = xTimerCreate("Timer", 1000/portTICK_RATE_MS, pdTRUE, 0, vTimerCallback); 
-    // xTimerStart(xTimersSlaveMasterSwitch, portMAX_DELAY);	
-
-    RecvDatMsg_Queue = xQueueCreate(2, sizeof(MsgPkt_T));  
+    RecvDatMsg_Queue = xQueueCreate(1, sizeof(MsgPkt_T));  //10
     if (RecvDatMsg_Queue ==  NULL) {
         LOG_E("RecvDatMsg_Queue create ERR!");
     }
@@ -286,7 +283,8 @@ void ProcessIPMIReq(_NEAR_ MsgPkt_T *pReq, _NEAR_ MsgPkt_T *pRes)
 
     if (!CheckMsgValidation(pReq->Data, pReq->Size))
     {
-        IPMI_DBG_PRINT("IPMI Msg Check ERR");
+        IPMI_DBG_PRINT("IPMI Msg Check ERR");   
+		pRes->Size = 0;
         return;
     }
 

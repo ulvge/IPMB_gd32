@@ -293,16 +293,21 @@ static int do_scan(uint8_t bus)
 static int do_set_host(uint8_t bus)
 {
     switch (bus)
-    {
+    {          
+#if USE_I2C0_AS_IPMB
     case 0:
         i2c0_set_as_slave_device_addr(host_addr);
         LOG_RAW("I2C%d:         SLAVE_ADDRESS: %02x\n\r", bus, host_addr);
-        break;
+        break;  
+#endif
+	
+#if USE_I2C1_AS_IPMB
     case 1:
         i2c1_set_as_slave_device_addr(host_addr);
         LOG_RAW("I2C%d:       SLAVE_ADDRESS: %02x\n\r", bus, I2C1_SLAVE_ADDRESS7);
-        break;
-#ifdef  I2C2
+        break;  
+#endif
+#ifdef  USE_I2C2_AS_IPMB
     case 2:
         i2c2_set_as_slave_device_addr(host_addr);
         LOG_RAW("I2C%d:        SLAVE_ADDRESS: %02x\n\r", bus, host_addr);
