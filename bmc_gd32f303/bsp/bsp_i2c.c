@@ -549,7 +549,7 @@ bool i2c1_bytes_read(const uint8_t device_addr, const uint8_t read_addr, uint8_t
 }
 
 static uint8_t g_i2c0_buff_rx[100];
-static int g_i2c0_rx_count = 0;
+static uint32_t g_i2c0_rx_count = 0;
 static bool g_i2c0_recv_is_updated = false;
 extern TaskHandle_t ComTask_Handler;
 
@@ -575,8 +575,9 @@ void I2C0_EV_IRQHandler(void)
     else if (i2c_interrupt_flag_get(I2C0, I2C_INT_FLAG_RBNE))
     {
         /* if reception data register is not empty ,I2C0 will read a data from I2C_DATA */
-        //*i2c_rxbuffer++ = i2c_data_receive(I2C0);
-        g_i2c0_buff_rx[g_i2c0_rx_count++] = i2c_data_receive(I2C0);
+        if (g_i2c0_rx_count < sizeof(g_i2c0_buff_rx)) {
+            g_i2c0_buff_rx[g_i2c0_rx_count++] = i2c_data_receive(I2C0);
+        }
     }
     else if (i2c_interrupt_flag_get(I2C0, I2C_INT_FLAG_STPDET))
     {
@@ -594,24 +595,6 @@ void I2C0_EV_IRQHandler(void)
             printf("iic send failed!\r\n");
         }
     }
-
-#else
-    if (i2c_interrupt_flag_get(I2C0, I2C_INT_FLAG_ADDSEND))
-    {
-        /* clear the ADDSEND bit */
-        i2c_interrupt_flag_clear(I2C0, I2C_INT_FLAG_ADDSEND);
-    }
-    else if (i2c_interrupt_flag_get(I2C0, I2C_INT_FLAG_RBNE))
-    {
-        /* if reception data register is not empty ,I2C0 will read a data from I2C_DATA */
-        //*i2c_rxbuffer++ = i2c_data_receive(I2C0);
-    }
-    else if (i2c_interrupt_flag_get(I2C0, I2C_INT_FLAG_STPDET))
-    {
-        /* clear the STPDET bit */
-        i2c_enable(I2C0);
-    }
-
 #endif
 }
 
@@ -674,7 +657,9 @@ void I2C0_ER_IRQHandler(void)
     i2c_channel_init(I2C0);
 }
 
+#ifdef USE_I2C1_AS_IPMB
 static uint8_t g_i2c1_buff_rx[80];
+#endif
 static int g_i2c1_rx_count = 0;
 static bool g_i2c1_recv_is_updated = false;
 /*!
@@ -699,8 +684,9 @@ void I2C1_EV_IRQHandler(void)
     else if (i2c_interrupt_flag_get(I2C1, I2C_INT_FLAG_RBNE))
     {
         /* if reception data register is not empty ,I2C0 will read a data from I2C_DATA */
-        //*i2c_rxbuffer++ = i2c_data_receive(I2C0);
-        g_i2c1_buff_rx[g_i2c1_rx_count++] = i2c_data_receive(I2C1);
+        if (g_i2c1_rx_count < sizeof(g_i2c1_buff_rx)) {
+            g_i2c1_buff_rx[g_i2c1_rx_count++] = i2c_data_receive(I2C1);
+        }
     }
     else if (i2c_interrupt_flag_get(I2C1, I2C_INT_FLAG_STPDET))
     {
@@ -718,24 +704,6 @@ void I2C1_EV_IRQHandler(void)
             printf("iic send failed!\r\n");
         }
     }
-
-#else
-    if (i2c_interrupt_flag_get(I2C1, I2C_INT_FLAG_ADDSEND))
-    {
-        /* clear the ADDSEND bit */
-        i2c_interrupt_flag_clear(I2C1, I2C_INT_FLAG_ADDSEND);
-    }
-    else if (i2c_interrupt_flag_get(I2C1, I2C_INT_FLAG_RBNE))
-    {
-        /* if reception data register is not empty ,I2C0 will read a data from I2C_DATA */
-        //*i2c_rxbuffer++ = i2c_data_receive(I2C1);
-    }
-    else if (i2c_interrupt_flag_get(I2C1, I2C_INT_FLAG_STPDET))
-    {
-        /* clear the STPDET bit */
-        i2c_enable(I2C1);
-    }
-
 #endif
 }
 
@@ -817,7 +785,9 @@ bool i2c1_get_slave_device_data(uint8_t *p_buffer, uint32_t *len)
     {
         return false;
     }
+#ifdef USE_I2C1_AS_IPMB
     memcpy(p_buffer, g_i2c1_buff_rx, g_i2c1_rx_count);
+#endif
     *len = g_i2c1_rx_count;
     g_i2c1_recv_is_updated = false; // has read
 
@@ -928,7 +898,6 @@ void I2C2_EV_IRQHandler(void)
     else if (i2c_interrupt_flag_get(I2C2, I2C_INT_FLAG_RBNE))
     {
         /* if reception data register is not empty ,I2C0 will read a data from I2C_DATA */
-        //*i2c_rxbuffer++ = i2c_data_receive(I2C0);
         g_i2c2_buff_rx[g_i2c2_rx_count++] = i2c_data_receive(I2C2);
     }
     else if (i2c_interrupt_flag_get(I2C2, I2C_INT_FLAG_STPDET))
@@ -946,22 +915,6 @@ void I2C2_EV_IRQHandler(void)
         {
             printf("iic send failed!\r\n");
         }
-    }
-#else
-    if (i2c_interrupt_flag_get(I2C2, I2C_INT_FLAG_ADDSEND))
-    {
-        /* clear the ADDSEND bit */
-        i2c_interrupt_flag_clear(I2C2, I2C_INT_FLAG_ADDSEND);
-    }
-    else if (i2c_interrupt_flag_get(I2C2, I2C_INT_FLAG_RBNE))
-    {
-        /* if reception data register is not empty ,I2C0 will read a data from I2C_DATA */
-        //*i2c_rxbuffer++ = i2c_data_receive(I2C0);
-    }
-    else if (i2c_interrupt_flag_get(I2C2, I2C_INT_FLAG_STPDET))
-    {
-        /* clear the STPDET bit */
-        i2c_enable(I2C2);
     }
 #endif
 }

@@ -126,7 +126,7 @@ extern unsigned char  GW_ADDR3;
 
 typedef enum 
 { 
-    MSG_SRC_I2C = 1,
+    MSG_SRC_I2C = 0,
     MSG_SRC_UART = 1
 }IPMI_MSG_SRC;
 

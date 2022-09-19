@@ -37,7 +37,6 @@ void com3_init()
     /* enable USART TBE interrupt */
     usart_interrupt_enable(COM3, USART_INT_RBNE);
 }
-
 #ifdef USE_UART3_AS_IPMI
 extern xQueueHandle RecvDatMsg_Queue;
 static MsgPkt_T    g_uart_Req;

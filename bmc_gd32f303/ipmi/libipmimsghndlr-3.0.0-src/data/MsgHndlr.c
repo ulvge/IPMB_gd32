@@ -224,7 +224,7 @@ void *MsgCoreHndlr(void *pArg)
     RecvDatMsg_Queue = xQueueCreate(2, sizeof(MsgPkt_T));  
     if (RecvDatMsg_Queue ==  NULL) {
         LOG_E("RecvDatMsg_Queue create ERR!");
-    }              
+    }
 
     while (1)
     {

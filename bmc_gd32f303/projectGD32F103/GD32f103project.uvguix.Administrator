@@ -22,17 +22,17 @@
     <View>
       <WinId>38003</WinId>
       <ViewName>Registers</ViewName>
-      <TableColWidths>155 100</TableColWidths>
+      <TableColWidths>155 155</TableColWidths>
     </View>
     <View>
       <WinId>346</WinId>
       <ViewName>Code Coverage</ViewName>
-      <TableColWidths>770 147</TableColWidths>
+      <TableColWidths>770 160</TableColWidths>
     </View>
     <View>
       <WinId>204</WinId>
       <ViewName>Performance Analyzer</ViewName>
-      <TableColWidths>539 139 139 100</TableColWidths>
+      <TableColWidths>930</TableColWidths>
     </View>
   </SECTreeCtrl>
 
@@ -47,13 +47,13 @@
       <WinId>1506</WinId>
       <ViewName>Symbols</ViewName>
       <UserString></UserString>
-      <TableColWidths>64 64 64</TableColWidths>
+      <TableColWidths>80 80 80</TableColWidths>
     </View>
     <View>
       <WinId>1936</WinId>
       <ViewName>Watch 1</ViewName>
       <UserString></UserString>
-      <TableColWidths>200 282 133</TableColWidths>
+      <TableColWidths>200 133 133</TableColWidths>
     </View>
     <View>
       <WinId>1937</WinId>
@@ -65,7 +65,7 @@
       <WinId>1935</WinId>
       <ViewName>Call Stack + Locals</ViewName>
       <UserString></UserString>
-      <TableColWidths>200 290 133</TableColWidths>
+      <TableColWidths>200 133 133</TableColWidths>
     </View>
     <View>
       <WinId>2506</WinId>
@@ -77,7 +77,7 @@
       <WinId>466</WinId>
       <ViewName>Source Browser</ViewName>
       <UserString>500</UserString>
-      <TableColWidths>166</TableColWidths>
+      <TableColWidths>300</TableColWidths>
     </View>
   </TreeListPane>
 
@@ -108,17 +108,17 @@
         <yPos>-1</yPos>
       </MaxPosition>
       <NormalPosition>
-        <Top>79</Top>
-        <Left>609</Left>
-        <Right>1761</Right>
-        <Bottom>837</Bottom>
+        <Top>41</Top>
+        <Left>68</Left>
+        <Right>1220</Right>
+        <Bottom>799</Bottom>
       </NormalPosition>
     </WindowPosition>
     <MDIClientArea>
       <RegID>0</RegID>
       <MDITabState>
         <Len>860</Len>
-        <Data>01000000040000000100000001000000010000000100000000000000020000000000000001000000010000000000000028000000280000000100000006000000000000000100000046503A5C3470726F6A5C384E53333034206368616F5975655C424D4370726F6A6563745C676433325C626D635F67643332663330335C6170695C746F6F6C735C746F6F6C732E630000000007746F6F6C732E6300000000BCA8E100FFFFFFFF42503A5C3470726F6A5C384E53333034206368616F5975655C424D4370726F6A6563745C676433325C626D635F67643332663330335C6273705C6273705F6932632E6300000000096273705F6932632E6300000000FFDC7800FFFFFFFF46503A5C3470726F6A5C384E53333034206368616F5975655C424D4370726F6A6563745C676433325C626D635F67643332663330335C6170695C746F6F6C735C746F6F6C732E680000000007746F6F6C732E6800000000BECEA100FFFFFFFF79503A5C3470726F6A5C384E53333034206368616F5975655C424D4370726F6A6563745C676433325C626D635F67643332663330335C6669726D776172655C47443332463130785C434D5349535C47445C47443332463130785C536F757263655C41524D5C737461727475705F67643332663130785F68642E730000000015737461727475705F67643332663130785F68642E7300000000F0A0A100FFFFFFFF40503A5C3470726F6A5C384E53333034206368616F5975655C424D4370726F6A6563745C676433325C626D635F67643332663330335C757365725C6D61696E2E6300000000066D61696E2E6300000000BCA8E100FFFFFFFF7B503A5C3470726F6A5C384E53333034206368616F5975655C424D4370726F6A6563745C676433325C626D635F67643332663330335C6669726D776172655C47443332463130785C47443332463130785F7374616E646172645F7065726970686572616C5C536F757263655C67643332663130785F66776467742E63000000001067643332663130785F66776467742E63000000009CC1B600FFFFFFFF0100000010000000C5D4F200FFDC7800BECEA100F0A0A100BCA8E1009CC1B600F7B88600D9ADC200A5C2D700B3A6BE00EAD6A300F6FA7D00B5E99D005FC3CF00C1838300CACAD500010000000000000002000000440100004A0000000006000032020000</Data>
+        <Data>01000000040000000100000001000000010000000100000000000000020000000000000001000000010000000000000028000000280000000100000006000000030000000100000046503A5C3470726F6A5C384E53333034206368616F5975655C424D4370726F6A6563745C676433325C626D635F67643332663330335C6170695C746F6F6C735C746F6F6C732E630000000007746F6F6C732E6300000000C5D4F200FFFFFFFF42503A5C3470726F6A5C384E53333034206368616F5975655C424D4370726F6A6563745C676433325C626D635F67643332663330335C6273705C6273705F6932632E6300000000096273705F6932632E6300000000FFDC7800FFFFFFFF46503A5C3470726F6A5C384E53333034206368616F5975655C424D4370726F6A6563745C676433325C626D635F67643332663330335C6170695C746F6F6C735C746F6F6C732E680000000007746F6F6C732E6800000000BECEA100FFFFFFFF79503A5C3470726F6A5C384E53333034206368616F5975655C424D4370726F6A6563745C676433325C626D635F67643332663330335C6669726D776172655C47443332463130785C434D5349535C47445C47443332463130785C536F757263655C41524D5C737461727475705F67643332663130785F68642E730000000015737461727475705F67643332663130785F68642E7300000000F0A0A100FFFFFFFF40503A5C3470726F6A5C384E53333034206368616F5975655C424D4370726F6A6563745C676433325C626D635F67643332663330335C757365725C6D61696E2E6300000000066D61696E2E6300000000BCA8E100FFFFFFFF7B503A5C3470726F6A5C384E53333034206368616F5975655C424D4370726F6A6563745C676433325C626D635F67643332663330335C6669726D776172655C47443332463130785C47443332463130785F7374616E646172645F7065726970686572616C5C536F757263655C67643332663130785F66776467742E63000000001067643332663130785F66776467742E63000000009CC1B600FFFFFFFF0100000010000000C5D4F200FFDC7800BECEA100F0A0A100BCA8E1009CC1B600F7B88600D9ADC200A5C2D700B3A6BE00EAD6A300F6FA7D00B5E99D005FC3CF00C1838300CACAD500010000000000000002000000440100004A0000000006000032020000</Data>
       </MDITabState>
     </MDIClientArea>
     <ViewEx>
@@ -3685,71 +3685,5 @@
       </Doc>
     </MDIGroup>
   </MDIGroups>
-
-  <Bookmarks>
-    <ListItem>..\api\shell\shell.c 1618</ListItem>
-    <ListItem>..\api\shell\shell.c 1621</ListItem>
-    <ListItem>..\api\shell\shell.c 1622</ListItem>
-    <ListItem>..\api\shell\shell.c 1660</ListItem>
-    <ListItem>..\api\shell\shell.c 1661</ListItem>
-    <ListItem>..\api\shell\shell.c 1662</ListItem>
-    <ListItem>..\api\shell\shell.c 1664</ListItem>
-    <ListItem>..\api\shell\shell.c 1665</ListItem>
-    <ListItem>..\api\shell\shell.c 1667</ListItem>
-    <ListItem>..\api\shell\shell.c 1670</ListItem>
-    <ListItem>..\api\shell\shell.c 1672</ListItem>
-    <ListItem>..\api\shell\shell.c 1681</ListItem>
-    <ListItem>..\api\shell\shell.c 1684</ListItem>
-    <ListItem>..\api\shell\shell.c 1724</ListItem>
-    <ListItem>..\api\shell\shell.c 1729</ListItem>
-    <ListItem>..\api\shell\shell.c 1731</ListItem>
-    <ListItem>..\api\shell\shell.c 1863</ListItem>
-    <ListItem>..\api\shell\shell.c 30</ListItem>
-    <ListItem>..\api\shell\shell.c 31</ListItem>
-    <ListItem>..\api\shell\shell.c 32</ListItem>
-    <ListItem>..\api\shell\shell.c 254</ListItem>
-    <ListItem>..\api\shell\shell.c 256</ListItem>
-    <ListItem>..\api\shell\shell.c 258</ListItem>
-    <ListItem>..\api\shell\shell.c 328</ListItem>
-    <ListItem>..\api\shell\shell.c 501</ListItem>
-    <ListItem>..\api\shell\shell.c 505</ListItem>
-    <ListItem>..\api\shell\shell.c 509</ListItem>
-    <ListItem>..\api\shell\shell.c 513</ListItem>
-    <ListItem>..\api\shell\shell.c 529</ListItem>
-    <ListItem>..\api\shell\shell.c 533</ListItem>
-    <ListItem>..\api\shell\shell.c 537</ListItem>
-    <ListItem>..\api\shell\shell.c 541</ListItem>
-    <ListItem>..\api\shell\shell.c 730</ListItem>
-    <ListItem>..\api\shell\shell.c 732</ListItem>
-    <ListItem>..\api\shell\shell.c 750</ListItem>
-    <ListItem>..\api\shell\shell.c 753</ListItem>
-    <ListItem>..\api\shell\shell.c 762</ListItem>
-    <ListItem>..\api\shell\shell.c 956</ListItem>
-    <ListItem>..\api\shell\shell.c 959</ListItem>
-    <ListItem>..\api\shell\shell.c 962</ListItem>
-    <ListItem>..\api\shell\shell.c 966</ListItem>
-    <ListItem>..\api\shell\shell.c 969</ListItem>
-    <ListItem>..\api\shell\shell.c 970</ListItem>
-    <ListItem>..\api\shell\shell.c 971</ListItem>
-    <ListItem>..\api\shell\shell.c 999</ListItem>
-    <ListItem>..\api\shell\shell.c 1002</ListItem>
-    <ListItem>..\api\shell\shell.c 1005</ListItem>
-    <ListItem>..\api\shell\shell.c 1008</ListItem>
-    <ListItem>..\api\shell\shell.c 1014</ListItem>
-    <ListItem>..\api\shell\shell.c 1016</ListItem>
-    <ListItem>..\api\shell\shell.c 1018</ListItem>
-    <ListItem>..\api\shell\shell.c 1019</ListItem>
-    <ListItem>..\api\shell\shell.c 1023</ListItem>
-    <ListItem>..\api\shell\shell.c 1047</ListItem>
-    <ListItem>..\api\shell\shell.c 1130</ListItem>
-    <ListItem>..\api\shell\shell.c 1170</ListItem>
-    <ListItem>..\api\shell\shell.c 1196</ListItem>
-    <ListItem>..\api\shell\shell.c 1198</ListItem>
-    <ListItem>..\api\shell\shell.c 1320</ListItem>
-    <ListItem>..\api\shell\shell.c 1322</ListItem>
-    <ListItem>..\api\shell\shell.c 1325</ListItem>
-    <ListItem>..\api\shell\shell.c 1614</ListItem>
-    <ListItem>..\api\shell\shell.c 1616</ListItem>
-  </Bookmarks>
 
 </ProjectGui>
