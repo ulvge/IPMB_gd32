@@ -93,6 +93,6 @@ extern void OnSerialByteReceived (INT8U byte,int BMCInst);
  * @brief Hangs up the modem
  **/
 extern void HangUpModem (void);
-extern void ProcessSerialReq (_NEAR_ MsgPkt_T *pReq, _NEAR_ MsgPkt_T *pRes);
+extern bool ProcessSerialReq (_NEAR_ MsgPkt_T *pReq, _NEAR_ MsgPkt_T *pRes);
 
 #endif /* SERIALIFC_H */

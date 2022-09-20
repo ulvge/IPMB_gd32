@@ -153,76 +153,12 @@
           <Name>UL2CM3(-S0 -C0 -P0 )  -FN1 -FC1000 -FD20000000 -FF0GD32F10x_MD -FL020000 -FS08000000 -FP0($$Device:GD32F103VB$Flash\GD32F10x_MD.FLM)</Name>
         </SetRegEntry>
       </TargetDriverDllRegistry>
-      <Breakpoint>
-        <Bp>
-          <Number>0</Number>
-          <Type>0</Type>
-          <LineNumber>195</LineNumber>
-          <EnabledFlag>1</EnabledFlag>
-          <Address>134228776</Address>
-          <ByteObject>0</ByteObject>
-          <HtxType>0</HtxType>
-          <ManyObjects>0</ManyObjects>
-          <SizeOfObject>0</SizeOfObject>
-          <BreakByAccess>0</BreakByAccess>
-          <BreakIfRCount>1</BreakIfRCount>
-          <Filename>&lt;1&gt;..\ipmb\libipmiserial-src\SerialIfc.c</Filename>
-          <ExecCommand></ExecCommand>
-          <Expression>\\bmc_rom\../ipmb/libipmiserial-src/SerialIfc.c\195</Expression>
-        </Bp>
-        <Bp>
-          <Number>1</Number>
-          <Type>0</Type>
-          <LineNumber>244</LineNumber>
-          <EnabledFlag>1</EnabledFlag>
-          <Address>134227756</Address>
-          <ByteObject>0</ByteObject>
-          <HtxType>0</HtxType>
-          <ManyObjects>0</ManyObjects>
-          <SizeOfObject>0</SizeOfObject>
-          <BreakByAccess>0</BreakByAccess>
-          <BreakIfRCount>1</BreakIfRCount>
-          <Filename>&lt;1&gt;..\ipmi\libipmimsghndlr-3.0.0-src\data\MsgHndlr.c</Filename>
-          <ExecCommand></ExecCommand>
-          <Expression>\\bmc_rom\../ipmi/libipmimsghndlr-3.0.0-src/data/MsgHndlr.c\244</Expression>
-        </Bp>
-        <Bp>
-          <Number>2</Number>
-          <Type>0</Type>
-          <LineNumber>195</LineNumber>
-          <EnabledFlag>1</EnabledFlag>
-          <Address>134259696</Address>
-          <ByteObject>0</ByteObject>
-          <HtxType>0</HtxType>
-          <ManyObjects>0</ManyObjects>
-          <SizeOfObject>0</SizeOfObject>
-          <BreakByAccess>0</BreakByAccess>
-          <BreakIfRCount>1</BreakIfRCount>
-          <Filename>&lt;1&gt;..\ipmi\libipmimsghndlr-3.0.0-src\data\MsgHndlr.c</Filename>
-          <ExecCommand></ExecCommand>
-          <Expression>\\bmc_rom\../ipmi/libipmimsghndlr-3.0.0-src/data/MsgHndlr.c\195</Expression>
-        </Bp>
-      </Breakpoint>
+      <Breakpoint/>
       <WatchWindow1>
         <Ww>
           <count>0</count>
           <WinNumber>1</WinNumber>
-          <ItemText>g_FifoUART1</ItemText>
-        </Ww>
-        <Ww>
-          <count>1</count>
-          <WinNumber>1</WinNumber>
-          <ItemText>data</ItemText>
-        </Ww>
-        <Ww>
-          <count>2</count>
-          <WinNumber>1</WinNumber>
-          <ItemText>*argv</ItemText>
-        </Ww>
-        <Ww>
-          <count>3</count>
-          <WinNumber>1</WinNumber>
-          <ItemText>pReq-&gt;Size</ItemText>
+          <ItemText>Pkt</ItemText>
         </Ww>
       </WatchWindow1>
       <WatchWindow2>
@@ -246,20 +182,35 @@
           <WinNumber>2</WinNumber>
           <ItemText>shellBuffer</ItemText>
         </Ww>
+        <Ww>
+          <count>4</count>
+          <WinNumber>2</WinNumber>
+          <ItemText>*(Pkt + i)</ItemText>
+        </Ww>
+        <Ww>
+          <count>5</count>
+          <WinNumber>2</WinNumber>
+          <ItemText>pCmdHndlrMap</ItemText>
+        </Ww>
+        <Ww>
+          <count>6</count>
+          <WinNumber>2</WinNumber>
+          <ItemText>pCmdHndlrMap</ItemText>
+        </Ww>
       </WatchWindow2>
       <MemoryWindow1>
         <Mm>
           <WinNumber>1</WinNumber>
-          <SubType>3</SubType>
-          <ItemText>shell-&gt;parser.param[0]</ItemText>
+          <SubType>0</SubType>
+          <ItemText>Pkt</ItemText>
           <AccSizeX>0</AccSizeX>
         </Mm>
       </MemoryWindow1>
       <MemoryWindow2>
         <Mm>
           <WinNumber>2</WinNumber>
-          <SubType>8</SubType>
-          <ItemText>\\bmc_rom\../api/shell/shell.c\shellTask\data</ItemText>
+          <SubType>0</SubType>
+          <ItemText>Pkt</ItemText>
           <AccSizeX>0</AccSizeX>
         </Mm>
       </MemoryWindow2>

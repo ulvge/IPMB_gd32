@@ -128,12 +128,12 @@ const DisableMsgFilterTbl_T m_DisableMsgFilterTbl[] =
 
 //INT8U ExtNetFnMap[MAX_NUM_BMC][MAX_NETFN];
 
-const MsgHndlrTbl_T m_MsgHndlrTbl[15] =
+static const MsgHndlrTbl_T m_MsgHndlrTbl[15] =
     {
-        {NETFN_APP, g_App_CmdHndlr},
-        {NETFN_CHASSIS, g_Chassis_CmdHndlr},
-        {NETFN_BRIDGE, g_Bridge_CmdHndlr},
+        {NETFN_CHASSIS, g_Chassis_CmdHndlr},//0
+        {NETFN_BRIDGE, g_Bridge_CmdHndlr},//0
         {NETFN_SENSOR, g_SensorEvent_CmdHndlr},
+        {NETFN_APP, g_App_CmdHndlr},
         {NETFN_STORAGE, g_Storage_CmdHndlr},
         {NETFN_OEM, g_Oem_CmdHndlr},
         //    { NETFN_TRANSPORT,              g_Config_CmdHndlr               },
@@ -241,7 +241,10 @@ void *MsgCoreHndlr(void *pArg)
             ProcessIPMIReq(Req, &Res);
             break;
         case SERIAL_REQUEST:
-            ProcessSerialReq(Req, &Res);
+         // ProcessSerPortReq ProcessSerialMessage ProcessIPMIReq
+            if (ProcessSerialReq(Req, &Res) == false){
+				continue;
+			}
             break;
         case LAN_REQUEST:
             //ProcessLANReq(Req, &Res);
@@ -276,10 +279,10 @@ void ProcessIPMIReq(_NEAR_ MsgPkt_T *pReq, _NEAR_ MsgPkt_T *pRes)
 {
     CmdHndlrMap_T *pCmdHndlrMap;
     INT32U HdrOffset = sizeof(IPMIMsgHdr_T);
-    INT8U CmdOverride = 1;
     IPMIMsgHdr_T *pIPMIResHdr = (IPMIMsgHdr_T *)pRes->Data;
     const IPMIMsgHdr_T *pIPMIReqHdr = (const IPMIMsgHdr_T *)pReq->Data;
     INT8U ResDatSize = 0;
+	pCmdHndlr_T	CmdHndlr;
 
     if (!CheckMsgValidation(pReq->Data, pReq->Size))
     {
@@ -309,7 +312,8 @@ void ProcessIPMIReq(_NEAR_ MsgPkt_T *pReq, _NEAR_ MsgPkt_T *pRes)
     }
     else
     {
-        if (GetCmdHndlr(pIPMIReqHdr->Cmd, pRes, pCmdHndlrMap, HdrOffset, CmdOverride, &pCmdHndlrMap) == FALSE)
+		CmdHndlr = GetCmdHndlr(pCmdHndlrMap, pIPMIReqHdr->Cmd);
+        if (CmdHndlr == NULL)
         {
             pRes->Data[HdrOffset] = CC_INV_CMD;
             pRes->Size = HdrOffset + 1 + 1; // IPMI Header + completion code + Second Checksum
@@ -317,7 +321,7 @@ void ProcessIPMIReq(_NEAR_ MsgPkt_T *pReq, _NEAR_ MsgPkt_T *pRes)
         }
         else
         {
-            ResDatSize = pCmdHndlrMap->CmdHndlr(&pReq->Data[HdrOffset], pReq->Size - HdrOffset - 1, &pRes->Data[HdrOffset], 0);
+            ResDatSize = CmdHndlr(&pReq->Data[HdrOffset], pReq->Size - HdrOffset - 1, &pRes->Data[HdrOffset], 0);
             pRes->Size = ResDatSize + HdrOffset + 1; // IPMI Header + Response data field + Second Checksum
         }
     }
@@ -406,53 +410,30 @@ int GetMsgHndlrMap(INT8U NetFn, _FAR_ CmdHndlrMap_T **pCmdHndlrMap)
 *@brief Picks up the exact command to execute by comparing Cmd no.
 *@param pReq Request buffer for the command
 *@param pRes Response buffer for the command
-*@param pCmdHndlrMap
+*@param pCmdHndlrMap    m_MsgHndlrTbl
 *@param HdrOffset
-*@param CmdOverride
 *@param CmdHndlr
 *@return Returns TRUE on success
 *            Returns FALSE on failure
 */
-int GetCmdHndlr(INT8U Cmd, MsgPkt_T *pRes, CmdHndlrMap_T *pCmdHndlrMap,
-                INT32U HdrOffset, INT8U CmdOverride, CmdHndlrMap_T **CmdHndrl)
+pCmdHndlr_T GetCmdHndlr(CmdHndlrMap_T *pCmdHndlrMap, INT8U Cmd)
 {
     while (1)
     {
+        if (pCmdHndlrMap->Cmd == Cmd)
+        {
+            /* Check if command has been implemented */
+            return pCmdHndlrMap->CmdHndlr;
+        }
         /**
         * If we reached the end of the Command Handler map - invalid command
         **/
         if (0 == pCmdHndlrMap->CmdHndlr)
         {
-            if (CmdOverride == false)
-            {
-                pRes->Data[HdrOffset] = CC_INV_CMD;
-                IPMI_WARNING("MsgHndlr.c : Invalid Command %d\n", Cmd);
-            }
-            return false;
+            return NULL;
         }
-
-        if (pCmdHndlrMap->Cmd == Cmd)
-        {
-            /* Check if command has been implemented */
-            if (UNIMPLEMENTED == pCmdHndlrMap->CmdHndlr)
-            {
-                if (CmdOverride == false)
-                {
-                    pRes->Data[HdrOffset] = CC_INV_CMD;
-                    IPMI_WARNING("MsgHndlr.c : Command is not implemented\n");
-                }
-                return false;
-            }
-            else
-            {
-                break;
-            }
-        }
-
         pCmdHndlrMap++;
     }
-    *CmdHndrl = pCmdHndlrMap;
-    return true;
 }
 
 /**

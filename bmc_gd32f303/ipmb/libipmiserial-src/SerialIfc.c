@@ -93,7 +93,7 @@ static void     OnBasicModeByteReceived (INT8U byte,int BMCInst);
  * @param Addr holds the address of structure which contains BMCInst,Argument
  * and Length of Argument.
  **/
-void ProcessSerialReq (_NEAR_ MsgPkt_T *pReq, _NEAR_ MsgPkt_T *pRes)
+bool ProcessSerialReq (_NEAR_ MsgPkt_T *pReq, _NEAR_ MsgPkt_T *pRes)
 {
     int ret = -1; 
 
@@ -108,10 +108,11 @@ void ProcessSerialReq (_NEAR_ MsgPkt_T *pReq, _NEAR_ MsgPkt_T *pRes)
 
     if(ret != 0){
         IPMI_WARNING ("Get msg failed!\n");  
-        return;  
+        return false;  
     }
 
-    pRes->Param = SERIAL_REQUEST;
+    pRes->Param = SERIAL_REQUEST;    
+    return true;  
 }
 
 /**

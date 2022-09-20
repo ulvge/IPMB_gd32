@@ -239,9 +239,8 @@ typedef enum
     MSG_UART,
 }MsgType;
 
-/* Extern declaration */
-extern int GetCmdHndlr(INT8U Cmd,MsgPkt_T* pRes,CmdHndlrMap_T* pCmdHndlrMap,
-                                INT32U HdrOffset,INT8U CmdOverride,CmdHndlrMap_T** CmdHndrl );
+/* Extern declaration */                                    
+extern pCmdHndlr_T GetCmdHndlr(CmdHndlrMap_T *pCmdHndlrMap, INT8U Cmd);
 extern int	  GetMsgHndlrMap (INT8U NetFn, _FAR_ CmdHndlrMap_T ** pCmdHndlrMap);
 
 /**

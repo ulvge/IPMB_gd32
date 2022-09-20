@@ -570,7 +570,7 @@ typedef struct
     INT8U TimerTaskTblSize;
 
 
-    MsgHndlrTbl_T MsgHndlrTbl[15];
+    MsgHndlrTbl_T MsgHndlrTbl[15]; // m_MsgHndlrTbl
 //    GroupExtnMsgHndlrTbl_T GroupExtnMsgHndlrTbl [10];
 //    TimerTaskTbl_T    TimerTaskTbl [20];
 
