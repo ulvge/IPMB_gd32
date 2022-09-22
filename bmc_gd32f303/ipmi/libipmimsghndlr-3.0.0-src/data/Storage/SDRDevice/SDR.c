@@ -635,61 +635,61 @@ int GetSDR(_NEAR_ INT8U *pReq, INT8U ReqLen, _NEAR_ INT8U *pRes, _NEAR_ int BMCI
         memcpy(&pRes[sizeof(GetSDRRes_T)], &full_sdr->buff[pGetSDRReq->Offset], pGetSDRReq->Size);
         return sizeof(GetSDRRes_T) + pGetSDRReq->Size;
     }
-    return 0;
+//    return 0;
 
-    //******************************************************************************
+//    //******************************************************************************
 
-    //    OS_THREAD_MUTEX_ACQUIRE(&pBMCInfo->SDRConfig.SDRMutex, WAIT_INFINITE);
-    if (TRUE != PreCheckSDRUpdateModeCmd(pRes, BMCInst))
-    {
-        OS_THREAD_MUTEX_RELEASE(&pBMCInfo->SDRConfig.SDRMutex);
-        return sizeof(INT8U); /* error code set in func */
-    }
+//    //    OS_THREAD_MUTEX_ACQUIRE(&pBMCInfo->SDRConfig.SDRMutex, WAIT_INFINITE);
+//    if (TRUE != PreCheckSDRUpdateModeCmd(pRes, BMCInst))
+//    {
+//        OS_THREAD_MUTEX_RELEASE(&pBMCInfo->SDRConfig.SDRMutex);
+//        return sizeof(INT8U); /* error code set in func */
+//    }
 
-    /* If the Offset is Not zero then its A partial get.. / if SDR is in update mode
-    	then check for the reservation id 		*/
+//    /* If the Offset is Not zero then its A partial get.. / if SDR is in update mode
+//    	then check for the reservation id 		*/
 
-    if ((pGetSDRReq->Offset == 0) && (FALSE == g_BMCInfo.SDRConfig.UpdatingSDR))
-    {
-        pSDRRec = GetSDRRec(pGetSDRReq->RecID, BMCInst);
-    }
-    else
-    {
-        pSDRRec = SDR_GetSDRRec(pGetSDRReq->RecID, pGetSDRReq->ReservationID, BMCInst);
-    }
+//    if ((pGetSDRReq->Offset == 0) && (FALSE == g_BMCInfo.SDRConfig.UpdatingSDR))
+//    {
+//        pSDRRec = GetSDRRec(pGetSDRReq->RecID, BMCInst);
+//    }
+//    else
+//    {
+//        pSDRRec = SDR_GetSDRRec(pGetSDRReq->RecID, pGetSDRReq->ReservationID, BMCInst);
+//    }
 
-    if (0 == pSDRRec)
-    {
-        //        OS_THREAD_MUTEX_RELEASE(&pBMCInfo->SDRConfig.SDRMutex);
-        pGetSDRRes->CompletionCode = g_BMCInfo.SDRConfig.SDRError;
-        return sizeof(INT8U);
-    }
+//    if (0 == pSDRRec)
+//    {
+//        //        OS_THREAD_MUTEX_RELEASE(&pBMCInfo->SDRConfig.SDRMutex);
+//        pGetSDRRes->CompletionCode = g_BMCInfo.SDRConfig.SDRError;
+//        return sizeof(INT8U);
+//    }
 
-    SDRLen = pSDRRec->Len + sizeof(SDRRecHdr_T);
+//    SDRLen = pSDRRec->Len + sizeof(SDRRecHdr_T);
 
-    if ((0xFF == pGetSDRReq->Size) && (SDRLen >= pGetSDRReq->Offset))
-    {
-        pGetSDRReq->Size = SDRLen - pGetSDRReq->Offset;
-    }
+//    if ((0xFF == pGetSDRReq->Size) && (SDRLen >= pGetSDRReq->Offset))
+//    {
+//        pGetSDRReq->Size = SDRLen - pGetSDRReq->Offset;
+//    }
 
-    //    OS_THREAD_TLS_GET(g_tls.CurChannel,curchannel);
-    /* Check for Max Request Bytes */
-    if ((pGetSDRReq->Size > SDRLen) || (pGetSDRReq->Offset > SDRLen) || (pGetSDRReq->Size > (SDRLen - pGetSDRReq->Offset)))
-    {
-        //       OS_THREAD_MUTEX_RELEASE(&pBMCInfo->SDRConfig.SDRMutex);
-        pGetSDRRes->CompletionCode = CC_CANNOT_RETURN_REQ_BYTES;
-        return sizeof(INT8U);
-    }
+//    //    OS_THREAD_TLS_GET(g_tls.CurChannel,curchannel);
+//    /* Check for Max Request Bytes */
+//    if ((pGetSDRReq->Size > SDRLen) || (pGetSDRReq->Offset > SDRLen) || (pGetSDRReq->Size > (SDRLen - pGetSDRReq->Offset)))
+//    {
+//        //       OS_THREAD_MUTEX_RELEASE(&pBMCInfo->SDRConfig.SDRMutex);
+//        pGetSDRRes->CompletionCode = CC_CANNOT_RETURN_REQ_BYTES;
+//        return sizeof(INT8U);
+//    }
 
-    /* Copy the response */
-    pGetSDRRes->CompletionCode = CC_NORMAL;
-    pGetSDRRes->NextRecID = SDR_GetNextSDRId(pSDRRec->ID, BMCInst);
-    _fmemcpy(pGetSDRRes + 1,
-             ((_FAR_ INT8U *)pSDRRec) + pGetSDRReq->Offset,
-             pGetSDRReq->Size);
-    //    OS_THREAD_MUTEX_RELEASE(&pBMCInfo->SDRConfig.SDRMutex);
+//    /* Copy the response */
+//    pGetSDRRes->CompletionCode = CC_NORMAL;
+//    pGetSDRRes->NextRecID = SDR_GetNextSDRId(pSDRRec->ID, BMCInst);
+//    _fmemcpy(pGetSDRRes + 1,
+//             ((_FAR_ INT8U *)pSDRRec) + pGetSDRReq->Offset,
+//             pGetSDRReq->Size);
+//    //    OS_THREAD_MUTEX_RELEASE(&pBMCInfo->SDRConfig.SDRMutex);
 
-    return sizeof(GetSDRRes_T) + pGetSDRReq->Size;
+//    return sizeof(GetSDRRes_T) + pGetSDRReq->Size;
 }
 
 /*---------------------------------------

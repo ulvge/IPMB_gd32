@@ -37,7 +37,7 @@
 //#include "PDKCmdsAccess.h"
 #include "IPMIConf.h"
 #include "IPMI_FRU.h"
-//#include "sensor_helpers.h"
+#include "sensor_helpers.h"
 //#include "featuredef.h"
 #include "libipmi.h"
 
@@ -384,7 +384,7 @@ int InitSensor(int BMCInst)
 
 				//PDK Hook to overwrite FRUInfo struct
 				//if (g_PDKHandle[PDK_INITFRUINFO] != NULL)
-				if(0)
+				#if 0
 				{
 				//	if (((int (*)(FRUDevLocatorRec_T *, int))g_PDKHandle[PDK_INITFRUINFO])(sfr, BMCInst) == -1)
 					{
@@ -392,6 +392,7 @@ int InitSensor(int BMCInst)
 					}
 				}
 				pBMCInfo->FRUConfig.total_frus++;
+				#endif
 			}
 		}
 		else if (sr->Type == OEM_SDRFRU_REC)
@@ -512,8 +513,8 @@ int GetDevSDRInfo(_NEAR_ INT8U *pReq, INT8U ReqLen, _NEAR_ INT8U *pRes, _NEAR_ i
 	{ // get sensor count
 		pGetDevSDRInfoRes->NumSensor = SENSOR_NUM;
 	}
-
-	return sizeof(GetSDRInfoRes_T);
+	return sizeof(GetSDRInfoRes_T); 
+	#if 0
 
 	/* Check for proper operation flag before proceeding with task */
 	if ((pGetDevSDRInfoReq->Operation != SDR_INFO_SDR_COUNT) &&
@@ -601,7 +602,8 @@ int GetDevSDRInfo(_NEAR_ INT8U *pReq, INT8U ReqLen, _NEAR_ INT8U *pRes, _NEAR_ i
 
 	OS_THREAD_MUTEX_RELEASE(&pBMCInfo->SDRConfig.SDRMutex);
 
-	return sizeof(GetSDRInfoRes_T);
+	return sizeof(GetSDRInfoRes_T);  
+#endif
 }
 
 /*---------------------------------------
@@ -1225,7 +1227,7 @@ int GetSensorThresholds(_NEAR_ INT8U *pReq, INT8U ReqLen, _NEAR_ INT8U *pRes, _N
 
 
 	return sizeof(GetSensorThresholdRes_T);
-
+#if 0
 	pSenSharedMem = (_FAR_ SensorSharedMem_T *)&pBMCInfo->SensorSharedMem; //m_hSensorSharedMem;
 
 	//	if(g_corefeatures.more_than_256_sensors == ENABLED)
@@ -1299,6 +1301,7 @@ int GetSensorThresholds(_NEAR_ INT8U *pReq, INT8U ReqLen, _NEAR_ INT8U *pRes, _N
 	pSensorThreshRes->CompletionCode = CC_NORMAL;
 
 	return sizeof(GetSensorThresholdRes_T);
+#endif	
 }
 
 /*---------------------------------------
@@ -2078,7 +2081,7 @@ int GetSensorReading(_NEAR_ INT8U *pReq, INT8U ReqLen, _NEAR_ INT8U *pRes, _NEAR
 		sensor_reading_res->CompletionCode = CC_SDR_REC_NOT_PRESENT;
 		return sizeof(*pRes);
 	}
-	
+#if 0	
 	pSenSharedMem = (_FAR_ SensorSharedMem_T *)&pBMCInfo->SensorSharedMem; //m_hSensorSharedMem;
 
 	//	if(g_corefeatures.more_than_256_sensors == ENABLED)
@@ -2238,6 +2241,7 @@ int GetSensorReading(_NEAR_ INT8U *pReq, INT8U ReqLen, _NEAR_ INT8U *pRes, _NEAR
 	OS_THREAD_MUTEX_RELEASE(&pBMCInfo->SensorSharedMemMutex);
 
 	return sizeof(GetSensorReadingRes_T);
+#endif	
 }
 
 /*-----------------------------------------

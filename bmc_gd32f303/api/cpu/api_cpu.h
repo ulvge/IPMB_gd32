@@ -35,7 +35,7 @@
 #define STOP_BYTE               0xA5
 #define HANDSHAKE_BYTE          0xA6
 #define DATA_ESCAPE_BYTE             0xAA
-
+				  
 #define	BYTE_ESC					0x1B
 
 #define		ENCODED_START_BYTE			0xB0

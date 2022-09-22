@@ -126,7 +126,7 @@ typedef struct
 // };
 
 /* Pre-Session establishment commands */
-static const PreSessionCmd_T m_PreSessionCmdsTbl[] =
+__attribute__((unused))static const PreSessionCmd_T m_PreSessionCmdsTbl[] =
 {
     { NETFN_APP,    CMD_GET_CH_AUTH_CAP },
     { NETFN_APP,    CMD_GET_SESSION_CHALLENGE },
@@ -146,7 +146,7 @@ typedef struct
     INT8U EventMask;
 }IPMIAuditMaskTbl_T;
 
-static const IPMIAuditMaskTbl_T m_IPMIAuditMaskMap[] =
+__attribute__((unused)) static const IPMIAuditMaskTbl_T m_IPMIAuditMaskMap[] =
 {
     { EVENT_LOGIN,           0x0 },
     { EVENT_LOGOUT,          0x1 },
@@ -184,7 +184,12 @@ ProcessRMCPReq(_NEAR_ RMCPHdr_T* pRMCPReq, _NEAR_ RMCPHdr_T* pRMCPRes, MiscParam
     _FAR_ BMCInfo_t*        pBMCInfo = &g_BMCInfo;
     _FAR_   UserInfo_T*     pUserInfo;
 
-
+	UNUSED(pSessionInfo);
+	UNUSED(pResMsgAuthCode);
+	UNUSED(AuthType);
+	UNUSED(IPMIMsgResLen);
+	UNUSED(pBMCInfo);
+	UNUSED(pUserInfo);
     /* Validate RMCP Header */
     if (TRUE != ValidateRMCPHdr(pRMCPReq))
     {
@@ -344,7 +349,7 @@ ProcessRMCPReq(_NEAR_ RMCPHdr_T* pRMCPReq, _NEAR_ RMCPHdr_T* pRMCPRes, MiscParam
  * @param Payload     - Payload type.
  * @return 0 if success, -1 if error.
 **/
-static int
+__attribute__((unused)) static int
 ProcIPMIReq (_FAR_  SessionInfo_T*  pSessionInfo, INT8U Payload, MiscParams_T *pParams,INT8U Channel, int BMCInst)
 {
 
@@ -410,7 +415,8 @@ ProcessPingMsg (_NEAR_ RMCPHdr_T* pRMCPReq, _NEAR_ RMCPHdr_T* pRMCPRes,int BMCIn
     _NEAR_ RMCPPingHdr_T* pReqPingHdr = (_NEAR_ RMCPPingHdr_T*)(pRMCPReq + 1);
     _NEAR_ RMCPPingHdr_T* pResPingHdr = (_NEAR_ RMCPPingHdr_T*)(pRMCPRes + 1);
     _FAR_ BMCInfo_t*        pBMCInfo = &g_BMCInfo;
-
+							 
+	UNUSED(pBMCInfo);
     if (PRESENCE_PING_MSGTYPE != pReqPingHdr->MsgType) { return 0; }
     if((pReqPingHdr->IANANum[0]!=0x00)||(pReqPingHdr->IANANum[1]!=0x00)||
          (pReqPingHdr->IANANum[2]!=0x11)||(pReqPingHdr->IANANum[3]!=0xBE)) 
@@ -452,7 +458,7 @@ ProcessPingMsg (_NEAR_ RMCPHdr_T* pRMCPReq, _NEAR_ RMCPHdr_T* pRMCPRes,int BMCIn
  * @param pIPMIMsg - Request IPMI message.
  * @return TRUE if valid, FALSE if invalid.
 **/
-static BOOL
+__attribute__((unused)) static BOOL
 ValidateAuthCode (_NEAR_ INT8U* pAuthCode, _FAR_ INT8U* pPassword,
                   _NEAR_ SessionHdr_T* pSessionHdr, _NEAR_ IPMIMsgHdr_T* pIPMIMsg)
 {
@@ -512,6 +518,14 @@ Proc20Payload (_NEAR_ RMCPHdr_T* pRMCPReq, _NEAR_ RMCPHdr_T* pRMCPRes, MiscParam
         //    EVP_CIPHER_CTX ctx;
            uint32 tmplen;
 
+	UNUSED(SessionID);
+	UNUSED(SessionSeqNum);
+	UNUSED(len);
+	UNUSED(i);
+	UNUSED(UserPswd);
+	UNUSED(EncryptedPswd);
+	UNUSED(PwdEncKey);
+	UNUSED(tmplen);
 
     return 0;
 }

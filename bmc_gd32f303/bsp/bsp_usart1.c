@@ -178,7 +178,8 @@ int fputc(int ch, FILE *f)
 
 void uart1_send_byte(char dat)
 {
-    fputc((int)dat, NULL);
+	FILE *f = NULL;
+    fputc((int)dat, f);
 }
 
 void uart1_send_dat(uint8_t *str, uint16_t len)

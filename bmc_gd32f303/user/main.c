@@ -237,7 +237,7 @@ void vApplicationIdleHook(void)
     fwdgt_counter_reload();
 }
 
-static void watch_dog_init()
+__attribute__((unused)) static void watch_dog_init()
 {
     /* check if the system has resumed from FWDGT reset */
     if (RESET != rcu_flag_get(RCU_FLAG_FWDGTRST))

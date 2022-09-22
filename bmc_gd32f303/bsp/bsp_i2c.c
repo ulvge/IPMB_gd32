@@ -14,7 +14,7 @@
 #include "MsgHndlr.h"
 #include "IPMDevice.h"
 
-
+#define I2C0_INTERRUPT_ENALBE
 static void i2c0_int(void);
 static void i2c1_int(void);
 

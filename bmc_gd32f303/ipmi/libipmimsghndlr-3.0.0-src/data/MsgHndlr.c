@@ -225,10 +225,11 @@ void *MsgCoreHndlr(void *pArg)
 
     while (1)
     {
-		if (RecvDatMsg_Queue == NULL) {
-			vTaskDelay(1000);
-			continue;
-		}
+        if (RecvDatMsg_Queue == NULL)
+        {
+            vTaskDelay(1000);
+            continue;
+        }
         err = xQueueReceive(RecvDatMsg_Queue, buff, portMAX_DELAY);
         if (err == pdFALSE)
         {
@@ -282,12 +283,12 @@ void ProcessIPMIReq(_NEAR_ MsgPkt_T *pReq, _NEAR_ MsgPkt_T *pRes)
     IPMIMsgHdr_T *pIPMIResHdr = (IPMIMsgHdr_T *)pRes->Data;
     const IPMIMsgHdr_T *pIPMIReqHdr = (const IPMIMsgHdr_T *)pReq->Data;
     INT8U ResDatSize = 0;
-	pCmdHndlr_T	CmdHndlr;
+    pCmdHndlr_T CmdHndlr;
 
     if (!CheckMsgValidation(pReq->Data, pReq->Size))
     {
-        IPMI_DBG_PRINT("IPMI Msg Check ERR");   
-		pRes->Size = 0;
+        IPMI_DBG_PRINT("IPMI Msg Check ERR");
+        pRes->Size = 0;
         return;
     }
 
@@ -312,7 +313,7 @@ void ProcessIPMIReq(_NEAR_ MsgPkt_T *pReq, _NEAR_ MsgPkt_T *pRes)
     }
     else
     {
-		CmdHndlr = GetCmdHndlr(pCmdHndlrMap, pIPMIReqHdr->Cmd);
+        CmdHndlr = GetCmdHndlr(pCmdHndlrMap, pIPMIReqHdr->Cmd);
         if (CmdHndlr == NULL)
         {
             pRes->Data[HdrOffset] = CC_INV_CMD;

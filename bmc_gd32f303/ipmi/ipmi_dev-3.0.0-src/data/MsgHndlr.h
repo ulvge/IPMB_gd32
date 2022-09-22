@@ -238,7 +238,7 @@ typedef enum
     MSG_I2C = 0,
     MSG_UART,
 }MsgType;
-
+			 
 /* Extern declaration */                                    
 extern pCmdHndlr_T GetCmdHndlr(CmdHndlrMap_T *pCmdHndlrMap, INT8U Cmd);
 extern int	  GetMsgHndlrMap (INT8U NetFn, _FAR_ CmdHndlrMap_T ** pCmdHndlrMap);
