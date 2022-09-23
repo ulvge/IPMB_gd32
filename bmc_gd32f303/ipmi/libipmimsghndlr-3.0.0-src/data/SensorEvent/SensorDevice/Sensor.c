@@ -181,7 +181,8 @@ int InitSensor(int BMCInst)
 	_FAR_ BMCInfo_t *pBMCInfo = &g_BMCInfo;
 	INT8U Index = 0, FruAddress = 0;
 	_FAR_ SensorSharedMem_T *pSenSharedMem;
-	char *str, *saveptr, *tempbuf;
+	char *str, *saveptr, *tempbuf;  
+	UNUSED(fruvalid);
 
 	memset(&pBMCInfo->SenConfig.HealthState, 0, sizeof(HealthState_T));
 	;

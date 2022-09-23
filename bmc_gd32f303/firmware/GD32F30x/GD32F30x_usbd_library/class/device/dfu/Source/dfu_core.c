@@ -300,7 +300,7 @@ static uint8_t dfu_init (usb_dev *udev, uint8_t config_index)
     /* unlock the internal flash */
     dfu_mem_init();
 
-    systick_config();
+    bsp_systick_config();
 
     memset((void *)&dfu_handler, 0, sizeof(usbd_dfu_handler));
 

@@ -44,12 +44,12 @@ volatile static uint32_t delay;
 extern uint32_t g_localtime;
 
 /*!
-    \brief      configure systick
+    \brief      configure systick handler:SysTick_Handler
     \param[in]  none
     \param[out] none
     \retval     none
 */
-void systick_config(void)
+void bsp_systick_config(void)
 {
     /* setup systick timer for 1000Hz interrupts */
     if (SysTick_Config(SystemCoreClock / 1000U))

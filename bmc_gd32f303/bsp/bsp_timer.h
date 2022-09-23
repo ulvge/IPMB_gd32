@@ -11,8 +11,6 @@
 #include <stdbool.h>
 
 void timer_config_init(void);
-void timer_config(void);
-void nvic_config(void);
 
 #ifdef __cplusplus
 }

@@ -64,7 +64,6 @@ OF SUCH DAMAGE.
 
 void start_task(void *pvParameters);
 void fan_task(void *pvParameters);
-void test_task(void *pvParameters);
 TaskHandle_t ComTask_Handler;
 void com_task(void *pvParameters);
 void led_task(void *pvParameters);
@@ -102,7 +101,7 @@ __weak void platform_init(void)
 int main(void)
 {
     // nvic_vector_table_set(NVIC_VECTTAB_FLASH, 0x16000);
-    systick_config();
+    bsp_systick_config();
     nvic_priority_group_set(NVIC_PRIGROUP_PRE4_SUB0);
 
     platform_init();
@@ -152,8 +151,6 @@ void start_task(void *pvParameters)
 
     // xTaskCreate(fan_task, "fan", configMINIMAL_STACK_SIZE*2, NULL, FAN_TASK_PRIO, NULL);
 
-    // xTaskCreate(test_task, "test", configMINIMAL_STACK_SIZE, NULL, TEST_TASK_PRIO, NULL);
-
    if (errCOULD_NOT_ALLOCATE_REQUIRED_MEMORY == 
        xTaskCreate(com_task, "com", configMINIMAL_STACK_SIZE * 2, NULL, COM_TASK_PRIO, (TaskHandle_t *)&ComTask_Handler)) {
        errCreateTask |= 1;
@@ -186,14 +183,6 @@ void start_task(void *pvParameters)
 void fan_task(void *pvParameters)
 {
     fan_ctrl_loop();
-}
-
-void test_task(void *pvParameters)
-{
-    while (1)
-    {
-        vTaskDelay(1000);
-    }
 }
 
 void led_task(void *pvParameters)

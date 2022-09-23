@@ -53,7 +53,7 @@ void usb_mdelay (const uint32_t msec);
 void system_clk_config_stop(void);
 
 #ifdef USE_HOST_MODE
-    void systick_config(void);
+    void bsp_systick_config(void);
 
     /* configure USB VBus */
     void usb_vbus_config (void);

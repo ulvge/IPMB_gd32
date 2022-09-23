@@ -46,7 +46,7 @@ OF SUCH DAMAGE.
 #include <stdint.h>
 
 /* configure systick */
-void systick_config(void);
+void bsp_systick_config(void);
 
 uint32_t GetTickMs(void);
 

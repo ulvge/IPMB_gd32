@@ -2110,6 +2110,7 @@ SDRInitAgent(int BMCInst)
             if (0x03 != (pFullRec->SensorCaps & 0x03))
             {
                 SetSensorEventEnableReq_T SetSEReq;
+				UNUSED(SetSEReq);
 
                 // disable all events for sensor
                 SetSEReq.SensorNum = pFullRec->SensorNum;
@@ -2174,6 +2175,7 @@ SDRInitAgent(int BMCInst)
             if (0x03 != (pFullRec->SensorCaps & 0x03))
             {
                 SetSensorEventEnableReq_T SetSEReq;
+				UNUSED(SetSEReq);
 
                 SetSEReq.SensorNum = pFullRec->SensorNum;
                 SetSEReq.Flags = (pFullRec->SensorInit & BIT6) | ((pFullRec->SensorInit & BIT5) << 2) | ENABLE_SELECTED_EVENT_MSG; // Event Enabled
@@ -2198,7 +2200,8 @@ SDRInitAgent(int BMCInst)
             /* Disable Event & Scanning messages, if Disable is supported */
             if (0x03 != (pCompactRec->SensorCaps & 0x03))
             {
-                SetSensorEventEnableReq_T SetSEReq;
+                SetSensorEventEnableReq_T SetSEReq;  
+				UNUSED(SetSEReq);
 
                 SetSEReq.SensorNum = pCompactRec->SensorNum;
                 SetSEReq.Flags = DISABLE_SELECTED_EVENT_MSG; // Event Disabled
@@ -2239,6 +2242,7 @@ SDRInitAgent(int BMCInst)
             if (0x03 != (pCompactRec->SensorCaps & 0x03))
             {
                 SetSensorEventEnableReq_T SetSEReq;
+				UNUSED(SetSEReq);
 
                 SetSEReq.SensorNum = pCompactRec->SensorNum;
                 SetSEReq.Flags = (pCompactRec->SensorInit & BIT6) | ((pCompactRec->SensorInit & BIT5) << 2) | ENABLE_SELECTED_EVENT_MSG; // Event Enabled
