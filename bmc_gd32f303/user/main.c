@@ -127,7 +127,7 @@ int main(void)
     led_init();
     xTaskCreate(start_task, "start", configMINIMAL_STACK_SIZE * 2, NULL, 1, NULL);
     xTaskCreate(led_task, "led", configMINIMAL_STACK_SIZE, NULL, 26, NULL);
-    // watch_dog_init();
+    watch_dog_init();
     vTaskStartScheduler();      //prvIdleTask
     while (1)
     {
@@ -225,13 +225,30 @@ void vApplicationIdleHook(void)
     /* reload FWDGT counter */
     fwdgt_counter_reload();
 }
-
+/// @brief interrupt FWDGT_IRQHandler
 __attribute__((unused)) static void watch_dog_init()
 {
     /* check if the system has resumed from FWDGT reset */
-    if (RESET != rcu_flag_get(RCU_FLAG_FWDGTRST))
+    if (SET == rcu_flag_get(RCU_FLAG_FWDGTRST))
     {
+        printf("system reset reason: FWDG\n");
     }
+    else if (SET == rcu_flag_get(RCU_FLAG_PORRST))
+    {
+        printf("system reset reason: power on\n");
+    }
+    else if (SET == rcu_flag_get(RCU_FLAG_SWRST))
+    {
+        printf("system reset reason: soft\n");
+    }
+    else if (SET == rcu_flag_get(RCU_FLAG_EPRST))
+    {
+        printf("system reset reason: external PIN\n");
+    }
+	else {
+        printf("system reset reason: unkown\n");
+	}
+    rcu_all_reset_flag_clear();
     /* confiure FWDGT counter clock: 40KHz(IRC40K) / 64 = 0.625 KHz */
     fwdgt_config(2 * 500, FWDGT_PSC_DIV64);
     /* after 1.6 seconds to generate a reset */
