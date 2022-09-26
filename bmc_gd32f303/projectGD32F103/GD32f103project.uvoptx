@@ -157,51 +157,25 @@
         <Bp>
           <Number>0</Number>
           <Type>0</Type>
-          <LineNumber>132</LineNumber>
+          <LineNumber>1198</LineNumber>
           <EnabledFlag>1</EnabledFlag>
-          <Address>134222742</Address>
+          <Address>134255110</Address>
           <ByteObject>0</ByteObject>
           <HtxType>0</HtxType>
           <ManyObjects>0</ManyObjects>
           <SizeOfObject>0</SizeOfObject>
           <BreakByAccess>0</BreakByAccess>
           <BreakIfRCount>1</BreakIfRCount>
-          <Filename>&lt;1&gt;..\ipmi\libipmimsghndlr-3.0.0-src\data\App\IPMDevice\IPMDevice.c</Filename>
+          <Filename>&lt;1&gt;..\api\shell\shell.c</Filename>
           <ExecCommand></ExecCommand>
-          <Expression>\\bmc_rom\../ipmi/libipmimsghndlr-3.0.0-src/data/App/IPMDevice/IPMDevice.c\132</Expression>
-        </Bp>
-        <Bp>
-          <Number>1</Number>
-          <Type>0</Type>
-          <LineNumber>191</LineNumber>
-          <EnabledFlag>1</EnabledFlag>
-          <Address>134258822</Address>
-          <ByteObject>0</ByteObject>
-          <HtxType>0</HtxType>
-          <ManyObjects>0</ManyObjects>
-          <SizeOfObject>0</SizeOfObject>
-          <BreakByAccess>0</BreakByAccess>
-          <BreakIfRCount>1</BreakIfRCount>
-          <Filename>&lt;1&gt;..\bsp\bsp_usart1.c</Filename>
-          <ExecCommand></ExecCommand>
-          <Expression>\\bmc_rom\../bsp/bsp_usart1.c\191</Expression>
+          <Expression>\\bmc_rom\../api/shell/shell.c\1198</Expression>
         </Bp>
       </Breakpoint>
       <WatchWindow1>
         <Ww>
           <count>0</count>
           <WinNumber>1</WinNumber>
-          <ItemText>r_msp</ItemText>
-        </Ww>
-        <Ww>
-          <count>1</count>
-          <WinNumber>1</WinNumber>
-          <ItemText>__get_PSP</ItemText>
-        </Ww>
-        <Ww>
-          <count>2</count>
-          <WinNumber>1</WinNumber>
-          <ItemText>fifo,0x10</ItemText>
+          <ItemText>shell</ItemText>
         </Ww>
       </WatchWindow1>
       <WatchWindow2>
