@@ -57,6 +57,7 @@
 ".\output\gd32f10x_timer.o"
 ".\output\gd32f10x_usart.o"
 ".\output\gd32f10x_wwdgt.o"
+".\output\gd32f10x_dbg.o"
 ".\output\startup_gd32f10x_hd.o"
 ".\output\croutine.o"
 ".\output\event_groups.o"

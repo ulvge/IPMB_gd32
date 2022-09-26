@@ -35,12 +35,14 @@ WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWIS
 ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY 
 OF SUCH DAMAGE.
 */
-
+					  
+#include <string.h>
 #include "gd32f10x_it.h"
 #include "main.h"
 #include "systick.h"
 #include "FreeRTOS.h"
-#include "task.h"
+#include "task.h"    
+#include "api_cpu.h"
 
 /*!
     \brief      this function handles NMI exception
@@ -58,10 +60,30 @@ void NMI_Handler(void)
     \param[out] none
     \retval     none
 */
+static char faultBuf[90];
+extern const char *projectInfo;
+/// @brief print Last words
+/// @param sp 
 void HardFault_Handler(void)
-{
+{              
+	static INT32U *r_msp;
+	r_msp = (INT32U *)__get_PSP();
+	
+	//_lr = (unsigned long)sp[5];
+	//_pc = (unsigned long)sp[6];                                              
+	sprintf(faultBuf + strlen(faultBuf), "\n\n");                                 
+	sprintf(faultBuf + strlen(faultBuf), ">> HardFault !!!  prepare reset\n");
+	sprintf(faultBuf + strlen(faultBuf), ">> lr = 0x%08x\n", *(r_msp+5)); // seek behind
+	sprintf(faultBuf + strlen(faultBuf), ">> pc = 0x%08x\n", *(r_msp+6));                            
+	sprintf(faultBuf + strlen(faultBuf), "\n\n");     
+	
+	uart_send_dat_block(USART1, (uint8_t *)faultBuf, strlen(faultBuf));
+										
+	uart_send_dat_block(USART1, (uint8_t *)projectInfo, strlen(projectInfo));  
+	
     /* if Hard Fault exception occurs, go to infinite loop */
     while(1){
+	  NVIC_SystemReset();	
     }
 }
 
@@ -69,6 +91,9 @@ void HardFault_Handler(void)
     \brief      this function handles MemManage exception
     \param[in]  none
     \param[out] none
+
+
+
     \retval     none
 */
 void MemManage_Handler(void)

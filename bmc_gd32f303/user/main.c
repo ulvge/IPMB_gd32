@@ -74,7 +74,7 @@ __IO uint32_t g_localtime = 0; /* for creating a time reference incremented by 1
 __IO uint64_t g_utc_time_bmc_firmware_build = 0;
 __IO uint16_t g_bmc_firmware_version = 0;
 
-static const char *projectInfo =
+const char *projectInfo =
     "\r\n"
     "********************************************\r\n"
     "************      BMC INFO      ************\r\n"
@@ -253,4 +253,6 @@ __attribute__((unused)) static void watch_dog_init()
     fwdgt_config(2 * 500, FWDGT_PSC_DIV64);
     /* after 1.6 seconds to generate a reset */
     fwdgt_enable();
+    /* disable wdg when the mcu is in debug mode */
+    dbg_periph_enable(DBG_FWDGT_HOLD);
 }

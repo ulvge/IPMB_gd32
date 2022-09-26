@@ -8,7 +8,7 @@
 
 #ifdef USE_UART0_DEBUG
 	/* retarget the C library printf function to the USART */
-	int fputc(int ch, FILE *f)
+__weak	int fputc(int ch, FILE *f)
 	{
 			usart_data_transmit(USART0, (uint8_t)ch);
 			while (RESET == usart_flag_get(USART0, USART_FLAG_TBE))
@@ -17,16 +17,16 @@
 			return ch;
 	}
 #elif USE_UART1_DEBUG
-//	int fputc(int ch, FILE *f)
-//	{
-//			usart_data_transmit(USART1, (uint8_t)ch);
-//			while (RESET == usart_flag_get(USART1, USART_FLAG_TBE))
-//					;
+__weak	int fputc(int ch, FILE *f)
+	{
+			usart_data_transmit(USART1, (uint8_t)ch);
+			while (RESET == usart_flag_get(USART1, USART_FLAG_TBE))
+					;
 
-//			return ch;
-//	}
+			return ch;
+	}
 #elif USE_UART3_DEBUG
-	int fputc(int ch, FILE *f)
+__weak	int fputc(int ch, FILE *f)
 	{
 			usart_data_transmit(UART3, (uint8_t)ch);
 			while (RESET == usart_flag_get(UART3, USART_FLAG_TBE))
@@ -35,7 +35,7 @@
 			return ch;
 	}
 #elif USE_UART7_DEBUG
-	int fputc(int ch, FILE *f)
+__weak	int fputc(int ch, FILE *f)
 	{
 			usart_data_transmit(UART7, (uint8_t)ch);
 			while (RESET == usart_flag_get(UART7, USART_FLAG_TBE))

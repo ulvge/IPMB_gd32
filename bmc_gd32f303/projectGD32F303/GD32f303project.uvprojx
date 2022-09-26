@@ -723,6 +723,11 @@
               <FileType>1</FileType>
               <FilePath>..\firmware\GD32F30x\GD32F30x_standard_peripheral\Source\gd32f30x_wwdgt.c</FilePath>
             </File>
+            <File>
+              <FileName>gd32f30x_dbg.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\firmware\GD32F30x\GD32F30x_standard_peripheral\Source\gd32f30x_dbg.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>

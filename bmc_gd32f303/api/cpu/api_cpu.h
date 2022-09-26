@@ -9,6 +9,7 @@
 #include <stdbool.h>
 #include <stdint.h>
 #include "Types.h"
+//#include "core_cm3.h"
 
 /* para definitions */
 
@@ -95,6 +96,14 @@ extern void cpuGetInfoTask(void *arg);
 extern int GetEncodeCmd(INT8U cmd, INT8U *pReq);
 extern uint16_t GetBmcFirmwareVersion(char* str);
 extern uint32_t GetBmcRunTime(void);
+
+// __STATIC_INLINE uint32_t __get_LR(void)
+// {
+//   register uint32_t __regStackPointer;
+//   __ASM volatile ("MRS %0, lr\n" : "=r" (__regStackPointer) );
+//   return(__regStackPointer);
+// }
+
 
 #ifdef __cplusplus
 }

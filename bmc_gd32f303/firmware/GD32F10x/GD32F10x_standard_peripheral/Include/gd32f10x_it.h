@@ -43,8 +43,8 @@ OF SUCH DAMAGE.
 
 /* function declarations */
 /* this function handles NMI exception */
-void NMI_Handler(void);
-/* this function handles HardFault exception */
+void NMI_Handler(void); 
+/* this function handles HardFault exception */      
 void HardFault_Handler(void);
 /* this function handles MemManage exception */
 void MemManage_Handler(void);

@@ -59,6 +59,7 @@
 ".\output\gd32f30x_misc.o"
 ".\output\gd32f30x_usart.o"
 ".\output\gd32f30x_wwdgt.o"
+".\output\gd32f30x_dbg.o"
 ".\output\startup_gd32f30x_cl.o"
 ".\output\croutine.o"
 ".\output\event_groups.o"

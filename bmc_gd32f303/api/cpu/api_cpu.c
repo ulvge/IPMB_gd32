@@ -341,3 +341,4 @@ uint32_t  GetBmcRunTime(void)
 {
   	return g_time_run;	
 }
+

@@ -156,7 +156,7 @@ void USART1_IRQHandler(void)
     }
 }
 
-#if 1  //use FIFO
+//use FIFO
 int fputc(int ch, FILE *f)
 {
     FIFO_Write(&g_FifoUART1.sfifo, (INT8U)ch); 
@@ -165,16 +165,20 @@ int fputc(int ch, FILE *f)
 	}
 	return ch;
 }
-#else
-int fputc(int ch, FILE *f)
+/// @brief NO fifo,can be called in HardFault_Handler
+/// @param usart_periph 
+/// @param str 
+/// @param len 
+void uart_send_dat_block(uint32_t usart_periph, uint8_t *str, uint16_t len)
 {
-	usart_data_transmit(USART1, (uint8_t)ch);
-	while (RESET == usart_flag_get(USART1, USART_FLAG_TBE))
-	;
-
-	return ch;
+    int i = 0;
+    for (i = 0; i < len; i++)
+    {
+        usart_data_transmit(usart_periph, str[i]);
+        while (RESET == usart_flag_get(usart_periph, USART_FLAG_TBE))
+            ;
+    }
 }
-#endif
 
 void uart1_send_byte(char dat)
 {

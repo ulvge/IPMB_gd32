@@ -132,8 +132,18 @@ void adc_sample_all(void)
     }
     adc_test();
 }
-
+__attribute__((unused)) void StackFlow(void)
+{
+	int a[3],i;
+	
+	UNUSED(a); 
+	for(i=0; i<10000; i++)
+	{
+		a[i]=100/i;
+	}
+}
 static void adc_test(void)
 {
     get_temprate_convers_value(ADC_CHANNEL_8);
+    //StackFlow();
 }

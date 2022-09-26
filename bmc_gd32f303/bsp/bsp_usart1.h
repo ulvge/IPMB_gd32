@@ -39,4 +39,5 @@ bool uart1_get_data(uint8_t *p_buffer);
 bool uart1_get_dataN(uint8_t *p_buffer, uint32_t buffSize, uint32_t *retLen);
 void uart1_dma_enable(uint8_t len);
 
+void uart_send_dat_block(uint32_t usart_periph, uint8_t *str, uint16_t len);
 #endif /* __BSP_USART2_H */
