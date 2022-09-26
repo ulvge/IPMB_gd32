@@ -13,6 +13,7 @@
 #include "Message.h"
 #include "MsgHndlr.h"
 #include "IPMDevice.h"
+#include "systick.h"
 
 static void i2c0_int(void);
 static void i2c1_int(void);
@@ -229,7 +230,8 @@ static bool i2c_bytes_write(uint32_t i2cx, uint8_t device_addr, const uint8_t *p
 {
     int i = 0;
     int timeout = time_out;
-    int err_code = 0;
+    int err_code = 0;   
+	UNUSED(err_code);
 
     /* disable I2C0 interrupt */
     i2c_interrupt_disable(i2cx, I2C_INT_BUF);
@@ -329,7 +331,13 @@ __exit:
     i2c_deinit(i2cx);
     i2c_channel_init(i2cx);
     taskEXIT_CRITICAL();
-    LOG_E("I2C write err code: %d.", err_code);
+
+//    static uint32_t lastTicksMs;
+//    uint32_t nowTickMs = GetTickMs();
+//    if (nowTickMs - lastTicksMs > 2000) {
+//        lastTicksMs = nowTickMs;
+//        LOG_E("I2C write err code: %d.", err_code);
+//    }
     return false;
 }
 

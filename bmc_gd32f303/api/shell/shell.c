@@ -1200,12 +1200,6 @@ static void shellSetUser(Shell *shell, const ShellCommand *user)
 	} else{
 		shell->status.isChecked = 1;
 	}
-
-//    shell->status.isChecked = 
-//        ((user->data.user.password && strlen(user->data.user.password) != 0)
-//            && (shell->parser.paramCount < 2
-//                || strcmp(user->data.user.password, shell->parser.param[1]) != 0))
-//         ? 0 : 1;
         
 #if SHELL_CLS_WHEN_LOGIN == 1
     shellWriteString(shell, shellText[SHELL_TEXT_CLEAR_CONSOLE]);

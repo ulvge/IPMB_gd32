@@ -239,6 +239,9 @@ void *MsgCoreHndlr(void *pArg)
         switch(Req->Param)
         {
         case IPMI_REQUEST:
+			if (Req->Size == 0){
+				continue;
+			}
             ProcessIPMIReq(Req, &Res);
             break;
         case SERIAL_REQUEST:

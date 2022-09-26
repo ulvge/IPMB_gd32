@@ -21,7 +21,8 @@
 #include "main.h"
 #include "bsp_i2c.h"
 #include "utc/api_utc.h"
-#include "stdlib.h"
+#include "stdlib.h"  
+#include "OSPort.h"
 
 static int operation_mode = -1;
 static int g_bus = 0;
@@ -236,7 +237,7 @@ static int do_scan(uint8_t bus)
     int retval, k;
     int j = (uint8_t)0;
     uint8_t valid_slaves[Max_SALVES];
-    printf("Scanning the I2C Bus...this may take a while\n\r");
+    printf("Scanning the I2C Bus...\n\r");
 
     // Valid Address 7-bit Range
     for (k = 0x00; k <= 0x7F; k += 1)
@@ -257,13 +258,13 @@ static int do_scan(uint8_t bus)
 			default:
 				return false;
         }      
-        if ((k % 16) == 0) {
-            printf("\n 0x%d0\t", (k / 16));
+        if ((k % 16) == 0) {   
+            printf("\n 0x%d0\t", (k / 16));          
+			vTaskDelay(20);
 		}
         if (retval > 0)
         {
-            printf("X");
-            (void)fflush(stdout);
+            printf("% 2s", "X");
 
             if (j < Max_SALVES)
             {
@@ -273,8 +274,7 @@ static int do_scan(uint8_t bus)
         }
         else
         {
-            printf(".");
-            (void)fflush(stdout);
+            printf("% 2s", ".");
         }
 
     }

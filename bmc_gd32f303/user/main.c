@@ -85,7 +85,6 @@ const char *projectInfo =
     "Version:  " BMC_VERSION " \r\n"
     "Copyright: (c) HXZY\r\n"
     "********************************************\r\n"
-    "********************************************\r\n"
     "\r\n";
 
 __weak void platform_init(void)

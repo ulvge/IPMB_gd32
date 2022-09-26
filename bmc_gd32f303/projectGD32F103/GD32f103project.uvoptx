@@ -157,18 +157,50 @@
         <Bp>
           <Number>0</Number>
           <Type>0</Type>
-          <LineNumber>1198</LineNumber>
+          <LineNumber>191</LineNumber>
           <EnabledFlag>1</EnabledFlag>
-          <Address>134255110</Address>
+          <Address>134258758</Address>
           <ByteObject>0</ByteObject>
           <HtxType>0</HtxType>
           <ManyObjects>0</ManyObjects>
           <SizeOfObject>0</SizeOfObject>
           <BreakByAccess>0</BreakByAccess>
           <BreakIfRCount>1</BreakIfRCount>
-          <Filename>&lt;1&gt;..\api\shell\shell.c</Filename>
+          <Filename>&lt;1&gt;..\bsp\bsp_usart1.c</Filename>
           <ExecCommand></ExecCommand>
-          <Expression>\\bmc_rom\../api/shell/shell.c\1198</Expression>
+          <Expression>\\bmc_rom\../bsp/bsp_usart1.c\191</Expression>
+        </Bp>
+        <Bp>
+          <Number>1</Number>
+          <Type>0</Type>
+          <LineNumber>197</LineNumber>
+          <EnabledFlag>1</EnabledFlag>
+          <Address>134261162</Address>
+          <ByteObject>0</ByteObject>
+          <HtxType>0</HtxType>
+          <ManyObjects>0</ManyObjects>
+          <SizeOfObject>0</SizeOfObject>
+          <BreakByAccess>0</BreakByAccess>
+          <BreakIfRCount>1</BreakIfRCount>
+          <Filename>&lt;1&gt;..\ipmi\libipmimsghndlr-3.0.0-src\data\MsgHndlr.c</Filename>
+          <ExecCommand></ExecCommand>
+          <Expression>\\bmc_rom\../ipmi/libipmimsghndlr-3.0.0-src/data/MsgHndlr.c\197</Expression>
+        </Bp>
+        <Bp>
+          <Number>2</Number>
+          <Type>0</Type>
+          <LineNumber>739</LineNumber>
+          <EnabledFlag>1</EnabledFlag>
+          <Address>134233660</Address>
+          <ByteObject>0</ByteObject>
+          <HtxType>0</HtxType>
+          <ManyObjects>0</ManyObjects>
+          <SizeOfObject>0</SizeOfObject>
+          <BreakByAccess>0</BreakByAccess>
+          <BreakIfRCount>1</BreakIfRCount>
+          <Filename>&lt;1&gt;..\ipmi\libipmimsghndlr-3.0.0-src\data\App\AppDevice\AppDevice.c</Filename>
+          <ExecCommand></ExecCommand>
+          <Expression>\\bmc_rom\../ipmi/libipmimsghndlr-3.0.0-src/data/App/AppDevice/AppDevice.c\739</Expression>
         </Bp>
       </Breakpoint>
       <WatchWindow1>
@@ -176,6 +208,16 @@
           <count>0</count>
           <WinNumber>1</WinNumber>
           <ItemText>shell</ItemText>
+        </Ww>
+        <Ww>
+          <count>1</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>k</ItemText>
+        </Ww>
+        <Ww>
+          <count>2</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>Req</ItemText>
         </Ww>
       </WatchWindow1>
       <WatchWindow2>
@@ -218,16 +260,16 @@
       <MemoryWindow1>
         <Mm>
           <WinNumber>1</WinNumber>
-          <SubType>1</SubType>
-          <ItemText>0x20002828</ItemText>
+          <SubType>0</SubType>
+          <ItemText>g_FifoUART1.sfifo</ItemText>
           <AccSizeX>0</AccSizeX>
         </Mm>
       </MemoryWindow1>
       <MemoryWindow2>
         <Mm>
           <WinNumber>2</WinNumber>
-          <SubType>0</SubType>
-          <ItemText>str</ItemText>
+          <SubType>8</SubType>
+          <ItemText>g_FifoUART1.sfifo</ItemText>
           <AccSizeX>0</AccSizeX>
         </Mm>
       </MemoryWindow2>
