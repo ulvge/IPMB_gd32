@@ -39,8 +39,6 @@
 
 //#define I2C0_REMAP
 
-//#define I2C1_INTERRUPT_ENALBE
-
 //#define I2C1_REMAP
 //#define I2C2_REMAP
 

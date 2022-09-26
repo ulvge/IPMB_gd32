@@ -106,18 +106,7 @@ int main(void)
 
     platform_init();
 
-#ifdef USE_UART0_ENABLE
-    com0_init();
-#endif
-#ifdef USE_UART1_ENABLE
     com1_init();
-#endif
-#ifdef USE_UART3_ENABLE
-    com3_init();
-#endif
-#ifdef USE_UART7_ENABLE
-    com7_init();
-#endif
 
     printf("%s", projectInfo); 
     g_utc_time_bmc_firmware_build = currentSecsSinceEpoch(__DATE__, __TIME__);
@@ -137,7 +126,7 @@ int main(void)
 void start_task(void *pvParameters)
 {
     uint32_t errCreateTask = 0;
-    //i2c_int();
+    i2c_int();
     // fan_init();
     sample_init();  // voltage 
 

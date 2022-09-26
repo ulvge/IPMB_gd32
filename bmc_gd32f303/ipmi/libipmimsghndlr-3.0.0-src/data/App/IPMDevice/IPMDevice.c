@@ -106,7 +106,16 @@ GetDevID (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCIns
     return sizeof (GetDevIDRes_T);
 }
 
+static void ColdResetTimerCallBack(xTimerHandle pxTimer)
+{
+	NVIC_SystemReset();
+}
 
+static BaseType_t ColdResetTimerCreate()
+{
+    TimerHandle_t xTimersIpmiReset = xTimerCreate("TimerIpmiReset", 1500/portTICK_RATE_MS, pdFALSE, (void*)0, ColdResetTimerCallBack);
+    return xTimerStart(xTimersIpmiReset, portMAX_DELAY);	
+}
 /*---------------------------------------
  * ColdReset
  *---------------------------------------*/
@@ -114,14 +123,12 @@ int
 ColdReset (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst)
 {
     g_BMCInfo.Msghndlr.ColdReset = 1;
-    /* PDK Module Post Set Reboot Cause*/
-//    if(g_PDKHandle[PDK_SETREBOOTCAUSE] != NULL)
-//    {
-//        ((INT8U(*)(INT8U,int)) g_PDKHandle[PDK_SETREBOOTCAUSE])(SETREBOOTCAUSE_COLD_WARM_RESET_CMD,BMCInst);
-//    }
-		LOG_E("MCU RESET");
-	  NVIC_SystemReset();
     *pRes = CC_NORMAL;
+    if (ColdResetTimerCreate() == pdPASS){
+	    printf("MCU RESET by ipmi ColdReset\n");
+    } else {
+	    LOG_E("MCU RESET by ipmi creteTimer failed");
+    }
     return sizeof (*pRes);
 }
 

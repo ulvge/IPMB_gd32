@@ -47,15 +47,12 @@ OF SUCH DAMAGE.
 					  
 #define    BMC_VERSION    "SVN 0.0.1"
 
-	#define USE_UART0_ENABLE 1
-	#define USE_UART1_ENABLE 1
-	
-	//#define USE_UART0_DEBUG    1
 	#define USE_UART1_DEBUG    1
 	
 	#define USE_UART1_AS_IPMI  1 
 
 	#define USE_I2C0_AS_IPMB 1
+	#define USE_I2C1_AS_IPMB 1
 	// #define FATFS_ENABLE    
 	// #define  ft_uart_write(x, len)    uart3_send_dat(x, len)
 

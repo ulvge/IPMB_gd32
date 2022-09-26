@@ -285,10 +285,13 @@ void ProcessIPMIReq(_NEAR_ MsgPkt_T *pReq, _NEAR_ MsgPkt_T *pRes)
     INT8U ResDatSize = 0;
     pCmdHndlr_T CmdHndlr;
 
+    pRes->Size = 0;
+    if (pReq == NULL || pReq->Size == 0) {
+        return;
+    }
     if (!CheckMsgValidation(pReq->Data, pReq->Size))
     {
         IPMI_DBG_PRINT("IPMI Msg Check ERR");
-        pRes->Size = 0;
         return;
     }
 
