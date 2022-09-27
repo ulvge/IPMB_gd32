@@ -265,7 +265,7 @@ EncodeSerialPkt(_NEAR_ INT8U *Pkt, INT16U Len, _NEAR_ INT8U *EnPkt)
 	return index;
 }
 
-INT16U
+static INT16U
 DecodeSerialPkt(_NEAR_ INT8U *Pkt, INT16U Len)
 {
 	uint32 i;

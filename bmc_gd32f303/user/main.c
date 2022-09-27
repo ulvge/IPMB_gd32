@@ -160,9 +160,9 @@ void start_task(void *pvParameters)
         errCreateTask |= 8;
     }
 	if (errCreateTask == 0){
-		LOG_I("finished create task succeed\r\n");
+		LOG_I("finished : create task succeed\r\n");
 	} else {
-		LOG_I("finished create task error = %d\r\n", errCreateTask);
+		LOG_I("finished : create task error = %d\r\n", errCreateTask);
 	}
     vTaskDelete(NULL);
     taskEXIT_CRITICAL();

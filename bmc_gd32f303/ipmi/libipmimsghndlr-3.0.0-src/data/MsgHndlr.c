@@ -165,8 +165,8 @@ static void vTaskResponseDatWrite(void *pvParameters)
 {
     char buff[sizeof(MsgPkt_T)];
     MsgPkt_T *ResMsg = (MsgPkt_T *)buff;
-    ResponseDatMsg_Queue = xQueueCreate(10, sizeof(MsgPkt_T));
-    RecvForwardI2CDatMsg_Queue = xQueueCreate(10, sizeof(MsgPkt_T));
+    ResponseDatMsg_Queue = xQueueCreate(5, sizeof(MsgPkt_T));
+    RecvForwardI2CDatMsg_Queue = xQueueCreate(5, sizeof(MsgPkt_T));
 
     while (1)
     {
@@ -180,6 +180,7 @@ static void vTaskResponseDatWrite(void *pvParameters)
             // LOG_RAW("I2C write->:");
             break;
         case SERIAL_REQUEST:
+            LOG_RAW("send ack msg of original\r\n");
             serial_write(ResMsg->Data, ResMsg->Size);
             break;
         case LAN_REQUEST:
@@ -190,11 +191,12 @@ static void vTaskResponseDatWrite(void *pvParameters)
             break;
         }
 
-        for(int i=0; i<ResMsg->Size; i++)
-        {
-             LOG_RAW("%02x ", ResMsg->Data[i]);
-        }
-        LOG_RAW("\r\n");
+       LOG_RAW("\r\nsend ack msg of hex for view only\r\n");
+       for(int i=0; i<ResMsg->Size; i++)
+       {
+            LOG_RAW("%02x ", ResMsg->Data[i]);
+       }
+       LOG_RAW("\r\n");
     }
 }
 
@@ -218,7 +220,7 @@ void *MsgCoreHndlr(void *pArg)
 		xTaskCreate(vTaskResponseDatWrite, "Task ResponseDatWrite", 256, NULL, 24, &xHandleTaskResponseDatWrite)) {
         LOG_E("vTaskResponseDatWrite create task ERR!");
     }
-    RecvDatMsg_Queue = xQueueCreate(1, sizeof(MsgPkt_T));  //10
+    RecvDatMsg_Queue = xQueueCreate(5, sizeof(MsgPkt_T));  //10
     if (RecvDatMsg_Queue ==  NULL) {
         LOG_E("RecvDatMsg_Queue create ERR!");
     }

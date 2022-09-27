@@ -60,7 +60,7 @@ ProcessSerialMessage (_NEAR_ MsgPkt_T* pReq, _NEAR_ MsgPkt_T* pRes,int BMCInst)
     // bridge GetMsgFromI2C        from slave
     // ProcessIPMIReq(pReq, pRes);
     // msghandlr and master msg send to ipmitool
-    ProcessIPMIReq(pReq, pRes);
+    ProcessIPMIReq(pReq, pRes); //get&hand map
     return pRes->Size;
 }
 

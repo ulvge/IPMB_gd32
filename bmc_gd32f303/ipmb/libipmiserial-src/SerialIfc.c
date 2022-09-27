@@ -78,7 +78,6 @@ extern xQueueHandle ResponseDatMsg_Queue;
 
 /*** Function Prototypes ***/
 static int      InitSerialPort          (int BMCInst);
-static INT8U    SendSerialPkt           (int Port, _FAR_ INT8U* pBuf, INT16U Size,int BMCInst);
 static void*    RecvSerialPkt           (void*);
 static int      ValidateSerialCheckSum  (_FAR_ INT8U* Pkt, INT16U Len);
 static int      ProcessSerPortReq       (_NEAR_ MsgPkt_T* pReq,  MsgPkt_T *pRes);
@@ -98,12 +97,6 @@ bool ProcessSerialReq (_NEAR_ MsgPkt_T *pReq, _NEAR_ MsgPkt_T *pRes)
     int ret = -1; 
 
     pReq->Size = DecodeSerialPkt(pReq->Data, pReq->Size);
-    // LOG_RAW("\r\nrecv: ");
-    // for (i = 0; i < pReq->Size; i++)
-    // {
-    // 		LOG_RAW("%02x ", pReq->Data[i]);
-    // }
-    // LOG_RAW("\r\n");
     ret = ProcessSerPortReq (pReq, pRes);
 
     if(ret != 0){
@@ -128,29 +121,6 @@ InitSerialPort (int BMCInst)
 }
 
 /**
- * SendSerialPkt
- * @brief Sends data to serial port
- * @Param Port holds the file descriptor value
- * @Param pBuf Holds the address of data which needs to be sent
- * @Param Size Holds the size of data to be sent
- * @Param BMCInst Holds the Instance value of BMC
- * @Return 0 if send is sucessful
- **/
-INT8U SendSerialPkt (int Port, _FAR_ INT8U* pBuf, INT16U Size,int BMCInst)
-{
-//    _FAR_ BMCInfo_t *pBMCInfo = &g_BMCInfo[BMCInst]
-//     IPMI_DBG_PRINT_BUF (pBuf, Size);
-
-//     if (Size != write(pBMCInfo->SerialConfig.serial_fd,pBuf,Size))
-//     {
-//         IPMI_WARNING ("Error writing to serial port\n");
-//     }
-    serial_write(pBuf, Size);
-    
-    return 0;
-}
-
-/**
  * RecvSerialPkt
  * @brief Receives data from serial port
  * .@Param pArg pointer to the BMCInst value
@@ -163,7 +133,7 @@ __attribute__((unused)) static void*  RecvSerialPkt (void* pArg)
 
 
 /**
- * @brief Processes IPMI Serial interface requests
+ * @brief 1 check sum, 2 send handshake,3 get&hand map, 4 encode and send ack
  * @param pReq Pointer to Request Message packet
  * @param BMCInst holds the Instance value of BMC
  **/
@@ -174,19 +144,17 @@ ProcessSerPortReq (_NEAR_ MsgPkt_T* pReq,  MsgPkt_T *pRes)  // get ipmitool msg 
     INT8U       HandShake;
     INT8U       EnRes [MAX_SERIAL_PKT_SIZE];
 
-
-    /* Validate the checksum */
+    /* 1 Validate the checksum */
     if (0 != ValidateSerialCheckSum (pReq->Data, pReq->Size))
     {
         IPMI_DBG_PRINT ("**** Checksum Failed ****\n");
         return -1;
     }
-
-    /* Send Basic Mode Handshake to the remote Console*/
+    /* 2 Send Basic Mode Handshake to the remote Console*/
     HandShake = HANDSHAKE_BYTE;
-    SendSerialPkt (1, (_FAR_ INT8U*)&HandShake, 1, 0);
+    serial_write(&HandShake, sizeof(HandShake));
 
-    /* Post to Message Handler and get the response */
+    /* 3 Post to Message Handler and get the response */
   //  pReq->Channel = 0;
     pReq->Param = SERIAL_BASIC_MODE;
     // pReq->Size = 0;
@@ -201,15 +169,12 @@ ProcessSerPortReq (_NEAR_ MsgPkt_T* pReq,  MsgPkt_T *pRes)  // get ipmitool msg 
         return -1;
     }
 
-    // IPMI_DBG_PRINT_1 ("Data Size: %d\n", ResLen);
-
-    /* Transmit the response */
+    /* 4 encode and ransmit the response */
     pRes->Size = EncodeSerialPkt (pRes->Data, ResLen, EnRes);
 
     _fmemcpy(pRes->Data, EnRes, pRes->Size);
 
     return 0;
-    // SendSerialPkt (1, EnRes, ResLen,0);
 }
 
 

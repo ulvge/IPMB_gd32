@@ -125,7 +125,7 @@ ColdReset (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCIn
     g_BMCInfo.Msghndlr.ColdReset = 1;
     *pRes = CC_NORMAL;
     if (ColdResetTimerCreate() == pdPASS){
-	    printf("MCU RESET by ipmi ColdReset\n");
+	    printf("\nMCU RESET by ipmi ColdReset\n");
     } else {
 	    LOG_E("MCU RESET by ipmi creteTimer failed");
     }

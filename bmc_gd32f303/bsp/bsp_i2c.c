@@ -608,11 +608,11 @@ void I2C0_EV_IRQHandler(void)
         g_i2c_Req.Param = IPMI_REQUEST;
         if(RecvForwardI2CDatMsg_Queue != NULL && RecvDatMsg_Queue != NULL)
         {
-            if((g_i2c_Req.Data[1] & 0x04) == 0) // netFn even
+            if((g_i2c_Req.Data[1] & 0x04) == 0) // netFn even xQueueReceive(RecvDatMsg_Queue
             {
                 err = xQueueSendFromISR(RecvDatMsg_Queue, (char*)&g_i2c_Req, &xHigherPriorityTaskWoken);
             }
-            else  // odd
+            else  // odd xQueueReceive(RecvForwardI2CDatMsg_Queu
             {
                 err = xQueueSendFromISR(RecvForwardI2CDatMsg_Queue, (char*)&g_i2c_Req, &xHigherPriorityTaskWoken);
             }
@@ -745,6 +745,7 @@ void I2C1_EV_IRQHandler(void)
     else if (i2c_interrupt_flag_get(I2C1, I2C_INT_FLAG_STPDET))
     {
         /* clear the STPDET bit */
+        //i2c_interrupt_flag_clear(I2C1, I2C_INT_FLAG_STPDET);
         i2c_enable(I2C1);
         g_i2c_Req.Param = IPMI_REQUEST;
         if(RecvForwardI2CDatMsg_Queue != NULL && RecvDatMsg_Queue != NULL)
