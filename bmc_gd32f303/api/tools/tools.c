@@ -242,25 +242,26 @@ static int do_scan(uint8_t bus)
     // Valid Address 7-bit Range
     for (k = 0x00; k <= 0x7F; k += 1)
     {
+        write_buffer[0] = k<<1;
         switch (bus)
         {
 			case 0:
-				retval = (int)i2c0_bytes_write(write_buffer, 0);
+				retval = (int)i2c0_bytes_write(write_buffer, 1);
 				break;
 			case 1:
-				retval = (int)i2c1_bytes_write(write_buffer, 0);
+				retval = (int)i2c1_bytes_write(write_buffer, 1);
 				break;
 				#ifdef I2C2
 			case 2:
-				retval = (int)i2c2_bytes_write(write_buffer, 0);
+				retval = (int)i2c2_bytes_write(write_buffer, 1);
 				break;
 				#endif
 			default:
 				return false;
         }      
-        if ((k % 16) == 0) {   
-            printf("\n 0x%d0\t", (k / 16));          
-			vTaskDelay(20);
+        if ((k % 16) == 0) {
+            printf("\n 0x%d0\t", k / 16);
+            vTaskDelay(20);
 		}
         if (retval > 0)
         {

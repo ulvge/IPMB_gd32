@@ -15,16 +15,22 @@
 #include "IPMDevice.h"
 #include "systick.h"
 
+//#define I2C0_INTERRUPT_ENALBE
+//#define I2C1_INTERRUPT_ENALBE
 static void i2c0_int(void);
 static void i2c1_int(void);
 
 static void i2c0_config(void);
+#ifdef  I2C0_INTERRUPT_ENALBE
 static void i2c0_nvic_config(void);
+#endif
 static void i2c0_gpio_config(void);
 static void i2c0_rcu_config(void);
 
 static void i2c1_config(void);
+#ifdef  I2C1_INTERRUPT_ENALBE
 static void i2c1_nvic_config(void);
+#endif
 static void i2c1_gpio_config(void);
 static void i2c1_rcu_config(void);
 #ifdef I2C2
@@ -76,7 +82,9 @@ static void i2c0_int(void)
 {
     i2c0_rcu_config();
     i2c0_gpio_config();
+#ifdef  I2C0_INTERRUPT_ENALBE
     i2c0_nvic_config();
+#endif
     i2c0_config();
 }
 
@@ -84,7 +92,9 @@ static void i2c1_int(void)
 {
     i2c1_rcu_config();
     i2c1_gpio_config();
+#ifdef  I2C1_INTERRUPT_ENALBE
     i2c1_nvic_config();
+#endif
     i2c1_config();
 }
 
@@ -163,10 +173,12 @@ static void i2c0_config(void)
     /* enable acknowledge */
     i2c_ack_config(I2C0, I2C_ACK_ENABLE);
 
+#ifdef  I2C0_INTERRUPT_ENALBE
     /* enable the I2C0 interrupt */
     i2c_interrupt_enable(I2C0, I2C_INT_ERR);
     i2c_interrupt_enable(I2C0, I2C_INT_EV);
     i2c_interrupt_enable(I2C0, I2C_INT_BUF);
+#endif
 }
 
 /*!
@@ -186,10 +198,12 @@ static void i2c1_config(void)
     /* enable acknowledge */
     i2c_ack_config(I2C1, I2C_ACK_ENABLE);
 
+#ifdef  I2C1_INTERRUPT_ENALBE
     /* enable the I2C0 interrupt */
     i2c_interrupt_enable(I2C1, I2C_INT_ERR);
     i2c_interrupt_enable(I2C1, I2C_INT_EV);
     i2c_interrupt_enable(I2C1, I2C_INT_BUF);
+#endif
 }
 
 
