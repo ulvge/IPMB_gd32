@@ -16,12 +16,6 @@ static UART_PARA_STRUCT *g_pUARTSHandler[UART_NUM_TOTAL] = {NULL};
 int fputc(int ch, FILE *f)
 {
     return uart_sendByte(DEBUG_UART_PERIPH, ch);
-	
-//	usart_data_transmit(UART3, (uint8_t)ch);
-//	while (RESET == usart_flag_get(UART3, USART_FLAG_TBE)) {
-//		;
-//	}
-//	return ch;
 }
 bool com_registHandler(UART_PARA_STRUCT *uartPara)
 {

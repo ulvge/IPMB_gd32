@@ -191,7 +191,7 @@ static void vTaskResponseDatWrite(void *pvParameters)
             break;
         }
 
-       LOG_RAW("\r\nsend ack msg of hex for view only\r\n");
+       LOG_RAW("\r\nsend ack msg of hex for view\r\n");
        for(int i=0; i<ResMsg->Size; i++)
        {
             LOG_RAW("%02x ", ResMsg->Data[i]);

@@ -30,7 +30,6 @@ static const UART_CONFIG_STRUCT g_uart0Config= {
 };
 static UART_PARA_STRUCT g_UARTPara = {
     .usart_periph = COM0,  
-    //.fifo = NULL,
     .config = &g_uart0Config,
 };
 
@@ -100,37 +99,4 @@ void USART0_IRQHandler(void)
         /* receive data */
     }
 #endif
-}
-
-void uart0_send_byte(char dat)
-{
-		usart_data_transmit(COM0, dat);
-		while (RESET == usart_flag_get(COM0, USART_FLAG_TBE));
-}
-
-void uart0_send_dat(uint8_t *str, uint16_t len)
-{
-    int i = 0;
-    for (i = 0; i < len; i++)
-    {
-        usart_data_transmit(COM0, str[i]);
-        while (RESET == usart_flag_get(COM0, USART_FLAG_TBE))
-            ;
-    }
-}
-
-bool uart0_get_data(uint8_t *p_buffer, uint32_t *len)
-{
-    // //   usart_interrupt_enable(com0, USART_INT_RBNE);
-    // if (!g_uart_rx_is_updated)
-    // {
-    //     return false;
-    // }
-    // memcpy(p_buffer, g_uart_rxbuffer, g_uart_rxcount);
-    // *len = g_uart_rxcount;
-    // g_uart_rxcount = 0;
-    // g_uart_rx_is_updated = false;
-    // //  usart_interrupt_disable(com0, USART_INT_RBNE);
-
-    return false;
 }

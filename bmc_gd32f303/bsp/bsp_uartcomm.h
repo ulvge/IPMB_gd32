@@ -7,7 +7,6 @@
 #include <stdbool.h>
 #include <FIFO.h>
 
-
 typedef struct {
     uint32_t    baud;
     IRQn_Type   irqN;

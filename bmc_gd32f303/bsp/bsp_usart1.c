@@ -34,7 +34,6 @@ static const UART_CONFIG_STRUCT g_uart0Config= {
 };
 static UART_PARA_STRUCT g_UARTPara = {
     .usart_periph = COM1,  
-    //.fifo = NULL,
     .config = &g_uart0Config,
 };
 

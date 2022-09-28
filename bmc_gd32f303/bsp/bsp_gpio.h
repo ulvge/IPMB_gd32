@@ -36,12 +36,37 @@
 #define TEST_GPIO_PORT                   GPIOE
 #define TEST_GPIO_CLK                    RCU_GPIOE
 
+typedef enum 
+{ 
+    GPIO_OUT_LED_RED = 0,
+    GPIO_OUT_LED_GREEN,
+    GPIO_OUT_CPU_POWER_ON,
+    GPIO_OUT_CPU_POWER_OFF,
+    GPIO_OUT_CPU_RESET,
+    GPIO_OUT_BMC_POWER_ON_FINISHED,
+
+    GPIO_IN_GAP0,
+    GPIO_IN_GAP1,
+    GPIO_IN_GAP2,
+    GPIO_IN_GAP3,
+    GPIO_IN_GAP4,
+    GPIO_IN_GAP5,
+    GPIO_PIN_MAX
+}BMC_GPIO_enum;
+
+typedef struct {
+    BMC_GPIO_enum     	alias;
+    uint32_t      		gpioPort;
+    uint32_t      		pin;
+    rcu_periph_enum     gpioClk;
+    uint8_t             pinMode;
+    uint8_t             pinSpeed;
+} GPIOConfig;
   
-void      addr_gpio_init     (void);
+void      gpio_bspInit     (void);
 uint8_t   get_board_addr     (void);
 
-void      test_gpio_init     (void);
-void      test_gpio_set      (bool status);
-
+FlagStatus gpio_getPinStatus(BMC_GPIO_enum alias);
+void gpio_setPinStatus(BMC_GPIO_enum alias, bool status);
 
 #endif /* __BSP_GPIO_H_ */

@@ -43,6 +43,7 @@
 ".\output\bsp_gpio.o"
 ".\output\bsp_net_gpio.o"
 ".\output\bsp_timer.o"
+".\output\bsp_uartcomm.o"
 ".\output\system_gd32f30x.o"
 ".\output\gd32f30x_adc.o"
 ".\output\gd32f30x_bkp.o"
