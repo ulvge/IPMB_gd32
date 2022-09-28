@@ -108,18 +108,6 @@ void uart3_send_dat(uint8_t *str, uint16_t len)
     }
 }
 
-void uart3_send_string(char *str)
-{
-    unsigned int k = 0;
-    do
-    {
-        usart_data_transmit(COM3, *(str + k));
-        while (RESET == usart_flag_get(COM3, USART_FLAG_TBE))
-            ;
-        k++;
-    } while (*(str + k) != '\0');
-}
-
 bool uart3_get_data(uint8_t *p_buffer, uint32_t *len)
 {
     // if (!g_uart_rx_is_updated)

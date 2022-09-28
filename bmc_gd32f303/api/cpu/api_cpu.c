@@ -66,6 +66,7 @@ static void vTaskFTUartWrite(void *pvParameters)
 	MsgPkt_T *Msg = (MsgPkt_T *)buff;
 	int  req_len = 0;
 
+	UNUSED(req_len);
 	while (1)
 	{
 		err = xQueueReceive(FTUartWrite_Queue, buff, portMAX_DELAY);
@@ -93,7 +94,7 @@ static void vTaskFTUartWrite(void *pvParameters)
 		default:
 			break;
 		}
-		uart1_dma_enable(req_len);
+		//uart1_dma_enable(req_len);
 		
 	}
 }
@@ -312,7 +313,6 @@ DecodeSerialPkt(_NEAR_ INT8U *Pkt, INT16U Len)
 uint16_t GetBmcFirmwareVersion(char* str)
 {
 	char *p[5];
-	int num = 0;
 	char buff[20] = {0};
 	uint16_t version = 0xffff;
 
@@ -324,15 +324,7 @@ uint16_t GetBmcFirmwareVersion(char* str)
 	}
 	
 	memcpy(buff, str, str_len);
-	num = split(buff, " ", p);
-	if (num == 2)
-	{
-		version = atoi(p[1]);
-	}
-	else
-	{
-		LOG_E("version str error! %d", num);
-	}
+	version = atoi(buff);
 
 	return version;	
 }

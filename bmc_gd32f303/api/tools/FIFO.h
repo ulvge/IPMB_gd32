@@ -33,8 +33,8 @@ typedef struct {
 #define UART_SENDING                0x01
 typedef struct {
     INT32U          status;
-    FIFO            sfifo;                    
-    FIFO            rfifo;                    
+    FIFO            sfifo;
+    FIFO            rfifo;
 }FIFO_Buf_STRUCT;	
 
 

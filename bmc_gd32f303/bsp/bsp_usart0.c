@@ -1,82 +1,49 @@
 #include "bsp_usart0.h"
-#include <string.h>
+#include <string.h>   
+#include <stdarg.h>  
 #include "main.h"
 #include "mcro_def.h"
 #include "OSPort.h"
 #include "Message.h"
-#include "MsgHndlr.h"
+#include "MsgHndlr.h"  
+#include "FIFO.h"
+#include "bsp_uartcomm.h"
 
-#ifdef USE_UART0_DEBUG
-	/* retarget the C library printf function to the USART */
-__weak	int fputc(int ch, FILE *f)
-	{
-			usart_data_transmit(USART0, (uint8_t)ch);
-			while (RESET == usart_flag_get(USART0, USART_FLAG_TBE))
-					;
+static const UART_CONFIG_STRUCT g_uart0Config= {
+    .baud = 115200U,
+    .irqN = USART0_IRQn,
+    .prePriority = 10,
+    .subPriority = 0,
+    
+    .txPort = GPIOD,
+    .txPin = COM0_TX_PIN,
+    .txPinMode = GPIO_MODE_AF_PP,
+    .txPinSpeed = GPIO_OSPEED_50MHZ,
 
-			return ch;
-	}
-#elif USE_UART1_DEBUG
-__weak	int fputc(int ch, FILE *f)
-	{
-			usart_data_transmit(USART1, (uint8_t)ch);
-			while (RESET == usart_flag_get(USART1, USART_FLAG_TBE))
-					;
+    .rxPort = GPIOD,
+    .rxPin = COM0_RX_PIN,
+    .rxPinMode = GPIO_MODE_IN_FLOATING,
+    .rxPinSpeed = GPIO_OSPEED_50MHZ,
 
-			return ch;
-	}
-#elif USE_UART3_DEBUG
-__weak	int fputc(int ch, FILE *f)
-	{
-			usart_data_transmit(UART3, (uint8_t)ch);
-			while (RESET == usart_flag_get(UART3, USART_FLAG_TBE))
-					;
+    .rcuUart = COM0_CLK,
+    .rcuGPIO = COM0_GPIO_CLK,
+};
+static UART_PARA_STRUCT g_UARTPara = {
+    .usart_periph = COM0,  
+    //.fifo = NULL,
+    .config = &g_uart0Config,
+};
 
-			return ch;
-	}
-#elif USE_UART7_DEBUG
-__weak	int fputc(int ch, FILE *f)
-	{
-			usart_data_transmit(UART7, (uint8_t)ch);
-			while (RESET == usart_flag_get(UART7, USART_FLAG_TBE))
-					;
+#define UART0_BUFF_SIZE 	(50)
+static INT8U g_buffSend[UART0_BUFF_SIZE];	 
+static INT8U g_buffRec[UART0_BUFF_SIZE];
 
-			return ch;
-	}
-#endif
-
-void com0_init()
+void com0_init(void)
 {
-    /* enable GPIO clock */
-    rcu_periph_clock_enable(COM0_GPIO_CLK);
-
-    /* enable USART clock */
-    rcu_periph_clock_enable(COM0_CLK);
-
-    /* connect port to USARTx_Tx */
-    gpio_init(COM0_GPIO_PORT, GPIO_MODE_AF_PP, GPIO_OSPEED_50MHZ, COM0_TX_PIN);
-
-    /* connect port to USARTx_Rx */
-    gpio_init(COM0_GPIO_PORT, GPIO_MODE_IN_FLOATING, GPIO_OSPEED_50MHZ, COM0_RX_PIN);
-
-    /* USART configure */
-    usart_deinit(COM0);
-    usart_baudrate_set(COM0, 115200U);
-    usart_word_length_set(COM0, USART_WL_8BIT);
-    usart_stop_bit_set(COM0, USART_STB_1BIT);
-    usart_parity_config(COM0, USART_PM_NONE);
-    usart_hardware_flow_rts_config(COM0, USART_RTS_DISABLE);
-    usart_hardware_flow_cts_config(COM0, USART_CTS_DISABLE);
-    usart_receive_config(COM0, USART_RECEIVE_ENABLE);
-    usart_transmit_config(COM0, USART_TRANSMIT_ENABLE);
-    usart_enable(COM0);
-
-    /* USART interrupt configuration */
-    nvic_irq_enable(USART0_IRQn, 10, 0);
-    /* enable USART TBE interrupt */
-    usart_interrupt_enable(COM0, USART_INT_RBNE);
+	FIFO_Init(&g_UARTPara.fifo.sfifo, g_buffSend, sizeof(g_buffSend));	
+	FIFO_Init(&g_UARTPara.fifo.rfifo, g_buffRec, sizeof(g_buffRec));
+    com_init(&g_UARTPara);
 }
-
 #ifdef USE_UART0_AS_IPMI
 extern xQueueHandle RecvDatMsg_Queue;
 static MsgPkt_T    g_uart_Req;
@@ -85,8 +52,8 @@ static MsgPkt_T    g_uart_Req;
 void USART0_IRQHandler(void)
 {
     uint8_t res;
-		static BaseType_t xHigherPriorityTaskWoken;  // must set xHigherPriorityTaskWoken as a static variable, why?
-	
+    static BaseType_t xHigherPriorityTaskWoken;  // must set xHigherPriorityTaskWoken as a static variable, why?
+
 #ifdef USE_UART0_AS_IPMI
 
     BaseType_t err;
@@ -150,18 +117,6 @@ void uart0_send_dat(uint8_t *str, uint16_t len)
         while (RESET == usart_flag_get(COM0, USART_FLAG_TBE))
             ;
     }
-}
-
-void uart0_send_string(uint8_t *str)
-{
-    unsigned int k = 0;
-    do
-    {
-        usart_data_transmit(USART0, *(str + k));
-        while (RESET == usart_flag_get(COM0, USART_FLAG_TBE))
-            ;
-        k++;
-    } while (*(str + k) != '\0');
 }
 
 bool uart0_get_data(uint8_t *p_buffer, uint32_t *len)

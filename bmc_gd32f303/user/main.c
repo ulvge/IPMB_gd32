@@ -106,7 +106,7 @@ int main(void)
     platform_init();
 
     com1_init();
-
+						     
     printf("%s", projectInfo); 
     g_utc_time_bmc_firmware_build = currentSecsSinceEpoch(__DATE__, __TIME__);
     g_bmc_firmware_version = GetBmcFirmwareVersion(BMC_VERSION);

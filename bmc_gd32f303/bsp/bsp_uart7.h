@@ -21,7 +21,6 @@
 void com7_init(void);
 
 void uart7_send_dat( uint8_t *str, uint16_t len);
-void uart7_send_string( char *str);
 
 bool uart7_get_data(uint8_t *p_buffer, uint32_t *len);
 

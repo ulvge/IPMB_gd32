@@ -631,6 +631,11 @@
               <FileType>1</FileType>
               <FilePath>..\bsp\bsp_timer.c</FilePath>
             </File>
+            <File>
+              <FileName>bsp_uartcomm.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\bsp\bsp_uartcomm.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>

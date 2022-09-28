@@ -44,17 +44,7 @@
 #define BASIC_MODE_CALLBACK				3
 #define	PPP_MODE_CALLBACK				4
 
-#ifdef USE_UART0_AS_IPMI
-#define serial_write(dat, len)          uart0_send_dat(dat, len)
-#elif  USE_UART1_AS_IPMI
-#define serial_write(dat, len)          uart1_send_dat(dat, len)
-#elif  USE_UART3_AS_IPMI
-#define serial_write(dat, len)          uart3_send_dat(dat, len)
-#elif  USE_UART7_AS_IPMI
-#define serial_write(dat, len)          uart7_send_dat(dat, len)
-#else
-#define serial_write(dat, len)
-#endif
+#define serial_write(dat, len)          uart_sendData(IPMI_UART_PERIPH, dat, len)
 /**
  * @def MAX_SERIAL_PKT_SIZE			    
  * @brief Maximum serial buffer size 

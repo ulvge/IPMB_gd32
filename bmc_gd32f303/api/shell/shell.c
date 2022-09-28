@@ -1730,7 +1730,7 @@ void shellTask(void *param)
 	userShellInit();
     while(1)
     {
-        if (shell->read && shell->read(&data) == 0)
+        if (shell->read && shell->read(&data) == true)
         {
 			if (data != STOP_BYTE) {
 				shellHandler(shell, data);

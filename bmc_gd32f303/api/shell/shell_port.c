@@ -14,6 +14,8 @@
 #include "FreeRTOS.h"
 #include "queue.h"
 #include "Types.h"
+#include "bsp_uartcomm.h"
+#include "main.h"
 
 Shell shell;
 char shellBuffer[512];
@@ -26,7 +28,7 @@ char shellBuffer[512];
  */
 void userShellWrite(char data)
 {
-	uart1_send_byte(data);
+	uart_sendByte(DEBUG_UART_PERIPH, data);
 }
 
 
@@ -36,12 +38,12 @@ void userShellWrite(char data)
  * @param data 数据
  * @return char 状态
  */
-signed char userShellRead(char *data)
+BOOLEAN userShellRead(char *data)
 {
-    if (uart1_get_data((INT8U *)data) == true) {
-		return 0;
-    } else {
-        return -1;
+    if (uart_getByte(DEBUG_UART_PERIPH, (INT8U *)data) == false) {  
+        return false;
+    } else {  
+		return true;
     }
 }
 

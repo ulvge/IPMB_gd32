@@ -43,6 +43,7 @@ OF SUCH DAMAGE.
 #include "FreeRTOS.h"
 #include "task.h"    
 #include "api_cpu.h"
+#include "bsp_uartcomm.h"
 
 /*!
     \brief      this function handles NMI exception
@@ -77,9 +78,9 @@ void HardFault_Handler(void)
 	sprintf(faultBuf + strlen(faultBuf), ">> pc = 0x%08x\n", *(r_msp+6));                            
 	sprintf(faultBuf + strlen(faultBuf), "\n\n");     
 	
-	uart_send_dat_block(USART1, (uint8_t *)faultBuf, strlen(faultBuf));
+	uart_sendDataBlock(USART1, (uint8_t *)faultBuf, strlen(faultBuf));
 										
-	uart_send_dat_block(USART1, (uint8_t *)projectInfo, strlen(projectInfo));  
+	uart_sendDataBlock(USART1, (uint8_t *)projectInfo, strlen(projectInfo));  
 	
     /* if Hard Fault exception occurs, go to infinite loop */
     while(1){
