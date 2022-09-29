@@ -61,12 +61,13 @@ typedef struct {
     rcu_periph_enum     gpioClk;
     uint8_t             pinMode;
     uint8_t             pinSpeed;
+    uint8_t             activeMode; // hi or low active
 } GPIOConfig;
   
 void      GPIO_bspInit     (void);
 uint8_t   get_board_addr     (void);
 
-FlagStatus GPIO_getPinStatus(BMC_GPIO_enum alias);
-bool GPIO_setPinStatus(BMC_GPIO_enum alias, bool status);
+FlagStatus GPIO_getPinStatus(BMC_GPIO_enum alias);    
+bool GPIO_setPinStatus(BMC_GPIO_enum alias, ControlStatus isActive);
 
 #endif /* __BSP_GPIO_H_ */

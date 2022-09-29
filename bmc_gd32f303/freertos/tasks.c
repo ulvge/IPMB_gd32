@@ -39,6 +39,7 @@ task.h is included from an application file. */
 #include "task.h"
 #include "timers.h"
 #include "stack_macros.h"
+#include "bsp_gpio.h"
 
 /* Lint e9021, e961 and e750 are suppressed as a MISRA exception justified
 because the MPU ports require MPU_WRAPPERS_INCLUDED_FROM_API_FILE to be defined
@@ -3298,6 +3299,7 @@ static portTASK_FUNCTION( prvIdleTask, pvParameters )
 	any. */
 	portTASK_CALLS_SECURE_FUNCTIONS();
 
+    GPIO_setPinStatus(GPIO_OUT_BMC_POWER_ON_FINISHED, ENABLE);
 	for( ;; )
 	{
 		/* See if any tasks have deleted themselves - if so then the idle task

@@ -43,6 +43,7 @@ OF SUCH DAMAGE.
 #include "bsp_usart1.h"
 #include "bsp_uart3.h"
 #include "bsp_i2c.h"
+#include "bsp_gpio.h"
 
 #include "fan/api_fan.h"
 #include "adc/api_adc.h"
@@ -56,6 +57,7 @@ OF SUCH DAMAGE.
 
 #include "update/update.h"
 #include "bsp_timer.h"
+#include "ChassisCtrl.h"
 
 #define FAN_TASK_PRIO 22
 #define TEST_TASK_PRIO 9
@@ -66,7 +68,7 @@ void start_task(void *pvParameters);
 void fan_task(void *pvParameters);
 TaskHandle_t ComTask_Handler;
 void com_task(void *pvParameters);
-void led_task(void *pvParameters);
+void misc_task(void *pvParameters);
 
 static void watch_dog_init(void);
 
@@ -106,7 +108,8 @@ int main(void)
     platform_init();
 
     UART1_init();
-						     
+    GPIO_bspInit();
+    GPIO_setPinStatus(GPIO_OUT_LED_GREEN, ENABLE);
     printf("%s", projectInfo); 
     g_utc_time_bmc_firmware_build = currentSecsSinceEpoch(__DATE__, __TIME__);
     g_bmc_firmware_version = GetBmcFirmwareVersion(BMC_VERSION);
@@ -114,7 +117,7 @@ int main(void)
     timer_config_init();
     led_init();
     xTaskCreate(start_task, "start", configMINIMAL_STACK_SIZE * 2, NULL, 1, NULL);
-    xTaskCreate(led_task, "led", configMINIMAL_STACK_SIZE, NULL, 26, NULL);
+    xTaskCreate(misc_task, "led", configMINIMAL_STACK_SIZE, NULL, 26, NULL);
     watch_dog_init();
     vTaskStartScheduler();      //prvIdleTask
     while (1)
@@ -173,16 +176,22 @@ void fan_task(void *pvParameters)
     fan_ctrl_loop();
 }
 
-void led_task(void *pvParameters)
+xQueueHandle g_chassisCtrl_Queue = NULL;
+void misc_task(void *pvParameters)
 {
+    g_chassisCtrl_Queue = xQueueCreate(2, sizeof(SamllMsgPkt_T));
+    SamllMsgPkt_T msg;
     while (1)
     {
         led1_set(1);
         vTaskDelay(70);
         led1_set(0);
-        adc_sample_all();
         //printf("abcde\r\n");
-        vTaskDelay(1000);
+        adc_sample_all();
+
+        if (xQueueReceive(g_chassisCtrl_Queue, &msg, 20) == pdPASS){
+            ChassisCtrl(&msg);
+        }
     }
 }
 

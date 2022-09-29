@@ -29,6 +29,7 @@
 ".\output\ipmdevice.o"
 ".\output\bridge.o"
 ".\output\chassisdevice.o"
+".\output\chassisctrl.o"
 ".\output\sensor_helpers.o"
 ".\output\bsp_adc.o"
 ".\output\bsp_capture.o"

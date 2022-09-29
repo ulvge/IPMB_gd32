@@ -24,16 +24,6 @@
 
 #include "Types.h"
 
-/*** Definitions and Macros ***/
-#define  CHASSIS_POWER_DOWN                        0x00
-#define  CHASSIS_POWER_UP                          0x01
-#define  CHASSIS_POWER_CYCLE                       0x02
-#define  CHASSIS_HARD_RESET                        0x03
-#define  CHASSIS_PULSE_DIAGNOSTIC_INTERRUPT        0x04
-#define  CHASSIS_SOFT_SHUTDOWN                     0x05
-
-#define  CHASSIS_PARAMETER_VERSION                 0x01
-
 #define  POH_MINS_PER_COUNT                        60
 
 /******************************************************************************

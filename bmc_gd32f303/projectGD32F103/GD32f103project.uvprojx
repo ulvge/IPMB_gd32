@@ -556,6 +556,11 @@
               <FileType>1</FileType>
               <FilePath>..\ipmi\libipmimsghndlr-3.0.0-src\data\Chassis\ChassisDevice.c</FilePath>
             </File>
+            <File>
+              <FileName>ChassisCtrl.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\ipmi\libipmimsghndlr-3.0.0-src\data\App\AppDevice\ChassisCtrl.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>

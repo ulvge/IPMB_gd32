@@ -29,7 +29,7 @@
  *---------------------------------------------------------------------------*/
 #define IPM_DEVICE					1
 #define APP_DEVICE					1
-#define CHASSIS_DEVICE				0
+#define CHASSIS_DEVICE				1
 
 #define EVENT_PROCESSING_DEVICE		0
 #define PEF_DEVICE					0

@@ -165,8 +165,8 @@ static void vTaskResponseDatWrite(void *pvParameters)
 {
     char buff[sizeof(MsgPkt_T)];
     MsgPkt_T *ResMsg = (MsgPkt_T *)buff;
-    ResponseDatMsg_Queue = xQueueCreate(5, sizeof(MsgPkt_T));
-    RecvForwardI2CDatMsg_Queue = xQueueCreate(5, sizeof(MsgPkt_T));
+    ResponseDatMsg_Queue = xQueueCreate(3, sizeof(MsgPkt_T));
+    RecvForwardI2CDatMsg_Queue = xQueueCreate(3, sizeof(MsgPkt_T));
 
     while (1)
     {

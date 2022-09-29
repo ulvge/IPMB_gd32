@@ -96,12 +96,16 @@
 #define SDR_MAX_SIZE            ( 64 )
 
 /* Chassis control codes */
-#define CHASSIS_POWER_DOWN      ( (u8)0x00 )
-#define CHASSIS_POWER_UP        ( (u8)0x01 )
-#define CHASSIS_POWER_CYCLE     ( (u8)0x02 )
-#define CHASSIS_HARD_RESET      ( (u8)0x03 )
-#define CHASSIS_PULSE_DUMP      ( (u8)0x04 )
-#define CHASSIS_ACPI_POWER_DOWN ( (u8)0x05 )
+typedef enum
+{
+    CHASSIS_POWER_OFF               = 0x00,
+    CHASSIS_POWER_ON                = 0x01,
+    CHASSIS_POWER_CYCLE             = 0x02,
+    CHASSIS_POWER_RESET             = 0x03,
+    CHASSIS_DIAGNOSTIC_INTERRUPT    = 0x04,
+    CHASSIS_SOFT_OFF                = 0x05,
+    CHASSIS_SMI_INTERRUPT           = 0x06,
+}CHASSIS_CMD_CTRL;
 
 /* Sensor Type Codes */
 #define IPMI_SENSOR_TEMPERATURE     ( (u8)0x01 )

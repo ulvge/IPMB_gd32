@@ -18,6 +18,7 @@
 #include "WDT.h"
 #include "IPMIConf.h"
 #include "Sensor.h"
+#include "bsp_gpio.h"
 
 
 //common source for versions
@@ -116,6 +117,8 @@ static BaseType_t ColdResetTimerCreate()
     TimerHandle_t xTimersIpmiReset = xTimerCreate("TimerIpmiReset", 1500/portTICK_RATE_MS, pdFALSE, (void*)0, ColdResetTimerCallBack);
     return xTimerStart(xTimersIpmiReset, portMAX_DELAY);	
 }
+
+extern xQueueHandle g_chassisCtrl_Queue;
 /*---------------------------------------
  * ColdReset
  *---------------------------------------*/
@@ -123,8 +126,15 @@ int
 ColdReset (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst)
 {
     g_BMCInfo.Msghndlr.ColdReset = 1;
-    *pRes = CC_NORMAL;
-    if (ColdResetTimerCreate() == pdPASS){
+    *pRes = CC_NORMAL;  
+    BaseType_t err = pdFALSE;
+				
+    SamllMsgPkt_T Msg;
+    Msg.Cmd  = CHASSIS_POWER_RESET;
+    Msg.Size = 1;
+    err = xQueueSend(g_chassisCtrl_Queue, (char *)&Msg, 10);
+	
+    if (ColdResetTimerCreate() == pdPASS && err == pdPASS){
 	    printf("\nMCU RESET by ipmi ColdReset\n");
     } else {
 	    LOG_E("MCU RESET by ipmi creteTimer failed");

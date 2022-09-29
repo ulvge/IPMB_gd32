@@ -12,33 +12,47 @@
  *****************************************************************
  *****************************************************************
  ******************************************************************
- * 
- * ChassisCtrl.h
+ *
+ * ChassisCtrl.c
  * Chassis control functions.
  *
  *  Author: AMI MegaRAC PM Team
  ******************************************************************/
-#ifndef _CHASSIS_CTRL_H_
-#define _CHASSIS_CTRL_H_
-#include "Types.h"
-
-/**
- * @def Parameters to controle the Chassis actions
- *
-**/
-
-#define CHASSIS_CTRL_ACTION             0x01
-#define ON_SYSTEM_EVENT_DETECTED        0x02
-#define ON_POWER_EVENT_DETECTED         0x03
-#define ON_SET_RESTART_CAUSE            0x04
 
 
-/**
- * @brief Initialize Chassis Control module.
- * @return 0 if success, -1 if error.
-**/
-extern void OnSetRestartCause (INT8U u8SysRestartCause, INT8U u8MadeChange,int BMCInst);
-extern void ChassisCtrl(SamllMsgPkt_T *msg);
+
+#include <stdio.h>
+#include <stdbool.h>
+#include "main.h"
+#include "Message.h"
+#include "ChassisDevice.h"
+#include "libipmi.h"
+#include "bsp_gpio.h"
+
+void ChassisCtrl(SamllMsgPkt_T *msg)
+{
+    switch (msg->Cmd)
+    {   
+        case CHASSIS_SOFT_OFF :
+        case CHASSIS_POWER_OFF :
+            GPIO_setPinStatus(GPIO_OUT_CPU_POWER_OFF, ENABLE);
+			break;
+        case CHASSIS_POWER_ON :
+            GPIO_setPinStatus(GPIO_OUT_CPU_POWER_ON, ENABLE);
+			break;
+        case CHASSIS_POWER_RESET :
+            GPIO_setPinStatus(GPIO_OUT_CPU_RESET, ENABLE);
+			break;
+        default : 
+			printf("Sorry, CMD doesn't support it yet");
+            break;
+    }
+}
 
 
-#endif /*_CHASSIS_CTRL_H_*/
+
+
+
+
+
+

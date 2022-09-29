@@ -21,6 +21,7 @@
 #ifndef MESSAGE_H
 #define MESSAGE_H
 #include "Types.h"
+#include "libipmi.h"
 
 
 #pragma pack( 1 )
@@ -58,7 +59,15 @@ typedef struct
     INT8U       Data [MSG_PAYLOAD_SIZE];  /* Data */
 } PACKED MsgPkt_T;
 
-
+typedef struct
+{
+    INT32U      Param;                    /* Parameter */
+    INT8U       Channel;                  /* Originator's channel number */
+    CHASSIS_CMD_CTRL       Cmd;           /* Command that needs to be processed*/
+    INT8U       NetFnLUN;                 /* Net function and LUN of command   */
+    INT32U      Size;                     /* Size of the data */
+    INT8U       Data [20];  /* Data */
+} PACKED SamllMsgPkt_T;
 #pragma pack( )
 
 

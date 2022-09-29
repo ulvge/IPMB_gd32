@@ -172,6 +172,7 @@ GetChassisStatus (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,int BMCIn
 }
 
 
+extern xQueueHandle g_chassisCtrl_Queue;
 extern xQueueHandle FTUartWrite_Queue;
 /*-------------------------------------
  * ChassisControl
@@ -184,7 +185,7 @@ ChassisControl ( _NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,int BMCIns
     _NEAR_  ChassisControlRes_T*    pChassisControlRes = 
         (_NEAR_  ChassisControlRes_T*) pRes;
     _FAR_ BMCInfo_t* pBMCInfo = &g_BMCInfo;
-    MsgPkt_T Msg;
+    SamllMsgPkt_T Msg;
     BaseType_t err = pdFALSE;
 
     pChassisControlRes->CompletionCode = CC_NORMAL;
@@ -197,60 +198,12 @@ ChassisControl ( _NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,int BMCIns
         return sizeof(INT8U);	
     }
 
-    switch (pChassisControlReq->ChassisControl & 0x0F  )
-    {
-
-    case CHASSIS_POWER_DOWN:
-        IPMI_DBG_PRINT ("Chassis IS GOING FOR POWER_DOWN\n");
-        pBMCInfo->HostOFFStopWDT = TRUE ;
-        pBMCInfo->Msghndlr.ChassisControl= CHASSIS_POWER_DOWN;
-
-        Msg.Size = GetEncodeCmd(CPUPowerOffCmd, Msg.Data);
-        Msg.Cmd  = CPUPowerOffCmd;
-        break;
-
-    case CHASSIS_POWER_UP:
-        IPMI_DBG_PRINT ("Chassis IS GOING FOR POWER UP\n");
-        pBMCInfo->Msghndlr.ChassisControl = CHASSIS_POWER_UP;
-
-        Msg.Size = GetEncodeCmd(CPUPowerUpCmd, Msg.Data);
-        Msg.Cmd  = CPUPowerUpCmd;
-        break;
-
-    case CHASSIS_POWER_CYCLE:
-        IPMI_DBG_PRINT ("Chassis IS GOING FOR POWER CYCLE\n");
-        pBMCInfo->Msghndlr.ChassisControl = CHASSIS_POWER_CYCLE;
-
-        break;
-
-    case CHASSIS_HARD_RESET:
-        IPMI_DBG_PRINT ("Chassis IS GOING FOR HARD RESET");
-        pBMCInfo->Msghndlr.ChassisControl = CHASSIS_HARD_RESET;
-
-        Msg.Size = GetEncodeCmd(CPUResetCmd, Msg.Data);
-        Msg.Cmd  = CPUResetCmd;
-        break;
-
-    case CHASSIS_PULSE_DIAGNOSTIC_INTERRUPT:
-        IPMI_DBG_PRINT ("Chassis IS GOING FOR DIAG INT\n");
-
-        break;
-
-    case CHASSIS_SOFT_SHUTDOWN:
-        IPMI_DBG_PRINT ("Chassis IS GOING FOR SOFT SHUTDOWN\n");
-
-        break;
-
-    default:
-        IPMI_DBG_PRINT ("UNKNOWN Chassis CONTROL REQUEST \n");
-        pChassisControlRes->CompletionCode = CC_INV_DATA_FIELD;
-        break;
-    }
-
-    err = xQueueSend(FTUartWrite_Queue, (char *)&Msg, 10);
+    Msg.Cmd  = pChassisControlReq->ChassisControl; // CHASSIS_CMD_CTRL
+    Msg.Size = 1;
+    err = xQueueSend(g_chassisCtrl_Queue, (char *)&Msg, 10);
     if (err == pdFALSE)
     {
-        LOG_E("FTUartWrite_Queue send msg ERR!");
+        LOG_E("g_chassisCtrl_Queue send msg ERR!");
     }
 
     return sizeof (ChassisControlRes_T);

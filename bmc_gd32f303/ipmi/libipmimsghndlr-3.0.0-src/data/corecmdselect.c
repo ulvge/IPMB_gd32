@@ -599,7 +599,7 @@ NetFnCmds_T g_coressi [] =
 
 
 
-
+// config "is enable"
 NETFNTable_T CoreNetfntbl [] = 
 {
 
