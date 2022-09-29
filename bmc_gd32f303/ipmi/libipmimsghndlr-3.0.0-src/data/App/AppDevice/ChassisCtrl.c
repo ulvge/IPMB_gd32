@@ -28,7 +28,43 @@
 #include "ChassisDevice.h"
 #include "libipmi.h"
 #include "bsp_gpio.h"
+#include "freertos.h"
+#include "timers.h"
+					 
+#define GPIO_ACTIVE_PULSE_TIME_MS 1500
 
+
+static void ChassisCtrlTimerCallBack(xTimerHandle pxTimer)
+{
+	CHASSIS_CMD_CTRL cmd = (CHASSIS_CMD_CTRL)((uint32_t)pvTimerGetTimerID(pxTimer));
+
+    switch (cmd)
+    {   
+        case CHASSIS_SOFT_OFF :
+        case CHASSIS_POWER_OFF :
+            GPIO_setPinStatus(GPIO_OUT_CPU_POWER_OFF, DISABLE);
+			break;
+        case CHASSIS_POWER_ON :
+            GPIO_setPinStatus(GPIO_OUT_CPU_POWER_ON, DISABLE);
+			break;
+        case CHASSIS_POWER_RESET :
+            GPIO_setPinStatus(GPIO_OUT_CPU_RESET, DISABLE);         
+	        //NVIC_SystemReset();
+			break;
+        default : 
+			printf("Sorry, CMD doesn't support it yet");
+            break;
+    }
+    printf("ChassisCtrl : handler over cmd=%d", cmd);
+    xTimerDelete(pxTimer, 200);
+}
+
+static BaseType_t ChassisCtrlTimerCreate(INT32U cmd, INT32U delayMs)
+{
+    TimerHandle_t xTimersIpmiReset = xTimerCreate("TimerIpmiReset", delayMs/portTICK_RATE_MS, pdFALSE, 
+                                    (void*)cmd, ChassisCtrlTimerCallBack);
+    return xTimerStart(xTimersIpmiReset, portMAX_DELAY);
+}
 void ChassisCtrl(SamllMsgPkt_T *msg)
 {
     switch (msg->Cmd)
@@ -43,9 +79,13 @@ void ChassisCtrl(SamllMsgPkt_T *msg)
         case CHASSIS_POWER_RESET :
             GPIO_setPinStatus(GPIO_OUT_CPU_RESET, ENABLE);
 			break;
-        default : 
+        default :
 			printf("Sorry, CMD doesn't support it yet");
-            break;
+            return;
+    }
+	
+    if (ChassisCtrlTimerCreate(msg->Cmd, GPIO_ACTIVE_PULSE_TIME_MS) == pdFAIL){
+	    printf("ChassisCtrl : creteTimer failed");
     }
 }
 

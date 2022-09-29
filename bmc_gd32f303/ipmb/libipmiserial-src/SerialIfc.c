@@ -359,6 +359,7 @@ ValidateSerialCheckSum (_FAR_ INT8U* Pkt, INT16U Len)
 
     if (0 != Sum)
     {
+		//printf("checksum tips :seg1 = %d\n", Sum);
         return -1;
     }
 
@@ -375,7 +376,8 @@ ValidateSerialCheckSum (_FAR_ INT8U* Pkt, INT16U Len)
         return 0;
     }
     else
-    {
+    {             
+		//printf("checksum tips :seg2 = %d\n", Sum);
         return -1;
     }
 }

@@ -107,17 +107,6 @@ GetDevID (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCIns
     return sizeof (GetDevIDRes_T);
 }
 
-static void ColdResetTimerCallBack(xTimerHandle pxTimer)
-{
-	NVIC_SystemReset();
-}
-
-static BaseType_t ColdResetTimerCreate()
-{
-    TimerHandle_t xTimersIpmiReset = xTimerCreate("TimerIpmiReset", 1500/portTICK_RATE_MS, pdFALSE, (void*)0, ColdResetTimerCallBack);
-    return xTimerStart(xTimersIpmiReset, portMAX_DELAY);	
-}
-
 extern xQueueHandle g_chassisCtrl_Queue;
 /*---------------------------------------
  * ColdReset
@@ -133,12 +122,9 @@ ColdReset (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCIn
     Msg.Cmd  = CHASSIS_POWER_RESET;
     Msg.Size = 1;
     err = xQueueSend(g_chassisCtrl_Queue, (char *)&Msg, 10);
-	
-    if (ColdResetTimerCreate() == pdPASS && err == pdPASS){
-	    printf("\nMCU RESET by ipmi ColdReset\n");
-    } else {
+    if (err == pdPASS){
 	    LOG_E("MCU RESET by ipmi creteTimer failed");
-    }
+	}
     return sizeof (*pRes);
 }
 

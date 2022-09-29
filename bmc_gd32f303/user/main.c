@@ -178,9 +178,9 @@ void fan_task(void *pvParameters)
 
 xQueueHandle g_chassisCtrl_Queue = NULL;
 void misc_task(void *pvParameters)
-{
+{                                 
+	SamllMsgPkt_T msg;
     g_chassisCtrl_Queue = xQueueCreate(2, sizeof(SamllMsgPkt_T));
-    SamllMsgPkt_T msg;
     while (1)
     {
         led1_set(1);
