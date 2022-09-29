@@ -26,8 +26,10 @@
 #define     TWO_PARTIAL_PRESSURE_CONFF        2
 #define     ONE_PARTIAL_PRESSURE_CONFF1       1
 
-
 void sample_init(void);
+ADCChannlesConfig *adc_getConfig(void);   
+uint8_t adc_getChannelNum(void); 
+BOOLEAN adc_getValByIndex(uint8_t idx, const ADCChannlesConfig **channlCfg, uint16_t *adcVal);
 
 /*get temprate value */
 float get_temprate_convers_value(uint16_t channel);

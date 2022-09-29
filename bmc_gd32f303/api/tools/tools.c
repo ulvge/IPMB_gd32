@@ -19,7 +19,8 @@
 #include "project_select.h"
 #include "debug_print.h"
 #include "main.h"
-#include "bsp_i2c.h"
+#include "bsp_i2c.h"  
+#include "adc/api_adc.h"
 #include "utc/api_utc.h"
 #include "stdlib.h"  
 #include "OSPort.h"
@@ -365,26 +366,18 @@ SHELL_EXPORT_CMD(SHELL_CMD_PERMISSION(0) | SHELL_CMD_TYPE(SHELL_TYPE_CMD_MAIN) |
 // tool 4********list all sensors info **********************************************
 int sensor(int argc, char *argv[])
 {
-    char buf[16 * 3] = {0};
-    int SensorNum = 4;
-    for (int i = 0; i < SensorNum; i++)
-    {
-        printf("channel %d\n\r", i);
-        sprintf(buf, "sensor :%d", g_temperature_raw[i]);
-        LOG_I("%d", buf);
+	int sensorNum = adc_getChannelNum(); 
+	const ADCChannlesConfig *chanCfg = NULL;
+    uint16_t adcVal;
+    for (int i = 0; i < sensorNum; i++)
+    {                          
+		if (adc_getValByIndex(i, &chanCfg, &adcVal) == false){
+			LOG_I("sensor :idx = %d error \r\n", i);
+			continue;
+		}
+        LOG_I("sensor :idx = %d, name = %s, channel = %d, val = %d\r\n", i, chanCfg->alias, chanCfg->adcChannl, adcVal);
+        //LOG_I("sensor :channel = %d, val = %d\r\n", i, g_temperature_raw[i]);
     }
-
-    /*
-		char reading = 8;
-		char unit[] = "��";
-	
-		sprintf(buf, "%s", name);
-		sprintf(buf+16, "%d", reading);
-		sprintf(buf+32, "%s", unit);
-
-        */
-    //LOG_RAW("%s", buf);
-
     return 0;
 }
 
@@ -546,4 +539,14 @@ __attribute__((unused)) static int parameterChecked(int para1, int para2, int pa
   }
 }
 
+__attribute__((unused)) void StackFlow(void)
+{
+	int a[3],i;
+	
+	UNUSED(a); 
+	for(i=0; i<10000; i++)
+	{
+		a[i]=100/i;
+	}
+}
 

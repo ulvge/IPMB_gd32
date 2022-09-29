@@ -21,8 +21,10 @@ const static ADCChannlesConfig g_adcChannlConfig[] = {
     {ADC_CHANNEL_8, ADC0, RCU_ADC0, GPIOB, RCU_GPIOB, GPIO_PIN_0, "X100 temp"},
     {ADC_CHANNEL_10, ADC0, RCU_ADC0, GPIOC, RCU_GPIOC, GPIO_PIN_0, "P12V standby"},
 #endif
-};
+};      
+
 #define ADC_CHANNLE_CONFIG_NUM (sizeof(g_adcChannlConfig) / sizeof(g_adcChannlConfig[0]))
+
 static uint16_t g_adcVals[ADC_CHANNLE_CONFIG_NUM] = {0};
 
 static void adc_test(void);
@@ -31,6 +33,10 @@ void sample_init(void)
 {
     adc_init(g_adcChannlConfig, sizeof(g_adcChannlConfig) / sizeof(g_adcChannlConfig[0]));
 }
+uint8_t adc_getChannelNum(void)
+{
+    return ADC_CHANNLE_CONFIG_NUM;
+}    
 
 uint16_t adc_getValByChannel(uint8_t channel)
 {
@@ -42,6 +48,17 @@ uint16_t adc_getValByChannel(uint8_t channel)
         }
     }
     return 0;
+}    
+BOOLEAN adc_getValByIndex(uint8_t idx, const ADCChannlesConfig **channlCfg, uint16_t *adcVal)
+{
+	if (idx > ADC_CHANNLE_CONFIG_NUM)
+	{
+		return false;
+	}
+	*channlCfg = &g_adcChannlConfig[idx];
+	//const ADCChannlesConfig *channlCfg2 = &g_adcChannlConfig[idx];
+	*adcVal = g_adcVals[idx];	
+	return true;
 }
 
 /*get temprate value */
@@ -131,16 +148,6 @@ void adc_sample_all(void)
         g_adcVals[j] = sum / ADC_SAMPLE_TIMES;
     }
     adc_test();
-}
-__attribute__((unused)) void StackFlow(void)
-{
-	int a[3],i;
-	
-	UNUSED(a); 
-	for(i=0; i<10000; i++)
-	{
-		a[i]=100/i;
-	}
 }
 static void adc_test(void)
 {

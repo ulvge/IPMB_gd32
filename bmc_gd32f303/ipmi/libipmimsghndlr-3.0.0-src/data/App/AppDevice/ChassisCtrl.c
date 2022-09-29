@@ -48,7 +48,7 @@ static void ChassisCtrlTimerCallBack(xTimerHandle pxTimer)
             GPIO_setPinStatus(GPIO_OUT_CPU_POWER_ON, DISABLE);
 			break;
         case CHASSIS_POWER_RESET :
-            GPIO_setPinStatus(GPIO_OUT_CPU_RESET, DISABLE);         
+            GPIO_setPinStatus(GPIO_OUT_CPU_RESET, DISABLE);
 	        //NVIC_SystemReset();
 			break;
         default : 

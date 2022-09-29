@@ -339,7 +339,7 @@
               <MiscControls>--diag_suppress=177</MiscControls>
               <Define>ARM_MATH_CM3,__CC_ARM,GD32F1x</Define>
               <Undefine></Undefine>
-              <IncludePath>..\firmware;..\firmware\GD32F10x\GD32F10x_standard_peripheral\Include;..\firmware\GD32F10x\CMSIS\GD\GD32F10x\Include;..\firmware\GD32F10x\CMSIS;..\user;..\bsp;..\ipmi;..\ipmi\data;..\ipmi\ipmi_dev-3.0.0-src;..\ipmi\ipmi_dev-3.0.0-src\data;..\ipmi\ipmi_common;..\ipmi\libipmi-3.1.0-src\data\include;..\ipmi\libipmi-3.1.0-src\data;..\ipmb;..\api;..\api\flash;..\api\shell;..\api\tools;..\api\cpu;..\freertos\include;..\freertos\portable;..\freertos\portable\RVDS\ARM_CM3;..\ff10</IncludePath>
+              <IncludePath>..\firmware;..\firmware\GD32F10x\GD32F10x_standard_peripheral\Include;..\firmware\GD32F10x\CMSIS\GD\GD32F10x\Include;..\firmware\GD32F10x\CMSIS;..\user;..\bsp;..\ipmi;..\ipmi\data;..\ipmi\ipmi_dev-3.0.0-src;..\ipmi\ipmi_dev-3.0.0-src\data;..\ipmi\ipmi_common;..\ipmi\libipmi-3.1.0-src\data\include;..\ipmi\libipmi-3.1.0-src\data;..\ipmb;..\api;..\api\adc;..\api\flash;..\api\shell;..\api\tools;..\api\cpu;..\freertos\include;..\freertos\portable;..\freertos\portable\RVDS\ARM_CM3;..\ff10</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -412,11 +412,6 @@
               <FilePath>..\api\adc\api_adc.c</FilePath>
             </File>
             <File>
-              <FileName>api_fan.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\api\fan\api_fan.c</FilePath>
-            </File>
-            <File>
               <FileName>pid.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\api\pid\pid.c</FilePath>
@@ -455,6 +450,11 @@
               <FileName>api_cpu.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\api\cpu\api_cpu.c</FilePath>
+            </File>
+            <File>
+              <FileName>api_fan.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\api\fan\api_fan.c</FilePath>
             </File>
           </Files>
         </Group>
