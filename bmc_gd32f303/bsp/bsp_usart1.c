@@ -9,9 +9,9 @@
 #include "stdio.h"
 #include "bsp_uartcomm.h"
 
-#define SendCmdBuf_size 	(50)
+#define UART1_BUFF_SIZE 	(50)
 static INT8U g_buffSend[600];	 
-static INT8U g_buffRec[SendCmdBuf_size];
+static INT8U g_buffRec[UART1_BUFF_SIZE];
 
 static const UART_CONFIG_STRUCT g_uart0Config= {
     .baud = 115200U,
@@ -37,12 +37,11 @@ static UART_PARA_STRUCT g_UARTPara = {
     .config = &g_uart0Config,
 };
 
-void com1_init()
+void UART1_init()
 {
 	FIFO_Init(&g_UARTPara.fifo.sfifo, g_buffSend, sizeof(g_buffSend));	
 	FIFO_Init(&g_UARTPara.fifo.rfifo, g_buffRec, sizeof(g_buffRec));
-    com_init(&g_UARTPara);
-	
+    COM_init(&g_UARTPara);
 }
 
 #if USE_UART1_AS_IPMI
@@ -99,7 +98,7 @@ void USART1_IRQHandler(void)
 		if (is_start == false)
 		{
 			/* receive data */
-            //uart_sendByte(COM1, res);  //loopback
+            //UART_sendByte(COM1, res);  //loopback
 			FIFO_Write(&g_UARTPara.fifo.rfifo, (INT8U)res); // only save
 		}
 	}
@@ -107,11 +106,11 @@ void USART1_IRQHandler(void)
 	if (RESET != usart_interrupt_flag_get(COM1, USART_INT_FLAG_TBE))
     {
         /* send data continue */
-		uart_SendFinally(COM1, &g_UARTPara.fifo);
+		UART_sendFinally(COM1, &g_UARTPara.fifo);
     }
     if (RESET != usart_interrupt_flag_get(COM1, USART_INT_FLAG_TC))
     {
         /* send data continue */
-		uart_SendFinally(COM1, &g_UARTPara.fifo);
+		UART_sendFinally(COM1, &g_UARTPara.fifo);
     }
 }

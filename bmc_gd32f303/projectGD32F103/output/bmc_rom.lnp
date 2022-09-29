@@ -36,7 +36,6 @@
 ".\output\bsp_i2c_gpio.o"
 ".\output\bsp_led.o"
 ".\output\bsp_pwm.o"
-".\output\bsp_uart3.o"
 ".\output\bsp_usart0.o"
 ".\output\bsp_usart1.o"
 ".\output\bsp_gpio.o"

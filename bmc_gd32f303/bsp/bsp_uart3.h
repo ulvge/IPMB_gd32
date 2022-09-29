@@ -18,9 +18,4 @@
 
 void com3_init(void);
 
-void uart3_send_dat( uint8_t *str, uint16_t len);
-
-bool uart3_get_data(uint8_t *p_buffer, uint32_t *len);
-
-
 #endif /* __BSP_USART2_H */

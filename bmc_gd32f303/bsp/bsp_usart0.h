@@ -19,10 +19,7 @@
 #define COM0_GPIO_CLK               RCU_GPIOA
 
 					 
-void com0_init(void);
-void uart0_send_byte(char dat);
-void uart0_send_dat( uint8_t *str, uint16_t len);
-bool uart0_get_data(uint8_t *p_buffer, uint32_t *len);
+void UART0_init(void);
 
 int fgetc(FILE *f);
 

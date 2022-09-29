@@ -63,10 +63,10 @@ typedef struct {
     uint8_t             pinSpeed;
 } GPIOConfig;
   
-void      gpio_bspInit     (void);
+void      GPIO_bspInit     (void);
 uint8_t   get_board_addr     (void);
 
-FlagStatus gpio_getPinStatus(BMC_GPIO_enum alias);
-void gpio_setPinStatus(BMC_GPIO_enum alias, bool status);
+FlagStatus GPIO_getPinStatus(BMC_GPIO_enum alias);
+bool GPIO_setPinStatus(BMC_GPIO_enum alias, bool status);
 
 #endif /* __BSP_GPIO_H_ */

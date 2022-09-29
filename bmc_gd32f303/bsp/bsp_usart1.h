@@ -29,6 +29,6 @@
 #endif
 
 
-void com1_init(void);
+void UART1_init(void);
 
 #endif /* __BSP_USART2_H */

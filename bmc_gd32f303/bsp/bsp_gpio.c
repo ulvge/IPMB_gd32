@@ -27,7 +27,7 @@ const static GPIOConfig g_gpioConfig[] = {
     {GPIO_IN_GAP4,                      GA4_GPIO_PORT, GA4_PIN, GA4_GPIO_CLK, GPIO_MODE_OUT_PP, GPIO_OSPEED_50MHZ},
 };
 
-void gpio_bspInit(void)
+void GPIO_bspInit(void)
 {
     UINT8 num = sizeof(g_gpioConfig) / sizeof(g_gpioConfig[0]);
     const GPIOConfig  *p_gpioCfg;
@@ -39,45 +39,54 @@ void gpio_bspInit(void)
         gpio_init(p_gpioCfg->gpioPort, p_gpioCfg->pinMode, p_gpioCfg->pinSpeed, p_gpioCfg->pin);
 	}
 }
-FlagStatus gpio_getPinStatus(BMC_GPIO_enum alias)
+static const GPIOConfig  *GPIO_findGpio(BMC_GPIO_enum alias)
 {
     UINT8 num = sizeof(g_gpioConfig) / sizeof(g_gpioConfig[0]);
 	const GPIOConfig  *p_gpioCfg;
     for (UINT8 i=0; i< num;i++){
         p_gpioCfg = &g_gpioConfig[i];
         if (p_gpioCfg->alias == alias) {
-            return gpio_input_bit_get(p_gpioCfg->gpioPort, p_gpioCfg->pin);
+            return p_gpioCfg;
         }
     }
-    return RESET;
+    return NULL;
+}
+FlagStatus GPIO_getPinStatus(BMC_GPIO_enum alias)
+{
+    UINT8 num = sizeof(g_gpioConfig) / sizeof(g_gpioConfig[0]);
+	const GPIOConfig  *p_gpioCfg = GPIO_findGpio(alias);
+    
+    if (p_gpioCfg == NULL) {
+        return RESET;
+    }
+    return gpio_input_bit_get(p_gpioCfg->gpioPort, p_gpioCfg->pin);
 }
 
-void gpio_setPinStatus(BMC_GPIO_enum alias, bool status)
+bool GPIO_setPinStatus(BMC_GPIO_enum alias, bool status)
 {
     UINT8 num = sizeof(g_gpioConfig) / sizeof(g_gpioConfig[0]);
-	const GPIOConfig  *p_gpioCfg;
-    for (UINT8 i=0; i< num;i++){
-        p_gpioCfg = &g_gpioConfig[i];
-        if (p_gpioCfg->alias == alias) {
-            if(status){
-                GPIO_BC(p_gpioCfg->gpioPort) = p_gpioCfg->pin;
-            }else{
-                GPIO_BOP(p_gpioCfg->gpioPort) = p_gpioCfg->pin;
-            }
-            break;
-        }
+	const GPIOConfig  *p_gpioCfg = GPIO_findGpio(alias);
+    
+    if (p_gpioCfg == NULL) {
+        return false;
     }
+    if(status){
+        GPIO_BC(p_gpioCfg->gpioPort) = p_gpioCfg->pin;
+    }else{
+        GPIO_BOP(p_gpioCfg->gpioPort) = p_gpioCfg->pin;
+    }
+    return true;
 }
 
 uint8_t get_board_addr()
 {
 	uint8_t addr = 0;
 
-	addr |= gpio_getPinStatus(GPIO_IN_GAP0) << 0;
-	addr |= gpio_getPinStatus(GPIO_IN_GAP1) << 1;
-	addr |= gpio_getPinStatus(GPIO_IN_GAP2) << 2;
-	addr |= gpio_getPinStatus(GPIO_IN_GAP3) << 3;
-	addr |= gpio_getPinStatus(GPIO_IN_GAP4) << 4;
+	addr |= GPIO_getPinStatus(GPIO_IN_GAP0) << 0;
+	addr |= GPIO_getPinStatus(GPIO_IN_GAP1) << 1;
+	addr |= GPIO_getPinStatus(GPIO_IN_GAP2) << 2;
+	addr |= GPIO_getPinStatus(GPIO_IN_GAP3) << 3;
+	addr |= GPIO_getPinStatus(GPIO_IN_GAP4) << 4;
 
     return I2C2_SLAVE_ADDRESS7;
 }

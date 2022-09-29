@@ -28,7 +28,7 @@ char shellBuffer[512];
  */
 void userShellWrite(char data)
 {
-	uart_sendByte(DEBUG_UART_PERIPH, data);
+	UART_sendByte(DEBUG_UART_PERIPH, data);
 }
 
 
@@ -40,7 +40,7 @@ void userShellWrite(char data)
  */
 BOOLEAN userShellRead(char *data)
 {
-    if (uart_getByte(DEBUG_UART_PERIPH, (INT8U *)data) == false) {  
+    if (UART_getByte(DEBUG_UART_PERIPH, (INT8U *)data) == false) {  
         return false;
     } else {  
 		return true;

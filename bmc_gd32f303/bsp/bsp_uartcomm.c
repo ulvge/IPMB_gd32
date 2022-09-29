@@ -15,7 +15,7 @@ static UART_PARA_STRUCT *g_pUARTSHandler[UART_NUM_TOTAL] = {NULL};
 //use FIFO
 int fputc(int ch, FILE *f)
 {
-    return uart_sendByte(DEBUG_UART_PERIPH, ch);
+    return UART_sendByte(DEBUG_UART_PERIPH, ch);
 }
 bool com_registHandler(UART_PARA_STRUCT *uartPara)
 {
@@ -50,7 +50,7 @@ UART_PARA_STRUCT *com_getHandler(uint32_t usart_periph)
     return NULL; //alread exist
 }
 
-bool uart_getByte(uint32_t usart_periph, uint8_t *p_buffer)
+bool UART_getByte(uint32_t usart_periph, uint8_t *p_buffer)
 {
     UART_PARA_STRUCT *uartPara = com_getHandler(usart_periph);
     if (uartPara == NULL) {
@@ -59,7 +59,7 @@ bool uart_getByte(uint32_t usart_periph, uint8_t *p_buffer)
     return FIFO_Read(&uartPara->fifo.rfifo, p_buffer);
 }
 
-bool uart_getData(uint32_t usart_periph, uint8_t *p_buffer, uint32_t buffSize, INT16U *retLen)
+bool UART_getData(uint32_t usart_periph, uint8_t *p_buffer, uint32_t buffSize, INT16U *retLen)
 {
     UART_PARA_STRUCT *uartPara = com_getHandler(usart_periph);
     if (uartPara == NULL) {
@@ -69,7 +69,7 @@ bool uart_getData(uint32_t usart_periph, uint8_t *p_buffer, uint32_t buffSize, I
 }
 
 
-bool uart_sendByte(uint32_t usart_periph, uint8_t dat)
+bool UART_sendByte(uint32_t usart_periph, uint8_t dat)
 {
     UART_PARA_STRUCT *uartPara = com_getHandler(usart_periph);
     if (uartPara == NULL) {
@@ -79,12 +79,12 @@ bool uart_sendByte(uint32_t usart_periph, uint8_t dat)
     
     FIFO_Write(&uartPara->fifo.sfifo, (INT8U)dat); 
 	if(uartPara->fifo.status != UART_SENDING) {
-		uart_SendFinally(usart_periph, &uartPara->fifo);
+		UART_sendFinally(usart_periph, &uartPara->fifo);
 	} 
 	return true;
 }
 
-bool uart_sendData(uint32_t usart_periph, uint8_t *str, uint16_t len)
+bool UART_sendData(uint32_t usart_periph, uint8_t *str, uint16_t len)
 {
     UART_PARA_STRUCT *uartPara = com_getHandler(usart_periph);
     if (uartPara == NULL) {
@@ -93,7 +93,7 @@ bool uart_sendData(uint32_t usart_periph, uint8_t *str, uint16_t len)
     FIFO_Writes(&uartPara->fifo.sfifo, str, len);
 	
 	if(uartPara->fifo.status != UART_SENDING) {
-		uart_SendFinally(usart_periph, &uartPara->fifo);
+		UART_sendFinally(usart_periph, &uartPara->fifo);
 	}            
 	return true;
 }
@@ -102,7 +102,7 @@ bool uart_sendData(uint32_t usart_periph, uint8_t *str, uint16_t len)
 /// @param usart_periph 
 /// @param str 
 /// @param len 
-void uart_sendDataBlock(uint32_t usart_periph, const uint8_t *str, uint16_t len)
+void UART_sendDataBlock(uint32_t usart_periph, const uint8_t *str, uint16_t len)
 {
     int i = 0;
     for (i = 0; i < len; i++)
@@ -117,7 +117,7 @@ void uart_sendDataBlock(uint32_t usart_periph, const uint8_t *str, uint16_t len)
 /// @param usart_periph 
 /// @param fifoUart 
 /// @return 
-INT8U uart_SendFinally(uint32_t usart_periph, FIFO_Buf_STRUCT *fifoUart)
+INT8U UART_sendFinally(uint32_t usart_periph, FIFO_Buf_STRUCT *fifoUart)
 {
     INT8U data;
     if(FIFO_Empty(&(fifoUart->sfifo)))
@@ -139,7 +139,7 @@ INT8U uart_SendFinally(uint32_t usart_periph, FIFO_Buf_STRUCT *fifoUart)
 	}
 }
 
-void com_init(UART_PARA_STRUCT *uartPara)
+void COM_init(UART_PARA_STRUCT *uartPara)
 {
     com_registHandler(uartPara);
     /* enable GPIO clock */

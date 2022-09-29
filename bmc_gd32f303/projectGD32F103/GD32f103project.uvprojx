@@ -602,11 +602,6 @@
               <FilePath>..\bsp\bsp_pwm.c</FilePath>
             </File>
             <File>
-              <FileName>bsp_uart3.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\bsp\bsp_uart3.c</FilePath>
-            </File>
-            <File>
               <FileName>bsp_usart0.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\bsp\bsp_usart0.c</FilePath>

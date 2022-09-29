@@ -105,7 +105,7 @@ int main(void)
 
     platform_init();
 
-    com1_init();
+    UART1_init();
 						     
     printf("%s", projectInfo); 
     g_utc_time_bmc_firmware_build = currentSecsSinceEpoch(__DATE__, __TIME__);

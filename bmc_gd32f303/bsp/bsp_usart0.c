@@ -37,11 +37,11 @@ static UART_PARA_STRUCT g_UARTPara = {
 static INT8U g_buffSend[UART0_BUFF_SIZE];	 
 static INT8U g_buffRec[UART0_BUFF_SIZE];
 
-void com0_init(void)
+void UART0_init(void)
 {
 	FIFO_Init(&g_UARTPara.fifo.sfifo, g_buffSend, sizeof(g_buffSend));	
 	FIFO_Init(&g_UARTPara.fifo.rfifo, g_buffRec, sizeof(g_buffRec));
-    com_init(&g_UARTPara);
+    COM_init(&g_UARTPara);
 }
 #ifdef USE_UART0_AS_IPMI
 extern xQueueHandle RecvDatMsg_Queue;

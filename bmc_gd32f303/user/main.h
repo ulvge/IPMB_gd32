@@ -56,7 +56,7 @@ OF SUCH DAMAGE.
 	#define USE_I2C1_AS_IPMB 1
 	// #define FATFS_ENABLE    
 
-	#define  ft_uart_write(x, len)    uart_sendData(USART1, x, len)
+	#define  ft_uart_write(x, len)    UART_sendData(USART1, x, len)
 	
 
 #define  CPU_IntDisable()           { __set_PRIMASK(0xFFFF); }	/* Interrupt Disable */

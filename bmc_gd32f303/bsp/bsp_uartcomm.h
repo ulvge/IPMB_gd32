@@ -32,14 +32,14 @@ typedef struct {
     const UART_CONFIG_STRUCT    *config;
 }UART_PARA_STRUCT;
 
-void uart_sendDataBlock(uint32_t usart_periph, const uint8_t *str, uint16_t len);
+void UART_sendDataBlock(uint32_t usart_periph, const uint8_t *str, uint16_t len);
 //int fputc(int ch, FILE *f);
-void com_init(UART_PARA_STRUCT *uartPara);
+void COM_init(UART_PARA_STRUCT *uartPara);
 
-bool uart_getByte(uint32_t usart_periph, uint8_t *p_buffer);
-bool uart_getData(uint32_t usart_periph, uint8_t *p_buffer, uint32_t buffSize, INT16U *retLen);
-bool uart_sendByte(uint32_t usart_periph, uint8_t dat);
-bool uart_sendData(uint32_t usart_periph, uint8_t *str, uint16_t len);
-INT8U uart_SendFinally(uint32_t usart_periph, FIFO_Buf_STRUCT *fifoUart);
+bool UART_getByte(uint32_t usart_periph, uint8_t *p_buffer);
+bool UART_getData(uint32_t usart_periph, uint8_t *p_buffer, uint32_t buffSize, INT16U *retLen);
+bool UART_sendByte(uint32_t usart_periph, uint8_t dat);
+bool UART_sendData(uint32_t usart_periph, uint8_t *str, uint16_t len);
+INT8U UART_sendFinally(uint32_t usart_periph, FIFO_Buf_STRUCT *fifoUart);
 
 #endif /* __BSP_UARTCOMM_H */
