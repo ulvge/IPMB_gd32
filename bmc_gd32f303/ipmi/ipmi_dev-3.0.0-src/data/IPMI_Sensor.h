@@ -280,6 +280,11 @@ typedef struct
 
 }  GetSensorReadingRes_T;
 
+typedef struct{
+    INT8U   CompletionCode;
+    INT8U   channel;
+    INT16U   rpm;
+}PACKED FANPWM_T;
 
 /* SetSensorTypeReq_T */
 typedef struct

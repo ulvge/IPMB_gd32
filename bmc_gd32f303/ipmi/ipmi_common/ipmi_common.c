@@ -22,6 +22,27 @@
 #include "Types.h"
 
 
+/*-------------------------------------
+* ValidateIPMBChksum1
+*-------------------------------------*/
+/* Function to validate IPMB Checksum1 for SendMessage Cmd */
+bool CalculateCheckSum1(_NEAR_ INT8U* Data)
+{
+    int i=0;
+    INT8U chksum=0;
+
+    for (i = 0; i < 3; i++)
+    {
+        chksum += *(Data + i);
+    }
+
+    if (chksum != 0)
+    {
+        return false;
+    }
+    return true;
+}
+
 
 
 /**
@@ -87,3 +108,6 @@ bool CheckMsgValidation(const INT8U *pReq, INT32U Len)
 
     return true;
 }
+
+
+

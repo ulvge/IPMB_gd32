@@ -44,6 +44,7 @@
 #include "fan/api_fan.h"
 #include "adc/api_adc.h"
 #include "tmp/api_tmp.h"
+#include "adc/api_adc.h"
 
 /* Reserved bit macro definitions */
 #define RESERVED_BITS_SETSENSORTYPE 0X80				//(BIT7)
@@ -2018,7 +2019,6 @@ int CompareValues(BOOL isSigned, INT8U val1, INT8U val2)
 	return retval;
 }
 
-const float correct_coeff[] = {1.0233f, 1.0411, 1.0262f, 1.0f, 1.0f, 1.0f, 1.0f};
 /*-----------------------------------------
  * GetSensorReading
  *-----------------------------------------*/
@@ -2034,9 +2034,10 @@ int GetSensorReading(_NEAR_ INT8U *pReq, INT8U ReqLen, _NEAR_ INT8U *pRes, _NEAR
 	_FAR_ BMCInfo_t *pBMCInfo = &g_BMCInfo;
 	INT16U LUNSensorNum = 0;
 	INT16U OwnerLUN = 0;
-	INT8U tmp_value = 0;
+	INT16U tmp_value = 0;
 	INT16U voltage_value = 0;
-	bool get_res = false;
+	bool get_res = false;    
+    ADCChannlesRes adcRes;
 
 
 	GetSensorReadingRes_T *sensor_reading_res = (GetSensorReadingRes_T *)pRes;
@@ -2046,42 +2047,13 @@ int GetSensorReading(_NEAR_ INT8U *pReq, INT8U ReqLen, _NEAR_ INT8U *pRes, _NEAR
 	sensor_reading_res->ComparisonStatus = 0x00;
 	sensor_reading_res->OptionalStatus = 0x00;
 
-	if(pSensorReadReq->SensorNum > SENSOR_NUM){
+	get_res = adc_getValByChannel(pSensorReadReq->SensorNum, &adcRes);
+	if(!get_res){
 		sensor_reading_res->CompletionCode = CC_SDR_REC_NOT_PRESENT;
 		return sizeof(*pRes);
 	}
-
-	if(pSensorReadReq->SensorNum >0 && pSensorReadReq->SensorNum <= SENSOR_TEMP_NUM)
-	{
-		get_res = get_tmp_value(pSensorReadReq->SensorNum-1, &tmp_value);
-		if(!get_res){
-			sensor_reading_res->CompletionCode = CC_SDR_REC_NOT_PRESENT;
-			return sizeof(*pRes);
-		}
-		sensor_reading_res->SensorReading = IpmiReadingDatConvert2Raw(IPMI_UNIT_DEGREES_C, tmp_value);
-		return sizeof(GetSensorReadingRes_T);
-	}
-	else if(pSensorReadReq->SensorNum >SENSOR_TEMP_NUM && pSensorReadReq->SensorNum <= SENSOR_NUM)
-	{
-		get_res = get_raw_adc_data_value(pSensorReadReq->SensorNum-1-SENSOR_TEMP_NUM, &voltage_value);
-		if(!get_res){
-			sensor_reading_res->CompletionCode = CC_SDR_REC_NOT_PRESENT;
-			return sizeof(*pRes);
-		}
-		voltage_value = (INT16U)(voltage_value*correct_coeff[pSensorReadReq->SensorNum-1-SENSOR_TEMP_NUM]);
-		if(voltage_value > 4095)
-		{
-			voltage_value = 4095;
-		}
-
-		sensor_reading_res->SensorReading = IpmiReadingDatConvert2Raw(IPMI_UNIT_VOLTS, voltage_value);
-		return sizeof(GetSensorReadingRes_T);
-	}
-	else
-	{
-		sensor_reading_res->CompletionCode = CC_SDR_REC_NOT_PRESENT;
-		return sizeof(*pRes);
-	}
+	sensor_reading_res->SensorReading = IpmiReadingDatConvert2Raw(adcRes.sensorUnitType, adcRes.adcVal);
+	return sizeof(GetSensorReadingRes_T);
 #if 0	
 	pSenSharedMem = (_FAR_ SensorSharedMem_T *)&pBMCInfo->SensorSharedMem; //m_hSensorSharedMem;
 

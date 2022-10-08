@@ -17,6 +17,8 @@
 
 #define I2C0_INTERRUPT_ENALBE
 #define I2C1_INTERRUPT_ENALBE
+#define I2C_CLOCK_100K  100000U
+#define I2C_CLOCK_400K  400000U
 static void i2c0_int(void);
 static void i2c1_int(void);
 
@@ -165,7 +167,7 @@ static void i2c0_config(void)
 {
     // **************************** I2C0 *********************************************
     /* I2C clock configure */
-    i2c_clock_config(I2C0, 100000, I2C_DTCY_2);
+    i2c_clock_config(I2C0, I2C_CLOCK_400K, I2C_DTCY_2);
     /* I2C address configure */
     i2c_mode_addr_config(I2C0, I2C_I2CMODE_ENABLE, I2C_ADDFORMAT_7BITS, I2C0_SLAVE_ADDRESS7);
     /* enable I2C0 */
@@ -190,7 +192,7 @@ static void i2c0_config(void)
 static void i2c1_config(void)
 {
     // **************************** I2C1 *********************************************
-    i2c_clock_config(I2C1, 100000, I2C_DTCY_2);
+    i2c_clock_config(I2C1, I2C_CLOCK_400K, I2C_DTCY_2);
     /* I2C address configure */
     i2c_mode_addr_config(I2C1, I2C_I2CMODE_ENABLE, I2C_ADDFORMAT_7BITS, I2C1_SLAVE_ADDRESS7);
     /* enable I2C1 */
@@ -906,7 +908,7 @@ bool i2c2_bytes_write(const uint8_t *p_buffer, uint16_t len)
 static void i2c2_config(void)
 {
     // **************************** I2C2 *********************************************
-    i2c_clock_config(I2C2, 100000, I2C_DTCY_2);
+    i2c_clock_config(I2C2, I2C_CLOCK_400K, I2C_DTCY_2);
     /* I2C address configure */
     i2c_mode_addr_config(I2C2, I2C_I2CMODE_ENABLE, I2C_ADDFORMAT_7BITS, I2C2_SLAVE_ADDRESS7);
     /* enable I2C1 */

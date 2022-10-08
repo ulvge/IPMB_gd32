@@ -25,19 +25,42 @@ extern FixedCPUParam g_CPUFixedParam;
 extern __IO bool g_CPUStatus;
 
 const CmdHndlrMap_T g_Oem_CmdHndlr[] =
-    {
+{
 /*--------------------- OEM Device Commands ---------------------------------*/
 #if OEM_DEVICE == 1
-        // { CMD_SET_FAN,           PRIV_OEM,      SET_FAN,             0x00,   0xAAAA ,0xFFFF},
+        { CMD_SET_FAN,           PRIV_OEM,      SET_FAN,             0x00,   0xAAAA ,0xFFFF},
         // { CMD_UPDATE_FIRMWARE,   PRIV_OEM,      UPDATE_FIRMWARE,     0x00,   0xAAAA ,0xFFFF},
         {CMD_CPU_INFO, PRIV_OEM, CPU_INFO, 0x00, 0xAAAA, 0xFFFF},
         {CMD_BMC_INFO, PRIV_OEM, BMC_INFO, 0x00, 0xAAAA, 0xFFFF},
 
 #endif /* OEM_DEVICE */
 
-        {0x00, 0x00, 0x00, 0x00, 0x0000, 0x0000}};
+        {0x00, 0x00, 0x00, 0x00, 0x0000, 0x0000}
+};
 
 
+int GetFan(_NEAR_ INT8U *pReq, INT8U ReqLen, _NEAR_ INT8U *pRes, _NEAR_ int BMCInst)
+{
+	
+	_NEAR_  FANPWM_T* pGetFanPWMRes = (_NEAR_ FANPWM_T*) pRes;
+	pGetFanPWMRes->channel = *pReq;
+	INT16U fanRpm = 0;
+	if ( ReqLen < 0x1 ) 
+	{
+		*pRes =CC_REQ_INV_LEN;
+		return 1;
+	}
+	if( pGetFanPWMRes->channel > SENSOR_FAN_NUM)
+	{
+		*pRes = CC_INV_DATA_FIELD;
+		return 1;
+	}
+   fan_get_rotate_rpm(pGetFanPWMRes->channel, &fanRpm);
+   pGetFanPWMRes->CompletionCode = CC_NORMAL;
+   pGetFanPWMRes->rpm = fanRpm;
+
+	return sizeof(FANPWM_T);
+}
 int SetFan(_NEAR_ INT8U *pReq, INT8U ReqLen, _NEAR_ INT8U *pRes, _NEAR_ int BMCInst)
 {
 	const SetSensorReq_T *pOemReq = (const SetSensorReq_T *)pReq;

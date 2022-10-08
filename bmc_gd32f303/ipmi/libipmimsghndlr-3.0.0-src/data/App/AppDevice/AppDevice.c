@@ -728,7 +728,7 @@ SendMessage (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMC
     // }
     // LOG_RAW("\r\n");
 		
-	if(CheckMsgValidation(MsgReq.Data, MsgReq.Size) == FALSE)
+	if(CalculateCheckSum1(MsgReq.Data) == FALSE)
     {
         LOG_E("bridge msg checksum err!");
         *pRes = CC_INV_DATA_FIELD;

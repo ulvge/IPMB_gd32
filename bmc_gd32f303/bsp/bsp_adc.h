@@ -40,8 +40,15 @@ typedef struct {
     INT32U      			gpioPort;
     rcu_periph_enum      	gpioClk;
     INT32U      			Pin;
+    uint8_t                 sensorUnitType;
     char *      			alias;
 } ADCChannlesConfig;
+
+typedef struct {
+    uint16_t      			adcVal;
+    uint8_t                 sensorUnitType;
+    char *      			alias;
+} ADCChannlesRes;
 
 void adc_init(const ADCChannlesConfig *adcChannlConfig, UINT8 num);
 /*get ADC channel value of average conversion*/
