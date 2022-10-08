@@ -18,6 +18,7 @@
 ".\output\serialifc.o"
 ".\output\serial.o"
 ".\output\rmcp.o"
+".\output\chassisctrl.o"
 ".\output\msghndlr.o"
 ".\output\app.o"
 ".\output\appdevice.o"

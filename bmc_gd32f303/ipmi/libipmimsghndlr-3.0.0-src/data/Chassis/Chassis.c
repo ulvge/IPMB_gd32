@@ -34,7 +34,7 @@
     /*--------------------- Chassis Commands ---------------------------------*/
 #if CHASSIS_DEVICE == 1
     // { CMD_GET_CHASSIS_CAPABILITIES,     PRIV_USER,      GET_CHASSIS_CAPABILITIES,       0x00,                               0xAAAA ,0xFFFF},
-    // { CMD_GET_CHASSIS_STATUS,           PRIV_USER,      GET_CHASSIS_STATUS,             0x00,                               0xAAAA ,0xFFFF},
+    { CMD_GET_CHASSIS_STATUS,           PRIV_USER,      GET_CHASSIS_STATUS,             0x00,                               0xAAAA ,0xFFFF},
     { CMD_CHASSIS_CONTROL,              PRIV_OPERATOR,  CHASSIS_CONTROL,                sizeof(ChassisControlReq_T),        0xAAAA ,0xFFFF},
     // { CMD_CHASSIS_RESET,                PRIV_OPERATOR,  CHASSIS_RESET_CMD,              0x00,                               0xAAAA ,0xFFFF},
     // { CMD_CHASSIS_IDENTIFY,             PRIV_OPERATOR,  CHASSIS_IDENTIFY_CMD,           0xFF,                               0xAAAA ,0xFFFF},

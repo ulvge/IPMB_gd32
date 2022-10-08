@@ -162,10 +162,12 @@ GetChassisStatus (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,int BMCIn
         (_NEAR_ GetChassisStatusRes_T*) pRes;
     BMCInfo_t *pBMCInfo = &g_BMCInfo;
 
-    IPMI_DBG_PRINT ("\nGET Chassis STATUS\n");
 
     pGetChassisStatusRes->CompletionCode = CC_NORMAL;
 
+    //pGetChassisStatusRes->ChassisPowerState.PowerState = (TRUE == PSGood) ? 0x01: 0x00;
+    pGetChassisStatusRes->ChassisPowerState.PowerState = 0x01;
+    IPMI_DBG_PRINT ("\nGET Chassis STATUS = %d\n", pGetChassisStatusRes->ChassisPowerState.PowerState);
 
     return sizeof (GetChassisStatusRes_T) ; 
 
@@ -198,7 +200,7 @@ ChassisControl ( _NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,int BMCIns
         return sizeof(INT8U);	
     }
 
-    Msg.Cmd  = pChassisControlReq->ChassisControl; // CHASSIS_CMD_CTRL
+    Msg.Cmd  = (CHASSIS_CMD_CTRL)pChassisControlReq->ChassisControl;
     Msg.Size = 1;
     err = xQueueSend(g_chassisCtrl_Queue, (char *)&Msg, 10);
     if (err == pdFALSE)

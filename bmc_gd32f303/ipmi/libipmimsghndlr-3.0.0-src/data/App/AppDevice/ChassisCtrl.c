@@ -42,20 +42,22 @@ static void ChassisCtrlTimerCallBack(xTimerHandle pxTimer)
     {   
         case CHASSIS_SOFT_OFF :
         case CHASSIS_POWER_OFF :
-            GPIO_setPinStatus(GPIO_OUT_CPU_POWER_OFF, DISABLE);
+            GPIO_setPinStatus(GPIO_OUT_CPU_POWER_OFF, DISABLE);    
+			printf("ChassisCtrl : CHASSIS_POWER_OFF");
 			break;
         case CHASSIS_POWER_ON :
-            GPIO_setPinStatus(GPIO_OUT_CPU_POWER_ON, DISABLE);
+            GPIO_setPinStatus(GPIO_OUT_CPU_POWER_ON, DISABLE);   
+			printf("ChassisCtrl : CHASSIS_POWER_ON");
 			break;
         case CHASSIS_POWER_RESET :
-            GPIO_setPinStatus(GPIO_OUT_CPU_RESET, DISABLE);
-	        //NVIC_SystemReset();
+            GPIO_setPinStatus(GPIO_OUT_CPU_RESET, DISABLE);   
+			printf("ChassisCtrl : CHASSIS_POWER_RESET");
+	        NVIC_SystemReset();
 			break;
         default : 
 			printf("Sorry, CMD doesn't support it yet");
             break;
     }
-    printf("ChassisCtrl : handler over cmd=%d", cmd);
     xTimerDelete(pxTimer, 200);
 }
 
