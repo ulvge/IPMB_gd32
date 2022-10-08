@@ -28,6 +28,6 @@
 extern int SR_Init (int BMCInst);
 extern int SR_OnSOLPkt (SOLPayLoad_T* p_pkt, INT16U size,int BMCInst);
 extern int SR_IsPktReady  (int BMCInst);
-extern int SR_FormSOLPkt (SOLPayLoad_T* p_pkt, _FAR_ INT16U* p_size,int BMCInst);
+extern int SR_FormSOLPkt (SOLPayLoad_T* p_pkt, INT16U* p_size,int BMCInst);
 
 #endif	/* SOL_RECV_H */

@@ -45,21 +45,21 @@
  * This set of commands provides read/write access to BMC's SEL.
  * @{
 **/
-extern int GetSELInfo           (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst);
-extern int GetSELAllocationInfo (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst);
-extern int ReserveSEL           (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst);
-extern int ClearSEL             (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst);
-extern int GetSELEntry          (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst);
-extern int AddSELEntry          (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst);
-extern int PartialAddSELEntry   (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst);
-extern int DeleteSELEntry       (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst);
-extern int GetSELTime           (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst);
-extern int SetSELTime           (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst);
-extern int GetAuxiliaryLogStatus(_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst);
-extern int SetAuxiliaryLogStatus(_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst);
-extern int LockedAddSELEntry    (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes, INT8U SysIfcFlag, INT8U SelectTbl,_NEAR_ int BMCInst);
-extern int GetSELTimeUTC_Offset  (_NEAR_ INT8U * pReq, INT8U ReqLen, _NEAR_ INT8U * pRes,_NEAR_ int BMCInst);
-extern int SetSELTimeUTC_Offset   (_NEAR_ INT8U * pReq, INT8U ReqLen, _NEAR_ INT8U * pRes,_NEAR_ int BMCInst);
+extern int GetSELInfo           (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst);
+extern int GetSELAllocationInfo (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst);
+extern int ReserveSEL           (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst);
+extern int ClearSEL             (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst);
+extern int GetSELEntry          (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst);
+extern int AddSELEntry          (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst);
+extern int PartialAddSELEntry   (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst);
+extern int DeleteSELEntry       (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst);
+extern int GetSELTime           (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst);
+extern int SetSELTime           (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst);
+extern int GetAuxiliaryLogStatus(INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst);
+extern int SetAuxiliaryLogStatus(INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst);
+extern int LockedAddSELEntry    (INT8U* pReq, INT8U ReqLen, INT8U* pRes, INT8U SysIfcFlag, INT8U SelectTbl,int BMCInst);
+extern int GetSELTimeUTC_Offset  (INT8U * pReq, INT8U ReqLen, INT8U * pRes,int BMCInst);
+extern int SetSELTimeUTC_Offset   (INT8U * pReq, INT8U ReqLen, INT8U * pRes,int BMCInst);
 
 /** @} */
 

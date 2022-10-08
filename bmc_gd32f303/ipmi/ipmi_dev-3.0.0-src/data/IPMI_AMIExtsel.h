@@ -126,10 +126,10 @@ typedef struct
     INT8U    ExtendSELData[250];		// 250+ 6 Bytes
 }PACKED AMIPartialGetExtendSELDataRes_T;
 
-extern int AMIAddExtendSelEntries(_NEAR_ INT8U *pReq, INT32U ReqLen, _NEAR_ INT8U *pRes, int BMCInst);
-extern int AMIPartialAddExtendSelEntries(_NEAR_ INT8U *pReq, INT32U ReqLen, _NEAR_ INT8U *pRes, int BMCInst);
-extern int AMIGETExtendSelData(_NEAR_ INT8U *pReq, INT32U ReqLen, _NEAR_ INT8U *pRes, int BMCInst);
-extern int AMIPartialGetExtendSelEntries(_NEAR_ INT8U *pReq, INT32U ReqLen, _NEAR_ INT8U *pRes, int BMCInst);
+extern int AMIAddExtendSelEntries(INT8U *pReq, INT32U ReqLen, INT8U *pRes, int BMCInst);
+extern int AMIPartialAddExtendSelEntries(INT8U *pReq, INT32U ReqLen, INT8U *pRes, int BMCInst);
+extern int AMIGETExtendSelData(INT8U *pReq, INT32U ReqLen, INT8U *pRes, int BMCInst);
+extern int AMIPartialGetExtendSelEntries(INT8U *pReq, INT32U ReqLen, INT8U *pRes, int BMCInst);
 
 
 #endif//__IPMI_AMIEXTSEL_H__

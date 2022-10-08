@@ -46,11 +46,11 @@ typedef struct
 #pragma pack( )
 
 /**
- * @var _FAR_ WDTTmrMgr_T g_WDTTmrMgr
+ * @var WDTTmrMgr_T g_WDTTmrMgr
  * @brief   Watchdog Timer table
  * @warning Should not be used from task other than Message Handler
 **/
-extern _FAR_ WDTTmrMgr_T g_WDTTmrMgr;
+extern WDTTmrMgr_T g_WDTTmrMgr;
 
 /**
  * @brief Watchdog timer task invoked every second from timer task

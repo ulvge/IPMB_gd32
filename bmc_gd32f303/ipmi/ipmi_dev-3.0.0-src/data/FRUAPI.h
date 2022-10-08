@@ -42,7 +42,7 @@ extern int API_GetFRUDeviceSize (INT8U DeviceID, int BMCInst);
  * @return 	The number of bytes actually read.
  *			-1 if error.
  *------------------------------------------------------------------*/
-extern int API_ReadFRUDevice (INT8U DeviceID, INT16U Offset, INT16U Len, _FAR_ INT8U* pBuf, int BMCInst);
+extern int API_ReadFRUDevice (INT8U DeviceID, INT16U Offset, INT16U Len, INT8U* pBuf, int BMCInst);
 
 /*------------------------------------------------------------------
  * @fn WriteFRUDevice
@@ -54,7 +54,7 @@ extern int API_ReadFRUDevice (INT8U DeviceID, INT16U Offset, INT16U Len, _FAR_ I
  * @return 	The number of bytes actually written.
  *			-1 if error.
  *------------------------------------------------------------------*/
-extern int API_WriteFRUDevice (INT8U DeviceID, INT16U Offset, INT16U Len, _FAR_ INT8U* pBuf, int BMCInst);
+extern int API_WriteFRUDevice (INT8U DeviceID, INT16U Offset, INT16U Len, INT8U* pBuf, int BMCInst);
 
 #endif	/* FRUAPI_H */
 

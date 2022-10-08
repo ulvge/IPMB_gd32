@@ -115,16 +115,16 @@
 
 #define CMD_COMM_PIPE   "/var/cmdpipe"
 /*** Prototype Declaration ***/
-static _FAR_ SELRec_T*    GetNextSELEntry (_FAR_ SELRec_T* rec, int BMCInst);
-static _FAR_ SELRec_T* GetSELRec(INT16U RecID,int BMCInst);
-static _FAR_ void FindRecOrder(int BMCInst);
+static SELRec_T*    GetNextSELEntry (SELRec_T* rec, int BMCInst);
+static SELRec_T* GetSELRec(INT16U RecID,int BMCInst);
+static void FindRecOrder(int BMCInst);
 static INT8U SELTimeClockSync(INT8U Action, int BMCInst);
 
 
 /*** Global variables ***/
 
 /*** Module variables ***/
-_FAR_ SELRepository_T* _FAR_    m_sel;
+SELRepository_T*    m_sel;
 //Added for Partial Adding
 //SELEventRecord_T  SelPartialAddRecord;
 #define SENSOR_TYPE_EVT_LOGGING                 0x10
@@ -169,7 +169,7 @@ LogClearSELEvent (int BMCInst)
 {
     AddSELRes_T     AddSelRes; 	
     SensorInfo_T*   pSensorInfo;
-    _FAR_ BMCInfo_t* pBMCInfo = &g_BMCInfo[BMCInst];
+    BMCInfo_t* pBMCInfo = &g_BMCInfo[BMCInst];
 
     pSensorInfo = (SensorInfo_T*)GetSensorInfoFromSensorType(SENSOR_TYPE_EVT_LOGGING, BMCInst);
         
@@ -200,7 +200,7 @@ LogSELFullEvent (int BMCInst)
 //    INT8U *curchannel;
 
     pSensorInfo = (SensorInfo_T*)GetSensorInfoFromSensorType(SENSOR_TYPE_EVT_LOGGING, BMCInst);
-    _FAR_ BMCInfo_t* pBMCInfo = &g_BMCInfo[BMCInst];
+    BMCInfo_t* pBMCInfo = &g_BMCInfo[BMCInst];
 
     if (pSensorInfo != NULL)
     {
@@ -238,7 +238,7 @@ PostSELToPEF (SELEventRecord_T *pSELRec, int BMCInst)
 
     MsgToPEF.Param = PARAM_SENSOR_EVT_MSG;
     MsgToPEF.Size  = sizeof (SELEventRecord_T);
-    _fmemcpy ((_FAR_ INT8U*)MsgToPEF.Data, (_FAR_ INT8U*)pSELRec,
+    _fmemcpy ((INT8U*)MsgToPEF.Data, (INT8U*)pSELRec,
               sizeof(SELEventRecord_T));
     IPMI_DBG_PRINT ("Posting Message to PEF\n");
     PostMsgNonBlock (&MsgToPEF, PEF_TASK_Q,BMCInst);
@@ -260,17 +260,17 @@ PostSELToPEF (SELEventRecord_T *pSELRec, int BMCInst)
 void 
 CheckLastSELRecordID (int BMCInst)
 {
-    _FAR_ BMCInfo_t* pBMCInfo = &g_BMCInfo[BMCInst];
-    _FAR_ PEFRecordDetailsConfig_T*  pPEFRecordDetailsConfig; 
+    BMCInfo_t* pBMCInfo = &g_BMCInfo[BMCInst];
+    PEFRecordDetailsConfig_T*  pPEFRecordDetailsConfig; 
     INT16U        i; 
-    _FAR_ SELRepository_T* _FAR_    m_sel = NULL;
+    SELRepository_T*    m_sel = NULL;
     INT32U MaxAllowRec = 0;
     int Recpos,BMCRecpos=0,SWRecpos=0;
     struct SELEventNode *LastProcessedNode = NULL;
 
     if(g_corefeatures.del_sel_reclaim_support != ENABLED)
     {
-        m_sel = (_FAR_ SELRepository_T*) GetSDRSELNVRAddr((pBMCInfo->IpmiConfig.SDRAllocationSize * 1024), BMCInst);
+        m_sel = (SELRepository_T*) GetSDRSELNVRAddr((pBMCInfo->IpmiConfig.SDRAllocationSize * 1024), BMCInst);
         m_sel->SELRecord = (SELRec_T *)GetSDRSELNVRAddr ((pBMCInfo->IpmiConfig.SDRAllocationSize * 1024) + sizeof(SELRepository_T), BMCInst);
             pBMCInfo->SELConfig.LastEvtTS = (m_sel->AddTimeStamp > m_sel->EraseTimeStamp) ?  m_sel->AddTimeStamp : m_sel->EraseTimeStamp;
     }
@@ -318,7 +318,7 @@ CheckLastSELRecordID (int BMCInst)
             /* If there any event to be processed, notify PEF */
             if (LastProcessedID)
             {
-                _FAR_  SELRec_T*    pSelRec;
+                 SELRec_T*    pSelRec;
 
                 if (0xFFFF == LastProcessedID)
                     LastProcessedID = 1;
@@ -528,7 +528,7 @@ CheckLastSELRecordID (int BMCInst)
                 IPMI_DBG_PRINT_2("in Init SEL %d %d\n",LastProcessedID,pPEFRecordDetailsConfig->LastSELRecordID);
 
                 /* If there any event to be processed, notify PEF */
-                _FAR_  SELRec_T*    pSelRec;
+                 SELRec_T*    pSelRec;
                 while (LastProcessedNode)
                 {
                     pSelRec = &(LastProcessedNode->SELRecord);
@@ -548,9 +548,9 @@ CheckLastSELRecordID (int BMCInst)
 int
 InitSEL (int BMCInst)
 {
-    _FAR_ SELRec_T*     pSELRecord;
-    _FAR_ BMCInfo_t* pBMCInfo = &g_BMCInfo[BMCInst];
-    _FAR_ SELRepository_T* _FAR_    m_sel = NULL;
+    SELRec_T*     pSELRecord;
+    BMCInfo_t* pBMCInfo = &g_BMCInfo[BMCInst];
+    SELRepository_T*    m_sel = NULL;
     int ReclaimSELSpace = 0;
 
     if(g_corefeatures.del_sel_reclaim_support == ENABLED)
@@ -563,7 +563,7 @@ InitSEL (int BMCInst)
 
     if(!ReclaimSELSpace)
     {
-        m_sel = (_FAR_ SELRepository_T*) GetSDRSELNVRAddr((pBMCInfo->IpmiConfig.SDRAllocationSize * 1024), BMCInst);
+        m_sel = (SELRepository_T*) GetSDRSELNVRAddr((pBMCInfo->IpmiConfig.SDRAllocationSize * 1024), BMCInst);
         m_sel->SELRecord = (SELRec_T *)GetSDRSELNVRAddr ((pBMCInfo->IpmiConfig.SDRAllocationSize * 1024) + sizeof(SELRepository_T), BMCInst);
 
         pBMCInfo->SELConfig.LastEvtTS = (m_sel->AddTimeStamp > m_sel->EraseTimeStamp) ?
@@ -668,16 +668,16 @@ InitSEL (int BMCInst)
  * GetSELInfo
  *---------------------------------------*/
 int
-GetSELInfo (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst)
+GetSELInfo (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst)
 {
-    _NEAR_ SELInfo_T*   pSelInfo = (_NEAR_ SELInfo_T*) pRes;
-    _FAR_ BMCInfo_t* pBMCInfo = &g_BMCInfo[BMCInst];
-    _FAR_ SELRepository_T* _FAR_	m_sel;
+    SELInfo_T*   pSelInfo = (SELInfo_T*) pRes;
+    BMCInfo_t* pBMCInfo = &g_BMCInfo[BMCInst];
+    SELRepository_T* _FAR_	m_sel;
 
     OS_THREAD_MUTEX_ACQUIRE(&pBMCInfo->SELConfig.SELMutex, WAIT_INFINITE);
     if(g_corefeatures.del_sel_reclaim_support != ENABLED)
     {
-        m_sel = (_FAR_ SELRepository_T*) GetSDRSELNVRAddr ((pBMCInfo->IpmiConfig.SDRAllocationSize * 1024), BMCInst);
+        m_sel = (SELRepository_T*) GetSDRSELNVRAddr ((pBMCInfo->IpmiConfig.SDRAllocationSize * 1024), BMCInst);
         pSelInfo->RecCt          = htoipmi_u16 (pBMCInfo->SELConfig.SELCnt);
         pSelInfo->FreeSpace      = htoipmi_u16 ((g_BMCInfo[BMCInst].SELConfig.MaxSELRecord - m_sel->NumRecords) * sizeof(SELRec_T));
         pSelInfo->AddTimeStamp   = htoipmi_u16(m_sel->AddTimeStamp);
@@ -727,11 +727,11 @@ GetSELInfo (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCI
  * GetSELAllocationInfo
  *---------------------------------------*/
 int
-GetSELAllocationInfo(_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst)
+GetSELAllocationInfo(INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst)
 {
-    _NEAR_ SELAllocInfo_T* pAllocInfo = (_NEAR_ SELAllocInfo_T*) pRes;
-    _FAR_ SELRepository_T* _FAR_	m_sel;
-    _FAR_ BMCInfo_t* pBMCInfo = &g_BMCInfo[BMCInst];
+    SELAllocInfo_T* pAllocInfo = (SELAllocInfo_T*) pRes;
+    SELRepository_T* _FAR_	m_sel;
+    BMCInfo_t* pBMCInfo = &g_BMCInfo[BMCInst];
 
     OS_THREAD_MUTEX_ACQUIRE(&pBMCInfo->SELConfig.SELMutex, WAIT_INFINITE);
     pAllocInfo->CompletionCode    = CC_NORMAL;
@@ -740,7 +740,7 @@ GetSELAllocationInfo(_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_
 
     if(g_corefeatures.del_sel_reclaim_support != ENABLED)
     {
-        m_sel = (_FAR_ SELRepository_T*) GetSDRSELNVRAddr ((pBMCInfo->IpmiConfig.SDRAllocationSize * 1024), BMCInst);
+        m_sel = (SELRepository_T*) GetSDRSELNVRAddr ((pBMCInfo->IpmiConfig.SDRAllocationSize * 1024), BMCInst);
         pAllocInfo->NumFreeAllocUnits = htoipmi_u16 ((g_BMCInfo[BMCInst].SELConfig.MaxSELRecord - m_sel->NumRecords));
         pAllocInfo->LargestFreeBlock  = htoipmi_u16 ((g_BMCInfo[BMCInst].SELConfig.MaxSELRecord - m_sel->NumRecords));
     }
@@ -761,9 +761,9 @@ GetSELAllocationInfo(_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_
  * ReserveSEL
  *---------------------------------------*/
 int
-ReserveSEL (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst)
+ReserveSEL (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst)
 {
-    _NEAR_ ReserveSELRes_T* pRsvSelRes = (_NEAR_ ReserveSELRes_T*) pRes;
+    ReserveSELRes_T* pRsvSelRes = (ReserveSELRes_T*) pRes;
     BMCInfo_t *pBMCInfo = &g_BMCInfo[BMCInst];
 
     OS_THREAD_MUTEX_ACQUIRE(&pBMCInfo->SELConfig.SELMutex, WAIT_INFINITE);
@@ -782,15 +782,15 @@ ReserveSEL (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCI
  * GetSELEntry
  *---------------------------------------*/
 int
-GetSELEntry (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst)      
+GetSELEntry (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst)      
 {
-    _FAR_  SELRec_T*    pSelRec;
-    _FAR_  SELRec_T*    pNextSelRec;
-    _NEAR_ GetSELReq_T* pGetSelReq = (_NEAR_ GetSELReq_T*) pReq;
-    _NEAR_ GetSELRes_T* pGetSelRes = (_NEAR_ GetSELRes_T*) pRes;
+     SELRec_T*    pSelRec;
+     SELRec_T*    pNextSelRec;
+    GetSELReq_T* pGetSelReq = (GetSELReq_T*) pReq;
+    GetSELRes_T* pGetSelRes = (GetSELRes_T*) pRes;
     INT16U         LastRecID = 0,FirstRecID = 0;
-    _FAR_ SELRepository_T* _FAR_	m_sel = NULL;
-    _FAR_ BMCInfo_t* pBMCInfo = &g_BMCInfo[BMCInst];
+    SELRepository_T* _FAR_	m_sel = NULL;
+    BMCInfo_t* pBMCInfo = &g_BMCInfo[BMCInst];
     INT16U NumRecords = 0;
     BOOL SELReclaim,CircularSEL = FALSE;
 
@@ -804,7 +804,7 @@ GetSELEntry (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMC
 
    if(!SELReclaim)
    {
-        m_sel = (_FAR_ SELRepository_T*) GetSDRSELNVRAddr ((pBMCInfo->IpmiConfig.SDRAllocationSize * 1024), BMCInst);
+        m_sel = (SELRepository_T*) GetSDRSELNVRAddr ((pBMCInfo->IpmiConfig.SDRAllocationSize * 1024), BMCInst);
         NumRecords = m_sel->NumRecords;
    }
    else
@@ -946,7 +946,7 @@ GetSELEntry (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMC
         OS_THREAD_MUTEX_RELEASE(&pBMCInfo->SELConfig.SELMutex);
         return sizeof (INT8U);
     }
-     _fmemcpy(pGetSelRes + 1, ((_FAR_ INT8U*)&pSelRec->EvtRecord) +
+     _fmemcpy(pGetSelRes + 1, ((INT8U*)&pSelRec->EvtRecord) +
              pGetSelReq->Offset, pGetSelReq->Size);
 
     OS_THREAD_MUTEX_RELEASE(&pBMCInfo->SELConfig.SELMutex);
@@ -956,7 +956,7 @@ GetSELEntry (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMC
 /*---------------------------------------
  * BSODCaptureScreen 
  *---------------------------------------*/
-void BSODCaptureScreen(_NEAR_ SELEventRecord_T*  EvtRecord)
+void BSODCaptureScreen(SELEventRecord_T*  EvtRecord)
 {
     void *phandle;
     int (*capturecrashscreen) (char *);
@@ -1031,19 +1031,19 @@ void BSODCaptureScreen(_NEAR_ SELEventRecord_T*  EvtRecord)
  * LockedAddSELEntry with SEL locked 
  *---------------------------------------*/
 int
-LockedAddSELEntry (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes, INT8U SysIfcFlag, INT8U SelectTbl, int BMCInst)
+LockedAddSELEntry (INT8U* pReq, INT8U ReqLen, INT8U* pRes, INT8U SysIfcFlag, INT8U SelectTbl, int BMCInst)
 {
-    _NEAR_ AddSELRes_T*     pAddSelRes = (_NEAR_ AddSELRes_T*) pRes;
-    _NEAR_ SELRecHdr_T*     pSelRec    = (_NEAR_ SELRecHdr_T*) pReq;
-    _FAR_  PEFRecordDetailsConfig_T*     nvrPefRecordDetails;
-    _FAR_   AMIConfig_T*    pAMIcfg;
-    _FAR_ BMCInfo_t* pBMCInfo = &g_BMCInfo[BMCInst];
-    _FAR_  INT8U            SelExceededAction=0;
-    static _FAR_  INT8U     NumSelAccum=0;
+    AddSELRes_T*     pAddSelRes = (AddSELRes_T*) pRes;
+    SELRecHdr_T*     pSelRec    = (SELRecHdr_T*) pReq;
+     PEFRecordDetailsConfig_T*     nvrPefRecordDetails;
+      AMIConfig_T*    pAMIcfg;
+    BMCInfo_t* pBMCInfo = &g_BMCInfo[BMCInst];
+     INT8U            SelExceededAction=0;
+    static  INT8U     NumSelAccum=0;
     INT16U         LastRecID = 0;
     int    nRet=0;
     SELRec_T NodeSELRecord;
-    _FAR_ SELRepository_T* _FAR_	m_sel = NULL;
+    SELRepository_T* _FAR_	m_sel = NULL;
     INT16U NumRecords=0;
     BOOL CircularSEL = FALSE;
     BOOL SELReclaim = FALSE;
@@ -1078,7 +1078,7 @@ LockedAddSELEntry (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes, INT8U S
     /* PDK Module Pre Add SEL Control function*/
     if(g_PDKHandle[PDK_PREADDSEL] != NULL)
     {
-        SelectTbl = ((INT8U(*)(INT8U *, INT8U, int)) g_PDKHandle[PDK_PREADDSEL])((_FAR_ INT8U*)pSelRec, SelectTbl, BMCInst);
+        SelectTbl = ((INT8U(*)(INT8U *, INT8U, int)) g_PDKHandle[PDK_PREADDSEL])((INT8U*)pSelRec, SelectTbl, BMCInst);
     }
     //if event type is critical,need to intimate adviser for stope and merge pre crash video
     if((((SELEventRecord_T*)pSelRec)->SensorType == SENSOR_TYPE_OS_CRITICAL_STOP) && ((((SELEventRecord_T*)pSelRec)->EvtData1 & SENSOR_SPECIFIC_OFFSET_MASK) == OS_RUNTIME_CRITICAL_STOP))
@@ -1132,7 +1132,7 @@ LockedAddSELEntry (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes, INT8U S
 
     if(!SELReclaim)
     {
-        m_sel = (_FAR_ SELRepository_T*) GetSDRSELNVRAddr ((pBMCInfo->IpmiConfig.SDRAllocationSize * 1024), BMCInst);
+        m_sel = (SELRepository_T*) GetSDRSELNVRAddr ((pBMCInfo->IpmiConfig.SDRAllocationSize * 1024), BMCInst);
         NumRecords = m_sel->NumRecords;
     }
     else
@@ -1433,7 +1433,7 @@ LockedAddSELEntry (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes, INT8U S
         /* PDK Module Post Add SEL Control function*/
         if(g_PDKHandle[PDK_POSTADDSEL] != NULL)
         {
-            ((INT8U(*)(INT8U *,int)) g_PDKHandle[PDK_POSTADDSEL])((_FAR_ INT8U*)pSelRec,BMCInst);
+            ((INT8U(*)(INT8U *,int)) g_PDKHandle[PDK_POSTADDSEL])((INT8U*)pSelRec,BMCInst);
         }
 
         pAddSelRes->CompletionCode = CC_NORMAL;
@@ -1506,10 +1506,10 @@ LockedAddSELEntry (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes, INT8U S
  * AddSELEntry
  *---------------------------------------*/
 int
-AddSELEntry (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst)
+AddSELEntry (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst)
 {
     int reslen = 0;
-    _FAR_ BMCInfo_t* pBMCInfo = &g_BMCInfo[BMCInst];
+    BMCInfo_t* pBMCInfo = &g_BMCInfo[BMCInst];
     INT8U curchannel;
 
     OS_THREAD_TLS_GET(g_tls.CurChannel,curchannel);
@@ -1532,10 +1532,10 @@ AddSELEntry (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMC
  *---------------------------------------*/
 
 int
-PartialAddSELEntry (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst)
+PartialAddSELEntry (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst)
 {
-    _NEAR_ PartialAddSELReq_T*  pParAddSelReq = (_NEAR_ PartialAddSELReq_T*) pReq;
-    _NEAR_ PartialAddSELRes_T*  pParAddSelRes = (_NEAR_ PartialAddSELRes_T*) pRes;
+    PartialAddSELReq_T*  pParAddSelReq = (PartialAddSELReq_T*) pReq;
+    PartialAddSELRes_T*  pParAddSelRes = (PartialAddSELRes_T*) pRes;
     SELInfo_T SelInfo;
     BMCInfo_t *pBMCInfo = &g_BMCInfo[BMCInst];
     INT16U      RecordID=0, ReservationID=0;
@@ -1743,19 +1743,19 @@ PartialAddSELEntry (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ 
  * DeleteSELEntry
  *---------------------------------------*/
 int
-DeleteSELEntry (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst)
+DeleteSELEntry (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst)
 {
-    _NEAR_ DeleteSELReq_T*  pDelSelReq = (_NEAR_ DeleteSELReq_T*) pReq;
-    _NEAR_ DeleteSELRes_T*  pDelSelRes = (_NEAR_ DeleteSELRes_T*) pRes;
-//    _FAR_  SELRec_T*        pPrevSel;
+    DeleteSELReq_T*  pDelSelReq = (DeleteSELReq_T*) pReq;
+    DeleteSELRes_T*  pDelSelRes = (DeleteSELRes_T*) pRes;
+//     SELRec_T*        pPrevSel;
     INT16U LastRecID = 0,FirstRecID = 0;
-    _FAR_ SELRepository_T* _FAR_	m_sel = NULL;
-    _FAR_ SELRec_T* pRec = NULL;
-    _FAR_   AMIConfig_T*    pAMIcfg;
+    SELRepository_T* _FAR_	m_sel = NULL;
+    SELRec_T* pRec = NULL;
+      AMIConfig_T*    pAMIcfg;
     int nRet =0;
     int SelReclaim = 0;
     int ReservCmdStat=0;
-    _FAR_ BMCInfo_t* pBMCInfo = &g_BMCInfo[BMCInst];
+    BMCInfo_t* pBMCInfo = &g_BMCInfo[BMCInst];
 
     OS_THREAD_MUTEX_ACQUIRE(&pBMCInfo->SELConfig.SELMutex, WAIT_INFINITE);
 
@@ -1763,7 +1763,7 @@ DeleteSELEntry (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int 
 
     if(!SelReclaim)
     {
-        m_sel = (_FAR_ SELRepository_T*) GetSDRSELNVRAddr ((pBMCInfo->IpmiConfig.SDRAllocationSize * 1024), BMCInst);
+        m_sel = (SELRepository_T*) GetSDRSELNVRAddr ((pBMCInfo->IpmiConfig.SDRAllocationSize * 1024), BMCInst);
     }
     
     if(GetCommandEnabledStatus(NETFN_STORAGE,NULL,CMD_RESERVE_SEL,BMCInst) == 0)
@@ -1928,14 +1928,14 @@ if((LastRecID==1) &&(pDelSelReq->RecID == LastRecID)&& (pBMCInfo->AMIConfig.Circ
  * ClearSEL
  *---------------------------------------*/
 int
-ClearSEL (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst)     
+ClearSEL (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst)     
 {
-    _NEAR_ ClearSELReq_T* pClrSelReq = (_NEAR_ ClearSELReq_T*) pReq;
-    _NEAR_ ClearSELRes_T* pClrSelRes = (_NEAR_ ClearSELRes_T*) pRes;
-    _FAR_  PEFRecordDetailsConfig_T*   nvrPefRecordDetails;
-    _FAR_   AMIConfig_T*    pAMIcfg;
-    _FAR_ BMCInfo_t* pBMCInfo = &g_BMCInfo[BMCInst];
-    _FAR_ SELRepository_T* _FAR_	m_sel = NULL;
+    ClearSELReq_T* pClrSelReq = (ClearSELReq_T*) pReq;
+    ClearSELRes_T* pClrSelRes = (ClearSELRes_T*) pRes;
+     PEFRecordDetailsConfig_T*   nvrPefRecordDetails;
+      AMIConfig_T*    pAMIcfg;
+    BMCInfo_t* pBMCInfo = &g_BMCInfo[BMCInst];
+    SELRepository_T* _FAR_	m_sel = NULL;
     char RemDirName[MAXFILESIZE],DirName[MAXFILESIZE]={0};
 	char ExtendedSELCmd[EXTENDED_SEL_PATH_LENGTH];
     int ReclaimSEL,nRet = 0;
@@ -1946,7 +1946,7 @@ ClearSEL (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCIns
 
     if(!ReclaimSEL)
     {
-        m_sel = (_FAR_ SELRepository_T*) GetSDRSELNVRAddr ((pBMCInfo->IpmiConfig.SDRAllocationSize * 1024), BMCInst);
+        m_sel = (SELRepository_T*) GetSDRSELNVRAddr ((pBMCInfo->IpmiConfig.SDRAllocationSize * 1024), BMCInst);
     }
 
     if (_fmemcmp(pClrSelReq->CLR, "CLR", CLR_SEL_PASSWORD_STR_LEN))
@@ -2155,11 +2155,11 @@ ClearSEL (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCIns
  * GetSELTime
  *---------------------------------------*/
 int
-GetSELTime (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst)
+GetSELTime (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst)
 {
     INT16 UTCOffset = 0;
     INT32U UTCTime = 0;
-    _NEAR_ GetSELTimeRes_T* pGetSelTimeRes = (_NEAR_ GetSELTimeRes_T*) pRes;
+    GetSELTimeRes_T* pGetSelTimeRes = (GetSELTimeRes_T*) pRes;
     BMCInfo_t *pBMCInfo = &g_BMCInfo[BMCInst];
 
     OS_THREAD_MUTEX_ACQUIRE(&pBMCInfo->SELConfig.SELMutex, WAIT_INFINITE);
@@ -2256,10 +2256,10 @@ int UpdateTimeZone (INT8U *TimeZone)
  * SetSELTime
  *---------------------------------------*/
 int
-SetSELTime (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst)
+SetSELTime (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst)
 {
     INT32U localTime = 0;
-    _NEAR_ SetSELTimeReq_T* pSetSelTimeReq = (_NEAR_ SetSELTimeReq_T*) pReq;
+    SetSELTimeReq_T* pSetSelTimeReq = (SetSELTimeReq_T*) pReq;
     BMCInfo_t *pBMCInfo = &g_BMCInfo[BMCInst];
 
     localTime = ipmitoh_u32 (pSetSelTimeReq->Time);
@@ -2310,9 +2310,9 @@ SetSELTime (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCI
  * GetSELTimeUTC_Offset
  *---------------------------------------*/
 int
-GetSELTimeUTC_Offset (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst)
+GetSELTimeUTC_Offset (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst)
 {
-    _NEAR_ GetSELTimeUTCOffsetRes_T* pGetSelTimeUTCOffsetRes = (_NEAR_ GetSELTimeUTCOffsetRes_T*) pRes;
+    GetSELTimeUTCOffsetRes_T* pGetSelTimeUTCOffsetRes = (GetSELTimeUTCOffsetRes_T*) pRes;
     BMCInfo_t *pBMCInfo = &g_BMCInfo[BMCInst];
 
     OS_THREAD_MUTEX_ACQUIRE(&pBMCInfo->SELConfig.SELMutex, WAIT_INFINITE);
@@ -2329,10 +2329,10 @@ GetSELTimeUTC_Offset (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR
  * SetSELTimeUTC_Offset
  *---------------------------------------*/
 int
-SetSELTimeUTC_Offset (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst)
+SetSELTimeUTC_Offset (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst)
 {
-    _NEAR_ SetSELTimeUTCOffsetReq_T* pSetSELTimeUTCOffsetReq = (_NEAR_ SetSELTimeUTCOffsetReq_T*) pReq;
-    _NEAR_ SetSELTimeUTCOffsetRes_T* pSetSELTimeUTCOffsetRes = (_NEAR_ SetSELTimeUTCOffsetRes_T*) pRes;
+    SetSELTimeUTCOffsetReq_T* pSetSELTimeUTCOffsetReq = (SetSELTimeUTCOffsetReq_T*) pReq;
+    SetSELTimeUTCOffsetRes_T* pSetSELTimeUTCOffsetRes = (SetSELTimeUTCOffsetRes_T*) pRes;
     BMCInfo_t *pBMCInfo = &g_BMCInfo[BMCInst];
     INT16 UTCOffset = 0;
     INT32U UTCTime = 0;
@@ -2406,7 +2406,7 @@ SetSELTimeUTC_Offset (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR
  * GetAuxiliaryLogStatus
  *---------------------------------------*/
 int
-GetAuxiliaryLogStatus(_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst)
+GetAuxiliaryLogStatus(INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst)
 {
     return 0;
 }
@@ -2416,7 +2416,7 @@ GetAuxiliaryLogStatus(_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR
  * SetAuxiliaryLogStatus
  *---------------------------------------*/
 int
-SetAuxiliaryLogStatus(_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst)
+SetAuxiliaryLogStatus(INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst)
 {
     return 0;
 }
@@ -2425,8 +2425,8 @@ SetAuxiliaryLogStatus(_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR
 /*---------------------------------------
  * GetNextSELEntry
  *---------------------------------------*/
-static _FAR_ SELRec_T*
-GetNextSELEntry (_FAR_ SELRec_T* rec, int BMCInst)
+static SELRec_T*
+GetNextSELEntry (SELRec_T* rec, int BMCInst)
 {
     SELEventNode *SELNode = NULL;
     //INT16U LastRecID = 0;
@@ -2485,16 +2485,16 @@ GetNextSELEntry (_FAR_ SELRec_T* rec, int BMCInst)
  @ params RecID[in] Record ID BMCInst[in]
  @ returns SELRecord pointer on success and 0 on failures
  */
-static _FAR_ SELRec_T* GetSELRec(INT16U RecID,int BMCInst)
+static SELRec_T* GetSELRec(INT16U RecID,int BMCInst)
 {
     BMCInfo_t* pBMCInfo = &g_BMCInfo[BMCInst];
     int i=0;
-    _FAR_ SELRepository_T* _FAR_ m_sel;
+    SELRepository_T* m_sel;
     struct SELEventNode *SELNode= NULL;
 
    if(g_corefeatures.del_sel_reclaim_support != ENABLED)
    {
-    m_sel = (_FAR_ SELRepository_T*) GetSDRSELNVRAddr ((pBMCInfo->IpmiConfig.SDRAllocationSize * 1024), BMCInst);
+    m_sel = (SELRepository_T*) GetSDRSELNVRAddr ((pBMCInfo->IpmiConfig.SDRAllocationSize * 1024), BMCInst);
 
     for(i=0;i<pBMCInfo->SELConfig.MaxSELRecord;i++)
     {
@@ -2520,14 +2520,14 @@ static _FAR_ SELRec_T* GetSELRec(INT16U RecID,int BMCInst)
  @ brief This function is used to Update the First and Last SEL Record ID for Circular SEL
  @ params BMCInst[in] - BMC Instance
  */
-static _FAR_ void FindRecOrder(int BMCInst)
+static void FindRecOrder(int BMCInst)
 {
     BMCInfo_t *pBMCInfo = &g_BMCInfo[BMCInst];
-    _FAR_ SELRepository_T* _FAR_ m_sel;
+    SELRepository_T* m_sel;
     int i=0,index=0,FirstIndex = 0,j=0;
     INT16U  LastRecID = 0,FirstRecID = 0,TempRecID = 0;
 
-    m_sel = (_FAR_ SELRepository_T*) GetSDRSELNVRAddr ((pBMCInfo->IpmiConfig.SDRAllocationSize * 1024), BMCInst);
+    m_sel = (SELRepository_T*) GetSDRSELNVRAddr ((pBMCInfo->IpmiConfig.SDRAllocationSize * 1024), BMCInst);
 
     /*Find the largetest and lowest Rec ID to find out First and last Rec ID*/
     while(i < pBMCInfo->SELConfig.MaxSELRecord)
@@ -2771,7 +2771,7 @@ GetSelTimeStamp(int BMCInst)
 static INT8U SELTimeClockSync(INT8U Action, int BMCInst)
 {
     SELEventRecord_T *EventRec = (SELEventRecord_T*)m_SysEventMsg;
-    _FAR_ BMCInfo_t* pBMCInfo = &g_BMCInfo[BMCInst];
+    BMCInfo_t* pBMCInfo = &g_BMCInfo[BMCInst];
     INT8U pRes[sizeof(AddSELRes_T)];
 
     EventRec->SensorNum  = BMC_GET_SHARED_MEM(BMCInst)->SysEvent_SensorNo;

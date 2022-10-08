@@ -74,14 +74,14 @@ typedef struct
  * LAN interface functions.
  * @{
 **/
-extern BOOL	ValidateUDPChkSum	(_NEAR_ UDPPseudoHdr_T* pUDPPseudoHdr, _FAR_ UDPHdr_T* pUDPHdr);
-extern BOOL	ValidateIPChkSum	(_FAR_ IPHdr_T* pIPHdr);
-extern INT16U CalculateUDPChkSum (_NEAR_ UDPPseudoHdr_T* pUDPPseudoHdr, _FAR_ UDPHdr_T* pUDPHdr);
-extern INT16U CalculateIPChkSum	(_FAR_ IPHdr_T* pIPHdr);
+extern BOOL	ValidateUDPChkSum	(UDPPseudoHdr_T* pUDPPseudoHdr, UDPHdr_T* pUDPHdr);
+extern BOOL	ValidateIPChkSum	(IPHdr_T* pIPHdr);
+extern INT16U CalculateUDPChkSum (UDPPseudoHdr_T* pUDPPseudoHdr, UDPHdr_T* pUDPHdr);
+extern INT16U CalculateIPChkSum	(IPHdr_T* pIPHdr);
 
 
 //extern int SendLANPkt (MsgPkt_T *pRes);
-//extern void ProcessLANReq (const MsgPkt_T* pReq, _NEAR_ MsgPkt_T *pRes);
+//extern void ProcessLANReq (const MsgPkt_T* pReq, MsgPkt_T *pRes);
 
 //extern int SendSOLPkt  (INT8U* pSOLPkt, INT16U Len);
 /** @} */

@@ -160,7 +160,7 @@ extern int InitSensorScanningBit (int BMCInst);
  * @param SensorNum - Sensor number.
  * @return the sensor's SDR record.
 **/
-extern _FAR_ SDRRecHdr_T* SR_GetSensorSDR (INT8U SensorNum,int BMCInst);
+extern SDRRecHdr_T* SR_GetSensorSDR (INT8U SensorNum,int BMCInst);
 
 
 extern int GetRecordIdsforDCMISensor (INT8U EntityID,INT8U SensorType,INT8U EntityInstance, 
@@ -177,22 +177,22 @@ extern int GetDCMITempReading(INT8U EntityID, INT8U SensorType,INT8U EntityInsta
  * sensor values.
  * @{
 **/
-extern int GetDevSDRInfo (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst);
-extern int GetDevSDR (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst);
-extern int ReserveDevSDRRepository (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst);
-extern int SetSensorType (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst);
-extern int GetSensorType (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst);
-extern int ReArmSensor (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst);
-extern int GetSensorEventStatus (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst);
-extern int SetSensorHysterisis (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst);
-extern int GetSensorHysterisis (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst);
-extern int SetSensorThresholds (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst);
-extern int GetSensorThresholds (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst);
-extern int GetSensorReadingFactors (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst);
-extern int SetSensorEventEnable (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst);
-extern int GetSensorEventEnable (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst);
-extern int GetSensorReading (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst);
-extern int SetSensorReading (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst);
+extern int GetDevSDRInfo (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst);
+extern int GetDevSDR (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst);
+extern int ReserveDevSDRRepository (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst);
+extern int SetSensorType (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst);
+extern int GetSensorType (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst);
+extern int ReArmSensor (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst);
+extern int GetSensorEventStatus (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst);
+extern int SetSensorHysterisis (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst);
+extern int GetSensorHysterisis (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst);
+extern int SetSensorThresholds (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst);
+extern int GetSensorThresholds (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst);
+extern int GetSensorReadingFactors (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst);
+extern int SetSensorEventEnable (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst);
+extern int GetSensorEventEnable (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst);
+extern int GetSensorReading (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst);
+extern int SetSensorReading (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst);
 int CompareValues(BOOL isSigned, INT8U val1, INT8U val2);
 /** @} */
 
@@ -202,7 +202,7 @@ int CompareValues(BOOL isSigned, INT8U val1, INT8U val2);
  * @param Res       - Response data.
  * @return 0 if success, -1 if error.
 **/
-extern int SR_GetSensorHysterisis  (INT8U SensorNum, _NEAR_ GetSensorHysterisisRes_T* Res);
+extern int SR_GetSensorHysterisis  (INT8U SensorNum, GetSensorHysterisisRes_T* Res);
 
 /**
  * @brief Get Sensor Threshold.
@@ -210,7 +210,7 @@ extern int SR_GetSensorHysterisis  (INT8U SensorNum, _NEAR_ GetSensorHysterisisR
  * @param Res       - Response data.
  * @return 0 if success, -1 if error.
 **/
-extern int SR_GetSensorThreshold   (INT8U SensorNum, _NEAR_ GetSensorThresholdRes_T* Res);
+extern int SR_GetSensorThreshold   (INT8U SensorNum, GetSensorThresholdRes_T* Res);
 
 /**
  * @brief Get Sensor Event Enables.
@@ -218,7 +218,7 @@ extern int SR_GetSensorThreshold   (INT8U SensorNum, _NEAR_ GetSensorThresholdRe
  * @param Res       - Response data.
  * @return 0 if success, -1 if error.
 **/
-extern int SR_GetSensorEventEnable (INT8U  SensorNum, _NEAR_ GetSensorEventEnableRes_T* Res);
+extern int SR_GetSensorEventEnable (INT8U  SensorNum, GetSensorEventEnableRes_T* Res);
 
 /**
  * @brief Get Sensor Reading.

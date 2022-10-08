@@ -81,12 +81,12 @@
 #if defined UNIMPLEMENTED_AS_FUNC
 
 #define UNIMPLEMENTED   UnImplementedFunc
-extern int UnImplementedFunc (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes, int BMCInst);
+extern int UnImplementedFunc (INT8U* pReq, INT8U ReqLen, INT8U* pRes, int BMCInst);
 
 #elif defined AMI_UNIMPLEMENTED_AS_FUNC
 
 #define UNIMPLEMENTED   UnImplementedFuncAMI
-extern int UnImplementedFuncAMI (_NEAR_ INT8U* pReq, INT32U ReqLen, _NEAR_ INT8U* pRes, int BMCInst);
+extern int UnImplementedFuncAMI (INT8U* pReq, INT32U ReqLen, INT8U* pRes, int BMCInst);
 
 #else
 

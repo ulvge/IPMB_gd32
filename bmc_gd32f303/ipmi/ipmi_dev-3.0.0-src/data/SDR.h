@@ -51,7 +51,7 @@ typedef struct
  * @var g_SDRRAM
  * @brief SDR Repository.
 **/
-extern _FAR_ SDRRepository_T*   _FAR_   g_SDRRAM;
+extern SDRRepository_T*     g_SDRRAM;
 
 
 /**
@@ -61,19 +61,19 @@ extern _FAR_ SDRRepository_T*   _FAR_   g_SDRRAM;
  * These commands provide read/write access to BMC's SDR repository.
  * @{
 **/
-extern int GetSDRRepositoryInfo      (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst);
-extern int GetSDRRepositoryAllocInfo (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst);
-extern int ReserveSDRRepository      (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst);
-extern int GetSDR                    (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst);
-extern int AddSDR                    (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst);
-extern int PartialAddSDR             (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst);
-extern int DeleteSDR                 (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst);
-extern int ClearSDRRepository        (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst);
-extern int GetSDRRepositoryTime      (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst);
-extern int SetSDRRepositoryTime      (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst);
-extern int EnterSDRUpdateMode        (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst);
-extern int ExitSDRUpdateMode         (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst);
-extern int RunInitializationAgent    (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst);
+extern int GetSDRRepositoryInfo      (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst);
+extern int GetSDRRepositoryAllocInfo (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst);
+extern int ReserveSDRRepository      (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst);
+extern int GetSDR                    (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst);
+extern int AddSDR                    (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst);
+extern int PartialAddSDR             (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst);
+extern int DeleteSDR                 (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst);
+extern int ClearSDRRepository        (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst);
+extern int GetSDRRepositoryTime      (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst);
+extern int SetSDRRepositoryTime      (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst);
+extern int EnterSDRUpdateMode        (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst);
+extern int ExitSDRUpdateMode         (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst);
+extern int RunInitializationAgent    (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst);
 /** @} */
 
 /**
@@ -88,7 +88,7 @@ extern INT16U   SDR_GetNextSDRId     (INT16U RecID,int BMCInst);
  * @param pSDRRec - Current SDR Record header.
  * @return the next SDR Record header.
 **/
-extern _FAR_ SDRRecHdr_T*   ReadSDRRepository (_FAR_ SDRRecHdr_T* pSDRRec,int BMCInst);
+extern SDRRecHdr_T*   ReadSDRRepository (SDRRecHdr_T* pSDRRec,int BMCInst);
 
 /**
  * @brief Write into SDR Repository.
@@ -97,14 +97,14 @@ extern _FAR_ SDRRecHdr_T*   ReadSDRRepository (_FAR_ SDRRecHdr_T* pSDRRec,int BM
  * @param Size    - Size of write.
  * @return the SDR Record header.
 **/
-extern void WriteSDRRepository (_FAR_ SDRRecHdr_T* pSDRRec, INT8U Offset, INT8U Size,INT8U SdrSize,int BMCInst);
+extern void WriteSDRRepository (SDRRecHdr_T* pSDRRec, INT8U Offset, INT8U Size,INT8U SdrSize,int BMCInst);
 
 /**
  * @brief Get the SDR Record.
  * @param RecID - SDR Record ID.
  * @return the SDR Record.
 **/
-extern _FAR_ SDRRecHdr_T* GetSDRRec  (INT16U RecID,int BMCInst);
+extern SDRRecHdr_T* GetSDRRec  (INT16U RecID,int BMCInst);
 
 /**
  * @brief Initialize SDR Repository.

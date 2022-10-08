@@ -281,7 +281,7 @@ void *MsgCoreHndlr(void *pArg)
 *@param pRes Response for the requested command
 *@return none
 */
-void ProcessIPMIReq(_NEAR_ MsgPkt_T *pReq, _NEAR_ MsgPkt_T *pRes)
+void ProcessIPMIReq(MsgPkt_T *pReq, MsgPkt_T *pRes)
 {
     CmdHndlrMap_T *pCmdHndlrMap;
     INT32U HdrOffset = sizeof(IPMIMsgHdr_T);
@@ -348,7 +348,7 @@ void ProcessIPMIReq(_NEAR_ MsgPkt_T *pReq, _NEAR_ MsgPkt_T *pRes)
 *@param pIPMIMsgRes Header of the response
 *@return none
 */
-void SwapIPMIMsgHdr(const IPMIMsgHdr_T *pIPMIMsgReq, _NEAR_ IPMIMsgHdr_T *pIPMIMsgRes)
+void SwapIPMIMsgHdr(const IPMIMsgHdr_T *pIPMIMsgReq, IPMIMsgHdr_T *pIPMIMsgRes)
 {
     pIPMIMsgRes->ResAddr = pIPMIMsgReq->ReqAddr;
     pIPMIMsgRes->NetFnLUN = (pIPMIMsgReq->NetFnLUN & 0xFC) + 0x04;
@@ -375,7 +375,7 @@ void SwapIPMIMsgHdr(const IPMIMsgHdr_T *pIPMIMsgReq, _NEAR_ IPMIMsgHdr_T *pIPMIM
 *@param pRes Response for the command
 *@return Returns the size of the response
 */
-int UnImplementedFunc(_NEAR_ INT8U *pReq, INT8U ReqLen, _NEAR_ INT8U *pRes, int BMCInst)
+int UnImplementedFunc(INT8U *pReq, INT8U ReqLen, INT8U *pRes, int BMCInst)
 {
     *pRes = CC_INV_CMD;
     return sizeof(*pRes);
@@ -389,10 +389,10 @@ int UnImplementedFunc(_NEAR_ INT8U *pReq, INT8U ReqLen, _NEAR_ INT8U *pRes, int 
 *@return Returns 0 on success
 *            Returns -1 on failure
 */
-int GetMsgHndlrMap(INT8U NetFn, _FAR_ CmdHndlrMap_T **pCmdHndlrMap)
+int GetMsgHndlrMap(INT8U NetFn, CmdHndlrMap_T **pCmdHndlrMap)
 {
     int i;
-    _FAR_ BMCInfo_t *pBMCInfo = &g_BMCInfo;
+    BMCInfo_t *pBMCInfo = &g_BMCInfo;
 
     /* Get the command handler corresponding to the net function */
     for (i = 0; i < sizeof(pBMCInfo->MsgHndlrTbl) / sizeof(pBMCInfo->MsgHndlrTbl[0]); i++)
@@ -457,7 +457,7 @@ pCmdHndlr_T GetCmdHndlr(CmdHndlrMap_T *pCmdHndlrMap, INT8U Cmd)
 int GroupExtnGetMsgHndlrMap(INT8U NetFn, INT8U GroupExtnCode, CmdHndlrMap_T **pCmdHndlrMap, int BMCInst)
 {
     //    int i;
-    //    _FAR_ BMCInfo_t* pBMCInfo = &g_BMCInfok;
+    //    BMCInfo_t* pBMCInfo = &g_BMCInfok;
 
     //    /* Get the command handler corresponding to the net function */
     //    for (i = 0; i < sizeof (pBMCInfo->GroupExtnMsgHndlrTbl) / sizeof (pBMCInfo->GroupExtnMsgHndlrTbl [0]); i++)
@@ -489,10 +489,10 @@ int GroupExtnGetMsgHndlrMap(INT8U NetFn, INT8U GroupExtnCode, CmdHndlrMap_T **pC
  *-----------------------------------------------------------------*/
 void RespondSendMessage(MsgPkt_T *pReq, INT8U Status, int BMCInst)
 {
-    //		_FAR_ BMCInfo_t* pBMCInfo = &g_BMCInfo;
+    //		BMCInfo_t* pBMCInfo = &g_BMCInfo;
 
     //		MsgPkt_T   ResPkt;
-    //		_NEAR_ IPMIMsgHdr_T*  pIPMIResHdr = (_NEAR_ IPMIMsgHdr_T*)ResPkt.Data;
+    //		IPMIMsgHdr_T*  pIPMIResHdr = (IPMIMsgHdr_T*)ResPkt.Data;
     //		const IPMIMsgHdr_T*  pIPMIReqHdr = (const IPMIMsgHdr_T*)pReq->Data;
 
     //		INT8U SeqNum = NET_FN(pIPMIReqHdr->RqSeqLUN);
@@ -538,7 +538,7 @@ void RespondSendMessage(MsgPkt_T *pReq, INT8U Status, int BMCInst)
 */
 int GetIfcSupport(INT16U IfcSupt, INT8U *IfcSupport, int BMCInst)
 {
-    _FAR_ BMCInfo_t *pBMCInfo = &g_BMCInfo;
+    BMCInfo_t *pBMCInfo = &g_BMCInfo;
     switch (IfcSupt)
     {
     case LAN_IFC_SUP:

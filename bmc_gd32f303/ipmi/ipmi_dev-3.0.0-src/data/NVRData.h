@@ -33,16 +33,16 @@
 
 #if 0
 /*** Extern Definitions ***/
-extern _FAR_ const ChcfgInfo_T g_IPMBChcfg;
-extern _FAR_ const ChcfgInfo_T g_SysChcfg;
-extern _FAR_ const ChcfgInfo_T g_LanChcfg1;
-extern _FAR_ const ChcfgInfo_T g_LanChcfg2;
-extern _FAR_ const ChcfgInfo_T g_LanChcfg3;
-extern _FAR_ const ChcfgInfo_T g_SerialChcfg;
-extern _FAR_ const ChcfgInfo_T g_IcmbChcfg;
-extern _FAR_ const ChcfgInfo_T g_SMBChcfg;
-extern _FAR_ const ChcfgInfo_T g_SMMChcfg;
-extern _FAR_ const ChcfgInfo_T g_SmlinkipmbChcfg;
+extern const ChcfgInfo_T g_IPMBChcfg;
+extern const ChcfgInfo_T g_SysChcfg;
+extern const ChcfgInfo_T g_LanChcfg1;
+extern const ChcfgInfo_T g_LanChcfg2;
+extern const ChcfgInfo_T g_LanChcfg3;
+extern const ChcfgInfo_T g_SerialChcfg;
+extern const ChcfgInfo_T g_IcmbChcfg;
+extern const ChcfgInfo_T g_SMBChcfg;
+extern const ChcfgInfo_T g_SMMChcfg;
+extern const ChcfgInfo_T g_SmlinkipmbChcfg;
 #endif
 
 #endif	/* NVR_DATA_H */

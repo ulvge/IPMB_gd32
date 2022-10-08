@@ -69,18 +69,18 @@
 
 /*** Global Variables ***/
 /**
- * @var _FAR_ INT32U g_SerialSessionID
+ * @var INT32U g_SerialSessionID
  * @brief Contains the Serial interface session ID
  * @warning Must be used by only serial interface task
  **/
-//extern _FAR_ INT32U g_SerialSessionID;
+//extern INT32U g_SerialSessionID;
 
 /**
- * @var _FAR_ INT8U g_SerialSessionActive
+ * @var INT8U g_SerialSessionActive
  * @brief Contains the Serial interface session ID
  * @warning Must be used by only serial interface task
  **/
-//extern _FAR_ INT8U g_SerialSessionActive;
+//extern INT8U g_SerialSessionActive;
 
 /**
  * @brief Processes the IPMI requests received from Serial interface
@@ -88,6 +88,6 @@
  * @param pRes Pointer to response message packet
  * @return Size of the response data
  **/
-extern INT8U ProcessSerialMessage (_NEAR_ MsgPkt_T* pReq, _NEAR_ MsgPkt_T* pRes,int BMCInst);
+extern INT8U ProcessSerialMessage (MsgPkt_T* pReq, MsgPkt_T* pRes,int BMCInst);
 
 #endif /* SERIAL_H */

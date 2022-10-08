@@ -70,10 +70,10 @@
 /*** Module variables ***/
 #if GET_SYS_IFC_CAPS != UNIMPLEMENTED
 
-_FAR_ static const INT8U m_SSIfcData[]  =
+static const INT8U m_SSIfcData[]  =
         {0x80 | 0x08 | 0x00, MAX_SSIF_REQ_PKT_SIZE, MAX_SSIF_RES_PKT_SIZE - 3}; /**< SSIF Interface capabilities data */   /*MAX_SSIF_RES_PKT_SIZE - 3 is to drop Length, RsNetFnLun, Cmd*/
 
-_FAR_ static const INT8U m_KCSIfcData[] = {0x00, 0xFF};/**< KCS Interface capabilities data */
+static const INT8U m_KCSIfcData[] = {0x00, 0xFF};/**< KCS Interface capabilities data */
 
 #endif /* GET_SYS_IFC_CAPS */
 
@@ -83,11 +83,11 @@ static const INT8U  m_SupportedAlgrothims [] = { 0x00, 0x01, 0x02, 0x03, 0x40, 0
  * ActivatePayload
  *---------------------------------------*/
 int
-ActivatePayload (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst)
+ActivatePayload (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst)
 {
-    _NEAR_  ActivatePayloadReq_T* Req = (_NEAR_ ActivatePayloadReq_T*)pReq;
-    _NEAR_  ActivatePayloadRes_T* Res = (_NEAR_ ActivatePayloadRes_T*)pRes;
-    _FAR_ BMCInfo_t* pBMCInfo = &g_BMCInfo[BMCInst];
+    ActivatePayloadReq_T* Req = (ActivatePayloadReq_T*)pReq;
+    ActivatePayloadRes_T* Res = (ActivatePayloadRes_T*)pRes;
+    BMCInfo_t* pBMCInfo = &g_BMCInfo[BMCInst];
     int                 i;
     INT16U              ActvtInst = 0;
     INT8U		 EthIndex;
@@ -95,9 +95,9 @@ ActivatePayload (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int
     struct stat fp;
     char solsessionfile[MAXFILESIZE] = {0};
     INT8U   Index;
-    _FAR_    ChannelInfo_T*        pChannelInfo=NULL;
-    _FAR_    ChannelUserInfo_T*    pChUserInfo=NULL;
-    _FAR_    SessionInfo_T*        pSessInfo=NULL;
+       ChannelInfo_T*        pChannelInfo=NULL;
+       ChannelUserInfo_T*    pChUserInfo=NULL;
+       SessionInfo_T*        pSessInfo=NULL;
     INT32U CurSesID,curchannel;
 
     if((Req->PayldType & (BIT7 | BIT6)) || (Req->PayldInst & (BIT7 | BIT6 | BIT5 | BIT4)) 
@@ -397,18 +397,18 @@ ActivatePayload (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int
  * DeactivatePayload
  *---------------------------------------*/
 int
-DeactivatePayload (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst)
+DeactivatePayload (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst)
 {
-    _NEAR_  DeactivatePayloadReq_T* Req = (_NEAR_ DeactivatePayloadReq_T*)pReq;
+    DeactivatePayloadReq_T* Req = (DeactivatePayloadReq_T*)pReq;
     int                 i;
     INT16U              ActvtInst = 0;
     INT32U  SolSessionID;
     MsgPkt_T            MsgPkt;
-    _FAR_ BMCInfo_t* pBMCInfo = &g_BMCInfo[BMCInst];
+    BMCInfo_t* pBMCInfo = &g_BMCInfo[BMCInst];
     INT8U		 EthIndex;
-    _FAR_    ChannelInfo_T*        pChannelInfo=NULL;
-    _FAR_    ChannelUserInfo_T*    pChUserInfo=NULL;
-    _FAR_    SessionInfo_T*        pSessInfo=NULL;
+       ChannelInfo_T*        pChannelInfo=NULL;
+       ChannelUserInfo_T*    pChUserInfo=NULL;
+       SessionInfo_T*        pSessInfo=NULL;
     INT8U    Index;
     char solsessionfile[MAXFILESIZE] = {0};
     struct stat fp;
@@ -569,9 +569,9 @@ DeactivatePayload (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ i
  * GetPayldActStatus
  *---------------------------------------*/
 int
-GetPayldActStatus (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst)
+GetPayldActStatus (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst)
 {
-    _NEAR_  GetPayldActStatRes_T* Res = (_NEAR_ GetPayldActStatRes_T*)pRes;
+    GetPayldActStatRes_T* Res = (GetPayldActStatRes_T*)pRes;
     BMCInfo_t *pBMCInfo = &g_BMCInfo[BMCInst];
     int                           i;
 
@@ -615,10 +615,10 @@ GetPayldActStatus (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ i
  * GetPayldInstInfo
  *---------------------------------------*/
 int
-GetPayldInstInfo (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst)
+GetPayldInstInfo (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst)
 {
-    _NEAR_  GetPayldInstInfoReq_T* Req = (_NEAR_ GetPayldInstInfoReq_T*)pReq;
-    _NEAR_  GetPayldInstInfoRes_T* Res = (_NEAR_ GetPayldInstInfoRes_T*)pRes;
+    GetPayldInstInfoReq_T* Req = (GetPayldInstInfoReq_T*)pReq;
+    GetPayldInstInfoRes_T* Res = (GetPayldInstInfoRes_T*)pRes;
     BMCInfo_t *pBMCInfo = &g_BMCInfo[BMCInst];
     int                            i;
 
@@ -663,12 +663,12 @@ GetPayldInstInfo (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ in
  * SetUsrPayloadAccess
  *---------------------------------------*/
 int
-SetUsrPayloadAccess (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst)
+SetUsrPayloadAccess (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst)
 {
-    _NEAR_  SetUsrPayldAccReq_T* Req = (_NEAR_ SetUsrPayldAccReq_T*)pReq;
-    _FAR_   ChannelInfo_T*       pChannelInfo;
-    _FAR_   ChannelUserInfo_T*   pChUserInfo;
-    _FAR_   ChannelUserInfo_T*   pNVRChUserInfo;
+    SetUsrPayldAccReq_T* Req = (SetUsrPayldAccReq_T*)pReq;
+      ChannelInfo_T*       pChannelInfo;
+      ChannelUserInfo_T*   pChUserInfo;
+      ChannelUserInfo_T*   pNVRChUserInfo;
     INT8U                        Index;
     int                          i,j;
     INT8U                        Operation;
@@ -775,13 +775,13 @@ SetUsrPayloadAccess (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_
  * GetUsrPayloadAccess
  *---------------------------------------*/
 int
-GetUsrPayloadAccess (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst)
+GetUsrPayloadAccess (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst)
 {
-    _NEAR_  GetUsrPayldAccReq_T* Req = (_NEAR_ GetUsrPayldAccReq_T*)pReq;
-    _NEAR_  GetUsrPayldAccRes_T* Res = (_NEAR_ GetUsrPayldAccRes_T*)pRes;
+    GetUsrPayldAccReq_T* Req = (GetUsrPayldAccReq_T*)pReq;
+    GetUsrPayldAccRes_T* Res = (GetUsrPayldAccRes_T*)pRes;
     BMCInfo_t *pBMCInfo = &g_BMCInfo[BMCInst];
-    _FAR_   ChannelInfo_T*       pChannelInfo;
-    _FAR_   ChannelUserInfo_T*   pChUserInfo;
+      ChannelInfo_T*       pChannelInfo;
+      ChannelUserInfo_T*   pChUserInfo;
     INT8U                Index;
     INT8U                ChannelNum,curchannel;
     INT8U	   EthIndex;
@@ -854,9 +854,9 @@ GetUsrPayloadAccess (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_
  * GetChPayloadSupport
  *---------------------------------------*/
 int
-GetChPayloadSupport (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst)
+GetChPayloadSupport (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst)
 {
-    _NEAR_  GetChPayldSupRes_T* Res = (_NEAR_ GetChPayldSupRes_T*)pRes;
+    GetChPayldSupRes_T* Res = (GetChPayldSupRes_T*)pRes;
     BMCInfo_t *pBMCInfo = &g_BMCInfo[BMCInst];
     INT8U               ChannelNum,curchannel;
     INT8U   EthIndex;
@@ -887,7 +887,7 @@ GetChPayloadSupport (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_
 
     LOCK_BMC_SHARED_MEM(BMCInst);
     /* Load Payload Supported  */
-    _fmemcpy (&Res->StdPldtype1, (_FAR_ INT8U*)&pBMCInfo->RMCPPlus[EthIndex].PayloadSupport,
+    _fmemcpy (&Res->StdPldtype1, (INT8U*)&pBMCInfo->RMCPPlus[EthIndex].PayloadSupport,
         sizeof (PayloadSupport_T));
     UNLOCK_BMC_SHARED_MEM(BMCInst);
 
@@ -902,10 +902,10 @@ GetChPayloadSupport (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_
  * GetChPayloadVersion
  *---------------------------------------*/
 int
-GetChPayloadVersion (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst)
+GetChPayloadVersion (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst)
 {
-    _NEAR_  GetChPayldVerReq_T* Req = (_NEAR_ GetChPayldVerReq_T*)pReq;
-    _NEAR_  GetChPayldVerRes_T* Res = (_NEAR_ GetChPayldVerRes_T*)pRes;
+    GetChPayldVerReq_T* Req = (GetChPayldVerReq_T*)pReq;
+    GetChPayldVerRes_T* Res = (GetChPayldVerRes_T*)pRes;
     BMCInfo_t *pBMCInfo = &g_BMCInfo[BMCInst];
     int                 i;
     INT8U               ChannelNum,curchannel;
@@ -965,10 +965,10 @@ GetChPayloadVersion (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_
  * GetChOemPayloadInfo
  *---------------------------------------*/
 int
-GetChOemPayloadInfo (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst)
+GetChOemPayloadInfo (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst)
 {
-    _NEAR_  GetChOemPayldInfoReq_T* Req = (_NEAR_ GetChOemPayldInfoReq_T*)pReq;
-    _NEAR_  GetChOemPayldInfoRes_T* Res = (_NEAR_ GetChOemPayldInfoRes_T*)pRes;
+    GetChOemPayldInfoReq_T* Req = (GetChOemPayldInfoReq_T*)pReq;
+    GetChOemPayldInfoRes_T* Res = (GetChOemPayldInfoRes_T*)pRes;
     BMCInfo_t *pBMCInfo = &g_BMCInfo[BMCInst];
     int                     i;
     INT8U               ChannelNum,curchannel;
@@ -1033,10 +1033,10 @@ GetChOemPayloadInfo (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_
  * GetChCipherSuites
  *---------------------------------------*/
 int
-GetChCipherSuites (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst)
+GetChCipherSuites (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst)
 {
-    _NEAR_ GetChCipherSuitesReq_T* Req = (_NEAR_ GetChCipherSuitesReq_T*)pReq;
-    _NEAR_ GetChCipherSuitesRes_T* Res = (_NEAR_ GetChCipherSuitesRes_T*)pRes;
+    GetChCipherSuitesReq_T* Req = (GetChCipherSuitesReq_T*)pReq;
+    GetChCipherSuitesRes_T* Res = (GetChCipherSuitesRes_T*)pRes;
     INT8U                   Channel, Ix, ResLen,curchannel;
     INT8U	  EthIndex;
 
@@ -1119,12 +1119,12 @@ GetChCipherSuites (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ i
  * SetChSecurityKeys
  *---------------------------------------*/
 int
-SetChSecurityKeys (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst)
+SetChSecurityKeys (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst)
 {
-    _NEAR_  SetChSecurityKeysReq_T* Req = (_NEAR_ SetChSecurityKeysReq_T*)pReq;
-    _NEAR_  SetChSecurityKeysRes_T* Res = (_NEAR_ SetChSecurityKeysRes_T*)pRes;
+    SetChSecurityKeysReq_T* Req = (SetChSecurityKeysReq_T*)pReq;
+    SetChSecurityKeysRes_T* Res = (SetChSecurityKeysRes_T*)pRes;
     BMCInfo_t *pBMCInfo = &g_BMCInfo[BMCInst];
-    _FAR_   INT8U*                  pKeys;
+      INT8U*                  pKeys;
     int                     Keysize, ResLen;
     INT8U 	 EthIndex,curchannel;
 
@@ -1161,11 +1161,11 @@ SetChSecurityKeys (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ i
     /* Check Key Id */
     if (KEY_ID_KR == Req->KeyID)
     {
-        pKeys = (_FAR_ INT8U*)pBMCInfo->RMCPPlus[EthIndex].PseudoGenKey;
+        pKeys = (INT8U*)pBMCInfo->RMCPPlus[EthIndex].PseudoGenKey;
     }
     else if (KEY_ID_KG == Req->KeyID)
     {
-        pKeys = (_FAR_ INT8U*)pBMCInfo->RMCPPlus[EthIndex].KGHashKey;
+        pKeys = (INT8U*)pBMCInfo->RMCPPlus[EthIndex].KGHashKey;
     }
     else
     {
@@ -1251,9 +1251,9 @@ SetChSecurityKeys (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ i
  * SusResPayldEncrypt
  *---------------------------------------*/
 int
-SusResPayldEncrypt (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst)
+SusResPayldEncrypt (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst)
 {
-    _NEAR_  SusResPayldEncryptReq_T* Req = (_NEAR_ SusResPayldEncryptReq_T*)pReq;
+    SusResPayldEncryptReq_T* Req = (SusResPayldEncryptReq_T*)pReq;
     BMCInfo_t *pBMCInfo = &g_BMCInfo[BMCInst];
     int                      i;
     _FAR_	 SessionInfo_T*  pSessInfo;
@@ -1378,9 +1378,9 @@ SusResPayldEncrypt (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ 
  * GetSysIfcCaps
  *---------------------------------------*/
 int
-GetSysIfcCaps (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst)
+GetSysIfcCaps (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst)
 {
-    _NEAR_  GetSysIfcCapsRes_T* pCommonRes = (_NEAR_ GetSysIfcCapsRes_T*)pRes;
+    GetSysIfcCapsRes_T* pCommonRes = (GetSysIfcCapsRes_T*)pRes;
     INT8U               ResLen;
 
     pCommonRes->CompletionCode = CC_NORMAL;

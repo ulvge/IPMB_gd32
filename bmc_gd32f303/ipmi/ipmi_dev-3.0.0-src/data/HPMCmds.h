@@ -25,17 +25,17 @@
 
 /** Extern Definitions **/
 
-extern int GetTargetUpgradeCapablities  (_NEAR_ INT8U * pReq,INT8U ReqLen,_NEAR_ INT8U * pRes, _NEAR_ int BMCInst); 
-extern int GetComponentProperties       (_NEAR_ INT8U * pReq,INT8U ReqLen,_NEAR_ INT8U * pRes, _NEAR_ int BMCInst); 
-extern int InitiateUpgradeAction (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes, _NEAR_ int BMCInst); 
-extern int QuerySelfTestResults (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes, _NEAR_ int BMCInst); 
+extern int GetTargetUpgradeCapablities  (INT8U * pReq,INT8U ReqLen,INT8U * pRes, int BMCInst); 
+extern int GetComponentProperties       (INT8U * pReq,INT8U ReqLen,INT8U * pRes, int BMCInst); 
+extern int InitiateUpgradeAction (INT8U* pReq, INT8U ReqLen, INT8U* pRes, int BMCInst); 
+extern int QuerySelfTestResults (INT8U* pReq, INT8U ReqLen, INT8U* pRes, int BMCInst); 
 
-extern int AbortFirmwareUpgrade (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes, _NEAR_ int BMCInst); 
-extern int UploadFirmwareBlock (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes, _NEAR_ int BMCInst);
-extern int FinishFirmwareUpload (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes, _NEAR_ int BMCInst); 
-extern int GetUpgradeStatus (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes, _NEAR_ int BMCInst); 
-extern int ActivateFirmware (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes, _NEAR_ int BMCInst);
-extern int QueryRollbackStatus (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes, _NEAR_ int BMCInst);
-extern int InitiateManualRollback (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes, _NEAR_ int BMCInst);
+extern int AbortFirmwareUpgrade (INT8U* pReq, INT8U ReqLen, INT8U* pRes, int BMCInst); 
+extern int UploadFirmwareBlock (INT8U* pReq, INT8U ReqLen, INT8U* pRes, int BMCInst);
+extern int FinishFirmwareUpload (INT8U* pReq, INT8U ReqLen, INT8U* pRes, int BMCInst); 
+extern int GetUpgradeStatus (INT8U* pReq, INT8U ReqLen, INT8U* pRes, int BMCInst); 
+extern int ActivateFirmware (INT8U* pReq, INT8U ReqLen, INT8U* pRes, int BMCInst);
+extern int QueryRollbackStatus (INT8U* pReq, INT8U ReqLen, INT8U* pRes, int BMCInst);
+extern int InitiateManualRollback (INT8U* pReq, INT8U ReqLen, INT8U* pRes, int BMCInst);
  
 #endif  /* HPMCMDS_H */

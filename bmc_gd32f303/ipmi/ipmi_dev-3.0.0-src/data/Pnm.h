@@ -111,9 +111,9 @@ typedef struct
     Parse_handler parse_package_hndlr;
 } SensorInfoCUST_T;
 
-extern int PnmOemGetReading   (_NEAR_ INT8U* pReq,INT8U ReqLen,_NEAR_ INT8U* pRes,int BMCInst);
-extern int PnmOemMePowerStateChange (_NEAR_ INT8U* pReq,INT8U ReqLen,_NEAR_ INT8U* pRes,int BMCInst);
-extern int PnmOemPlatformPowerCharacterizationNotification(_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes, int BMCInst);
+extern int PnmOemGetReading   (INT8U* pReq,INT8U ReqLen,INT8U* pRes,int BMCInst);
+extern int PnmOemMePowerStateChange (INT8U* pReq,INT8U ReqLen,INT8U* pRes,int BMCInst);
+extern int PnmOemPlatformPowerCharacterizationNotification(INT8U* pReq, INT8U ReqLen, INT8U* pRes, int BMCInst);
 
 // generic function for NodeManager
 // extern int NM_RegisterOneSensor(hal_t *phal);

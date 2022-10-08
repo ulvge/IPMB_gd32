@@ -51,7 +51,7 @@ extern int API_GetSDRAllocInfo (SDRRepositoryAllocInfo_T* pAllocInfo, int BMCIns
  * @return 	The next SDR Record ID
  *			0	if no SDR Record is found.
  *-----------------------------------------------------------------*/
-extern INT16U API_GetFirstSDR (_FAR_ INT8U* pSDRRecord, int BMCInst);
+extern INT16U API_GetFirstSDR (INT8U* pSDRRecord, int BMCInst);
 
 /*-----------------------------------------------------------------
  * @fn API_GetSDRRecord
@@ -62,7 +62,7 @@ extern INT16U API_GetFirstSDR (_FAR_ INT8U* pSDRRecord, int BMCInst);
  *			0	if no next SDR Record is found.
  *                     -1       if error
  *-----------------------------------------------------------------*/
-extern int API_GetNextSDR (INT16U* pRecordID, _FAR_ INT8U* pSDRRecord, int BMCInst);
+extern int API_GetNextSDR (INT16U* pRecordID, INT8U* pSDRRecord, int BMCInst);
 
 /*-----------------------------------------------------------------
  * @fn API_GetSensorSDR
@@ -81,7 +81,7 @@ extern SDRRecHdr_T* API_GetSensorSDR (INT8U SensorNum, int BMCInst);
  * @return 	Record ID of the record added.
  *			0	if failed.
  *-----------------------------------------------------------------*/
-extern INT16U API_AddSDRRecord (_FAR_ INT8U* pSDRRecord, INT8U RecordLen, int BMCInst);
+extern INT16U API_AddSDRRecord (INT8U* pSDRRecord, INT8U RecordLen, int BMCInst);
 
 
 /*-----------------------------------------------------------------

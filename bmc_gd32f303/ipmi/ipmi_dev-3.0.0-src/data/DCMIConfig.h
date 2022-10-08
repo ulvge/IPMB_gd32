@@ -87,8 +87,8 @@ typedef struct
 
 #define NETWORK_RESTART     "/etc/init.d/networking restart"
 
-extern int GetDCMIConfigParameters(_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst);
-extern int SetDCMIConfigParameters(_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst);
+extern int GetDCMIConfigParameters(INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst);
+extern int SetDCMIConfigParameters(INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst);
 
 
 #endif /* DCMICONFIG_H */

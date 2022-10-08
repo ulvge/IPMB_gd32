@@ -64,14 +64,14 @@
  * Serial/Modem, Terminal and PPP parameters.
  * @{
 **/
-extern int SetSerialModemConfig   (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst);
-extern int GetSerialModemConfig   (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst);
-extern int CallBack               (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst);
-extern int SetUserCallBackOptions (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst);
-extern int GetUserCallBackOptions (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst);
-extern int SetSerialModemMUX      (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst);
-extern int SerialModemConnectActive (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst);
-extern int GetTAPResponseCodes    (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst);
+extern int SetSerialModemConfig   (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst);
+extern int GetSerialModemConfig   (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst);
+extern int CallBack               (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst);
+extern int SetUserCallBackOptions (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst);
+extern int GetUserCallBackOptions (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst);
+extern int SetSerialModemMUX      (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst);
+extern int SerialModemConnectActive (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst);
+extern int GetTAPResponseCodes    (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst);
 /** @} */
 
 /**

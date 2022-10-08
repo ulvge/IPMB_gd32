@@ -51,7 +51,7 @@ extern int API_GetSELAllocInfo (SELAllocInfo_T* pAllocInfo, int BMCInst);
  * @return 	The next SEL Record ID
  *			-1	if no SEL Record is found.
  *-----------------------------------------------------------------*/
-extern int API_GetFirstSEL (_FAR_ INT8U* pSELRecord, int BMCInst);
+extern int API_GetFirstSEL (INT8U* pSELRecord, int BMCInst);
 
 /*-----------------------------------------------------------------
  * @fn API_GetSELRecord
@@ -61,7 +61,7 @@ extern int API_GetFirstSEL (_FAR_ INT8U* pSELRecord, int BMCInst);
  * @return 	The next SEL Record number
  *			-1	if no next SEL Record is found.
  *-----------------------------------------------------------------*/
-extern int API_GetNextSEL (INT16U RecordID, _FAR_ INT8U* pSELRecord, int BMCInst);
+extern int API_GetNextSEL (INT16U RecordID, INT8U* pSELRecord, int BMCInst);
 
 /*-----------------------------------------------------------------
  * @fn API_AddSELRecord
@@ -70,7 +70,7 @@ extern int API_GetNextSEL (INT16U RecordID, _FAR_ INT8U* pSELRecord, int BMCInst
  * @return 	Record ID of the record added.
  *			-1	if failed.
  *-----------------------------------------------------------------*/
-extern int API_AddSELRecord (_FAR_ INT8U* pSELRecord, int BMCInst);
+extern int API_AddSELRecord (INT8U* pSELRecord, int BMCInst);
 
 
 /*-----------------------------------------------------------------
@@ -88,7 +88,7 @@ extern int API_ClearSELRepository (int BMCInst);
  *     * @return	0	if Success
  *      *			-1  if no repository, or repository bad.
  *       *---------------------------------------------------------------- */
-extern int API_GetSELTime  (_FAR_ INT32U *pSELTime, int BMCInst);
+extern int API_GetSELTime  (INT32U *pSELTime, int BMCInst);
 
 
 

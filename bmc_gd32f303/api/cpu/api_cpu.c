@@ -18,8 +18,8 @@ __IO bool g_CPUStatus = false;
 static void vTaskFTUartWrite(void *pvParameters);
 static void vTaskFTUartRead(void *pvParameters);
 
-static INT16U EncodeSerialPkt(_NEAR_ INT8U *Pkt, INT16U Len, _NEAR_ INT8U *EnPkt);
-static INT16U DecodeSerialPkt(_NEAR_ INT8U *Pkt, INT16U Len);
+static INT16U EncodeSerialPkt(INT8U *Pkt, INT16U Len, INT8U *EnPkt);
+static INT16U DecodeSerialPkt(INT8U *Pkt, INT16U Len);
 
 static void FTMsgProcess(INT8U *pReq, INT8U len);
 
@@ -228,7 +228,7 @@ static void vTimerCallback(xTimerHandle pxTimer)
  * @return Size of the Encoded packet
  **/
 INT16U
-EncodeSerialPkt(_NEAR_ INT8U *Pkt, INT16U Len, _NEAR_ INT8U *EnPkt)
+EncodeSerialPkt(INT8U *Pkt, INT16U Len, INT8U *EnPkt)
 {
 	INT16U index = 0;
 	INT16U i;
@@ -267,7 +267,7 @@ EncodeSerialPkt(_NEAR_ INT8U *Pkt, INT16U Len, _NEAR_ INT8U *EnPkt)
 }
 
 static INT16U
-DecodeSerialPkt(_NEAR_ INT8U *Pkt, INT16U Len)
+DecodeSerialPkt(INT8U *Pkt, INT16U Len)
 {
 	uint32 i;
 	uint8 byESCByteRecvd = 0;

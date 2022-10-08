@@ -43,9 +43,9 @@
 
 #define  FRU_DEVICE_TYPE  10
 
-extern int GetFRUAreaInfo (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst);
-extern int ReadFRUData (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst);
-extern int WriteFRUData (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst);
+extern int GetFRUAreaInfo (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst);
+extern int ReadFRUData (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst);
+extern int WriteFRUData (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst);
 /** @} */
 
 /**

@@ -119,11 +119,11 @@ INT8U GroupExtnCode[Max_GROUPEXTNCODE]={
  * GetNetFnSup
  *---------------------------------------*/
 int
-GetNetFnSup (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst)
+GetNetFnSup (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst)
 {
-    _NEAR_ GetNetFnSupRes_T*  pGetNetFnSupRes = (_NEAR_ GetNetFnSupRes_T*) pRes;
-    _FAR_  CmdHndlrMap_T*     pCmdHndlrMap;
-    _FAR_  ChannelInfo_T*     pChInfo;
+    GetNetFnSupRes_T*  pGetNetFnSupRes = (GetNetFnSupRes_T*) pRes;
+     CmdHndlrMap_T*     pCmdHndlrMap;
+     ChannelInfo_T*     pChInfo;
     INT8U              Channel, i,j,curchannel;
     BMCInfo_t *pBMCInfo = &g_BMCInfo[BMCInst];
 
@@ -192,11 +192,11 @@ GetNetFnSup (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMC
  * GetCmdSup
  *---------------------------------------*/
 int
-GetCmdSup (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst)
+GetCmdSup (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst)
 {
-    _NEAR_ GetCmdSupReq_T*  pGetCmdSupReq = (_NEAR_ GetCmdSupReq_T*) pReq;
-    _NEAR_ GetCmdSupRes_T*  pGetCmdSupRes = (_NEAR_ GetCmdSupRes_T*) pRes;
-    _FAR_  ChannelInfo_T*   pChInfo;
+    GetCmdSupReq_T*  pGetCmdSupReq = (GetCmdSupReq_T*) pReq;
+    GetCmdSupRes_T*  pGetCmdSupRes = (GetCmdSupRes_T*) pRes;
+     ChannelInfo_T*   pChInfo;
     INT8U            Channel, Start ,RetVal,curchannel;
     INT16U FFConfig;
     int  i;
@@ -301,11 +301,11 @@ GetCmdSup (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCIn
  * GetSubFnSup
  *---------------------------------------*/
 int
-GetSubFnSup (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst)
+GetSubFnSup (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst)
 {
-    _NEAR_ GetSubFnSupReq_T*  pGetSubFnSupReq = (_NEAR_ GetSubFnSupReq_T*) pReq;
-    _NEAR_ GetSubFnSupRes_T*  pGetSubFnSupRes = (_NEAR_ GetSubFnSupRes_T*) pRes;
-    _FAR_  ChannelInfo_T*     pChInfo;
+    GetSubFnSupReq_T*  pGetSubFnSupReq = (GetSubFnSupReq_T*) pReq;
+    GetSubFnSupRes_T*  pGetSubFnSupRes = (GetSubFnSupRes_T*) pRes;
+     ChannelInfo_T*     pChInfo;
     INT8U              Channel,curchannel;
     INT32U             SubFnMask;
     BMCInfo_t *pBMCInfo = &g_BMCInfo[BMCInst];
@@ -396,15 +396,15 @@ GetSubFnSup (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMC
  * GetConfigCmds
  *---------------------------------------*/
 int
-GetConfigCmds (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst)
+GetConfigCmds (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst)
 {
-    _NEAR_ GetConfigCmdsReq_T*  pGetConfigCmdsReq = (_NEAR_ GetConfigCmdsReq_T*) pReq;
-    _NEAR_ GetConfigCmdsRes_T*  pGetConfigCmdsRes = (_NEAR_ GetConfigCmdsRes_T*) pRes;
-    _FAR_  ChannelInfo_T*       pChInfo;
+    GetConfigCmdsReq_T*  pGetConfigCmdsReq = (GetConfigCmdsReq_T*) pReq;
+    GetConfigCmdsRes_T*  pGetConfigCmdsRes = (GetConfigCmdsRes_T*) pRes;
+     ChannelInfo_T*       pChInfo;
     INT8U                Channel, Start , RetVal,curchannel;
     INT16U FFConfig;
     int  i;
-    _FAR_   INT8U* pCmdCfg;
+      INT8U* pCmdCfg;
     BMCInfo_t *pBMCInfo = &g_BMCInfo[BMCInst];
 
     if(pBMCInfo->IpmiConfig.IPMIFirewallSupport == ENABLED)
@@ -509,11 +509,11 @@ GetConfigCmds (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int B
  * GetConfigSubFns
  *---------------------------------------*/
 int
-GetConfigSubFns (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst)
+GetConfigSubFns (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst)
 {
-    _NEAR_ GetConfigSubFnsReq_T*  pGetConfigSubFnsReq = (_NEAR_ GetConfigSubFnsReq_T*) pReq;
-    _NEAR_ GetConfigSubFnsRes_T*  pGetConfigSubFnsRes = (_NEAR_ GetConfigSubFnsRes_T*) pRes;
-    _FAR_  ChannelInfo_T*         pChInfo;
+    GetConfigSubFnsReq_T*  pGetConfigSubFnsReq = (GetConfigSubFnsReq_T*) pReq;
+    GetConfigSubFnsRes_T*  pGetConfigSubFnsRes = (GetConfigSubFnsRes_T*) pRes;
+     ChannelInfo_T*         pChInfo;
     INT8U                  Channel,curchannel;
     BMCInfo_t *pBMCInfo = &g_BMCInfo[BMCInst];
 	INT32U             SubFnMask;
@@ -599,16 +599,16 @@ GetConfigSubFns (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int
  * SetCmdEnables
  *---------------------------------------*/
 int
-SetCmdEnables (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst)
+SetCmdEnables (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst)
 {
-    _NEAR_ SetCmdEnablesReq_T*  pSetCmdEnablesReq = (_NEAR_ SetCmdEnablesReq_T*) pReq;
+    SetCmdEnablesReq_T*  pSetCmdEnablesReq = (SetCmdEnablesReq_T*) pReq;
     BMCInfo_t *pBMCInfo = &g_BMCInfo[BMCInst];
-    _FAR_  ChannelInfo_T*       pChInfo;
+     ChannelInfo_T*       pChInfo;
     INT8U                Channel, Start, RetVal;
     int                  i;
     INT8U                SuccessFlag = 0x01,curchannel;
     INT16U FFConfig;
-    _FAR_   INT8U* pCmdCfg;
+      INT8U* pCmdCfg;
     INT8U  EnDisMask;
 
 
@@ -743,14 +743,14 @@ SetCmdEnables (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int B
  * GetCmdEnables
  *---------------------------------------*/
 int
-GetCmdEnables (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst)
+GetCmdEnables (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst)
 {
-    _NEAR_ GetCmdEnablesReq_T*  pGetCmdEnablesReq = (_NEAR_ GetCmdEnablesReq_T*) pReq;
-    _NEAR_ GetCmdEnablesRes_T*  pGetCmdEnablesRes = (_NEAR_ GetCmdEnablesRes_T*) pRes;
-    _FAR_  ChannelInfo_T*       pChInfo;
+    GetCmdEnablesReq_T*  pGetCmdEnablesReq = (GetCmdEnablesReq_T*) pReq;
+    GetCmdEnablesRes_T*  pGetCmdEnablesRes = (GetCmdEnablesRes_T*) pRes;
+     ChannelInfo_T*       pChInfo;
     INT8U                Channel, Start,RetVal;
     INT16U FFConfig;
-    _FAR_   INT8U* pCmdCfg;
+      INT8U* pCmdCfg;
     INT8U  ResetFlag = 0,curchannel;
     int  i;
     BMCInfo_t *pBMCInfo = &g_BMCInfo[BMCInst];
@@ -878,10 +878,10 @@ GetCmdEnables (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int B
  * SetSubFnEnables
  *---------------------------------------*/
 int
-SetSubFnEnables (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst)
+SetSubFnEnables (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst)
 {
-    _NEAR_ SetSubFnEnablesReq_T*  pSetSubFnEnablesReq = (_NEAR_ SetSubFnEnablesReq_T*) pReq;
-    _FAR_  ChannelInfo_T*         pChInfo;
+    SetSubFnEnablesReq_T*  pSetSubFnEnablesReq = (SetSubFnEnablesReq_T*) pReq;
+     ChannelInfo_T*         pChInfo;
     INT8U                  Channel,curchannel;
     BMCInfo_t *pBMCInfo = &g_BMCInfo[BMCInst];
 
@@ -939,11 +939,11 @@ SetSubFnEnables (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int
  * GetSubFnEnables
  *---------------------------------------*/
 int
-GetSubFnEnables (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst)
+GetSubFnEnables (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst)
 {
-    _NEAR_ GetSubFnEnablesReq_T*  pGetSubFnEnablesReq = (_NEAR_ GetSubFnEnablesReq_T*) pReq;
-    _NEAR_ GetSubFnEnablesRes_T*  pGetSubFnEnablesRes = (_NEAR_ GetSubFnEnablesRes_T*) pRes;
-    _FAR_  ChannelInfo_T*         pChInfo;
+    GetSubFnEnablesReq_T*  pGetSubFnEnablesReq = (GetSubFnEnablesReq_T*) pReq;
+    GetSubFnEnablesRes_T*  pGetSubFnEnablesRes = (GetSubFnEnablesRes_T*) pRes;
+     ChannelInfo_T*         pChInfo;
     INT8U                  Channel,curchannel;
     BMCInfo_t *pBMCInfo = &g_BMCInfo[BMCInst];
 
@@ -1002,10 +1002,10 @@ GetSubFnEnables (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int
  * GetOEMNetFnIANASupport
  *---------------------------------------*/
 int
-GetOEMNetFnIANASupport (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst)
+GetOEMNetFnIANASupport (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst)
 {
-    _NEAR_ GetOEMNetFnIANASupportReq_T*  pGetOEMNetFnIANASupportReq = (_NEAR_ GetOEMNetFnIANASupportReq_T*) pReq;
-    _NEAR_ GetOEMNetFnIANASupportRes_T*  pGetOEMNetFnIANASupportRes = (_NEAR_ GetOEMNetFnIANASupportRes_T*) pRes;
+    GetOEMNetFnIANASupportReq_T*  pGetOEMNetFnIANASupportReq = (GetOEMNetFnIANASupportReq_T*) pReq;
+    GetOEMNetFnIANASupportRes_T*  pGetOEMNetFnIANASupportRes = (GetOEMNetFnIANASupportRes_T*) pRes;
     BMCInfo_t *pBMCInfo = &g_BMCInfo[BMCInst];
     INT8U i;
     if(pBMCInfo->IpmiConfig.IPMIFirewallSupport == ENABLED)

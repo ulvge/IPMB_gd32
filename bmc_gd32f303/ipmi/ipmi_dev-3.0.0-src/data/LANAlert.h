@@ -172,51 +172,51 @@ typedef struct
  * @param   Event Severity 
  * @return  TRUE if success else FALSE
  **/
-extern INT8U LANAlert (_NEAR_  SELEventRecord_T*   EvtRecord,
+extern INT8U LANAlert (SELEventRecord_T*   EvtRecord,
                                INT8U               DestSel,
                                INT8U               EventSeverity,
                                INT8U               AlertImmFlag,INT8U EthIndex,INT8U  *AlertStr, int BMCInst);
 
-extern int EncodeLength     (_NEAR_ INT8U*              EncodedLength,
+extern int EncodeLength     (INT8U*              EncodedLength,
                                     INT8U               Length);
 
-extern int AddEncodedOID    (_NEAR_ INT8U*              VarbindData,
-                             _NEAR_ INT8U*              EncodedOID,
+extern int AddEncodedOID    (INT8U*              VarbindData,
+                             INT8U*              EncodedOID,
                                     INT8U               Length);
-extern int ASNOIDEncode     (const _FAR_ INT16U*        OID,
+extern int ASNOIDEncode     (const INT16U*        OID,
                                     INT8U               Length,
-                             _NEAR_ INT8U*              EncodedOID);
+                             INT8U*              EncodedOID);
 
-extern INT8U ASNEncodeBYTE  (_NEAR_ INT8U*              EncodedOID,
+extern INT8U ASNEncodeBYTE  (INT8U*              EncodedOID,
                                     INT8U               Length,
-                             _NEAR_ INT8U*              EncodedData,
+                             INT8U*              EncodedData,
                                     INT8U               Data);
 
-extern int ASNEncodeUINT16  (_NEAR_ INT8U*              EncodedOID,
+extern int ASNEncodeUINT16  (INT8U*              EncodedOID,
                                     INT8U               Length,
-                            _NEAR_  INT8U*              EncodedData,
+                            INT8U*              EncodedData,
                                     INT16U              Data);
 
-extern int ASNEncodeUINT32  (_NEAR_ INT8U*              EncodedOID,
+extern int ASNEncodeUINT32  (INT8U*              EncodedOID,
                                     INT8U               Length,
-                            _NEAR_  INT8U*              EncodedData,
+                            INT8U*              EncodedData,
                                     INT32U              Data);
 
-extern int ASNEncodeTimestamp(_NEAR_ INT8U*             EncodedOID,
+extern int ASNEncodeTimestamp(INT8U*             EncodedOID,
                                     INT8U               Length,
-                            _NEAR_  INT8U*              EncodedData,
+                            INT8U*              EncodedData,
                                     INT32U              Data);
-extern int ASNEncodeString (_NEAR_  INT8U*              EncodedOID,
+extern int ASNEncodeString (INT8U*              EncodedOID,
                                     INT8U               Length,
-                            _NEAR_  INT8U*              EncodedData,
-                            _NEAR_  INT8U*              Str,
+                            INT8U*              EncodedData,
+                            INT8U*              Str,
                                     INT8U               StrLength);
-extern int ConstructTrapPDU (_NEAR_ SELEventRecord_T*   EvtRecord,
-                             _NEAR_ INT8U*              EncodedTrapPDU,
-                             _NEAR_ INT8U*              IPAddr,
+extern int ConstructTrapPDU (SELEventRecord_T*   EvtRecord,
+                             INT8U*              EncodedTrapPDU,
+                             INT8U*              IPAddr,
                                     INT8U               EventSeverity,INT8U *AlertStr,int BMCInst);
 
-extern int ConstructVarBind (_NEAR_ SELEventRecord_T*   EvtRecord,
-                             _NEAR_ INT8U*              EncodedVarBindings,
+extern int ConstructVarBind (SELEventRecord_T*   EvtRecord,
+                             INT8U*              EncodedVarBindings,
                                     INT8U               EventSeverity,INT8U *AlertStr,int BMCInst);
 #endif /* LANALERT_H */

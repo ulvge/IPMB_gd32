@@ -103,7 +103,7 @@
 static int NwInterfacePresenceCheck (char * Interface);
 
 /*** Module Variables ***/
-//_FAR_        INT8U  m_ArpSuspendReq;
+//       INT8U  m_ArpSuspendReq;
 
 char **explode(char separator, char *string);
 int IPAddrCheck(INT8U *Addr,int params);
@@ -213,13 +213,13 @@ static BOOL enableSetMACAddr = FALSE;
  * SetLanConfigParam
  *-------------------------------------------------------*/
 int
-SetLanConfigParam (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst)
+SetLanConfigParam (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst)
 {
-    _NEAR_  SetLanConfigReq_T*  pSetLanReq = (_NEAR_ SetLanConfigReq_T*) pReq;
-    _NEAR_  SetLanConfigRes_T*  pSetLanRes = (_NEAR_ SetLanConfigRes_T*) pRes;
-    _FAR_   BMCSharedMem_T*     pSharedMem = BMC_GET_SHARED_MEM (BMCInst);
-    _FAR_   ChannelInfo_T*      ptrChannelInfo;
-    _FAR_ BMCInfo_t* pBMCInfo = &g_BMCInfo[BMCInst];
+    SetLanConfigReq_T*  pSetLanReq = (SetLanConfigReq_T*) pReq;
+    SetLanConfigRes_T*  pSetLanRes = (SetLanConfigRes_T*) pRes;
+      BMCSharedMem_T*     pSharedMem = BMC_GET_SHARED_MEM (BMCInst);
+      ChannelInfo_T*      ptrChannelInfo;
+    BMCInfo_t* pBMCInfo = &g_BMCInfo[BMCInst];
     NWCFG_STRUCT        NWConfig;
     NWCFG6_STRUCT      NWConfig6;
 	RAipV6Addr_T        RAipV6Addr = {0};
@@ -1206,7 +1206,7 @@ SetLanConfigParam (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ i
             break;
 
         case LAN_PARAM_VLAN_TAGS:
-			AddrFormat = *(((_NEAR_ INT8U*)&pSetLanReq->ConfigData) + 1)>> 4;
+			AddrFormat = *(((INT8U*)&pSetLanReq->ConfigData) + 1)>> 4;
 			TDBG("AddrFormat = %d\n", AddrFormat);
 			if(AddrFormat > 0x01)
 			{
@@ -1215,7 +1215,7 @@ SetLanConfigParam (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ i
 				return sizeof(INT8U);
 			}
 			
-			vlanID = *(((_NEAR_ INT16U*)&pSetLanReq->ConfigData) + 1);
+			vlanID = *(((INT16U*)&pSetLanReq->ConfigData) + 1);
 			// The VLANID obtained above is in the format specified in IPMIv2.0 spec - Table 23-4 LAN Configuration Parameters .
 			// Parameter Name is "802.1q VLAN ID (12-bit)".
 			vLANLSB = vlanID & 0xFF00;
@@ -1241,7 +1241,7 @@ SetLanConfigParam (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ i
           {
                 LOCK_BMC_SHARED_MEM(BMCInst);
                 _fmemcpy(&pSharedMem->VLANDestTag,
-                         ((_NEAR_ INT8U*)&pSetLanReq->ConfigData) + 1, sizeof(VLANDestTags_T));
+                         ((INT8U*)&pSetLanReq->ConfigData) + 1, sizeof(VLANDestTags_T));
                 UNLOCK_BMC_SHARED_MEM(BMCInst);
           }
           else
@@ -1253,7 +1253,7 @@ SetLanConfigParam (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ i
                 }
                 LOCK_BMC_SHARED_MEM(BMCInst);
                 _fmemcpy(&pBMCInfo->LANCfs[EthIndex].VLANDestTags [pSetLanReq->ConfigData.DestAddr.SetSelect - 1],
-                         ((_NEAR_ INT8U*)&pSetLanReq->ConfigData) + 1, sizeof(VLANDestTags_T));
+                         ((INT8U*)&pSetLanReq->ConfigData) + 1, sizeof(VLANDestTags_T));
                 UNLOCK_BMC_SHARED_MEM(BMCInst);
           }
             break;
@@ -2975,17 +2975,17 @@ void* GratuitousARPTask (INT8U *Addr)
  * GetLanConfigParam
  *---------------------------------------------------*/
 int
-GetLanConfigParam (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst)
+GetLanConfigParam (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst)
 {
-    _NEAR_  GetLanConfigReq_T*  pGetLanReq = (_NEAR_ GetLanConfigReq_T*) pReq;
-    _NEAR_  GetLanConfigRes_T*  pGetLanRes = (_NEAR_ GetLanConfigRes_T*) pRes;
-    _FAR_   BMCSharedMem_T*     pSharedMem = BMC_GET_SHARED_MEM (BMCInst);
+    GetLanConfigReq_T*  pGetLanReq = (GetLanConfigReq_T*) pReq;
+    GetLanConfigRes_T*  pGetLanRes = (GetLanConfigRes_T*) pRes;
+      BMCSharedMem_T*     pSharedMem = BMC_GET_SHARED_MEM (BMCInst);
     INT8U IsOemDefined = FALSE;
     NWCFG_STRUCT        NWConfig;
     NWCFG6_STRUCT        NWConfig6;
 //    V6DNS_CONFIG v6dnsconfig;
     INT8U EthIndex,netindex= 0xFF,i,j;
-    _FAR_ BMCInfo_t* pBMCInfo = &g_BMCInfo[BMCInst];
+    BMCInfo_t* pBMCInfo = &g_BMCInfo[BMCInst];
     int ncsiPortConfigNum = 0;
     RACFG_T raCfg = {0};
     ETHCFG_STRUCT PHYCfg;
@@ -3473,7 +3473,7 @@ GetLanConfigParam (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ i
 
             case LAN_PARAM_VLAN_TAGS:
 
-                *((_NEAR_ INT8U*)&pGetLanRes->ConfigData) = pGetLanReq->SetSelect;
+                *((INT8U*)&pGetLanRes->ConfigData) = pGetLanReq->SetSelect;
                 if (pGetLanReq->SetSelect > pBMCInfo->LANCfs[EthIndex].NumDest)
                 {
                     pGetLanRes->CCParamRev.CompletionCode = CC_PARAM_OUT_OF_RANGE;
@@ -3482,7 +3482,7 @@ GetLanConfigParam (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ i
                 if (0 == pGetLanReq->SetSelect)
                 {
                     LOCK_BMC_SHARED_MEM(BMCInst);
-                    _fmemcpy (((_NEAR_ INT8U*) &pGetLanRes->ConfigData) + 1,&pSharedMem->VLANDestTag, sizeof(VLANDestTags_T));
+                    _fmemcpy (((INT8U*) &pGetLanRes->ConfigData) + 1,&pSharedMem->VLANDestTag, sizeof(VLANDestTags_T));
                     UNLOCK_BMC_SHARED_MEM(BMCInst);
                 }
                 else
@@ -3494,7 +3494,7 @@ GetLanConfigParam (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ i
                     }
 
                     LOCK_BMC_SHARED_MEM(BMCInst);
-                    _fmemcpy (((_NEAR_ INT8U*)&pGetLanRes->ConfigData) + 1,
+                    _fmemcpy (((INT8U*)&pGetLanRes->ConfigData) + 1,
                     &pBMCInfo->LANCfs[EthIndex].VLANDestTags[pGetLanReq->SetSelect - 1],
                     sizeof(VLANDestTags_T));
                     UNLOCK_BMC_SHARED_MEM(BMCInst);
@@ -4432,10 +4432,10 @@ GetLanConfigParam (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ i
  * SuspendBMCArps
  *---------------------------------------------------*/
 int
-SuspendBMCArps (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst)
+SuspendBMCArps (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst)
 {
-    _NEAR_  SuspendBMCArpsReq_T*    pArpReq = (_NEAR_ SuspendBMCArpsReq_T*) pReq;
-    _NEAR_  SuspendBMCArpsRes_T*    pArpRes = (_NEAR_ SuspendBMCArpsRes_T*) pRes;
+    SuspendBMCArpsReq_T*    pArpReq = (SuspendBMCArpsReq_T*) pReq;
+    SuspendBMCArpsRes_T*    pArpRes = (SuspendBMCArpsRes_T*) pRes;
     INT8U EthIndex;
 
     /* Verify Channel ID */
@@ -4476,10 +4476,10 @@ SuspendBMCArps (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int 
  * GetIPUDPRMCPStats
  *---------------------------------------------------*/
 int
-GetIPUDPRMCPStats (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst)
+GetIPUDPRMCPStats (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst)
 {
-    _NEAR_  GetIPUDPRMCPStatsReq_T*    pGetIPUDPRMCPStatsReq = (_NEAR_ GetIPUDPRMCPStatsReq_T*) pReq;
-    _NEAR_  GetIPUDPRMCPStatsRes_T*    pGetIPUDPRMCPStatsRes = (_NEAR_ GetIPUDPRMCPStatsRes_T*) pRes;
+    GetIPUDPRMCPStatsReq_T*    pGetIPUDPRMCPStatsReq = (GetIPUDPRMCPStatsReq_T*) pReq;
+    GetIPUDPRMCPStatsRes_T*    pGetIPUDPRMCPStatsRes = (GetIPUDPRMCPStatsRes_T*) pRes;
     _FAR_	BMCSharedMem_T* 	pSharedMem = BMC_GET_SHARED_MEM (BMCInst);
 
     FILE *fptr;

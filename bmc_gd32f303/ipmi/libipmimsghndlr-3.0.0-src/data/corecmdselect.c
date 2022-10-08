@@ -663,7 +663,7 @@ int GetCommanEnabledStatus(NETFNTable_T *NetFuntbl,INT8U Cmd)
 int IsCommandEnabled(INT8U NetFn,INT8U* GroupExtnCode,INT8U Cmd,int BMCInst)
 {
     int i=0,OPMAEnabled = 0,ret =0;
-    _FAR_ BMCInfo_t* pBMCInfo = &g_BMCInfo[BMCInst];
+    BMCInfo_t* pBMCInfo = &g_BMCInfo[BMCInst];
     NETFNTable_T *Netfntbl= NULL;
     int found = 0;
 
@@ -739,7 +739,7 @@ int IsCommandEnabled(INT8U NetFn,INT8U* GroupExtnCode,INT8U Cmd,int BMCInst)
 int GetCommandEnabledStatus(INT8U NetFn,INT8U* GroupExtnCode,INT8U Cmd,int BMCInst)
 {
     int i=0,OPMAEnabled = 0,ret =0,retstatus=0;
-    _FAR_ BMCInfo_t* pBMCInfo = &g_BMCInfo[BMCInst];
+    BMCInfo_t* pBMCInfo = &g_BMCInfo[BMCInst];
 
     ret = IsCommandEnabled(NetFn,GroupExtnCode,Cmd,BMCInst);
     if(ret < 0)

@@ -258,7 +258,7 @@ int GetSMTP_SecondaryServer(SMTP_STRUCT *mail, INT8U SetSelector, INT8U EthIndex
 }
 
 int
-SetSMTPConfigParams (_NEAR_ INT8U* pReq, INT32U ReqLen, _NEAR_ INT8U* pRes, int BMCInst)
+SetSMTPConfigParams (INT8U* pReq, INT32U ReqLen, INT8U* pRes, int BMCInst)
 {
 
     SetSMTPConfigReq_T* pSetSMTPReq  =  ( SetSMTPConfigReq_T* ) pReq;
@@ -643,7 +643,7 @@ SetSMTPConfigParams (_NEAR_ INT8U* pReq, INT32U ReqLen, _NEAR_ INT8U* pRes, int 
 
 
 int
-GetSMTPConfigParams (_NEAR_ INT8U* pReq, INT32U ReqLen, _NEAR_ INT8U* pRes, int BMCInst)
+GetSMTPConfigParams (INT8U* pReq, INT32U ReqLen, INT8U* pRes, int BMCInst)
 {
     INT8U ResLen = 0;
     GetSMTPConfigReq_T* pGetSMTPReq  =  ( GetSMTPConfigReq_T* ) pReq;

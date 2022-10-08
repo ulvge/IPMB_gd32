@@ -26,7 +26,7 @@
 * ValidateIPMBChksum1
 *-------------------------------------*/
 /* Function to validate IPMB Checksum1 for SendMessage Cmd */
-bool CalculateCheckSum1(_NEAR_ INT8U* Data)
+bool CalculateCheckSum1(INT8U* Data)
 {
     int i=0;
     INT8U chksum=0;
@@ -53,7 +53,7 @@ bool CalculateCheckSum1(_NEAR_ INT8U* Data)
 *@return Returns the checksum value
 */
 extern INT32U
-CalculateCheckSum2(_FAR_ INT8U *Pkt, INT32U Len)
+CalculateCheckSum2(INT8U *Pkt, INT32U Len)
 {
     INT8U Sum;
     INT32U i;

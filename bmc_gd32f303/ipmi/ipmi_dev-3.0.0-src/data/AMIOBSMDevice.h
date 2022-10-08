@@ -22,23 +22,23 @@
 #include "Types.h"
 
 /*** Function Prototypes ***/
-extern int   AMIGetSlotMapInfo           (_NEAR_ INT8U* pReq, INT32U ReqLen, _NEAR_ INT8U* pRes, int BMCInst);
-extern int   AMIGetSlotInfo              (_NEAR_ INT8U* pReq, INT32U ReqLen, _NEAR_ INT8U* pRes, int BMCInst);
-extern int   AMIGetPwrInfo               (_NEAR_ INT8U* pReq, INT32U ReqLen, _NEAR_ INT8U* pRes, int BMCInst);
-extern int   AMIGetPwrDomInfo            (_NEAR_ INT8U* pReq, INT32U ReqLen, _NEAR_ INT8U* pRes, int BMCInst);
-extern int   AMIGetPwrSupplyInfo         (_NEAR_ INT8U* pReq, INT32U ReqLen, _NEAR_ INT8U* pRes, int BMCInst);
-extern int   AMIGetCoolingInfo           (_NEAR_ INT8U* pReq, INT32U ReqLen, _NEAR_ INT8U* pRes, int BMCInst);
-extern int   AMIGetCoolingDomInfo        (_NEAR_ INT8U* pReq, INT32U ReqLen, _NEAR_ INT8U* pRes, int BMCInst);
-extern int   AMIGetFanInfo               (_NEAR_ INT8U* pReq, INT32U ReqLen, _NEAR_ INT8U* pRes, int BMCInst);
-extern int   AMIGetBladeStatus           (_NEAR_ INT8U* pReq, INT32U ReqLen, _NEAR_ INT8U* pRes, int BMCInst);
-extern int   AMIEthRestartAll            (_NEAR_ INT8U* pReq, INT32U ReqLen, _NEAR_ INT8U* pRes, int BMCInst);
+extern int   AMIGetSlotMapInfo           (INT8U* pReq, INT32U ReqLen, INT8U* pRes, int BMCInst);
+extern int   AMIGetSlotInfo              (INT8U* pReq, INT32U ReqLen, INT8U* pRes, int BMCInst);
+extern int   AMIGetPwrInfo               (INT8U* pReq, INT32U ReqLen, INT8U* pRes, int BMCInst);
+extern int   AMIGetPwrDomInfo            (INT8U* pReq, INT32U ReqLen, INT8U* pRes, int BMCInst);
+extern int   AMIGetPwrSupplyInfo         (INT8U* pReq, INT32U ReqLen, INT8U* pRes, int BMCInst);
+extern int   AMIGetCoolingInfo           (INT8U* pReq, INT32U ReqLen, INT8U* pRes, int BMCInst);
+extern int   AMIGetCoolingDomInfo        (INT8U* pReq, INT32U ReqLen, INT8U* pRes, int BMCInst);
+extern int   AMIGetFanInfo               (INT8U* pReq, INT32U ReqLen, INT8U* pRes, int BMCInst);
+extern int   AMIGetBladeStatus           (INT8U* pReq, INT32U ReqLen, INT8U* pRes, int BMCInst);
+extern int   AMIEthRestartAll            (INT8U* pReq, INT32U ReqLen, INT8U* pRes, int BMCInst);
 
-extern int   DbgGetBladeInfo             (_NEAR_ INT8U* pReq, INT32U ReqLen, _NEAR_ INT8U* pRes, int BMCInst);
-extern int   DbgGetChassisPwrInfo        (_NEAR_ INT8U* pReq, INT32U ReqLen, _NEAR_ INT8U* pRes, int BMCInst);
-extern int   DbgGetChassisCoolingInfo    (_NEAR_ INT8U* pReq, INT32U ReqLen, _NEAR_ INT8U* pRes, int BMCInst);
-extern int   DbgBladeInsRemEvent         (_NEAR_ INT8U* pReq, INT32U ReqLen, _NEAR_ INT8U* pRes, int BMCInst);
-extern int   DbgPSStateChangeEvent       (_NEAR_ INT8U* pReq, INT32U ReqLen, _NEAR_ INT8U* pRes, int BMCInst);
-extern int   DbgFanStateChangeEvent      (_NEAR_ INT8U* pReq, INT32U ReqLen, _NEAR_ INT8U* pRes, int BMCInst);
-extern int   DbgThermalStateChangeEvent  (_NEAR_ INT8U* pReq, INT32U ReqLen, _NEAR_ INT8U* pRes, int BMCInst);
+extern int   DbgGetBladeInfo             (INT8U* pReq, INT32U ReqLen, INT8U* pRes, int BMCInst);
+extern int   DbgGetChassisPwrInfo        (INT8U* pReq, INT32U ReqLen, INT8U* pRes, int BMCInst);
+extern int   DbgGetChassisCoolingInfo    (INT8U* pReq, INT32U ReqLen, INT8U* pRes, int BMCInst);
+extern int   DbgBladeInsRemEvent         (INT8U* pReq, INT32U ReqLen, INT8U* pRes, int BMCInst);
+extern int   DbgPSStateChangeEvent       (INT8U* pReq, INT32U ReqLen, INT8U* pRes, int BMCInst);
+extern int   DbgFanStateChangeEvent      (INT8U* pReq, INT32U ReqLen, INT8U* pRes, int BMCInst);
+extern int   DbgThermalStateChangeEvent  (INT8U* pReq, INT32U ReqLen, INT8U* pRes, int BMCInst);
 
 #endif

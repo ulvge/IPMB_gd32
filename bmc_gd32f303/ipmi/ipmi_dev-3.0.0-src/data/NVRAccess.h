@@ -109,7 +109,7 @@ extern INT8U* GetNVRUsrCfgAddr(INT32U NVRHandle, int BMCInst) ;
  * @param Addr	- Start address of block
  * @param Size	- Size of block
 **/
-extern int	VerifyChksum ( _FAR_ INT32U* Addr , INT16U Size );
+extern int	VerifyChksum ( INT32U* Addr , INT16U Size );
 
  /**
  * @fn VerifyChksum
@@ -117,7 +117,7 @@ extern int	VerifyChksum ( _FAR_ INT32U* Addr , INT16U Size );
  * @param Addr	- Start address of block
  * @param Size	- Size of block
 **/
-extern void CalChksum( _FAR_ INT32U* Offset, INT16U Size);
+extern void CalChksum( INT32U* Offset, INT16U Size);
 
 
 /**

@@ -31,7 +31,7 @@
  * @brief Get the first SDR record. 
  * @return First SDR record if success, 0 if error.
 **/             
-extern  _FAR_ SDRRecHdr_T* SDR_GetFirstSDRRec (int BMCInst);
+extern  SDRRecHdr_T* SDR_GetFirstSDRRec (int BMCInst);
 
 
 /**
@@ -39,6 +39,6 @@ extern  _FAR_ SDRRecHdr_T* SDR_GetFirstSDRRec (int BMCInst);
  * @param pSDRRec - Current SDR Record.
  * @return Next SDR record if success, 0 if error.
 **/             
-extern  _FAR_ SDRRecHdr_T* SDR_GetNextSDRRec (_FAR_ SDRRecHdr_T* pSDRRec,int BMCInst);
+extern  SDRRecHdr_T* SDR_GetNextSDRRec (SDRRecHdr_T* pSDRRec,int BMCInst);
 
 #endif /* SDRFUNC_H */

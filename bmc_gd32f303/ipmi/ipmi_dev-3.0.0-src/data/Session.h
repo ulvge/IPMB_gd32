@@ -172,28 +172,28 @@ typedef enum
  *--------------------------*/
 extern		 void				SessionTimerTask (int BMCInst);
 extern  ChannelInfo_T*  getChannelInfo (INT8U ch,int BMCInst);
-extern _FAR_ ChannelUserInfo_T* getChUserIdInfo (INT8U userId, _NEAR_ INT8U *index, _FAR_ ChannelUserInfo_T* pChUserInfo, int BMCInst);
-extern _FAR_ SessionInfo_T*		getSessionInfo (INT8U Arg, _FAR_ void *Session, int BMCInst);
-extern _FAR_ ChannelUserInfo_T* getChUserPrivInfo (_NEAR_ char *userName, _NEAR_ INT8U Role, _NEAR_ INT8U* chIndex, _FAR_ ChannelUserInfo_T *pChUserInfo, int BMCInst);
-extern _FAR_ ChannelUserInfo_T*	getChUserInfo (_NEAR_ char *userName, _NEAR_ INT8U* chIndex, _FAR_ ChannelUserInfo_T *pChUserInfo, int BMCInst);
-extern _FAR_ UserInfo_T*		getUserIdInfo (INT8U userId, int BMCInst);
-extern INT8U	CheckForDuplicateUsers (_NEAR_ INT8U* UserName, int BMCInst);
-extern _FAR_ ChannelUserInfo_T*	AddChUser (_FAR_ ChannelUserInfo_T*	pChUserInfo, _NEAR_ INT8U*	Index,int BMCInst);
-extern _FAR_ ChannelInfo_T* GetNVRChConfigs(ChannelInfo_T *pChannelInfo, int BMCInst);
-extern _FAR_ ChannelUserInfo_T* GetNVRChUserConfigs(ChannelInfo_T *pChannelInfo,int BMCInst);
+extern ChannelUserInfo_T* getChUserIdInfo (INT8U userId, INT8U *index, ChannelUserInfo_T* pChUserInfo, int BMCInst);
+extern SessionInfo_T*		getSessionInfo (INT8U Arg, void *Session, int BMCInst);
+extern ChannelUserInfo_T* getChUserPrivInfo (char *userName, INT8U Role, INT8U* chIndex, ChannelUserInfo_T *pChUserInfo, int BMCInst);
+extern ChannelUserInfo_T*	getChUserInfo (char *userName, INT8U* chIndex, ChannelUserInfo_T *pChUserInfo, int BMCInst);
+extern UserInfo_T*		getUserIdInfo (INT8U userId, int BMCInst);
+extern INT8U	CheckForDuplicateUsers (INT8U* UserName, int BMCInst);
+extern ChannelUserInfo_T*	AddChUser (ChannelUserInfo_T*	pChUserInfo, INT8U*	Index,int BMCInst);
+extern ChannelInfo_T* GetNVRChConfigs(ChannelInfo_T *pChannelInfo, int BMCInst);
+extern ChannelUserInfo_T* GetNVRChUserConfigs(ChannelInfo_T *pChannelInfo,int BMCInst);
 extern INT8U disableUser (INT8U UserId, int BMCInst);
 extern INT8U GetNumOfActiveSessions (int BMCInst);
 extern INT8U GetNumOfUsedSessions (int BMCInst);
-extern void  DeleteSession (_FAR_ SessionInfo_T*	pSessionInfo,int BMCInst);
-extern void  AddSession (_NEAR_ SessionInfo_T* pSessionInfo,int BMCInst);
+extern void  DeleteSession (SessionInfo_T*	pSessionInfo,int BMCInst);
+extern void  AddSession (SessionInfo_T* pSessionInfo,int BMCInst);
 extern INT8U CleanSession(int BMCInst);
-extern _FAR_ INT16U	getPayloadActiveInst (INT8U PayloadType, int BMCInst);
-extern _FAR_ INT32U	getPayloadInstInfo (INT8U PayloadType, INT16U PayloadInst,int BMCInst);
+extern INT16U	getPayloadActiveInst (INT8U PayloadType, int BMCInst);
+extern INT32U	getPayloadInstInfo (INT8U PayloadType, INT16U PayloadInst,int BMCInst);
 extern void	PasswordViolation (int BMCInst);
 extern void UDSSessionTimerTask (int BMCInst);
-extern int AddUDSSession (_NEAR_ UDSSessionTbl_T* pUDSSessionInfo, int BMCInst);
-extern int DeleteUDSSession(_FAR_ UDSSessionTbl_T*  pUDSSessionInfo,int BMCInst);
-extern _FAR_ UDSSessionTbl_T* GetUDSSessionInfo (INT8U Type,void *Data,int BMCInst);
+extern int AddUDSSession (UDSSessionTbl_T* pUDSSessionInfo, int BMCInst);
+extern int DeleteUDSSession(UDSSessionTbl_T*  pUDSSessionInfo,int BMCInst);
+extern UDSSessionTbl_T* GetUDSSessionInfo (INT8U Type,void *Data,int BMCInst);
 /*---------------------------------------------------
  * @fn UpdateGetMsgTime
  * @brief Updates the Current Uptime and timeout value
@@ -247,6 +247,6 @@ extern BOOL IsResponseMatch (MsgPkt_T* pReq, MsgPkt_T* pRes, int IfcType);
  * 
  * @return  none
  *------------------------------------------------------*/
-extern void FillIPMIResFailure (_NEAR_ MsgPkt_T* pReq, _NEAR_ MsgPkt_T* pRes, int BMCInst);
+extern void FillIPMIResFailure (MsgPkt_T* pReq, MsgPkt_T* pRes, int BMCInst);
 
 #endif	/* SESSION_H */

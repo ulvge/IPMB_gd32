@@ -64,10 +64,10 @@
 
 
 /**
- * @var _FAR_ INT8U Semaphore_T   hPETAckSem;
+ * @var INT8U Semaphore_T   hPETAckSem;
  * @brief Semaphore handle to lock PET Ack Manager
 **/
-extern _FAR_ Semaphore_T   hPETAckSem;
+extern Semaphore_T   hPETAckSem;
 
 
 #define     ALERT_IMM_NO_STATUS         0

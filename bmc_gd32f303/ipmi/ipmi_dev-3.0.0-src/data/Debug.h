@@ -88,7 +88,7 @@ extern void    print_buf (INT8U* Buf, INT16U Len);
     if (!(ARG))                                             \
     {                                                       \
         IPMI_WARNING ("Assertion failed at %s line %d\n",  \
-                        (_FAR_ char *)__FILE__, __LINE__);  \
+                        (char *)__FILE__, __LINE__);  \
         IPMI_DBG_BREAK;                                     \
     }                                                       \
                                                             \
@@ -105,7 +105,7 @@ do														 \
  if (!(ARG))											 \
  {														 \
 	 IPMI_WARNING ("Assertion failed at %s line %d\n",  \
-					 (_FAR_ char *)__FILE__, __LINE__);  \
+					 (char *)__FILE__, __LINE__);  \
 	 IPMI_WARNING ("Assertion will be handled later...\n");  		\
  }														 \
 														 \

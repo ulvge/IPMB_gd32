@@ -46,7 +46,7 @@ extern unsigned long CalculateChksum (char *data, unsigned long size);
  * @param pReq [in], PktLen [in], pRes[in], FilePath[out], BMCInst[in]
  * @return 0 on success, postive values on failure
  */
-int ProcessUploadOpCodeReqData( _NEAR_ INT8U *pReq, INT32U ReqLen, _NEAR_ INT8U *pRes, _NEAR_ INT8S *FilePath,_NEAR_ int BMCInst)
+int ProcessUploadOpCodeReqData( INT8U *pReq, INT32U ReqLen, INT8U *pRes, INT8S *FilePath,int BMCInst)
 {
     AMIFileUploadReq_T *pAMIFileUploadReq = (AMIFileUploadReq_T *)pReq;
     AMIFileUploadRes_T *pAMIFileUploadRes = (AMIFileUploadRes_T *)pRes;
@@ -198,7 +198,7 @@ return 0;
  * @param pReq [in], PktLen [in], pRes[in], FilePath[out], BMCInst[in]
  * @return 0 on success, postive values on failure
  */
-int ProcessDownloadOpCodeReqData( _NEAR_ INT8U *pReq, INT32U ReqLen, _NEAR_ INT8U *pRes, _NEAR_ INT8S *FilePath,_NEAR_ int BMCInst)
+int ProcessDownloadOpCodeReqData( INT8U *pReq, INT32U ReqLen, INT8U *pRes, INT8S *FilePath,int BMCInst)
 {
     AMIFileDownloadReq_T *pAMIFileDownloadReq = (AMIFileDownloadReq_T *)pReq;
     INT8U *pOpCodeReq = pReq + sizeof(AMIFileDownloadReq_T);
@@ -499,7 +499,7 @@ int ProcessUploadCompleteFileData(INT8S* FilePath,INT8U* pReq, INT8U *pRes, int 
  * @param pReq [in], ReqLen [in], pRes[in], BMCInst[in]
  * @return 0 on success, postive values on failure
  */
-int AMIFileUpload ( _NEAR_ INT8U *pReq, INT32U ReqLen, _NEAR_ INT8U *pRes,_NEAR_ int BMCInst )
+int AMIFileUpload ( INT8U *pReq, INT32U ReqLen, INT8U *pRes,int BMCInst )
 {
     AMIFileUploadReq_T *pAMIFileUploadReq = (AMIFileUploadReq_T *) pReq;
     AMIFileUploadRes_T *pAMIFileUploadRes = (AMIFileUploadRes_T *) pRes;
@@ -775,7 +775,7 @@ int AMIFileUpload ( _NEAR_ INT8U *pReq, INT32U ReqLen, _NEAR_ INT8U *pRes,_NEAR_
  * @param pReq [in], ReqLen [in], pRes[in], BMCInst[in]
  * @return 0 on success, postive values on failure
  */
-int AMIFileDownload ( _NEAR_ INT8U *pReq, INT32U ReqLen, _NEAR_ INT8U *pRes,_NEAR_ int BMCInst )
+int AMIFileDownload ( INT8U *pReq, INT32U ReqLen, INT8U *pRes,int BMCInst )
 {
     AMIFileDownloadReq_T *pAMIFileDownloadReq = (AMIFileDownloadReq_T *) pReq;
     AMIFileDownloadRes_T *pAMIFileDownloadRes = (AMIFileDownloadRes_T *) pRes;

@@ -294,11 +294,11 @@ const  INT8U SerialSupParam [] =
 };
 
 /*** Prototype Declarations ***/
-static _FAR_ INT8U* getSMConfigAddr (_FAR_ const SMConfigTable_T* SMEntry,
+static INT8U* getSMConfigAddr (const SMConfigTable_T* SMEntry,
                                                  INT8U            SetSelector,
                                                  INT8U            BlockSelector,
                                                  int			  BMCInst);
-static _FAR_ ChannelUserInfo_T* GetCBChUserInfo (INT8U UserID, INT8U Channel,int BMCInst);
+static ChannelUserInfo_T* GetCBChUserInfo (INT8U UserID, INT8U Channel,int BMCInst);
 static  int     SetSerialPort (int BMCInst);
 
 
@@ -306,18 +306,18 @@ static  int     SetSerialPort (int BMCInst);
  * SetSerialModemConfig
  *---------------------------------------*/
 int
-SetSerialModemConfig (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst)
+SetSerialModemConfig (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst)
 {
-    _NEAR_ SetSerialModemConfigReq_T* SetReq =
-                              (_NEAR_ SetSerialModemConfigReq_T*) pReq;
+    SetSerialModemConfigReq_T* SetReq =
+                              (SetSerialModemConfigReq_T*) pReq;
     const  SMConfigTable_T*           SMEntry;
-    _NEAR_ RsvdBitsTable_T*           RsvdEntry;
+    RsvdBitsTable_T*           RsvdEntry;
     INT8U                      SetSelector;
     INT8U                      BlockSelector;
     INT8U                      ReqStartOffset,i,tempdata;
     INT8U                      retValue = 0;
-    _FAR_  INT8U*                     SetStart;
-    _FAR_ BMCInfo_t* pBMCInfo = &g_BMCInfo[BMCInst];
+     INT8U*                     SetStart;
+    BMCInfo_t* pBMCInfo = &g_BMCInfo[BMCInst];
     INT8U  m_Serial_SetInProgress; /**< Contains setting Serial configuration status */
 
     IPMI_DBG_PRINT ("Set SerialModem Configuration Cmd\n");
@@ -464,7 +464,7 @@ SetSerialModemConfig (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR
     while ((0 != (SMEntry->ParamFlags & CHECK_RSVD_BITS)) &&
                  (i < sizeof (ReservedBitsTable)))
     {
-        RsvdEntry   = (_NEAR_ RsvdBitsTable_T*)&ReservedBitsTable [i];
+        RsvdEntry   = (RsvdBitsTable_T*)&ReservedBitsTable [i];
         i = i + sizeof (RsvdBitsTable_T);
         if (RsvdEntry->Param == SetReq->ParamSel)
         {
@@ -528,7 +528,7 @@ SetSerialModemConfig (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR
                 return sizeof(*pRes);
             }
             LOCK_BMC_SHARED_MEM(BMCInst);
-            _fmemcpy (SetStart, (_FAR_ INT8U*) (pReq + ReqStartOffset), (SMEntry->Size & 0x7f));
+            _fmemcpy (SetStart, (INT8U*) (pReq + ReqStartOffset), (SMEntry->Size & 0x7f));
             UNLOCK_BMC_SHARED_MEM(BMCInst);
             break;
 
@@ -541,25 +541,25 @@ SetSerialModemConfig (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR
                 return sizeof(*pRes);
             }
             LOCK_BMC_SHARED_MEM(BMCInst);
-            _fmemcpy (SetStart, (_FAR_ INT8U*) (pReq + ReqStartOffset), (SMEntry->Size & 0x7f));
+            _fmemcpy (SetStart, (INT8U*) (pReq + ReqStartOffset), (SMEntry->Size & 0x7f));
             UNLOCK_BMC_SHARED_MEM(BMCInst);
             break;
 
         case SET_SESSION_INACTIVE_TIMEOUT:
             LOCK_BMC_SHARED_MEM(BMCInst);
-            _fmemcpy (SetStart, (_FAR_ INT8U*) (pReq + ReqStartOffset), (SMEntry->Size & 0x7f));
+            _fmemcpy (SetStart, (INT8U*) (pReq + ReqStartOffset), (SMEntry->Size & 0x7f));
             UNLOCK_BMC_SHARED_MEM(BMCInst);
             break;
 
         case SET_CHANNEL_CALLBACK_CTRL:
             LOCK_BMC_SHARED_MEM(BMCInst);
-            _fmemcpy (SetStart, (_FAR_ INT8U*) (pReq + ReqStartOffset), (SMEntry->Size & 0x7f));
+            _fmemcpy (SetStart, (INT8U*) (pReq + ReqStartOffset), (SMEntry->Size & 0x7f));
             UNLOCK_BMC_SHARED_MEM(BMCInst);
             break;
         
         case SET_SESSION_TERMINATION:
             LOCK_BMC_SHARED_MEM(BMCInst);
-            _fmemcpy (SetStart, (_FAR_ INT8U*) (pReq + ReqStartOffset), (SMEntry->Size & 0x7f));
+            _fmemcpy (SetStart, (INT8U*) (pReq + ReqStartOffset), (SMEntry->Size & 0x7f));
             UNLOCK_BMC_SHARED_MEM(BMCInst);
             break;
     	
@@ -572,7 +572,7 @@ SetSerialModemConfig (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR
             return sizeof(*pRes);
             }
             LOCK_BMC_SHARED_MEM(BMCInst);
-            _fmemcpy (SetStart, (_FAR_ INT8U*) (pReq + ReqStartOffset), (SMEntry->Size & 0x7f));
+            _fmemcpy (SetStart, (INT8U*) (pReq + ReqStartOffset), (SMEntry->Size & 0x7f));
             UNLOCK_BMC_SHARED_MEM(BMCInst);
 
             /* if Set serial port setting, initlize the serial port */
@@ -590,13 +590,13 @@ SetSerialModemConfig (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR
                 return sizeof(*pRes);
             }
             LOCK_BMC_SHARED_MEM(BMCInst);
-            _fmemcpy (SetStart, (_FAR_ INT8U*) (pReq + ReqStartOffset), (SMEntry->Size & 0x7f));
+            _fmemcpy (SetStart, (INT8U*) (pReq + ReqStartOffset), (SMEntry->Size & 0x7f));
             UNLOCK_BMC_SHARED_MEM(BMCInst);
             break;
 
         case SET_BAD_PWD_THRESHOLD:
             LOCK_BMC_SHARED_MEM(BMCInst);
-            _fmemcpy (SetStart, (_FAR_ INT8U*) (pReq + ReqStartOffset), (SMEntry->Size & 0x7f));
+            _fmemcpy (SetStart, (INT8U*) (pReq + ReqStartOffset), (SMEntry->Size & 0x7f));
             UNLOCK_BMC_SHARED_MEM(BMCInst);
             break;
 
@@ -617,16 +617,16 @@ SetSerialModemConfig (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR
  * GetSerialModemConfig
  *---------------------------------------*/
 int
-GetSerialModemConfig (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst)
+GetSerialModemConfig (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst)
 {
-    _NEAR_ GetSerialModemConfigReq_T* GetReq =
-                              (_NEAR_ GetSerialModemConfigReq_T*) pReq;
-    _NEAR_ GetSerialModemConfigRes_T* GetRes =
-                              (_NEAR_ GetSerialModemConfigRes_T*) pRes;
+    GetSerialModemConfigReq_T* GetReq =
+                              (GetSerialModemConfigReq_T*) pReq;
+    GetSerialModemConfigRes_T* GetRes =
+                              (GetSerialModemConfigRes_T*) pRes;
     const  SMConfigTable_T*           SMEntry;
-    _FAR_  INT8U*                     SetStart;
+     INT8U*                     SetStart;
     INT8U                      ResStartOffset;
-    _FAR_ BMCInfo_t* pBMCInfo = &g_BMCInfo[BMCInst];
+    BMCInfo_t* pBMCInfo = &g_BMCInfo[BMCInst];
     INT8U  m_Serial_SetInProgress; /**< Contains setting Serial configuration status */
     INT8U                      retValue = 0;
 
@@ -809,19 +809,19 @@ GetSerialModemConfig (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR
 /*---------------------------------------
  * getSMConfigAddr
  *--------------------------------------*/
-static _FAR_ INT8U*
-getSMConfigAddr (_FAR_ const SMConfigTable_T* SMEntry,
+static INT8U*
+getSMConfigAddr (const SMConfigTable_T* SMEntry,
                                 INT8U            SetSelector,
                                 INT8U            BlockSelector,
                                 int			  BMCInst)
 {
-    _FAR_ INT8U*        SetStart;
+    INT8U*        SetStart;
     INT8U         Size;
     INT8U         MaxBlockSel;
     BMCInfo_t *pBMCInfo = &g_BMCInfo[BMCInst];
 
     /* Get the NVRAM PM config address */
-    SetStart = (_FAR_ INT8U*) &pBMCInfo->SMConfig;
+    SetStart = (INT8U*) &pBMCInfo->SMConfig;
     Size     = SMEntry->Size & 0x7f;
 
     if (0 == SMEntry->MaxBlockSelector)
@@ -838,7 +838,7 @@ getSMConfigAddr (_FAR_ const SMConfigTable_T* SMEntry,
         if (0 == SetSelector)
         {
             /*Get Shared Memory Info */
-            SetStart = (_FAR_ INT8U*)&BMC_GET_SHARED_MEM (BMCInst)->SMConfig;
+            SetStart = (INT8U*)&BMC_GET_SHARED_MEM (BMCInst)->SMConfig;
             SetStart = SetStart + SMEntry->Offset +
                        (Size * ((SetSelector * MaxBlockSel) + BlockSelector));
             return SetStart;
@@ -864,17 +864,17 @@ getSMConfigAddr (_FAR_ const SMConfigTable_T* SMEntry,
  * CallBack
  *---------------------------------------*/
 int
-CallBack (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst)
+CallBack (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst)
 {
-    _NEAR_  CallbackReq_T*  CallBackReq = (_NEAR_ CallbackReq_T*) pReq;
-    _FAR_   SMConfig_T*     pVSMConfig  =
-                 &(((_FAR_ BMCSharedMem_T*) BMC_GET_SHARED_MEM (BMCInst))->SMConfig);
-    _FAR_   ChannelInfo_T*  pChannelInfo;
-    _FAR_   DestInfo_T*     pDestInfo;
+    CallbackReq_T*  CallBackReq = (CallbackReq_T*) pReq;
+      SMConfig_T*     pVSMConfig  =
+                 &(((BMCSharedMem_T*) BMC_GET_SHARED_MEM (BMCInst))->SMConfig);
+      ChannelInfo_T*  pChannelInfo;
+      DestInfo_T*     pDestInfo;
     INT8U           DestType,curchannel;
     MsgPkt_T        MsgPkt;
-    _FAR_ BMCInfo_t* pBMCInfo = &g_BMCInfo[BMCInst];			
-    _FAR_   SMConfig_T*     pNVSMConfig = &pBMCInfo->SMConfig;
+    BMCInfo_t* pBMCInfo = &g_BMCInfo[BMCInst];			
+      SMConfig_T*     pNVSMConfig = &pBMCInfo->SMConfig;
     INT32U CurSesID;
 
 	if(CallBackReq->ChannelNum & RESERVED_BITS_CALLBACK_CH)
@@ -910,12 +910,12 @@ CallBack (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCIns
     if (0 == CallBackReq->DestSel)
     {
         /* Destination Info is volatile */
-        pDestInfo = (_FAR_ DestInfo_T*) &pVSMConfig->DestinationInfo [0];
+        pDestInfo = (DestInfo_T*) &pVSMConfig->DestinationInfo [0];
     }
     else
     {
         /* Destination Info is non-volatile */
-        pDestInfo = (_FAR_ DestInfo_T*) &pNVSMConfig->DestinationInfo [CallBackReq->DestSel - 1];
+        pDestInfo = (DestInfo_T*) &pNVSMConfig->DestinationInfo [CallBackReq->DestSel - 1];
     }
 
     /*Check if Destination if Configured & Enabled for CALLBACK */
@@ -949,10 +949,10 @@ CallBack (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCIns
 
     if (pChannelInfo->SessionSupport != SESSIONLESS_CHANNEL)
     {
-        _FAR_ SessionInfo_T*     pSessionInfo;
-        _FAR_ SessionTblInfo_T*  pSessionTblInfo =
+        SessionInfo_T*     pSessionInfo;
+        SessionTblInfo_T*  pSessionTblInfo =
                          &pBMCInfo->SessionTblInfo;
-        _FAR_ ChannelUserInfo_T* pChUserInfo;
+        ChannelUserInfo_T* pChUserInfo;
         INT8U              Index;
 
         IPMI_DBG_PRINT_1 ("Session Less ch  - %d\n",curchannel  & 0xF);
@@ -1016,10 +1016,10 @@ CallBack (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCIns
  * SetUserCallBackOptions
  *---------------------------------------*/
 int
-SetUserCallBackOptions (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst)
+SetUserCallBackOptions (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst)
 {
-    _NEAR_ SetUserCallbackReq_T *Req = (_NEAR_ SetUserCallbackReq_T*) pReq;
-    _FAR_  ChannelUserInfo_T    *pChUserInfo;
+    SetUserCallbackReq_T *Req = (SetUserCallbackReq_T*) pReq;
+     ChannelUserInfo_T    *pChUserInfo;
     BMCInfo_t *pBMCInfo = &g_BMCInfo[BMCInst];
 
     if((Req->UserID & RESERVED_BITS_SETUSERCALLBACKOPT_USRID) ||
@@ -1080,11 +1080,11 @@ SetUserCallBackOptions (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NE
  * SetUserCallBackOptions
  *---------------------------------------*/
 int
-GetUserCallBackOptions (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst)
+GetUserCallBackOptions (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst)
 {
-    _NEAR_   GetUserCallbackReq_T* Req = ( _NEAR_ GetUserCallbackReq_T*) pReq;
-    _NEAR_   GetUserCallbackRes_T* Res = ( _NEAR_ GetUserCallbackRes_T*) pRes;
-    _FAR_    ChannelUserInfo_T*    pChUserInfo;
+     GetUserCallbackReq_T* Req = ( GetUserCallbackReq_T*) pReq;
+     GetUserCallbackRes_T* Res = ( GetUserCallbackRes_T*) pRes;
+       ChannelUserInfo_T*    pChUserInfo;
     BMCInfo_t *pBMCInfo = &g_BMCInfo[BMCInst];
 
 	if(Req->UserID & RESERVED_BITS_GETUSERCALLBACKOPTIONS_USRID)
@@ -1121,10 +1121,10 @@ GetUserCallBackOptions (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NE
 /*---------------------------------------
  * GetCBChUserInfo
  *---------------------------------------*/
-static _FAR_ ChannelUserInfo_T*
+static ChannelUserInfo_T*
 GetCBChUserInfo (INT8U UserID, INT8U Channel,int BMCInst)
 {
-    _FAR_   ChannelInfo_T* pChannelInfo;
+      ChannelInfo_T* pChannelInfo;
     INT8U          Index;
 
     /*Get Channel Info */
@@ -1143,14 +1143,14 @@ GetCBChUserInfo (INT8U UserID, INT8U Channel,int BMCInst)
  * SetSerialModemMUX
  *---------------------------------------*/
 int
-SetSerialModemMUX (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst)
+SetSerialModemMUX (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst)
 {
-    _NEAR_ SetMuxReq_T* Req         = (_NEAR_   SetMuxReq_T*) pReq;
-    _NEAR_ SetMuxRes_T* Res         = (_NEAR_   SetMuxRes_T*) pRes;
+    SetMuxReq_T* Req         = ( SetMuxReq_T*) pReq;
+    SetMuxRes_T* Res         = ( SetMuxRes_T*) pRes;
      INT8U        TSettings;
     ChannelInfo_T* pChannelInfo;
-    _FAR_ BMCInfo_t* pBMCInfo = &g_BMCInfo[BMCInst];
-    _FAR_  SMConfig_T*  pNVSMConfig = &(pBMCInfo->SMConfig);
+    BMCInfo_t* pBMCInfo = &g_BMCInfo[BMCInst];
+     SMConfig_T*  pNVSMConfig = &(pBMCInfo->SMConfig);
     int SerialStatus = 0xFF;
 
     Res->CompCode = CC_INV_DATA_FIELD;
@@ -1321,9 +1321,9 @@ SetSerialModemMUX (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ i
  * SerialModemConnectActive
  *---------------------------------------*/
 int
-SerialModemConnectActive (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst)
+SerialModemConnectActive (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst)
 {
-    _NEAR_ SerialModemActivePingReq_T* Req = (_NEAR_ SerialModemActivePingReq_T*) pReq;
+    SerialModemActivePingReq_T* Req = (SerialModemActivePingReq_T*) pReq;
 
     if(Req->SessionState & RESERVED_BITS_SERIALMODEMCONNECTACTIVE)
     {
@@ -1352,9 +1352,9 @@ void
 SerialModemPingTask ( int BMCInst )
 {
       MsgPkt_T     MsgPkt;
-    _FAR_ static INT8U MuxSwitchToSys;
-    _FAR_ BMCInfo_t* pBMCInfo = &g_BMCInfo[BMCInst];
-    _FAR_ SMConfig_T*  pNVSMConfig = &pBMCInfo->SMConfig;
+    static INT8U MuxSwitchToSys;
+    BMCInfo_t* pBMCInfo = &g_BMCInfo[BMCInst];
+    SMConfig_T*  pNVSMConfig = &pBMCInfo->SMConfig;
 
     /* Check if Serial Port Sharing Enabled & Mux is switched to BMC */
     if (0 == (pNVSMConfig->MUXSwitchCtrl.Data2 & SERIAL_PORT_SHARING_ENABLED))
@@ -1416,12 +1416,12 @@ SerialModemPingTask ( int BMCInst )
  * GetTAPResponseCodes
  *---------------------------------------*/
 int
-GetTAPResponseCodes (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst)
+GetTAPResponseCodes (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst)
 {
-    _NEAR_ GetTAPResCodeReq_T* Req      = (_NEAR_ GetTAPResCodeReq_T*) pReq;
-    _NEAR_ GetTAPResCodeRes_T* Res      = (_NEAR_ GetTAPResCodeRes_T*) pRes;
-    _FAR_  TAPResCode_T*       TAPCodes = &(((_FAR_ BMCSharedMem_T*) BMC_GET_SHARED_MEM (BMCInst))->TAPRes);
-    _FAR_ BMCInfo_t* pBMCInfo = &g_BMCInfo[BMCInst];
+    GetTAPResCodeReq_T* Req      = (GetTAPResCodeReq_T*) pReq;
+    GetTAPResCodeRes_T* Res      = (GetTAPResCodeRes_T*) pRes;
+     TAPResCode_T*       TAPCodes = &(((BMCSharedMem_T*) BMC_GET_SHARED_MEM (BMCInst))->TAPRes);
+    BMCInfo_t* pBMCInfo = &g_BMCInfo[BMCInst];
 
     IPMI_DBG_PRINT ("Get TAP Respone Code CMD\n");
 
@@ -1461,7 +1461,7 @@ SetSerialPort (int BMCInst)
     //int     status;
     int		fd;
     struct  termios tty_struct;
-    _FAR_  BMCInfo_t* pBMCInfo = &g_BMCInfo[BMCInst];
+     BMCInfo_t* pBMCInfo = &g_BMCInfo[BMCInst];
 
     if ((fd = open(pBMCInfo->IpmiConfig.pSerialPort, O_RDONLY)) < 0)
     {

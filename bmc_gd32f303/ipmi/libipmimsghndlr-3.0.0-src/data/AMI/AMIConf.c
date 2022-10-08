@@ -133,7 +133,7 @@ extern IfcName_T Ifcnametable[MAX_LAN_CHANNELS];
 
 INT8U CheckSlaveVLANInterface(INT8U Slaves, INT8U *VLANID, int BMCInst)
 {
-    _FAR_ BMCInfo_t* pBMCInfo = &g_BMCInfo[BMCInst];
+    BMCInfo_t* pBMCInfo = &g_BMCInfo[BMCInst];
     char IfcName[16];
     int i, j, isFirstIndex = 1;
     
@@ -187,7 +187,7 @@ INT8U CheckSlaveVLANInterface(INT8U Slaves, INT8U *VLANID, int BMCInst)
  */
 int CheckVLANInterface(char* Ifcname,int BMCInst)
 {
-    _FAR_ BMCInfo_t* pBMCInfo = &g_BMCInfo[BMCInst];
+    BMCInfo_t* pBMCInfo = &g_BMCInfo[BMCInst];
     int i;
 
     for(i=0;i<sizeof(pBMCInfo->LanIfcConfig)/sizeof(LANIFCConfig_T);i++)
@@ -280,10 +280,10 @@ int ValidateDNSReqInfo(INT8U DomainDHCP, INT8U DomainIndex, INT8U Domainpriority
 }
 
 int
-AMIGetDNSConf( _NEAR_ INT8U *pReq, INT32U ReqLen, _NEAR_ INT8U *pRes,int BMCInst)
+AMIGetDNSConf( INT8U *pReq, INT32U ReqLen, INT8U *pRes,int BMCInst)
 {
-    _NEAR_  AMIGetDNSConfReq_T* pAMIGetDNSConfReq = (_NEAR_ AMIGetDNSConfReq_T*) pReq;
-    _NEAR_  AMIGetDNSConfRes_T*  pAMIGetDNSConfRes = (_NEAR_ AMIGetDNSConfRes_T*) pRes;
+    AMIGetDNSConfReq_T* pAMIGetDNSConfReq = (AMIGetDNSConfReq_T*) pReq;
+    AMIGetDNSConfRes_T*  pAMIGetDNSConfRes = (AMIGetDNSConfRes_T*) pRes;
     HOSTNAMECONF HostnameConfig;
     DOMAINCONF DomainConfig;
     DNSCONF DnsIPConfig;
@@ -428,10 +428,10 @@ AMIGetDNSConf( _NEAR_ INT8U *pReq, INT32U ReqLen, _NEAR_ INT8U *pRes,int BMCInst
 
 
 int
-AMISetDNSConf( _NEAR_ INT8U *pReq, INT32U ReqLen, _NEAR_ INT8U *pRes,int BMCInst)
+AMISetDNSConf( INT8U *pReq, INT32U ReqLen, INT8U *pRes,int BMCInst)
 {
-    _NEAR_ AMISetDNSConfRes_T *pAMISetDNSConfRes = (_NEAR_ AMISetDNSConfRes_T *)pRes;
-    _NEAR_ AMISetDNSConfReq_T *pAMISetDNSConfReq = (_NEAR_ AMISetDNSConfReq_T*)pReq;
+    AMISetDNSConfRes_T *pAMISetDNSConfRes = (AMISetDNSConfRes_T *)pRes;
+    AMISetDNSConfReq_T *pAMISetDNSConfReq = (AMISetDNSConfReq_T*)pReq;
     int i,domainnamelength=0;
     INT8U Ifccount,ifcslaved=0,status=-1,curchannel;
     int retValue;
@@ -1019,11 +1019,11 @@ int IsSinglePortEnable()
 }
 
 int
-AMIGetServiceConf( _NEAR_ INT8U *pReq, INT32U ReqLen, _NEAR_ INT8U *pRes,int BMCInst)
+AMIGetServiceConf( INT8U *pReq, INT32U ReqLen, INT8U *pRes,int BMCInst)
 {
 
-    _NEAR_  AMIGetServiceConfReq_T*  pAMIGetServiceConfReq = (_NEAR_ AMIGetServiceConfReq_T*) pReq;
-    _NEAR_  AMIGetServiceConfRes_T*  pAMIGetServiceConfRes = (_NEAR_ AMIGetServiceConfRes_T*) pRes;
+    AMIGetServiceConfReq_T*  pAMIGetServiceConfReq = (AMIGetServiceConfReq_T*) pReq;
+    AMIGetServiceConfRes_T*  pAMIGetServiceConfRes = (AMIGetServiceConfRes_T*) pRes;
     SERVICE_CONF_STRUCT conf;
     INT32U  Value = 0;
     INT8U  ServiceIDBit = 0;
@@ -1211,10 +1211,10 @@ int IsKVMSessionRunning()
 
 
 int
-AMISetServiceConf( _NEAR_ INT8U *pReq, INT32U ReqLen, _NEAR_ INT8U *pRes,int BMCInst)
+AMISetServiceConf( INT8U *pReq, INT32U ReqLen, INT8U *pRes,int BMCInst)
 {
-    _NEAR_  AMISetServiceConfReq_T*  pAMISetServiceConfReq = (_NEAR_ AMISetServiceConfReq_T*) pReq;
-    _NEAR_  AMISetServiceConfRes_T*  pAMISetServiceConfRes = (_NEAR_ AMISetServiceConfRes_T*) pRes;
+    AMISetServiceConfReq_T*  pAMISetServiceConfReq = (AMISetServiceConfReq_T*) pReq;
+    AMISetServiceConfRes_T*  pAMISetServiceConfRes = (AMISetServiceConfRes_T*) pRes;
 
     SERVICE_CONF_STRUCT conf,ReqConf;
     INT32U  Value = 0;
@@ -1223,7 +1223,7 @@ AMISetServiceConf( _NEAR_ INT8U *pReq, INT32U ReqLen, _NEAR_ INT8U *pRes,int BMC
     int	    RebootService = 0;
     int IsSinglePortService = g_corefeatures.single_port_app;
     SERVICE_CONF_STRUCT webconf;
-    _FAR_ BMCInfo_t* pBMCInfo = &g_BMCInfo[BMCInst];
+    BMCInfo_t* pBMCInfo = &g_BMCInfo[BMCInst];
     BondIface   bond;
     RestartService_T Service;
     INT8U curchannel;
@@ -1419,11 +1419,11 @@ AMISetServiceConf( _NEAR_ INT8U *pReq, INT32U ReqLen, _NEAR_ INT8U *pRes,int BMC
     return(sizeof(AMISetServiceConfRes_T));
 }
 
-int AMILinkDownResilent( _NEAR_ INT8U *pReq, INT32U ReqLen, _NEAR_ INT8U *pRes,int BMCInst)
+int AMILinkDownResilent( INT8U *pReq, INT32U ReqLen, INT8U *pRes,int BMCInst)
 {
-    _NEAR_  AMILinkDownResilentReq_T*  pAMILinkDownResilentReq = (_NEAR_ AMILinkDownResilentReq_T*) pReq;
-    _NEAR_  AMILinkDownResilentRes_T* pAMILinkDownResilentRes = (_NEAR_ AMILinkDownResilentRes_T *) pRes;
-    _FAR_ BMCInfo_t* pBMCInfo = &g_BMCInfo[BMCInst];
+    AMILinkDownResilentReq_T*  pAMILinkDownResilentReq = (AMILinkDownResilentReq_T*) pReq;
+    AMILinkDownResilentRes_T* pAMILinkDownResilentRes = (AMILinkDownResilentRes_T *) pRes;
+    BMCInfo_t* pBMCInfo = &g_BMCInfo[BMCInst];
     pAMILinkDownResilentRes->CompletionCode = CC_SUCCESS;
 
     if(pAMILinkDownResilentReq->LinkDownEnable== 1)
@@ -1462,7 +1462,7 @@ int ValidateSetIfaceStateBond (INT8U *pReq, INT8U *pRes, INT8U *VLANID, int Chec
 {
     AMISetIfaceStateReq_T *pAMIIfaceStateReq = (AMISetIfaceStateReq_T *)pReq;
     AMISetIfaceStateRes_T *pAMIIfaceStateRes = (AMISetIfaceStateRes_T *)pRes;
-    _FAR_ BMCInfo_t* pBMCInfo = &g_BMCInfo[BMCInst];
+    BMCInfo_t* pBMCInfo = &g_BMCInfo[BMCInst];
     int Ifccount = 0, i;
     char IfcName[16];
 
@@ -1589,17 +1589,17 @@ int ValidateSetIfaceStateBond (INT8U *pReq, INT8U *pRes, INT8U *VLANID, int Chec
  * @param Request message and BMC instance
  * @return success completion code 
  */
-int AMISetIfaceState( _NEAR_ INT8U *pReq, INT32U ReqLen, _NEAR_ INT8U *pRes,int BMCInst)
+int AMISetIfaceState( INT8U *pReq, INT32U ReqLen, INT8U *pRes,int BMCInst)
 {
-    _NEAR_  AMISetIfaceStateReq_T*  pAMIIfaceStateReq = (_NEAR_ AMISetIfaceStateReq_T *) pReq;
-    _NEAR_  AMISetIfaceStateRes_T*  pAMIIfaceStateRes = (_NEAR_ AMISetIfaceStateRes_T *) pRes;
+    AMISetIfaceStateReq_T*  pAMIIfaceStateReq = (AMISetIfaceStateReq_T *) pReq;
+    AMISetIfaceStateRes_T*  pAMIIfaceStateRes = (AMISetIfaceStateRes_T *) pRes;
     NWCFG_STRUCT cfg;
     NWCFG6_STRUCT cfg6;
     int retValue = 0;
     char IfcName[16];
     int EthIndex = 0,i,ethcount=0,Ethindex = 0;
     INT8U CurrentIfaceState = 0x00, VLANID = 0,curchannel;
-    _FAR_ BMCInfo_t* pBMCInfo = &g_BMCInfo[BMCInst];
+    BMCInfo_t* pBMCInfo = &g_BMCInfo[BMCInst];
     BondIface   bond;
     int Ifccount = 0;
     memset(&bond,0,sizeof(BondIface));
@@ -1949,12 +1949,12 @@ int AMISetIfaceState( _NEAR_ INT8U *pReq, INT32U ReqLen, _NEAR_ INT8U *pRes,int 
  * @param Request message and BMC instance
  * @return status of interfaces 
  */
-int AMIGetIfaceState( _NEAR_ INT8U *pReq, INT32U ReqLen, _NEAR_ INT8U *pRes,int BMCInst)
+int AMIGetIfaceState( INT8U *pReq, INT32U ReqLen, INT8U *pRes,int BMCInst)
 {
 
-    _NEAR_  AMIGetIfaceStateReq_T*  pAMIIfaceStateReq = (_NEAR_ AMIGetIfaceStateReq_T *) pReq;
-    _NEAR_  AMIGetIfaceStateRes_T*  pAMIIfaceStateRes = (_NEAR_ AMIGetIfaceStateRes_T *) pRes;
-    _FAR_ BMCInfo_t* pBMCInfo = &g_BMCInfo[BMCInst];
+    AMIGetIfaceStateReq_T*  pAMIIfaceStateReq = (AMIGetIfaceStateReq_T *) pReq;
+    AMIGetIfaceStateRes_T*  pAMIIfaceStateRes = (AMIGetIfaceStateRes_T *) pRes;
+    BMCInfo_t* pBMCInfo = &g_BMCInfo[BMCInst];
     NWCFG_STRUCT cfg;
     NWCFG6_STRUCT cfg6;
     BondIface   bond;
@@ -2332,9 +2332,9 @@ int AMIGetIfaceState( _NEAR_ INT8U *pReq, INT32U ReqLen, _NEAR_ INT8U *pRes,int 
  * @return Current SEL policy
  */
 int
-AMIGetSELPolicy (_NEAR_ INT8U *pReq, INT32U ReqLen, _NEAR_ INT8U *pRes, int BMCInst)
+AMIGetSELPolicy (INT8U *pReq, INT32U ReqLen, INT8U *pRes, int BMCInst)
 {
-    _NEAR_ AMIGetSELPolicyRes_T* pAMIGetSELPolicyRes = (_NEAR_ AMIGetSELPolicyRes_T*)pRes;
+    AMIGetSELPolicyRes_T* pAMIGetSELPolicyRes = (AMIGetSELPolicyRes_T*)pRes;
     BMCInfo_t *pBMCInfo = &g_BMCInfo[BMCInst];
 
     OS_THREAD_MUTEX_ACQUIRE(&pBMCInfo->SELConfig.SELMutex, WAIT_INFINITE);
@@ -2353,14 +2353,14 @@ AMIGetSELPolicy (_NEAR_ INT8U *pReq, INT32U ReqLen, _NEAR_ INT8U *pRes, int BMCI
  * @return Success completion code
  */
 int
-AMISetSELPolicy (_NEAR_ INT8U *pReq, INT32U ReqLen, _NEAR_ INT8U *pRes, int BMCInst)
+AMISetSELPolicy (INT8U *pReq, INT32U ReqLen, INT8U *pRes, int BMCInst)
 {
-    _NEAR_ AMISetSELPolicyRes_T* pAMISetSELPolicyRes = (_NEAR_ AMISetSELPolicyRes_T*)pRes;
+    AMISetSELPolicyRes_T* pAMISetSELPolicyRes = (AMISetSELPolicyRes_T*)pRes;
     BMCInfo_t *pBMCInfo = &g_BMCInfo[BMCInst];
 
     if(g_corefeatures.circular_sel == ENABLED)
     {
-        _NEAR_ AMISetSELPolicyReq_T* pAMISetSELPolicyReq = (_NEAR_ AMISetSELPolicyReq_T*)pReq;
+        AMISetSELPolicyReq_T* pAMISetSELPolicyReq = (AMISetSELPolicyReq_T*)pReq;
 
         OS_THREAD_MUTEX_ACQUIRE(&pBMCInfo->SELConfig.SELMutex, WAIT_INFINITE);
         /* Validate SEL policy */
@@ -2391,7 +2391,7 @@ AMISetSELPolicy (_NEAR_ INT8U *pReq, INT32U ReqLen, _NEAR_ INT8U *pRes, int BMCI
 *@param This function retrieves the SEL entries
 *@return Returns CC_NORMAL
 */
-int AMIGetSELEntires(_NEAR_ INT8U *pReq, INT32U ReqLen, _NEAR_ INT8U *pRes, int BMCInst)
+int AMIGetSELEntires(INT8U *pReq, INT32U ReqLen, INT8U *pRes, int BMCInst)
 {
     AMIGetSELEntriesReq_T *pAMIGetSelEntriesReq = (AMIGetSELEntriesReq_T *)pReq;
     AMIGetSELEntriesRes_T *pAMIGetSelEntiresRes = (AMIGetSELEntriesRes_T *)pRes;
@@ -2461,7 +2461,7 @@ int AMIGetSELEntires(_NEAR_ INT8U *pReq, INT32U ReqLen, _NEAR_ INT8U *pRes, int 
  * @param Request message and BMC instance
  * @return Proper completion code
  */
-int AMIGetSenforInfo(_NEAR_ INT8U *pReq, INT32U ReqLen, _NEAR_ INT8U *pRes, int BMCInst)
+int AMIGetSenforInfo(INT8U *pReq, INT32U ReqLen, INT8U *pRes, int BMCInst)
 {
     AMIGetSensorInfoRes_T *pAMIGetSensorInfoRes = (AMIGetSensorInfoRes_T *)pRes;
     BMCInfo_t *pBMCInfo = &g_BMCInfo[BMCInst];
@@ -2472,13 +2472,13 @@ int AMIGetSenforInfo(_NEAR_ INT8U *pReq, INT32U ReqLen, _NEAR_ INT8U *pRes, int 
     BOOL SensorIsSigned = FALSE;
     INT16U SensorReading = 0;
     SensorSharedMem_T*    pSMSharedMem;
-    _FAR_  SDRRecHdr_T*     pSDRRec;
-    _FAR_ FullSensorRec_T*      FullSDR;
-    _FAR_ CompactSensorRec_T*   CompSDR;
+     SDRRecHdr_T*     pSDRRec;
+    FullSensorRec_T*      FullSDR;
+    CompactSensorRec_T*   CompSDR;
     int i = 0;
 
     /* Get the Sensor Shared Memory */
-    pSMSharedMem = (_FAR_ SensorSharedMem_T*)&pBMCInfo->SensorSharedMem;
+    pSMSharedMem = (SensorSharedMem_T*)&pBMCInfo->SensorSharedMem;
 
     if(pBMCInfo->SenConfig.ValidSensorCnt == 0)
     {
@@ -2618,7 +2618,7 @@ int AMIGetSenforInfo(_NEAR_ INT8U *pReq, INT32U ReqLen, _NEAR_ INT8U *pRes, int 
         pSDRRec = GetSDRRec(pSensor.SDRRec->ID,BMCInst);
         if(pSensor.SDRRec->Type  == FULL_SDR_REC)       /*Full SDR*/
         {
-            FullSDR = (_FAR_ FullSensorRec_T *)pSDRRec;
+            FullSDR = (FullSensorRec_T *)pSDRRec;
             SensorInfo.OwnerID = FullSDR->OwnerID;
             SensorInfo.OwnerLUN= FullSDR->OwnerLUN;
             SensorInfo.MaxReading = FullSDR->MaxReading;
@@ -2629,7 +2629,7 @@ int AMIGetSenforInfo(_NEAR_ INT8U *pReq, INT32U ReqLen, _NEAR_ INT8U *pRes, int 
         }
         else if(pSensor.SDRRec->Type == COMPACT_SDR_REC)   /*Compact SDR*/
         {
-            CompSDR = (_FAR_ CompactSensorRec_T *)pSDRRec;
+            CompSDR = (CompactSensorRec_T *)pSDRRec;
             SensorInfo.OwnerID = CompSDR->OwnerID;
             SensorInfo.OwnerLUN= CompSDR->OwnerLUN;
             SensorInfo.MaxReading = 0;
@@ -2656,7 +2656,7 @@ int AMIGetSenforInfo(_NEAR_ INT8U *pReq, INT32U ReqLen, _NEAR_ INT8U *pRes, int 
  * @param Request message and BMC instance
  * @return Proper completion code
  */
-int AMIGetIPMISessionTimeOut(_NEAR_ INT8U *pReq, INT32U ReqLen, _NEAR_ INT8U *pRes, int BMCInst)
+int AMIGetIPMISessionTimeOut(INT8U *pReq, INT32U ReqLen, INT8U *pRes, int BMCInst)
 {
     AMIGetIPMISessionTimeOutRes_T * pAMIGetIPMISessionTimeOutRes = (AMIGetIPMISessionTimeOutRes_T *)pRes;
     /* Chk request Length */
@@ -2677,13 +2677,13 @@ int AMIGetIPMISessionTimeOut(_NEAR_ INT8U *pReq, INT32U ReqLen, _NEAR_ INT8U *pR
  * @param IPV4/IPV6 Address and BMC instance
  * @return Channel Number,BMC Instance and Completion Code
  */
-int AMIGetUDSInfo(_NEAR_ INT8U *pReq, INT32U ReqLen, _NEAR_ INT8U *pRes, int BMCInst)
+int AMIGetUDSInfo(INT8U *pReq, INT32U ReqLen, INT8U *pRes, int BMCInst)
 {
     AMIGetUDSInfoReq_T *pAMIGetUDSInfoReq = (AMIGetUDSInfoReq_T *)pReq;
     AMIGetUDSInfoRes_T *pAMIGetUDSInfoRes = (AMIGetUDSInfoRes_T *)pRes;
     int ChannelNum = -1;
     INT8U NoofBMC = 1;
-    _FAR_   ChannelInfo_T*          pChannelInfo;
+      ChannelInfo_T*          pChannelInfo;
 
     for(NoofBMC = 1;NoofBMC <= MAX_NUM_BMC; NoofBMC++)
     {
@@ -2736,7 +2736,7 @@ int AMIGetUDSInfo(_NEAR_ INT8U *pReq, INT32U ReqLen, _NEAR_ INT8U *pRes, int BMC
  * @param Parameter Selector and BMC instance
  * @return UDS Session Information and Completion Code
  */
-int AMIGetUDSSessionInfo(_NEAR_ INT8U *pReq, INT32U ReqLen, _NEAR_ INT8U *pRes, int BMCInst)
+int AMIGetUDSSessionInfo(INT8U *pReq, INT32U ReqLen, INT8U *pRes, int BMCInst)
 {
     AMIGetUDSSessionInfoReq_T *pAMIGetUDSSessionInfoReq = (AMIGetUDSSessionInfoReq_T *)pReq;
     AMIGetUDSSessionInfoRes_T *pAMIGetUDSSessionInfoRes = ( AMIGetUDSSessionInfoRes_T *)pRes;
@@ -3006,10 +3006,10 @@ int RISGetAllImagesList(int option,int *TotalCnt,MediaImageCfg_T  **Image_list_b
  * AMIMediaRedirectionStartStop
  *---------------------------------------*/
 int
-AMIMediaRedirectionStartStop( _NEAR_ INT8U *pReq, INT32U ReqLen, _NEAR_ INT8U *pRes,int BMCInst)
+AMIMediaRedirectionStartStop( INT8U *pReq, INT32U ReqLen, INT8U *pRes,int BMCInst)
 {
-	_NEAR_  AMIMediaRedirctionStartStopReq_T*  pAMIMediaRedirctionStartStopReq = (_NEAR_ AMIMediaRedirctionStartStopReq_T*) pReq;
-	_NEAR_  AMIMediaRedirctionStartStopRes_T*  pAMIMediaRedirctionStartStopRes = (_NEAR_ AMIMediaRedirctionStartStopRes_T*) pRes;
+	AMIMediaRedirctionStartStopReq_T*  pAMIMediaRedirctionStartStopReq = (AMIMediaRedirctionStartStopReq_T*) pReq;
+	AMIMediaRedirctionStartStopRes_T*  pAMIMediaRedirctionStartStopRes = (AMIMediaRedirctionStartStopRes_T*) pRes;
 	int retval = -1,ServiceErr = 0;
 	int Image_Type = 0,ImageIndex = 0, AppType = 0;
 	char *ImageName= NULL;
@@ -3131,10 +3131,10 @@ AMIMediaRedirectionStartStop( _NEAR_ INT8U *pReq, INT32U ReqLen, _NEAR_ INT8U *p
  * AMIGetMediaInfo
  *---------------------------------------*/
 int
-AMIGetMediaInfo( _NEAR_ INT8U *pReq, INT32U ReqLen, _NEAR_ INT8U *pRes,int BMCInst)
+AMIGetMediaInfo( INT8U *pReq, INT32U ReqLen, INT8U *pRes,int BMCInst)
 {
-	_NEAR_  AMIGetMediaInfoReq_T*  pAMIGetMediaInfoReq = (_NEAR_ AMIGetMediaInfoReq_T*) pReq;
-	_NEAR_  AMIGetMediaInfoRes_T*  pAMIGetMediaInfoRes = (_NEAR_ AMIGetMediaInfoRes_T*) pRes;
+	AMIGetMediaInfoReq_T*  pAMIGetMediaInfoReq = (AMIGetMediaInfoReq_T*) pReq;
+	AMIGetMediaInfoRes_T*  pAMIGetMediaInfoRes = (AMIGetMediaInfoRes_T*) pRes;
 
 	ShortImageInfo_T* ShortImageInfo = NULL;
 	LongImageInfo_T*  LongImageInfo = NULL;
@@ -3269,7 +3269,7 @@ AMIGetMediaInfo( _NEAR_ INT8U *pReq, INT32U ReqLen, _NEAR_ INT8U *pRes,int BMCIn
 					free(LMediaCfg);
 				return sizeof(INT8U);
 			}
-			RedirectedImageInfo = (_NEAR_ RedirectedImageInfo_T*)(pRes+2);
+			RedirectedImageInfo = (RedirectedImageInfo_T*)(pRes+2);
 			for(i=0;i<MaxCount;i++)
 			{
 				if (pAMIGetMediaInfoReq->Param == GET_REDIRECTED_IMAGE_INFO)
@@ -3335,7 +3335,7 @@ AMIGetMediaInfo( _NEAR_ INT8U *pReq, INT32U ReqLen, _NEAR_ INT8U *pRes,int BMCIn
 			pAMIGetMediaInfoRes->CompletionCode = CC_NORMAL;
 			if(ImageName_Format == SHORT_IMG_NAME_FORMAT)
 			{
-				ShortImageInfo = (_NEAR_ ShortImageInfo_T*)(pRes+2);
+				ShortImageInfo = (ShortImageInfo_T*)(pRes+2);
 				for(ImageIndex=0;ImageIndex < ToatalAvaliableImages;ImageIndex++)
 				{
 					ShortImageInfo[ImageIndex].Index = MediaImageCfg[ImageIndex].Image_index;
@@ -3359,7 +3359,7 @@ AMIGetMediaInfo( _NEAR_ INT8U *pReq, INT32U ReqLen, _NEAR_ INT8U *pRes,int BMCIn
 			}
 			else if(ImageName_Format == LONG_IMG_NAME_FORMAT)
 			{
-				LongImageInfo = (_NEAR_ LongImageInfo_T*)(pRes+2);
+				LongImageInfo = (LongImageInfo_T*)(pRes+2);
 
 				for(ImageIndex=0;ImageIndex < ToatalAvaliableImages;ImageIndex++)
 				{
@@ -3426,10 +3426,10 @@ AMIGetMediaInfo( _NEAR_ INT8U *pReq, INT32U ReqLen, _NEAR_ INT8U *pRes,int BMCIn
 }
 
 int
-AMISetMediaInfo( _NEAR_ INT8U *pReq, INT32U ReqLen, _NEAR_ INT8U *pRes,int BMCInst)
+AMISetMediaInfo( INT8U *pReq, INT32U ReqLen, INT8U *pRes,int BMCInst)
 {
-	_NEAR_  AMISetMediaInfoReq_T*  pAMISetMediaInfoReq = (_NEAR_ AMISetMediaInfoReq_T*) pReq;
-	_NEAR_  AMISetMediaInfoRes_T*  pAMISetMediaInfoRes = (_NEAR_ AMISetMediaInfoRes_T*) pRes;
+	AMISetMediaInfoReq_T*  pAMISetMediaInfoReq = (AMISetMediaInfoReq_T*) pReq;
+	AMISetMediaInfoRes_T*  pAMISetMediaInfoRes = (AMISetMediaInfoRes_T*) pRes;
 	INT8U ServiceErr = -1;
 	int AppType = -1, ImageType = 0,MaxCount = 0, ImageIndex = -1;
 	char *ImageName = NULL;
@@ -3584,12 +3584,12 @@ AMISetMediaInfo( _NEAR_ INT8U *pReq, INT32U ReqLen, _NEAR_ INT8U *pRes,int BMCIn
 	return sizeof(AMISetMediaInfoRes_T);
 }
 
-int AMIGetChannelType(_NEAR_ INT8U *pReq, INT32U ReqLen, _NEAR_ INT8U *pRes, int BMCInst)
+int AMIGetChannelType(INT8U *pReq, INT32U ReqLen, INT8U *pRes, int BMCInst)
 {
-    _NEAR_ AMIGetChannelTypeReq_T *pAMIGetChTypeReq = (_NEAR_ AMIGetChannelTypeReq_T*)pReq;
-    _NEAR_ AMIGetChannelTypeRes_T *pAMIGetChTypeRes = (_NEAR_ AMIGetChannelTypeRes_T*)pRes;
+    AMIGetChannelTypeReq_T *pAMIGetChTypeReq = (AMIGetChannelTypeReq_T*)pReq;
+    AMIGetChannelTypeRes_T *pAMIGetChTypeRes = (AMIGetChannelTypeRes_T*)pRes;
     BMCInfo_t *pBMCInfo = &g_BMCInfo[BMCInst];
-    _FAR_   ChannelInfo_T*  pChannelInfo;
+      ChannelInfo_T*  pChannelInfo;
     
     if((pAMIGetChTypeReq->ChannelNumber & 0xF0) || (CURRENT_CHANNEL_NUM == pAMIGetChTypeReq->ChannelNumber))
     {
@@ -3616,10 +3616,10 @@ int AMIGetChannelType(_NEAR_ INT8U *pReq, INT32U ReqLen, _NEAR_ INT8U *pRes, int
 }
 
 
-int AMIGetRemoteKVMCfg (_NEAR_ INT8U *pReq,INT32U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst)
+int AMIGetRemoteKVMCfg (INT8U *pReq,INT32U ReqLen, INT8U* pRes,int BMCInst)
 {
-	_NEAR_ AMIGetRemoteKVMCfgReq_T *pAMIGetRemoteKVMCfgReq = (_NEAR_ AMIGetRemoteKVMCfgReq_T *)pReq;
-	_NEAR_ AMIGetRemoteKVMCfgRes_T *pAMIGetRemoteKVMCfgRes = (_NEAR_ AMIGetRemoteKVMCfgRes_T *)pRes;
+	AMIGetRemoteKVMCfgReq_T *pAMIGetRemoteKVMCfgReq = (AMIGetRemoteKVMCfgReq_T *)pReq;
+	AMIGetRemoteKVMCfgRes_T *pAMIGetRemoteKVMCfgRes = (AMIGetRemoteKVMCfgRes_T *)pRes;
 	AdviserConfig_T AdviserCfg;
 	int retval,hostlockfeaturestatus,Runtime_Singleport_Status= 0;
 	if(pAMIGetRemoteKVMCfgReq->ParameterSelect == KVM_ENCRYPTION)
@@ -3747,10 +3747,10 @@ int AMIGetRemoteKVMCfg (_NEAR_ INT8U *pReq,INT32U ReqLen, _NEAR_ INT8U* pRes,_NE
 	return sizeof(*pRes);
 }
 
-int AMISetRemoteKVMCfg (_NEAR_ INT8U *pReq,INT32U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst)
+int AMISetRemoteKVMCfg (INT8U *pReq,INT32U ReqLen, INT8U* pRes,int BMCInst)
 {
-	_NEAR_ AMISetRemoteKVMCfgReq_T *pAMISetRemoteKVMCfgReq = (_NEAR_ AMISetRemoteKVMCfgReq_T *)pReq;
-	_NEAR_ AMISetRemoteKVMCfgRes_T *pAMISetRemoteKVMCfgRes = (_NEAR_ AMISetRemoteKVMCfgRes_T *)pRes;
+	AMISetRemoteKVMCfgReq_T *pAMISetRemoteKVMCfgReq = (AMISetRemoteKVMCfgReq_T *)pReq;
+	AMISetRemoteKVMCfgRes_T *pAMISetRemoteKVMCfgRes = (AMISetRemoteKVMCfgRes_T *)pRes;
 	AdviserConfig_T AdviserCfg;
 	char Temp[KEYBRD_LANG_SIZE];
 	int  retval,hostlockvalue = 0;
@@ -4035,10 +4035,10 @@ int AMISetRemoteKVMCfg (_NEAR_ INT8U *pReq,INT32U ReqLen, _NEAR_ INT8U* pRes,_NE
 	return sizeof(*pRes);
 }
 
-int AMIGetSSLCertStatus(_NEAR_ INT8U *pReq,INT32U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst)
+int AMIGetSSLCertStatus(INT8U *pReq,INT32U ReqLen, INT8U* pRes,int BMCInst)
 {
-	  _NEAR_ AMIGetSSLCertStatusReq_T *pAMIGetSSLCertStatusReq = (_NEAR_ AMIGetSSLCertStatusReq_T *)pReq;
-	   _NEAR_ AMIGetSSLCertStatusRes_T *pAMIGetSSLCertStatusRes = (_NEAR_ AMIGetSSLCertStatusRes_T *)pRes;
+	  AMIGetSSLCertStatusReq_T *pAMIGetSSLCertStatusReq = (AMIGetSSLCertStatusReq_T *)pReq;
+	   AMIGetSSLCertStatusRes_T *pAMIGetSSLCertStatusRes = (AMIGetSSLCertStatusRes_T *)pRes;
 	   char Temp[MAX_FILE_INFO_SIZE] = "Not Available";
 
 	   struct stat CertStat, PrivkeyStat;
@@ -4088,10 +4088,10 @@ int AMIGetSSLCertStatus(_NEAR_ INT8U *pReq,INT32U ReqLen, _NEAR_ INT8U* pRes,_NE
 		return sizeof(INT8U);
 }
 
-int AMIGetVmediaCfg(_NEAR_ INT8U *pReq,INT32U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst)
+int AMIGetVmediaCfg(INT8U *pReq,INT32U ReqLen, INT8U* pRes,int BMCInst)
 {
-	_NEAR_ AMIGetVmediaCfgReq_T *pAMIGetVmediaCfgReq = (_NEAR_ AMIGetVmediaCfgReq_T *)pReq;
-	_NEAR_ AMIGetVmediaCfgRes_T *pAMIGetVmediaCfgRes = (_NEAR_ AMIGetVmediaCfgRes_T *)pRes;
+	AMIGetVmediaCfgReq_T *pAMIGetVmediaCfgReq = (AMIGetVmediaCfgReq_T *)pReq;
+	AMIGetVmediaCfgRes_T *pAMIGetVmediaCfgRes = (AMIGetVmediaCfgRes_T *)pRes;
 	int retval,Runtime_Singleport_Status= 0;
 	VMediaCfg_T VMediaCfg;
 
@@ -4358,10 +4358,10 @@ return 0;
 }
 
 
-int AMISetVmediaCfg(_NEAR_ INT8U *pReq,INT32U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst)
+int AMISetVmediaCfg(INT8U *pReq,INT32U ReqLen, INT8U* pRes,int BMCInst)
 {
-	_NEAR_ AMISetVmediaCfgReq_T *pAMISetVmediaCfgReq = (_NEAR_ AMISetVmediaCfgReq_T *)pReq;
-	_NEAR_ AMISetVmediaCfgRes_T *pAMISetVmediaCfgRes = (_NEAR_ AMISetVmediaCfgRes_T *)pRes;
+	AMISetVmediaCfgReq_T *pAMISetVmediaCfgReq = (AMISetVmediaCfgReq_T *)pReq;
+	AMISetVmediaCfgRes_T *pAMISetVmediaCfgRes = (AMISetVmediaCfgRes_T *)pRes;
 	INT8U num_cd = 0,num_fd = 0,num_hd = 0;
 	static INT8U InitializeVmediaCfg = TRUE;
 	int retval = 0,prev_secure_status,Runtime_Singleport_Status= 0;
@@ -4853,7 +4853,7 @@ int AMISetVmediaCfg(_NEAR_ INT8U *pReq,INT32U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ 
 	return sizeof(AMISetVmediaCfgRes_T);
 }
 
-int AMIRestartWebService(_NEAR_ INT8U *pReq,INT32U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst)
+int AMIRestartWebService(INT8U *pReq,INT32U ReqLen, INT8U* pRes,int BMCInst)
 {
 	AMIRestartWebServiceRes_T  *pAMIRestartWebServiceRes = (AMIRestartWebServiceRes_T *)pRes;
 	int retval = 0;
@@ -4870,7 +4870,7 @@ int AMIRestartWebService(_NEAR_ INT8U *pReq,INT32U ReqLen, _NEAR_ INT8U* pRes,_N
 	return sizeof(INT8U);
 }
 
-int AMIGetBMCInstanceCount(_NEAR_ INT8U *pReq,INT32U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst)
+int AMIGetBMCInstanceCount(INT8U *pReq,INT32U ReqLen, INT8U* pRes,int BMCInst)
 {
 	AMIGetBMCInstanceCountRes_T  *pAMIGetBMCInstanceCountRes = (AMIGetBMCInstanceCountRes_T *)pRes;
 
@@ -4890,7 +4890,7 @@ int AMIGetBMCInstanceCount(_NEAR_ INT8U *pReq,INT32U ReqLen, _NEAR_ INT8U* pRes,
 	return sizeof(AMIGetBMCInstanceCountRes_T);
 }
 
-int AMIGetUSBSwitchSetting(_NEAR_ INT8U *pReq,INT32U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst)
+int AMIGetUSBSwitchSetting(INT8U *pReq,INT32U ReqLen, INT8U* pRes,int BMCInst)
 {
 	AMIGetUSBSwitchSettingRes_T  *pAMIGetUSBSwitchSettingRes = (AMIGetUSBSwitchSettingRes_T *)pRes;
 
@@ -4916,7 +4916,7 @@ int AMIGetUSBSwitchSetting(_NEAR_ INT8U *pReq,INT32U ReqLen, _NEAR_ INT8U* pRes,
 	return sizeof(AMIGetUSBSwitchSettingRes_T);
 }
 
-int AMISetUSBSwitchSetting(_NEAR_ INT8U *pReq,INT32U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst)
+int AMISetUSBSwitchSetting(INT8U *pReq,INT32U ReqLen, INT8U* pRes,int BMCInst)
 {
 	AMISetUSBSwitchSettingRes_T  *pAMISetUSBSwitchSettingRes = (AMISetUSBSwitchSettingRes_T *)pRes;
 
@@ -4944,7 +4944,7 @@ int AMISetUSBSwitchSetting(_NEAR_ INT8U *pReq,INT32U ReqLen, _NEAR_ INT8U* pRes,
 	return sizeof(AMISetUSBSwitchSettingRes_T);
 }
 
-int AMISwitchMUX( _NEAR_ INT8U *pReq, INT32U ReqLen, _NEAR_ INT8U *pRes,int BMCInst)
+int AMISwitchMUX( INT8U *pReq, INT32U ReqLen, INT8U *pRes,int BMCInst)
 {
         AMISwitchMUXReq_T *pSwitchMUXReq = (AMISwitchMUXReq_T*)pReq;
         INT8U currSession;

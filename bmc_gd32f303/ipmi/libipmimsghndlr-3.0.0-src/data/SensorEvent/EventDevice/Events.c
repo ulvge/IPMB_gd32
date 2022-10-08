@@ -56,12 +56,12 @@
  * SetEventReceiver
  *---------------------------------------*/
 int
-SetEventReceiver (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst)
+SetEventReceiver (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst)
 {
-    _FAR_ MsgPkt_T Msg;
+    MsgPkt_T Msg;
     HQueue_T hSMHndlr_Q;
-    _NEAR_ SetEvtRcvReq_T* pSetEvtReq = (_NEAR_ SetEvtRcvReq_T*) pReq;
-    _FAR_  BMCSharedMem_T* pSharedMem = BMC_GET_SHARED_MEM(BMCInst);
+    SetEvtRcvReq_T* pSetEvtReq = (SetEvtRcvReq_T*) pReq;
+     BMCSharedMem_T* pSharedMem = BMC_GET_SHARED_MEM(BMCInst);
 
     /* Check for the reserved bytes should b zero */
 
@@ -96,10 +96,10 @@ SetEventReceiver (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ in
  * GetEventReceiver  
  *---------------------------------------*/
 int
-GetEventReceiver (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst)
+GetEventReceiver (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst)
 {
-    _NEAR_ GetEvtRcvRes_T* pGetEvtRes = (_NEAR_ GetEvtRcvRes_T*) pRes;
-    _FAR_  BMCSharedMem_T* pSharedMem = BMC_GET_SHARED_MEM(BMCInst);
+    GetEvtRcvRes_T* pGetEvtRes = (GetEvtRcvRes_T*) pRes;
+     BMCSharedMem_T* pSharedMem = BMC_GET_SHARED_MEM(BMCInst);
 
     pGetEvtRes->RcvSlaveAddr = pSharedMem->EvRcv_SlaveAddr;
     pGetEvtRes->RcvLUN       = pSharedMem->EvRcv_LUN;
@@ -114,12 +114,12 @@ GetEventReceiver (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ in
  * PlatformEventMessage
  *---------------------------------------*/
 int
-PlatformEventMessage (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst)
+PlatformEventMessage (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst)
 {
     SELEventRecord_T     EvtRec;
     AddSELRes_T          AddSelRes;
     MsgPkt_T             MsgToPEF;
-    _FAR_ BMCInfo_t* pBMCInfo = &g_BMCInfo[BMCInst];
+    BMCInfo_t* pBMCInfo = &g_BMCInfo[BMCInst];
     IPMIMsgHdr_T* pIPMIMsgHdr = NULL;    
     INT8U curchannel;
     
@@ -147,20 +147,20 @@ PlatformEventMessage (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR
     {
         EvtRec.GenID [0] = *pReq| BIT0;   // system software ID
         EvtRec.GenID [1] = 0;
-        _fmemcpy ((_FAR_ INT8U*)&EvtRec.EvMRev, &pReq [1], ReqLen - 1);
+        _fmemcpy ((INT8U*)&EvtRec.EvMRev, &pReq [1], ReqLen - 1);
     }
     else
     { // RqAddr & LUN are already in the Msg Hdr, use that here
         pIPMIMsgHdr = ((IPMIMsgHdr_T *) &pReq [0] ) -1; 
         EvtRec.GenID [0] = pIPMIMsgHdr->ReqAddr;
         EvtRec.GenID [1] = ((curchannel & 0xF) << 4) | (pIPMIMsgHdr->RqSeqLUN & 0x3);
-        _fmemcpy ((_FAR_ INT8U*)&EvtRec.EvMRev , &pReq [0], ReqLen);
+        _fmemcpy ((INT8U*)&EvtRec.EvMRev , &pReq [0], ReqLen);
     }
 
     EvtRec.hdr.Type      = 0x02;        /* Mark as System Event Record */
     EvtRec.hdr.TimeStamp = GetSelTimeStamp(BMCInst);
-    LockedAddSELEntry ((_NEAR_ INT8U*)&EvtRec, sizeof (SELEventRecord_T),
-                 (_NEAR_ INT8U*)&AddSelRes, (((SYS_IFC_CHANNEL == (curchannel & 0xF)) || (pBMCInfo->SMBUSCh == (curchannel & 0xF))) ? TRUE : FALSE), POST_SEL_AND_PEF, BMCInst);
+    LockedAddSELEntry ((INT8U*)&EvtRec, sizeof (SELEventRecord_T),
+                 (INT8U*)&AddSelRes, (((SYS_IFC_CHANNEL == (curchannel & 0xF)) || (pBMCInfo->SMBUSCh == (curchannel & 0xF))) ? TRUE : FALSE), POST_SEL_AND_PEF, BMCInst);
     EvtRec.hdr.ID        = AddSelRes.RecID;
 
     if (AddSelRes.CompletionCode == CC_PARAM_NOT_SUP_IN_CUR_STATE)
@@ -175,7 +175,7 @@ PlatformEventMessage (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR
         return sizeof (*pRes);
     }
 
-    _fmemcpy (MsgToPEF.Data, (_FAR_ INT8U*)&EvtRec, sizeof (SELEventRecord_T));
+    _fmemcpy (MsgToPEF.Data, (INT8U*)&EvtRec, sizeof (SELEventRecord_T));
     MsgToPEF.Size  = sizeof (SELEventRecord_T);
     MsgToPEF.Param = PARAM_PLATFORM_EVT_MSG;
 

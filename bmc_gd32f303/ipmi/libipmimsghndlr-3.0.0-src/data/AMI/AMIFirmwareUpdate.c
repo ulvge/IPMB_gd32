@@ -95,7 +95,7 @@ int FillResponseData(ImageInfo *pImageInfo, INT8U *resData, int *RespLen)
 #endif
 
 
-int AMIFirmwareCommand (_NEAR_ INT8U* pReq, INT32U ReqLen, _NEAR_ INT8U* pRes, int BMCInst)
+int AMIFirmwareCommand (INT8U* pReq, INT32U ReqLen, INT8U* pRes, int BMCInst)
 {
     AMIFWCommandReq_T *pAMIFWCommandReq  = (AMIFWCommandReq_T* ) pReq;
     AMIFWCommandRes_T *pAMIFWCommandRes  = (AMIFWCommandRes_T*) pRes;
@@ -648,7 +648,7 @@ int AMIFirmwareCommand (_NEAR_ INT8U* pReq, INT32U ReqLen, _NEAR_ INT8U* pRes, i
     return 2*sizeof(INT8U);
 }
 
-int AMIGetReleaseNote (_NEAR_ INT8U* pReq, INT32U ReqLen, _NEAR_ INT8U* pRes, int BMCInst)
+int AMIGetReleaseNote (INT8U* pReq, INT32U ReqLen, INT8U* pRes, int BMCInst)
 {
 
     AMIGetReleaseNoteReq_T *pAMIGetReleaseNoteReq = (AMIGetReleaseNoteReq_T *)pReq;

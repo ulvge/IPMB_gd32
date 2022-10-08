@@ -133,7 +133,7 @@ ReadBiosCodes(int nCode, unsigned char *pCode, int *pLen)
  */
 
 int
-AMIGetBiosCode (_NEAR_ INT8U* pReq, INT32U ReqLen, _NEAR_ INT8U* pRes, int BMCInst)
+AMIGetBiosCode (INT8U* pReq, INT32U ReqLen, INT8U* pRes, int BMCInst)
 {
     AMIGetBiosCodeReq_T* pAMIGetBiosCodeReq  =  ( AMIGetBiosCodeReq_T* ) pReq;
     AMIGetBiosCodeRes_T* pAMIGetBiosCodeRes  =  ( AMIGetBiosCodeRes_T* ) pRes;
@@ -159,7 +159,7 @@ AMIGetBiosCode (_NEAR_ INT8U* pReq, INT32U ReqLen, _NEAR_ INT8U* pRes, int BMCIn
  */
 
 int
-AMISendToBios (_NEAR_ INT8U* pReq, INT32U ReqLen, _NEAR_ INT8U* pRes, int BMCInst)
+AMISendToBios (INT8U* pReq, INT32U ReqLen, INT8U* pRes, int BMCInst)
 {
 	AMISendToBiosReq_T* pAMISendToBiosReq  =  ( AMISendToBiosReq_T* ) pReq;
 	AMISendToBiosRes_T* pAMISendToBiosRes  =  ( AMISendToBiosRes_T* ) pRes;
@@ -208,7 +208,7 @@ AMISendToBios (_NEAR_ INT8U* pReq, INT32U ReqLen, _NEAR_ INT8U* pRes, int BMCIns
  *              CC_INV_DATA_FIELD, if invalid data in the request.
  */
 int
-AMIGetBiosCommand (_NEAR_ INT8U* pReq, INT32U ReqLen, _NEAR_ INT8U* pRes, int BMCInst)
+AMIGetBiosCommand (INT8U* pReq, INT32U ReqLen, INT8U* pRes, int BMCInst)
 {
 	AMIGetBiosCommandRes_T* pAMIGetBiosCommandRes  =  ( AMIGetBiosCommandRes_T* ) pRes;
 	LOCK_BMC_SHARED_MEM(BMCInst);
@@ -234,7 +234,7 @@ AMIGetBiosCommand (_NEAR_ INT8U* pReq, INT32U ReqLen, _NEAR_ INT8U* pRes, int BM
  *              CC_INV_DATA_FIELD, if invalid data in the request.
  */
 int
-AMISetBiosResponse (_NEAR_ INT8U* pReq, INT32U ReqLen, _NEAR_ INT8U* pRes, int BMCInst)
+AMISetBiosResponse (INT8U* pReq, INT32U ReqLen, INT8U* pRes, int BMCInst)
 {
 	AMISetBiosReponseReq_T* pAMISetBiosReponseReq  =  ( AMISetBiosReponseReq_T* ) pReq;
 	AMISetBiosReponseRes_T* pAMISetBiosReponseRes  =  ( AMISetBiosReponseRes_T* ) pRes;
@@ -275,7 +275,7 @@ AMISetBiosResponse (_NEAR_ INT8U* pReq, INT32U ReqLen, _NEAR_ INT8U* pRes, int B
  *              CC_INV_DATA_FIELD, if invalid data in the request.
  */
 int
-AMIGetBiosResponse (_NEAR_ INT8U* pReq, INT32U ReqLen, _NEAR_ INT8U* pRes, int BMCInst)
+AMIGetBiosResponse (INT8U* pReq, INT32U ReqLen, INT8U* pRes, int BMCInst)
 {
 	AMIGetBiosReponseSReq_T* pAMIGetBiosReponseSReq  =  ( AMIGetBiosReponseSReq_T* ) pReq;
 	AMIGetBiosReponseSRes_T* pAMIGetBiosReponseSRes  =  ( AMIGetBiosReponseSRes_T* ) pRes;
@@ -313,7 +313,7 @@ AMIGetBiosResponse (_NEAR_ INT8U* pReq, INT32U ReqLen, _NEAR_ INT8U* pRes, int B
  *              CC_INV_DATA_FIELD, if invalid data in the request.
  */
 int
-AMISetBiosFlag (_NEAR_ INT8U* pReq, INT32U ReqLen, _NEAR_ INT8U* pRes, int BMCInst)
+AMISetBiosFlag (INT8U* pReq, INT32U ReqLen, INT8U* pRes, int BMCInst)
 {
 	AMISetBiosFlagReq_T* pAMISetBiosFlagReq  =  ( AMISetBiosFlagReq_T* ) pReq;
 	AMISetBiosFlagRes_T* pAMISetBiosFlagRes  =  ( AMISetBiosFlagRes_T* ) pRes;
@@ -355,7 +355,7 @@ int
  * @retval      CC_NORMAL, on success,
  *              CC_INV_DATA_FIELD, if invalid data in the request.
  */
-AMIGetBiosFlag (_NEAR_ INT8U* pReq, INT32U ReqLen, _NEAR_ INT8U* pRes, int BMCInst)
+AMIGetBiosFlag (INT8U* pReq, INT32U ReqLen, INT8U* pRes, int BMCInst)
 {
 	AMIGetBiosFlagRes_T* pAMIGetBiosFlagRes  =  ( AMIGetBiosFlagRes_T* ) pRes;
 	char Filename[MAX_FILE_SIZE];

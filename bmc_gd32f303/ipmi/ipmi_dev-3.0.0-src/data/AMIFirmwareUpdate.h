@@ -23,9 +23,9 @@
 
 #include "Types.h"
 
-extern int AMIFirmwareCommand (_NEAR_ INT8U* pReq, INT32U ReqLen, _NEAR_ INT8U* pRes, int BMCInst);
+extern int AMIFirmwareCommand (INT8U* pReq, INT32U ReqLen, INT8U* pRes, int BMCInst);
 
-extern int AMIGetReleaseNote (_NEAR_ INT8U* pReq, INT32U ReqLen, _NEAR_ INT8U* pRes, int BMCInst);
+extern int AMIGetReleaseNote (INT8U* pReq, INT32U ReqLen, INT8U* pRes, int BMCInst);
 
 
 #endif

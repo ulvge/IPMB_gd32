@@ -98,24 +98,24 @@
  * @var m_SIK
  * @brief Session Key.
 **/
-static  _FAR_ INT8U m_SIK [SHA2_HASH_KEY_SIZE];
+static  INT8U m_SIK [SHA2_HASH_KEY_SIZE];
 
 
 /*----------------------------------------
  * RSSPOpenSessionReq
  *----------------------------------------*/
 int
-RSSPOpenSessionReq (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes, MiscParams_T *pParams, INT8U Channel, int BMCInst)
+RSSPOpenSessionReq (INT8U* pReq, INT8U ReqLen, INT8U* pRes, MiscParams_T *pParams, INT8U Channel, int BMCInst)
 {
-    _NEAR_  RSSPOpenSessionReq_T    *Req        =
-                                      (_NEAR_ RSSPOpenSessionReq_T*)pReq;
-    _NEAR_  RSSPOpenSessionRes_T    *Res        =
-                                      (_NEAR_ RSSPOpenSessionRes_T*)pRes;
-    _NEAR_  RSSPOpenSessionErrRes_T *ErrRes     =
-                                      (_NEAR_ RSSPOpenSessionErrRes_T*)pRes;
-    _FAR_   BMCInfo_t               *pBMCInfo   = 
+    RSSPOpenSessionReq_T    *Req        =
+                                      (RSSPOpenSessionReq_T*)pReq;
+    RSSPOpenSessionRes_T    *Res        =
+                                      (RSSPOpenSessionRes_T*)pRes;
+    RSSPOpenSessionErrRes_T *ErrRes     =
+                                      (RSSPOpenSessionErrRes_T*)pRes;
+      BMCInfo_t               *pBMCInfo   = 
                                     &g_BMCInfo[BMCInst];
-    _FAR_   ChannelInfo_T           *pChannelInfo;
+      ChannelInfo_T           *pChannelInfo;
     INT8U                           Role, i, id;
     BOOL                            IsMatchReq      = FALSE;
     BOOL                            TrackRollOver   = FALSE;
@@ -421,17 +421,17 @@ RSSPOpenSessionReq (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes, MiscPa
  * RAKPMsg1
  *----------------------------------------*/
 int
-RAKPMsg1 (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes, MiscParams_T *pParams, INT8U Channel, int BMCInst)
+RAKPMsg1 (INT8U* pReq, INT8U ReqLen, INT8U* pRes, MiscParams_T *pParams, INT8U Channel, int BMCInst)
 {
-    _NEAR_  RAKPMsg1Req_T       *Req     = (_NEAR_ RAKPMsg1Req_T*) pReq;
-    _NEAR_  RAKPMsg2Res_T       *Res     = (_NEAR_ RAKPMsg2Res_T*) pRes;
-    _NEAR_  RAKPMsg2ErrRes_T    *ErrRes  = (_NEAR_ RAKPMsg2ErrRes_T*) pRes;
-    _FAR_   SessionInfo_T       *pSessInfo;
-    _FAR_   ChannelUserInfo_T   *pChUserInfo;
-    _FAR_   ChannelInfo_T       *pChannelInfo;
-    _FAR_   UserInfo_T          *pUserInfo;
-    _FAR_   RAKPMsg1HMAC_T      *pMsghmac;
-    _FAR_   BMCInfo_t           *pBMCInfo = &g_BMCInfo[BMCInst];
+    RAKPMsg1Req_T       *Req     = (RAKPMsg1Req_T*) pReq;
+    RAKPMsg2Res_T       *Res     = (RAKPMsg2Res_T*) pRes;
+    RAKPMsg2ErrRes_T    *ErrRes  = (RAKPMsg2ErrRes_T*) pRes;
+      SessionInfo_T       *pSessInfo;
+      ChannelUserInfo_T   *pChUserInfo;
+      ChannelInfo_T       *pChannelInfo;
+      UserInfo_T          *pUserInfo;
+      RAKPMsg1HMAC_T      *pMsghmac;
+      BMCInfo_t           *pBMCInfo = &g_BMCInfo[BMCInst];
     INT8U   Index;
     INT8U   AuthCodeLen = 0;
     INT8U   Role;
@@ -443,7 +443,7 @@ RAKPMsg1 (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes, MiscParams_T *pP
     Role                    = Req->Role & 0x0f;
     ManSysSessionID         = Req->ManSysSessionID;
     OS_THREAD_MUTEX_ACQUIRE(&pBMCInfo->SessionTblMutex,WAIT_INFINITE);
-    pSessInfo               = getSessionInfo (SESSION_ID_INFO, (_FAR_ void*)&ManSysSessionID, BMCInst);
+    pSessInfo               = getSessionInfo (SESSION_ID_INFO, (void*)&ManSysSessionID, BMCInst);
     if (NULL == pSessInfo)
     {
         OS_THREAD_MUTEX_RELEASE(&pBMCInfo->SessionTblMutex);
@@ -512,14 +512,14 @@ RAKPMsg1 (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes, MiscParams_T *pP
         if (USER_ROLE_LOOKUP == pSessInfo->Lookup)
         {
         /* Get userInfo for the given userName and privilege */
-        pChUserInfo = getChUserPrivInfo ((_NEAR_ char *)Req->UsrName, Role, &Index,
+        pChUserInfo = getChUserPrivInfo ((char *)Req->UsrName, Role, &Index,
         pChannelInfo->ChannelUserInfo, BMCInst);
 
         /* If user not found  */
         if (NULL == pChUserInfo)
         {
             /* Invalid user     */
-            IPMI_WARNING ("RMCP+.c : RAKPMsg1 - user_priv - User not found : %s\n", (_NEAR_ char *)Req->UsrName);
+            IPMI_WARNING ("RMCP+.c : RAKPMsg1 - user_priv - User not found : %s\n", (char *)Req->UsrName);
 
             if ( 0 != AddLoginEvent( 0xFF, Req->UsrName, EVENT_LOGIN_FAILURE, BMCInst ) )
             {
@@ -550,7 +550,7 @@ RAKPMsg1 (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes, MiscParams_T *pP
         else /* if (NAME_ONLY_LOOKUP == pSessInfo->Lookup) */
         {
             /* Get userInfo for the given userName*/
-            pChUserInfo = getChUserInfo ((_NEAR_ char *)Req->UsrName, &Index,
+            pChUserInfo = getChUserInfo ((char *)Req->UsrName, &Index,
             pChannelInfo->ChannelUserInfo, BMCInst);
             /* If user not found  */
             if (NULL == pChUserInfo)
@@ -700,7 +700,7 @@ RAKPMsg1 (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes, MiscParams_T *pP
             {
                 INT8U PasswdLen = 0;
 
-                pMsghmac                    = (_FAR_ RAKPMsg1HMAC_T*)pBMCInfo->LANConfig.HmacInBuf;
+                pMsghmac                    = (RAKPMsg1HMAC_T*)pBMCInfo->LANConfig.HmacInBuf;
                 pMsghmac->RemConSessionID   = pSessInfo->RemConSessionID;
                 pMsghmac->MgdSysSessionID   = pSessInfo->SessionID;
                 /* Copy Random no.s  and GUID */
@@ -712,11 +712,11 @@ RAKPMsg1 (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes, MiscParams_T *pP
                 pMsghmac->UsrNameLen    = Req->UsrNameLen;
                 _fmemcpy (pMsghmac->UsrName, Req->UsrName, Req->UsrNameLen);
 
-                PasswdLen = _fstrlen ((_FAR_ char*)pSessInfo->Password);
+                PasswdLen = _fstrlen ((char*)pSessInfo->Password);
                 PasswdLen = (PasswdLen > MAX_PASSWORD_LEN) ?
                             MAX_PASSWORD_LEN : PasswdLen;
                 HMAC(EVP_sha1(), (INT8U *)pSessInfo->Password, PasswdLen
-                                , (_FAR_ INT8U*)pBMCInfo->LANConfig.HmacInBuf, (sizeof (RAKPMsg1HMAC_T) - MAX_USERNAME_LEN + Req->UsrNameLen)
+                                , (INT8U*)pBMCInfo->LANConfig.HmacInBuf, (sizeof (RAKPMsg1HMAC_T) - MAX_USERNAME_LEN + Req->UsrNameLen)
                                 , (INT8U *)&pRes [sizeof (RAKPMsg2Res_T)], NULL);
 
                 AuthCodeLen = RAKP1_HASH_SIZE;
@@ -727,7 +727,7 @@ RAKPMsg1 (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes, MiscParams_T *pP
             {
                 INT8U PasswdLen = 0;
 
-                pMsghmac                    = (_FAR_ RAKPMsg1HMAC_T*)pBMCInfo->LANConfig.HmacInBuf;
+                pMsghmac                    = (RAKPMsg1HMAC_T*)pBMCInfo->LANConfig.HmacInBuf;
                 pMsghmac->RemConSessionID   = pSessInfo->RemConSessionID;
                 pMsghmac->MgdSysSessionID   = pSessInfo->SessionID;
                 /* Copy Random no.s  and GUID */
@@ -739,11 +739,11 @@ RAKPMsg1 (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes, MiscParams_T *pP
                 pMsghmac->UsrNameLen    = Req->UsrNameLen;
                 _fmemcpy (pMsghmac->UsrName, Req->UsrName, Req->UsrNameLen);
 
-                PasswdLen = _fstrlen ((_FAR_ char*)pSessInfo->Password);
+                PasswdLen = _fstrlen ((char*)pSessInfo->Password);
                 PasswdLen = (PasswdLen > MAX_PASSWORD_LEN) ?
                             MAX_PASSWORD_LEN : PasswdLen;
                 HMAC(EVP_md5(), (INT8U *)pSessInfo->Password, PasswdLen
-                                , (_FAR_ INT8U*)pBMCInfo->LANConfig.HmacInBuf, (sizeof (RAKPMsg1HMAC_T) - MAX_USERNAME_LEN + Req->UsrNameLen)
+                                , (INT8U*)pBMCInfo->LANConfig.HmacInBuf, (sizeof (RAKPMsg1HMAC_T) - MAX_USERNAME_LEN + Req->UsrNameLen)
                                 , (INT8U *)&pRes [sizeof (RAKPMsg2Res_T)], NULL);
                 AuthCodeLen = RAKP1_HASH_HMAC_MD5_SIZE;
                 break;
@@ -753,7 +753,7 @@ RAKPMsg1 (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes, MiscParams_T *pP
 			{
         		INT8U PasswdLen = 0;
 
-         		pMsghmac                    = (_FAR_ RAKPMsg1HMAC_T*)pBMCInfo->LANConfig.HmacInBuf;
+         		pMsghmac                    = (RAKPMsg1HMAC_T*)pBMCInfo->LANConfig.HmacInBuf;
                 pMsghmac->RemConSessionID   = pSessInfo->RemConSessionID;
                 pMsghmac->MgdSysSessionID   = pSessInfo->SessionID;
                 /* Copy Random nos  and GUID */
@@ -765,12 +765,12 @@ RAKPMsg1 (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes, MiscParams_T *pP
 				pMsghmac->UsrNameLen    = Req->UsrNameLen;
 				_fmemcpy (pMsghmac->UsrName, Req->UsrName, Req->UsrNameLen);
 
-				PasswdLen = _fstrlen ((_FAR_ char*)pSessInfo->Password);
+				PasswdLen = _fstrlen ((char*)pSessInfo->Password);
 				PasswdLen = (PasswdLen > MAX_PASSWORD_LEN) ?
 								MAX_PASSWORD_LEN : PasswdLen;
 
                 HMAC(EVP_sha256(), (INT8U *)pSessInfo->Password, PasswdLen
-                                , (_FAR_ INT8U*)pBMCInfo->LANConfig.HmacInBuf, (sizeof (RAKPMsg1HMAC_T) - MAX_USERNAME_LEN + Req->UsrNameLen)
+                                , (INT8U*)pBMCInfo->LANConfig.HmacInBuf, (sizeof (RAKPMsg1HMAC_T) - MAX_USERNAME_LEN + Req->UsrNameLen)
                                 , (INT8U *)&pRes [sizeof (RAKPMsg2Res_T)], NULL);
 				AuthCodeLen = RAKP1_HASH_HMAC_SHA256_SIZE;
                 break;
@@ -792,19 +792,19 @@ RAKPMsg1 (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes, MiscParams_T *pP
  * RAKPMsg3
  *----------------------------------------*/
 int
-RAKPMsg3 (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes, MiscParams_T *pParams,INT8U Channel, int BMCInst)
+RAKPMsg3 (INT8U* pReq, INT8U ReqLen, INT8U* pRes, MiscParams_T *pParams,INT8U Channel, int BMCInst)
 {
-    _NEAR_  RAKPMsg3Req_T       *Req     = (_NEAR_ RAKPMsg3Req_T*)pReq;
-    _NEAR_  RAKPMsg4Res_T       *Res     = (_NEAR_ RAKPMsg4Res_T*)pRes;
-    _FAR_   SessionInfo_T       *pSessInfo;
-    _NEAR_  INT8U               *pKeyXchgCode;
-    _NEAR_  SIKhmac_T           *pSIKhmac;
-    _FAR_   Msg3hmac_T          *pMsg3hmac;
-    _FAR_   UserInfo_T          *pUserInfo;
-    _FAR_   RAKPMsg4hmac_T      *pMsg4hmac;
-    _FAR_   ChannelInfo_T       *pChannelInfo;
-    _FAR_   ChannelUserInfo_T   *pChUserInfo;
-    _FAR_   BMCInfo_t           *pBMCInfo = &g_BMCInfo[BMCInst];
+    RAKPMsg3Req_T       *Req     = (RAKPMsg3Req_T*)pReq;
+    RAKPMsg4Res_T       *Res     = (RAKPMsg4Res_T*)pRes;
+      SessionInfo_T       *pSessInfo;
+    INT8U               *pKeyXchgCode;
+    SIKhmac_T           *pSIKhmac;
+      Msg3hmac_T          *pMsg3hmac;
+      UserInfo_T          *pUserInfo;
+      RAKPMsg4hmac_T      *pMsg4hmac;
+      ChannelInfo_T       *pChannelInfo;
+      ChannelUserInfo_T   *pChUserInfo;
+      BMCInfo_t           *pBMCInfo = &g_BMCInfo[BMCInst];
             INT8U               TempKey [HASH_KEY1_CONST_SIZE];
             INT8U               TempKey2 [HASH_KEY2_CONST_SIZE];
             INT8U               UserPasswdLen=0;
@@ -909,24 +909,24 @@ RAKPMsg3 (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes, MiscParams_T *pP
     	_fmemcpy (UserPswd, pUserInfo->UserPassword, MAX_PASSWORD_LEN);
     }
 
-    UserPasswdLen = _fstrlen ((_FAR_ char*)UserPswd);
+    UserPasswdLen = _fstrlen ((char*)UserPswd);
     UserPasswdLen = (UserPasswdLen > MAX_PASSWORD_LEN) ?
                     MAX_PASSWORD_LEN : UserPasswdLen;
 
     /* Check for Key Exchange Auth Code */
-    pKeyXchgCode = (_FAR_ INT8U*)(pReq + sizeof (RAKPMsg3Req_T));
+    pKeyXchgCode = (INT8U*)(pReq + sizeof (RAKPMsg3Req_T));
 
     /*Construct hmac to check Auth code */
     pMsg3hmac = (_FAR_	Msg3hmac_T*) &pBMCInfo->LANConfig.HmacInBuf;
     _fmemcpy (pMsg3hmac->MgdSysRandNo, pSessInfo->MgdSysRandomNo, 16);
     pMsg3hmac->RemConSessionID  = pSessInfo->RemConSessionID;
     pMsg3hmac->Role             = pSessInfo->Privilege | (pSessInfo->Lookup << 4);
-    pMsg3hmac->UsrNameLen       = _fstrlen ((_FAR_ char*)pUserInfo->UserName);
+    pMsg3hmac->UsrNameLen       = _fstrlen ((char*)pUserInfo->UserName);
     pMsg3hmac->UsrNameLen        = (pMsg3hmac->UsrNameLen > MAX_USERNAME_LEN) ?
                                         MAX_USERNAME_LEN : pMsg3hmac->UsrNameLen;
 
-    _fmemcpy ((_FAR_ char*)pMsg3hmac->UsrName,
-          (_FAR_ char*)pUserInfo->UserName, pMsg3hmac->UsrNameLen);
+    _fmemcpy ((char*)pMsg3hmac->UsrName,
+          (char*)pUserInfo->UserName, pMsg3hmac->UsrNameLen);
 
     /* Key Exchange Auth Code  */
     switch (pSessInfo->AuthAlgorithm)
@@ -936,7 +936,7 @@ RAKPMsg3 (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes, MiscParams_T *pP
 
         case RAKP_HMAC_SHA1:
                 HMAC(EVP_sha1(), (INT8U *)UserPswd, UserPasswdLen
-                                , (_FAR_ INT8U*)pBMCInfo->LANConfig.HmacInBuf, sizeof (Msg3hmac_T) - (16 - pMsg3hmac->UsrNameLen)
+                                , (INT8U*)pBMCInfo->LANConfig.HmacInBuf, sizeof (Msg3hmac_T) - (16 - pMsg3hmac->UsrNameLen)
                                 , (INT8U *)&pRes [ sizeof (RAKPMsg4Res_T)], NULL);
 
             if (0 != _fmemcmp (pKeyXchgCode, &pRes [sizeof (RAKPMsg4Res_T)], RAKP1_HASH_SIZE))
@@ -951,7 +951,7 @@ RAKPMsg3 (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes, MiscParams_T *pP
 
         case RAKP_HMAC_MD5:
                 HMAC(EVP_md5(), (INT8U *)UserPswd, UserPasswdLen
-                                , (_FAR_ INT8U*)pBMCInfo->LANConfig.HmacInBuf, sizeof (Msg3hmac_T) - (MAX_USERNAME_LEN - pMsg3hmac->UsrNameLen)
+                                , (INT8U*)pBMCInfo->LANConfig.HmacInBuf, sizeof (Msg3hmac_T) - (MAX_USERNAME_LEN - pMsg3hmac->UsrNameLen)
                                 , (INT8U *)&pRes [ sizeof (RAKPMsg4Res_T)], NULL);
 
             if (0 != _fmemcmp (pKeyXchgCode, &pRes [sizeof (RAKPMsg4Res_T)], RAKP1_HASH_HMAC_MD5_SIZE))
@@ -966,7 +966,7 @@ RAKPMsg3 (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes, MiscParams_T *pP
 
         case RAKP_HMAC_SHA256:
                 HMAC(EVP_sha256(), (INT8U *)pSessInfo->Password, UserPasswdLen
-                                , (_FAR_ INT8U*)pBMCInfo->LANConfig.HmacInBuf, sizeof (Msg3hmac_T) - (MAX_USERNAME_LEN - pMsg3hmac->UsrNameLen)
+                                , (INT8U*)pBMCInfo->LANConfig.HmacInBuf, sizeof (Msg3hmac_T) - (MAX_USERNAME_LEN - pMsg3hmac->UsrNameLen)
                                 , (INT8U *)&pRes [ sizeof (RAKPMsg4Res_T)], NULL);
 
         	 if (0 != _fmemcmp (pKeyXchgCode, &pRes [sizeof (RAKPMsg4Res_T)], RAKP1_HASH_HMAC_SHA256_SIZE))
@@ -987,16 +987,16 @@ RAKPMsg3 (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes, MiscParams_T *pP
     memset(pBMCInfo->LANConfig.HmacInBuf,0,sizeof(pBMCInfo->LANConfig.HmacInBuf));
     memset(pBMCInfo->LANConfig.SIK,0,sizeof(pBMCInfo->LANConfig.SIK));
 
-    pSIKhmac = (_FAR_  SIKhmac_T*) &pBMCInfo->LANConfig.HmacInBuf;
+    pSIKhmac = ( SIKhmac_T*) &pBMCInfo->LANConfig.HmacInBuf;
 
     _fmemcpy (pSIKhmac->RemConRandNo, pSessInfo->RemConRandomNo, 16);
     _fmemcpy (pSIKhmac->MgdSysRandNo, pSessInfo->MgdSysRandomNo, 16);
     pSIKhmac->Role = pSessInfo->Privilege | (pSessInfo->Lookup << 4) ;
-    pSIKhmac->UsrNameLen = _fstrlen ((_FAR_ char*)pUserInfo->UserName);
+    pSIKhmac->UsrNameLen = _fstrlen ((char*)pUserInfo->UserName);
     pSIKhmac->UsrNameLen = (pSIKhmac->UsrNameLen > MAX_USERNAME_LEN) ?
                            MAX_USERNAME_LEN : pSIKhmac->UsrNameLen;
-    _fmemcpy ((_FAR_ char*)pSIKhmac->UsrName,
-              (_FAR_ char*)pUserInfo->UserName, pSIKhmac->UsrNameLen);
+    _fmemcpy ((char*)pSIKhmac->UsrName,
+              (char*)pUserInfo->UserName, pSIKhmac->UsrNameLen);
 
     for (i = 0; i < HASH_KEY_LEN; i++)
     {
@@ -1022,7 +1022,7 @@ RAKPMsg3 (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes, MiscParams_T *pP
             {
                 /* Use the KG (BMC Key set through SetChSecurityKeys command) Key */
                 HMAC(EVP_sha1(), (INT8U *)pBMCInfo->RMCPPlus[EthIndex].KGHashKey, HASH_KEY_LEN
-                                , (_FAR_ INT8U*)pBMCInfo->LANConfig.HmacInBuf, (sizeof (SIKhmac_T) - 16 + pSIKhmac->UsrNameLen)
+                                , (INT8U*)pBMCInfo->LANConfig.HmacInBuf, (sizeof (SIKhmac_T) - 16 + pSIKhmac->UsrNameLen)
                                 , (INT8U *)pBMCInfo->LANConfig.SIK, NULL);
 
             }
@@ -1030,28 +1030,28 @@ RAKPMsg3 (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes, MiscParams_T *pP
             {
                 /* Use the KUID (User Password) Key */
                 HMAC(EVP_sha1(), (INT8U *)UserPswd, UserPasswdLen
-                                , (_FAR_ INT8U*)pBMCInfo->LANConfig.HmacInBuf, (sizeof (SIKhmac_T) - 16 + pSIKhmac->UsrNameLen)
+                                , (INT8U*)pBMCInfo->LANConfig.HmacInBuf, (sizeof (SIKhmac_T) - 16 + pSIKhmac->UsrNameLen)
                                 , (INT8U *)pBMCInfo->LANConfig.SIK, NULL);
             }
 
             /* Create Key1 & Key2 for Rest of packet Integrity & Encryption */
             _fmemset (TempKey, 1, HASH_KEY1_CONST_SIZE);
             HMAC(EVP_sha1(), (INT8U *)pBMCInfo->LANConfig.SIK, SESSION_INTEGRITY_KEY_SIZE
-                            , (_FAR_ INT8U*)TempKey, HASH_KEY1_CONST_SIZE
+                            , (INT8U*)TempKey, HASH_KEY1_CONST_SIZE
                             , (INT8U *)pSessInfo->Key1, NULL);
             _fmemset (TempKey2, 2, HASH_KEY2_CONST_SIZE);
             HMAC(EVP_sha1(), (INT8U *)pBMCInfo->LANConfig.SIK, SESSION_INTEGRITY_KEY_SIZE
-                            , (_FAR_ INT8U*)TempKey2, HASH_KEY2_CONST_SIZE
+                            , (INT8U*)TempKey2, HASH_KEY2_CONST_SIZE
                             , (INT8U *)pSessInfo->Key2, NULL);
 
             /* Construct HMAC to send the Integrity check value using SIK got from prev hmac*/
-            pMsg4hmac = (_FAR_ RAKPMsg4hmac_T*) &pBMCInfo->LANConfig.HmacInBuf;
+            pMsg4hmac = (RAKPMsg4hmac_T*) &pBMCInfo->LANConfig.HmacInBuf;
             _fmemcpy (pMsg4hmac->RemConRandNo, pSessInfo->RemConRandomNo, 16);
             pMsg4hmac->MgdSysSessionID = pSessInfo->SessionID;
             /*Get System GUID */
             _fmemcpy (pMsg4hmac->MgdSysGUID, BMC_GET_SHARED_MEM (BMCInst)->SystemGUID, 16);
             HMAC(EVP_sha1(), (INT8U *)pBMCInfo->LANConfig.SIK, SESSION_INTEGRITY_KEY_SIZE
-                            , (_FAR_ INT8U*)pBMCInfo->LANConfig.HmacInBuf, sizeof (RAKPMsg4hmac_T)
+                            , (INT8U*)pBMCInfo->LANConfig.HmacInBuf, sizeof (RAKPMsg4hmac_T)
                             , (INT8U *)&pRes [sizeof (RAKPMsg4Res_T)], NULL);
             ResIntigrityKeyLen = HMAC_SHA1_96_LEN;
             break;
@@ -1067,35 +1067,35 @@ RAKPMsg3 (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes, MiscParams_T *pP
                 {
                     /* Use the KG (BMC Key set through SetChSecurityKeys command) Key */
                     HMAC(EVP_md5(), (INT8U *)pBMCInfo->RMCPPlus[EthIndex].KGHashKey, HASH_KEY_LEN
-                                    , (_FAR_ INT8U*)pBMCInfo->LANConfig.HmacInBuf, (sizeof (SIKhmac_T) - 16 + pSIKhmac->UsrNameLen)
+                                    , (INT8U*)pBMCInfo->LANConfig.HmacInBuf, (sizeof (SIKhmac_T) - 16 + pSIKhmac->UsrNameLen)
                                     , (INT8U *)pBMCInfo->LANConfig.SIK, NULL);
                 }
                 else
                 {
                     /* Use the KUID (User Password) Key */
                     HMAC(EVP_md5(), (INT8U *)UserPswd, UserPasswdLen
-                                    , (_FAR_ INT8U*)pBMCInfo->LANConfig.HmacInBuf, (sizeof (SIKhmac_T) - 16 + pSIKhmac->UsrNameLen)
+                                    , (INT8U*)pBMCInfo->LANConfig.HmacInBuf, (sizeof (SIKhmac_T) - 16 + pSIKhmac->UsrNameLen)
                                     , (INT8U *)pBMCInfo->LANConfig.SIK, NULL);
                 }
     
                 /* Create Key1 & Key2 for Rest of packet Integrity & Encryption */
                 _fmemset (TempKey, 1, HASH_KEY1_CONST_SIZE);
                     HMAC(EVP_md5(), (INT8U *)pBMCInfo->LANConfig.SIK, SESSION_HMAC_MD5_I_KEY_SIZE
-                                    , (_FAR_ INT8U*)TempKey, HASH_KEY1_CONST_SIZE
+                                    , (INT8U*)TempKey, HASH_KEY1_CONST_SIZE
                                     , (INT8U *)pSessInfo->Key1, NULL);
                 _fmemset (TempKey2, 2, HASH_KEY2_CONST_SIZE);
                     HMAC(EVP_md5(), (INT8U *)pBMCInfo->LANConfig.SIK, SESSION_HMAC_MD5_I_KEY_SIZE
-                                    , (_FAR_ INT8U*)TempKey2, HASH_KEY2_CONST_SIZE
+                                    , (INT8U*)TempKey2, HASH_KEY2_CONST_SIZE
                                     , (INT8U *)pSessInfo->Key2, NULL);
 
                 /* Construct HMAC to send the Integrity check value using SIK got from prev hmac*/
-                pMsg4hmac = (_FAR_ RAKPMsg4hmac_T*) &pBMCInfo->LANConfig.HmacInBuf;
+                pMsg4hmac = (RAKPMsg4hmac_T*) &pBMCInfo->LANConfig.HmacInBuf;
                 _fmemcpy (pMsg4hmac->RemConRandNo, pSessInfo->RemConRandomNo, 16);
                 pMsg4hmac->MgdSysSessionID = pSessInfo->SessionID;
                 /*Get System GUID */
                 _fmemcpy (pMsg4hmac->MgdSysGUID, BMC_GET_SHARED_MEM (BMCInst)->SystemGUID, 16);
                     HMAC(EVP_md5(), (INT8U *)pBMCInfo->LANConfig.SIK, SESSION_INTEGRITY_KEY_SIZE
-                                    , (_FAR_ INT8U*)pBMCInfo->LANConfig.HmacInBuf, sizeof (RAKPMsg4hmac_T)
+                                    , (INT8U*)pBMCInfo->LANConfig.HmacInBuf, sizeof (RAKPMsg4hmac_T)
                                     , (INT8U *)&pRes [sizeof (RAKPMsg4Res_T)], NULL);
                 ResIntigrityKeyLen = HMAC_MD5_LEN;
             }
@@ -1134,7 +1134,7 @@ RAKPMsg3 (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes, MiscParams_T *pP
                                 (char *)pSessInfo->Key2, SESSION_MD5_KEY_SIZE);
 
                 /* Construct HMAC to send the Integrity check value using SIK got from prev hmac*/
-                pMsg4hmac = (_FAR_ RAKPMsg4hmac_T*) &pBMCInfo->LANConfig.HmacInBuf;
+                pMsg4hmac = (RAKPMsg4hmac_T*) &pBMCInfo->LANConfig.HmacInBuf;
                 _fmemcpy (pMsg4hmac->RemConRandNo, pSessInfo->RemConRandomNo, 16);
                 pMsg4hmac->MgdSysSessionID = pSessInfo->SessionID;
 
@@ -1158,14 +1158,14 @@ RAKPMsg3 (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes, MiscParams_T *pP
 			{
 				/* Use the KG (BMC Key set through SetChSecurityKeys command) Key */
                     HMAC(EVP_sha256(), (INT8U *)pBMCInfo->RMCPPlus[EthIndex].KGHashKey, HASH_KEY_LEN
-                                    , (_FAR_ INT8U*)pBMCInfo->LANConfig.HmacInBuf, (sizeof (SIKhmac_T) - 16 + pSIKhmac->UsrNameLen)
+                                    , (INT8U*)pBMCInfo->LANConfig.HmacInBuf, (sizeof (SIKhmac_T) - 16 + pSIKhmac->UsrNameLen)
                                     , (INT8U *)m_SIK, NULL);
 			}
 			else
 			{
 				/* Use the KUID (User Password) Key */
                     HMAC(EVP_sha256(), (INT8U *)UserPswd, UserPasswdLen
-                                    , (_FAR_ INT8U*)pBMCInfo->LANConfig.HmacInBuf, (sizeof (SIKhmac_T) - 16 + pSIKhmac->UsrNameLen)
+                                    , (INT8U*)pBMCInfo->LANConfig.HmacInBuf, (sizeof (SIKhmac_T) - 16 + pSIKhmac->UsrNameLen)
                                     , (INT8U *)m_SIK, NULL);
 					
 			}
@@ -1173,20 +1173,20 @@ RAKPMsg3 (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes, MiscParams_T *pP
 		/* Create Key1 & Key2 for Rest of packet Integrity & Encryption */
 				_fmemset (TempKey, 1, HASH_KEY1_CONST_SIZE);
                 HMAC(EVP_sha256(), (INT8U *)m_SIK, SHA2_HASH_KEY_SIZE
-                                 , (_FAR_ INT8U*)TempKey, HASH_KEY1_CONST_SIZE
+                                 , (INT8U*)TempKey, HASH_KEY1_CONST_SIZE
                                  , (INT8U *)pSessInfo->Key1, NULL);
 				_fmemset (TempKey2, 2, HASH_KEY2_CONST_SIZE);
              HMAC(EVP_sha256(), (INT8U *)m_SIK, SHA2_HASH_KEY_SIZE
-                              , (_FAR_ INT8U*)TempKey2, HASH_KEY2_CONST_SIZE
+                              , (INT8U*)TempKey2, HASH_KEY2_CONST_SIZE
                               , (INT8U *)pSessInfo->Key2, NULL);
        /* Construct HMAC to send the Integrity check value using SIK got from prev hmac*/
-			 pMsg4hmac = (_FAR_ RAKPMsg4hmac_T*) &pBMCInfo->LANConfig.HmacInBuf;
+			 pMsg4hmac = (RAKPMsg4hmac_T*) &pBMCInfo->LANConfig.HmacInBuf;
 			 _fmemcpy (pMsg4hmac->RemConRandNo, pSessInfo->RemConRandomNo, 16);
 			pMsg4hmac->MgdSysSessionID = pSessInfo->SessionID;
 			 /*Get System GUID */
 			 _fmemcpy (pMsg4hmac->MgdSysGUID, BMC_GET_SHARED_MEM (BMCInst)->SystemGUID, 16);
              HMAC(EVP_sha256(), (INT8U *)m_SIK, SHA2_HASH_KEY_SIZE
-                              , (_FAR_ INT8U*)pBMCInfo->LANConfig.HmacInBuf, sizeof (RAKPMsg4hmac_T)
+                              , (INT8U*)pBMCInfo->LANConfig.HmacInBuf, sizeof (RAKPMsg4hmac_T)
                               , (INT8U *)&pRes [sizeof (RAKPMsg4Res_T)], NULL);
 			 ResIntigrityKeyLen = HMAC_SHA256_128_LEN;
 	 

@@ -56,10 +56,10 @@ typedef struct {
 }MiscParams_T;
 
 /**
- * @var _FAR_ INT32U g_DeleteThisLANSSession
+ * @var INT32U g_DeleteThisLANSSession
  * @brief Flag indicates LAN ifc to delete the session after sending response
  **/
-//extern _FAR_    INT32U      g_DeleteThisLANSessionID;
+//extern    INT32U      g_DeleteThisLANSessionID;
 
 
 /**
@@ -68,7 +68,7 @@ typedef struct {
  * @param pRMCPRes - Response message.
  * @return Message length.
 **/
-extern INT32U ProcessRMCPReq(_NEAR_ RMCPHdr_T* pRMCPReq, _NEAR_ RMCPHdr_T* pRMCPRes, MiscParams_T *pParams,INT8U Channel, int BMCInst);
+extern INT32U ProcessRMCPReq(RMCPHdr_T* pRMCPReq, RMCPHdr_T* pRMCPRes, MiscParams_T *pParams,INT8U Channel, int BMCInst);
 
 
 /**
@@ -79,8 +79,8 @@ extern INT32U ProcessRMCPReq(_NEAR_ RMCPHdr_T* pRMCPReq, _NEAR_ RMCPHdr_T* pRMCP
  * @param pAuthCode     - Authentication Code being generated.
  * @param ChannelType   - Channel Type.
 **/
-extern void  ComputeAuthCode (_FAR_ INT8U* pPassword, _NEAR_ SessionHdr_T* pSessionHdr,
-                              _NEAR_ IPMIMsgHdr_T* pIPMIMsg, _NEAR_ INT8U* pAuthCode,
+extern void  ComputeAuthCode (INT8U* pPassword, SessionHdr_T* pSessionHdr,
+                              IPMIMsgHdr_T* pIPMIMsg, INT8U* pAuthCode,
                               INT8U ChannelType);
 
 
@@ -93,8 +93,8 @@ extern void  ComputeAuthCode (_FAR_ INT8U* pPassword, _NEAR_ SessionHdr_T* pSess
  * @param pSessionInfo - Session information.
  * @return 0 if success, -1 if error.
 **/
-extern int   Frame20Payload     (INT8U PayloadType, _NEAR_ RMCPHdr_T* pRMCPPkt,
-                                 _FAR_ INT8U* pPayload,  INT32U PayloadLen, _FAR_
+extern int   Frame20Payload     (INT8U PayloadType, RMCPHdr_T* pRMCPPkt,
+                                 INT8U* pPayload,  INT32U PayloadLen, _FAR_
                                  SessionInfo_T* pSessionInfo, int BMCInst);
 
 

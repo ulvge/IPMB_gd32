@@ -87,7 +87,7 @@
 //For enabling/Disabling continuous recording to record pre-crash/pre-reset video
 #define START_CONT_RCD 0x5
 #define STOP_CONT_RCD 0x6
-//static  _FAR_ SensorSharedMem_T*    pSenSharedMem; 
+//static  SensorSharedMem_T*    pSenSharedMem; 
 
 /* For BIOS flashing
  * see firmware/apps/gpio_utilities
@@ -351,7 +351,7 @@ int DefaultSettingsForDualImageSupport(int BMCInst)
     DUALIMGINFO_STRUCT info;
     char envval[5] = {0};
     int bootselector;
-    _FAR_ BMCInfo_t* pBMCInfo = &g_BMCInfo[BMCInst];
+    BMCInfo_t* pBMCInfo = &g_BMCInfo[BMCInst];
     
     if( GetDualImageOptions(&info) == -1)
     {
@@ -561,7 +561,7 @@ exit_gracefully:
 /*---------------------------------------
  * AMIYAFUSwitchFlashDevice
  *---------------------------------------*/
-int AMIYAFUSwitchFlashDevice(_NEAR_ INT8U *pReq, INT32U ReqLen, _NEAR_ INT8U *pRes ,_NEAR_ int BMCInst)
+int AMIYAFUSwitchFlashDevice(INT8U *pReq, INT32U ReqLen, INT8U *pRes ,int BMCInst)
 {
 	AMIYAFUSwitchFlashDeviceReq_T *pAMIYAFUSwitchFlashDevice_Req = (AMIYAFUSwitchFlashDeviceReq_T *)pReq;
 	AMIYAFUSwitchFlashDeviceRes_T *pAMIYAFUSwitchFlashDevice_Res = (AMIYAFUSwitchFlashDeviceRes_T *)pRes;
@@ -587,7 +587,7 @@ int AMIYAFUSwitchFlashDevice(_NEAR_ INT8U *pReq, INT32U ReqLen, _NEAR_ INT8U *pR
 /*---------------------------------------
  * AMIYAFUActivateFlashDevice
  *---------------------------------------*/
-int AMIYAFUActivateFlashDevice(_NEAR_ INT8U *pReq, INT32U ReqLen, _NEAR_ INT8U *pRes ,_NEAR_ int BMCInst)
+int AMIYAFUActivateFlashDevice(INT8U *pReq, INT32U ReqLen, INT8U *pRes ,int BMCInst)
 {
     AMIYAFUActivateFlashDeviceReq_T *pAMIYAFUActivateFlashDevice_Req = (AMIYAFUActivateFlashDeviceReq_T *)pReq;
     AMIYAFUActivateFlashDeviceRes_T *pAMIYAFUActivateFlashDevice_Res = (AMIYAFUActivateFlashDeviceRes_T *)pRes;
@@ -666,7 +666,7 @@ int AMIYAFUActivateFlashDevice(_NEAR_ INT8U *pReq, INT32U ReqLen, _NEAR_ INT8U *
 /*---------------------------------------
  * AMIYAFURestoreFlashDevice
  *---------------------------------------*/
-int AMIYAFURestoreFlashDevice(_NEAR_ INT8U *pReq, INT32U ReqLen, _NEAR_ INT8U *pRes ,_NEAR_ int BMCInst)
+int AMIYAFURestoreFlashDevice(INT8U *pReq, INT32U ReqLen, INT8U *pRes ,int BMCInst)
 {
     int retval = 0;
     AMIYAFUSwitchFlashDeviceRes_T *pAMIYAFUSwitchFlashDevice_Res = (AMIYAFUSwitchFlashDeviceRes_T *)pRes;
@@ -735,7 +735,7 @@ int AMIYAFUNotAcks(INT8U *pRes,INT16U ErrorCode,INT32U Seqnum)
 /*---------------------------------------
  * AMIYAFUGetFlashInfo
  *---------------------------------------*/
-int AMIYAFUGetFlashInfo ( _NEAR_ INT8U *pReq, INT32U ReqLen, _NEAR_ INT8U *pRes ,_NEAR_ int BMCInst)
+int AMIYAFUGetFlashInfo ( INT8U *pReq, INT32U ReqLen, INT8U *pRes ,int BMCInst)
 {
        AMIYAFUGetFlashInfoReq_T *pAMIYAFUFlashInfoReq = (AMIYAFUGetFlashInfoReq_T *)pReq;
        AMIYAFUGetFlashInfoRes_T* pAMIYAFUGetFlashInfo = (AMIYAFUGetFlashInfoRes_T*)pRes;
@@ -817,7 +817,7 @@ return;
 }
 
 
-int AMIYAFUGetFirmwareInfo ( _NEAR_ INT8U *pReq, INT32U ReqLen, _NEAR_ INT8U *pRes,_NEAR_ int BMCInst )  //Added by winston for YAFU */
+int AMIYAFUGetFirmwareInfo ( INT8U *pReq, INT32U ReqLen, INT8U *pRes,int BMCInst )  //Added by winston for YAFU */
 {
        static unsigned int Major,Minor,Rev,ProductID;
 //	static unsigned char MinorBCD;
@@ -855,7 +855,7 @@ int AMIYAFUGetFirmwareInfo ( _NEAR_ INT8U *pReq, INT32U ReqLen, _NEAR_ INT8U *pR
 /*---------------------------------------
  *	AMIYAFUGetFMHInfo
  *---------------------------------------*/
-int AMIYAFUGetFMHInfo ( _NEAR_ INT8U *pReq, INT32U ReqLen, _NEAR_ INT8U *pRes ,_NEAR_ int BMCInst)
+int AMIYAFUGetFMHInfo ( INT8U *pReq, INT32U ReqLen, INT8U *pRes ,int BMCInst)
 {
         INT8U *FMHDetails = NULL;
         AMIYAFUGetFMHInfoReq_T *pAMIYAFUGetFMHInfoReq = (AMIYAFUGetFMHInfoReq_T *)pReq;
@@ -912,7 +912,7 @@ exit:
 /*---------------------------------------
  * AMIYAFUGetStatus
  *---------------------------------------*/
-int AMIYAFUGetStatus  ( _NEAR_ INT8U *pReq, INT32U ReqLen, _NEAR_ INT8U *pRes ,_NEAR_ int BMCInst)
+int AMIYAFUGetStatus  ( INT8U *pReq, INT32U ReqLen, INT8U *pRes ,int BMCInst)
 {
     AMIYAFUGetStatusReq_T *pAMIYAFUGetStatusReq =(AMIYAFUGetStatusReq_T *)pReq;
     AMIYAFUGetStatusRes_T* pAMIYAFUGetStatus = (AMIYAFUGetStatusRes_T*)pRes;
@@ -1041,13 +1041,13 @@ void* YAFUTimerTask(void *pArg)
 /*---------------------------------------
  * AMIYAFUActivateFlashMode
  *---------------------------------------*/
-int AMIYAFUActivateFlashMode ( _NEAR_ INT8U *pReq, INT32U ReqLen, _NEAR_ INT8U *pRes ,_NEAR_ int BMCInst)
+int AMIYAFUActivateFlashMode ( INT8U *pReq, INT32U ReqLen, INT8U *pRes ,int BMCInst)
 {
     int RetVal = 0, mtdDev=0;
-    _FAR_ BMCInfo_t* pBMCInfo = &g_BMCInfo[BMCInst];
+    BMCInfo_t* pBMCInfo = &g_BMCInfo[BMCInst];
     AMIYAFUActivateFlashModeReq_T *pAMIYAFUActivateFlashReq = (AMIYAFUActivateFlashModeReq_T *)pReq;
     AMIYAFUActivateFlashModeRes_T* pAMIYAFUActivateFlash = (AMIYAFUActivateFlashModeRes_T*)pRes;
-    _FAR_ SensorSharedMem_T*	pSenSharedMem; 
+    SensorSharedMem_T*	pSenSharedMem; 
     INT8U sessiontype=0;
     int ErrVal = 0;
     
@@ -1117,7 +1117,7 @@ int AMIYAFUActivateFlashMode ( _NEAR_ INT8U *pReq, INT32U ReqLen, _NEAR_ INT8U *
 
    if( g_corefeatures.online_flashing_support != ENABLED)
    {
-       pSenSharedMem = (_FAR_ SensorSharedMem_T*)&pBMCInfo->SensorSharedMem; //m_hSensorSharedMem;   /* Create mutex for Sensor shared memory */
+       pSenSharedMem = (SensorSharedMem_T*)&pBMCInfo->SensorSharedMem; //m_hSensorSharedMem;   /* Create mutex for Sensor shared memory */
        OS_THREAD_MUTEX_ACQUIRE(&pBMCInfo->SensorSharedMemMutex,WAIT_INFINITE);
        pSenSharedMem->GlobalSensorScanningEnable = FALSE;
        /* Release mutex for Sensor shared memory */
@@ -1146,7 +1146,7 @@ int AMIYAFUActivateFlashMode ( _NEAR_ INT8U *pReq, INT32U ReqLen, _NEAR_ INT8U *
 /*-------------------------------------------
  * AMIYAFUDualImgSup
  *------------------------------------------*/
-int AMIYAFUDualImgSup(_NEAR_ INT8U *pReq, INT32U ReqLen, _NEAR_ INT8U *pRes ,_NEAR_ int BMCInst)
+int AMIYAFUDualImgSup(INT8U *pReq, INT32U ReqLen, INT8U *pRes ,int BMCInst)
 {
     AMIYAFUDualImgSupReq_T *pAMIYAFUDualImgSupReq = (AMIYAFUDualImgSupReq_T *)pReq;
     AMIYAFUDualImgSupRes_T *pAMIYAFUDualImgSupRes = (AMIYAFUDualImgSupRes_T *)pRes;
@@ -1182,7 +1182,7 @@ int AMIYAFUDualImgSup(_NEAR_ INT8U *pReq, INT32U ReqLen, _NEAR_ INT8U *pRes ,_NE
 /*---------------------------------------
  * AMIYAFUAllocateMemory
  *---------------------------------------*/
-int AMIYAFUAllocateMemory ( _NEAR_ INT8U *pReq, INT32U ReqLen, _NEAR_ INT8U *pRes,_NEAR_ int BMCInst )
+int AMIYAFUAllocateMemory ( INT8U *pReq, INT32U ReqLen, INT8U *pRes,int BMCInst )
 {
 	//char command[64];
 	//FILE *fp = NULL;
@@ -1281,7 +1281,7 @@ else
 /*---------------------------------------
  * AMIYAFUFreeMemory
  *---------------------------------------*/
-int AMIYAFUFreeMemory ( _NEAR_ INT8U *pReq, INT32U ReqLen, _NEAR_ INT8U *pRes ,_NEAR_ int BMCInst)
+int AMIYAFUFreeMemory ( INT8U *pReq, INT32U ReqLen, INT8U *pRes ,int BMCInst)
 {
    AMIYAFUFreeMemoryReq_T *pAMIYAFUFreeMemoryReq = (AMIYAFUFreeMemoryReq_T *)pReq;
 
@@ -1333,7 +1333,7 @@ else
  * AMIYAFUReadFlash
  *---------------------------------------*/
 
-int AMIYAFUReadFlash ( _NEAR_ INT8U *pReq, INT32U ReqLen, _NEAR_ INT8U *pRes,_NEAR_ int BMCInst )
+int AMIYAFUReadFlash ( INT8U *pReq, INT32U ReqLen, INT8U *pRes,int BMCInst )
 {
 
     AMIYAFUReadFlashReq_T *pAMIYAFUReadFlashReq = (AMIYAFUReadFlashReq_T *)pReq;
@@ -1465,7 +1465,7 @@ else
 int 
 SetDefaultTimezone (INT8U *TimeZone, int BMCInst)
 {
-    _FAR_ BMCInfo_t* pBMCInfo = &g_BMCInfo[BMCInst];
+    BMCInfo_t* pBMCInfo = &g_BMCInfo[BMCInst];
     INT16 UTCOffset = 0;
     time_t Curtime = 0;
     char Cmd [ZONE_PATH_SIZE];
@@ -1557,7 +1557,7 @@ SetDefaultTimezone (INT8U *TimeZone, int BMCInst)
 /*---------------------------------------
  * AMIYAFUWriteFlash
  *---------------------------------------*/
-int AMIYAFUWriteFlash ( _NEAR_ INT8U *pReq, INT32U ReqLen, _NEAR_ INT8U *pRes ,_NEAR_ int BMCInst)
+int AMIYAFUWriteFlash ( INT8U *pReq, INT32U ReqLen, INT8U *pRes ,int BMCInst)
 {
 
     AMIYAFUWriteFlashReq_T *pAMIYAFUWriteFlashReq = (AMIYAFUWriteFlashReq_T *)pReq;
@@ -1631,7 +1631,7 @@ else
 /*---------------------------------------
  * AMIYAFUEraseFlash
  *---------------------------------------*/
-int AMIYAFUEraseFlash ( _NEAR_ INT8U *pReq, INT32U ReqLen, _NEAR_ INT8U *pRes,_NEAR_ int BMCInst )
+int AMIYAFUEraseFlash ( INT8U *pReq, INT32U ReqLen, INT8U *pRes,int BMCInst )
 {
 
     AMIYAFUErashFlashReq_T *pAMIYAFUEraseFlashReq = (AMIYAFUErashFlashReq_T *)pReq;
@@ -1707,7 +1707,7 @@ else
 /*---------------------------------------
  * AMIYAFUProtectFlash
  *---------------------------------------*/
-int AMIYAFUProtectFlash ( _NEAR_ INT8U *pReq, INT32U ReqLen, _NEAR_ INT8U *pRes,_NEAR_ int BMCInst )
+int AMIYAFUProtectFlash ( INT8U *pReq, INT32U ReqLen, INT8U *pRes,int BMCInst )
 {
 
     AMIYAFUProtectFlashReq_T *pAMIYAFUProtectFlashReq = (AMIYAFUProtectFlashReq_T *)pReq;
@@ -2324,7 +2324,7 @@ int CheckImageSign()
 /*---------------------------------------
  * AMIYAFUEraseCopyFlash
  *---------------------------------------*/
-int AMIYAFUEraseCopyFlash ( _NEAR_ INT8U *pReq, INT32U ReqLen, _NEAR_ INT8U *pRes,_NEAR_ int BMCInst )
+int AMIYAFUEraseCopyFlash ( INT8U *pReq, INT32U ReqLen, INT8U *pRes,int BMCInst )
 {
 
     AMIYAFUEraseCopyFlashReq_T *pAMIYAFUEraseCopyFlashReq = (AMIYAFUEraseCopyFlashReq_T *)pReq;
@@ -2438,7 +2438,7 @@ else
 
 
 }
-int AMIYAFUGetECFStatus( _NEAR_ INT8U *pReq, INT32U ReqLen, _NEAR_ INT8U *pRes,_NEAR_ int BMCInst )
+int AMIYAFUGetECFStatus( INT8U *pReq, INT32U ReqLen, INT8U *pRes,int BMCInst )
 {
 	AMIYAFUGetECFStatusReq_T *pAMIYAFUGetECFStatusReq = (AMIYAFUGetECFStatusReq_T *)pReq;
     AMIYAFUGetECFStatusRes_T* pAMIYAFUGetECFStatus = (AMIYAFUGetECFStatusRes_T*)pRes;
@@ -2649,7 +2649,7 @@ skip_verify:
 /*---------------------------------------
  * AMIYAFUVerifyFlash
  *---------------------------------------*/
-int AMIYAFUVerifyFlash ( _NEAR_ INT8U *pReq, INT32U ReqLen, _NEAR_ INT8U *pRes,_NEAR_ int BMCInst )
+int AMIYAFUVerifyFlash ( INT8U *pReq, INT32U ReqLen, INT8U *pRes,int BMCInst )
 {
 
     AMIYAFUVerifyFlashReq_T *pAMIYAFUVerifyFlashReq = (AMIYAFUVerifyFlashReq_T *)pReq;
@@ -2727,7 +2727,7 @@ else
 }
 
 }
-int AMIYAFUGetVerifyStatus  ( _NEAR_ INT8U *pReq, INT32U ReqLen, _NEAR_ INT8U *pRes,_NEAR_ int BMCInst )
+int AMIYAFUGetVerifyStatus  ( INT8U *pReq, INT32U ReqLen, INT8U *pRes,int BMCInst )
 {
 		AMIYAFUGetVerifyStatusReq_T *pAMIYAFUGetVerifyStatusReq = (AMIYAFUGetVerifyStatusReq_T *)pReq;
 		AMIYAFUGetVerifyStatusRes_T* pAMIYAFUGetVerifyStatus = (AMIYAFUGetVerifyStatusRes_T*)pRes;
@@ -2749,7 +2749,7 @@ int AMIYAFUGetVerifyStatus  ( _NEAR_ INT8U *pReq, INT32U ReqLen, _NEAR_ INT8U *p
 
 }
 
-int AMIYAFUMiscellaneousInfo ( _NEAR_ INT8U *pReq, INT32U ReqLen, _NEAR_ INT8U *pRes,_NEAR_ int BMCInst )
+int AMIYAFUMiscellaneousInfo ( INT8U *pReq, INT32U ReqLen, INT8U *pRes,int BMCInst )
 {
     int RetCode = 0;
     AMIYAFUMiscellaneousReq_T *pAMIYAFUMiscellaneousReq = (AMIYAFUMiscellaneousReq_T*)pReq;
@@ -2767,7 +2767,7 @@ int AMIYAFUMiscellaneousInfo ( _NEAR_ INT8U *pReq, INT32U ReqLen, _NEAR_ INT8U *
 /*---------------------------------------
  * AMIYAFUReadMemory
  *---------------------------------------*/
-int AMIYAFUReadMemory ( _NEAR_ INT8U *pReq, INT32U ReqLen, _NEAR_ INT8U *pRes,_NEAR_ int BMCInst )
+int AMIYAFUReadMemory ( INT8U *pReq, INT32U ReqLen, INT8U *pRes,int BMCInst )
 {
      AMIYAFUReadMemoryReq_T *pAMIYAFUReadMemoryReq =(AMIYAFUReadMemoryReq_T *)pReq;
 
@@ -2832,7 +2832,7 @@ else
 /*---------------------------------------
  * AMIYAFUWriteMemory
  *---------------------------------------*/
-int AMIYAFUWriteMemory ( _NEAR_ INT8U *pReq, INT32U ReqLen, _NEAR_ INT8U *pRes,_NEAR_ int BMCInst )
+int AMIYAFUWriteMemory ( INT8U *pReq, INT32U ReqLen, INT8U *pRes,int BMCInst )
 {
 
     AMIYAFUWriteMemoryReq_T *pAMIYAFUWriteMemoryReq = (AMIYAFUWriteMemoryReq_T *)pReq;
@@ -2882,7 +2882,7 @@ else
 /*---------------------------------------
  * AMIYAFUCopyMemory
  *---------------------------------------*/
-int AMIYAFUCopyMemory ( _NEAR_ INT8U *pReq, INT32U ReqLen, _NEAR_ INT8U *pRes,_NEAR_ int BMCInst )
+int AMIYAFUCopyMemory ( INT8U *pReq, INT32U ReqLen, INT8U *pRes,int BMCInst )
 {
 
     AMIYAFUCopyMemoryReq_T *pAMIYAFUCopyMemoryReq = (AMIYAFUCopyMemoryReq_T *)pReq;
@@ -2936,7 +2936,7 @@ else
 /*---------------------------------------
  * AMIYAFUCompareMemory
  *---------------------------------------*/
-int AMIYAFUCompareMemory ( _NEAR_ INT8U *pReq, INT32U ReqLen, _NEAR_ INT8U *pRes ,int BMCInst)
+int AMIYAFUCompareMemory ( INT8U *pReq, INT32U ReqLen, INT8U *pRes ,int BMCInst)
 {
 
     AMIYAFUCompareMemoryReq_T *pAMIYAFUCompareMemoryReq = (AMIYAFUCompareMemoryReq_T *)pReq;
@@ -3008,7 +3008,7 @@ else
 /*---------------------------------------
  * AMIYAFUClearMemory
  *---------------------------------------*/
-int AMIYAFUClearMemory ( _NEAR_ INT8U *pReq, INT32U ReqLen, _NEAR_ INT8U *pRes,_NEAR_ int BMCInst )
+int AMIYAFUClearMemory ( INT8U *pReq, INT32U ReqLen, INT8U *pRes,int BMCInst )
 {
      AMIYAFUClearMemoryReq_T *pAMIYAFUClearMemoryReq = (AMIYAFUClearMemoryReq_T *)pReq;
 
@@ -3055,7 +3055,7 @@ else
 /*---------------------------------------
  * AMIYAFUGetBootConfig
  *---------------------------------------*/
-int AMIYAFUGetBootConfig ( _NEAR_ INT8U *pReq, INT32U ReqLen, _NEAR_ INT8U *pRes,_NEAR_ int BMCInst )
+int AMIYAFUGetBootConfig ( INT8U *pReq, INT32U ReqLen, INT8U *pRes,int BMCInst )
 {
 
     AMIYAFUGetBootConfigReq_T *pAMIYAFUGetBootConfigReq = (AMIYAFUGetBootConfigReq_T *)pReq;
@@ -3123,7 +3123,7 @@ else
 /*---------------------------------------
  * AMIYAFUSetBootConfig
  *---------------------------------------*/
-int AMIYAFUSetBootConfig ( _NEAR_ INT8U *pReq, INT32U ReqLen, _NEAR_ INT8U *pRes,_NEAR_ int BMCInst )
+int AMIYAFUSetBootConfig ( INT8U *pReq, INT32U ReqLen, INT8U *pRes,int BMCInst )
 {
     AMIYAFUSetBootConfigReq_T *pAMIYAFUSetBootConfigReq = (AMIYAFUSetBootConfigReq_T *)pReq;
 
@@ -3185,7 +3185,7 @@ else
 /*---------------------------------------
  * AMIYAFUGetBootVars
  *---------------------------------------*/
-int AMIYAFUGetBootVars ( _NEAR_ INT8U *pReq, INT32U ReqLen, _NEAR_ INT8U *pRes,_NEAR_ int BMCInst )
+int AMIYAFUGetBootVars ( INT8U *pReq, INT32U ReqLen, INT8U *pRes,int BMCInst )
 {
     AMIYAFUGetBootVarsReq_T *pAMIYAFUGetBootVarsReq = (AMIYAFUGetBootVarsReq_T *)pReq;
 
@@ -3236,7 +3236,7 @@ else
 /*---------------------------------------
  * AMIYAFUDeactivateFlash
  *---------------------------------------*/
-int AMIYAFUDeactivateFlash ( _NEAR_ INT8U *pReq, INT32U ReqLen, _NEAR_ INT8U *pRes,_NEAR_ int BMCInst )
+int AMIYAFUDeactivateFlash ( INT8U *pReq, INT32U ReqLen, INT8U *pRes,int BMCInst )
 {
     char Cmd[128];
     AMIYAFUDeactivateFlashReq_T *pAMIYAFUDeactivateFlashReq = (AMIYAFUDeactivateFlashReq_T *)pReq;
@@ -3312,7 +3312,7 @@ else
 /*---------------------------------------
  * AMIYAFUResetDevice
  *---------------------------------------*/
-int AMIYAFUResetDevice ( _NEAR_ INT8U *pReq, INT32U ReqLen, _NEAR_ INT8U *pRes,_NEAR_ int BMCInst )
+int AMIYAFUResetDevice ( INT8U *pReq, INT32U ReqLen, INT8U *pRes,int BMCInst )
 {
 
     AMIYAFUResetDeviceReq_T *pAMIYAFUResetDeviceReq = (AMIYAFUResetDeviceReq_T *)pReq;
@@ -3359,7 +3359,7 @@ int AMIYAFUResetDevice ( _NEAR_ INT8U *pReq, INT32U ReqLen, _NEAR_ INT8U *pRes,_
     return (sizeof(AMIYAFUResetDeviceRes_T));
 }
 
-int AMIYAFUFWSelectFlash ( _NEAR_ INT8U *pReq, INT32U ReqLen, _NEAR_ INT8U *pRes,_NEAR_ int BMCInst )
+int AMIYAFUFWSelectFlash ( INT8U *pReq, INT32U ReqLen, INT8U *pRes,int BMCInst )
 {
     AMIYAFUFWSelectFlashModeReq_T *pAMIYAFUFWSelectFlashModeReq = (AMIYAFUFWSelectFlashModeReq_T *)pReq;
     AMIYAFUFWSelectFlashModeRes_T* pAMIYAFUFWSElectFlashMode = (AMIYAFUFWSelectFlashModeRes_T*)pRes;
@@ -3431,10 +3431,10 @@ return 0;
 *@param pRes - Respose for the command
 *@return Returns size of AMIGetChNumRes_T
 */
-int AMIGetNMChNum ( _NEAR_ INT8U *pReq, INT32U ReqLen, _NEAR_ INT8U *pRes,_NEAR_ int BMCInst ) 
+int AMIGetNMChNum ( INT8U *pReq, INT32U ReqLen, INT8U *pRes,int BMCInst ) 
 {
     AMIGetChNumRes_T* pAMIGetChNumRes = (AMIGetChNumRes_T*) pRes;
-    _FAR_ BMCInfo_t* pBMCInfo = &g_BMCInfo[BMCInst];
+    BMCInfo_t* pBMCInfo = &g_BMCInfo[BMCInst];
 
     if(g_corefeatures.node_manager != ENABLED)
     {
@@ -3469,7 +3469,7 @@ int AMIGetNMChNum ( _NEAR_ INT8U *pReq, INT32U ReqLen, _NEAR_ INT8U *pRes,_NEAR_
 *@return Returns size of AMIGetEthIndexReq_T
 */
 
-int AMIGetEthIndex ( _NEAR_ INT8U *pReq, INT32U ReqLen, _NEAR_ INT8U *pRes ,_NEAR_ int BMCInst) 
+int AMIGetEthIndex ( INT8U *pReq, INT32U ReqLen, INT8U *pRes ,int BMCInst) 
 {
     INT8U EthIndex = 0;
     AMIGetEthIndexReq_T *pAMIGetEthIndexReq = (AMIGetEthIndexReq_T *) pReq;
@@ -3497,11 +3497,11 @@ int AMIGetEthIndex ( _NEAR_ INT8U *pReq, INT32U ReqLen, _NEAR_ INT8U *pRes ,_NEA
  *            *@param pRes - Respose for the command
  *            */
 
-int AMIGetFruDetails( _NEAR_ INT8U *pReq, INT32U ReqLen, _NEAR_ INT8U *pRes,int BMCInst )
+int AMIGetFruDetails( INT8U *pReq, INT32U ReqLen, INT8U *pRes,int BMCInst )
 {
     AMIGetFruDetailReq_T *pAMIFruDetailReq = (AMIGetFruDetailReq_T *) pReq;
     AMIGetFruDetailRes_T *pAMIFruDetailRes = (AMIGetFruDetailRes_T *) pRes;
-     _FAR_ BMCInfo_t* pBMCInfo = &g_BMCInfo[BMCInst];
+     BMCInfo_t* pBMCInfo = &g_BMCInfo[BMCInst];
 
      memset((char *)pRes,0,sizeof(AMIGetFruDetailRes_T));
 
@@ -3535,10 +3535,10 @@ int AMIGetFruDetails( _NEAR_ INT8U *pReq, INT32U ReqLen, _NEAR_ INT8U *pRes,int 
  * *@param pRes - Response for the command
  * *@param BMCInst - BMC Instance Value
  **/
-int AMISetTriggerEvent( _NEAR_ INT8U *pReq, INT32U ReqLen, _NEAR_ INT8U *pRes ,int BMCInst )
+int AMISetTriggerEvent( INT8U *pReq, INT32U ReqLen, INT8U *pRes ,int BMCInst )
 {
-    _NEAR_ AMISetTriggerEventReq_T *pAMISetTriggerEventReq = (AMISetTriggerEventReq_T *)pReq;
-    _NEAR_ AMISetTriggerEventRes_T *pAMISetTriggerEventRes = (AMISetTriggerEventRes_T *)pRes;
+    AMISetTriggerEventReq_T *pAMISetTriggerEventReq = (AMISetTriggerEventReq_T *)pReq;
+    AMISetTriggerEventRes_T *pAMISetTriggerEventRes = (AMISetTriggerEventRes_T *)pRes;
     INT32U LocalTime,TriggerTime;
     INT32U TriggerLength = 0;
     BMCInfo_t *pBMCInfo = &g_BMCInfo[BMCInst];
@@ -3684,10 +3684,10 @@ int AMISetTriggerEvent( _NEAR_ INT8U *pReq, INT32U ReqLen, _NEAR_ INT8U *pRes ,i
  * *@param pRes - Response for the command
  * *@param BMCInst - BMC Instance Value
  **/
-int AMIGetTriggerEvent( _NEAR_ INT8U *pReq, INT32U ReqLen, _NEAR_ INT8U *pRes ,int BMCInst )
+int AMIGetTriggerEvent( INT8U *pReq, INT32U ReqLen, INT8U *pRes ,int BMCInst )
 {
-    _NEAR_ AMIGetTriggerEventReq_T *pAMIGetTriggerEventReq = (AMIGetTriggerEventReq_T *)pReq;
-    _NEAR_ AMIGetTriggerEventRes_T *pAMIGetTriggerEventRes = (AMIGetTriggerEventRes_T *)pRes;
+    AMIGetTriggerEventReq_T *pAMIGetTriggerEventReq = (AMIGetTriggerEventReq_T *)pReq;
+    AMIGetTriggerEventRes_T *pAMIGetTriggerEventRes = (AMIGetTriggerEventRes_T *)pRes;
     BMCInfo_t *pBMCInfo = &g_BMCInfo[BMCInst];
 
     pAMIGetTriggerEventRes->AMIGetTriggerEvent.CompletionCode = CC_NORMAL;
@@ -3758,9 +3758,9 @@ int AMIGetTriggerEvent( _NEAR_ INT8U *pReq, INT32U ReqLen, _NEAR_ INT8U *pRes ,i
  * *@param pRes - Response for the command
  * *@param BMCInst - BMC Instance Value
  **/
-int AMIGetSolConf( _NEAR_ INT8U *pReq, INT32U ReqLen, _NEAR_ INT8U *pRes ,int BMCInst )
+int AMIGetSolConf( INT8U *pReq, INT32U ReqLen, INT8U *pRes ,int BMCInst )
 {
-     _NEAR_ AMIGetSOLConfRes_T *pAMIGetSOLConfRes = (AMIGetSOLConfRes_T *)pRes;
+     AMIGetSOLConfRes_T *pAMIGetSOLConfRes = (AMIGetSOLConfRes_T *)pRes;
      BMCInfo_t *pBMCInfo = &g_BMCInfo[BMCInst];
      INTU strsize = 0;
      
@@ -3786,10 +3786,10 @@ int AMIGetSolConf( _NEAR_ INT8U *pReq, INT32U ReqLen, _NEAR_ INT8U *pRes ,int BM
  * *@param pRes - Response for the command
  * *@param BMCInst - BMC Instance Value
  **/
-int AMISetLoginAuditConfig( _NEAR_ INT8U *pReq, INT32U ReqLen, _NEAR_ INT8U *pRes ,int BMCInst )
+int AMISetLoginAuditConfig( INT8U *pReq, INT32U ReqLen, INT8U *pRes ,int BMCInst )
 {
-    _NEAR_ AMISetLoginAuditCfgReq_T *pAMISetLoginAuditCfgReq = (AMISetLoginAuditCfgReq_T *)pReq;
-    _NEAR_ AMISetLoginAuditCfgRes_T *pAMISetLoginAuditCfgRes = (AMISetLoginAuditCfgRes_T *)pRes;
+    AMISetLoginAuditCfgReq_T *pAMISetLoginAuditCfgReq = (AMISetLoginAuditCfgReq_T *)pReq;
+    AMISetLoginAuditCfgRes_T *pAMISetLoginAuditCfgRes = (AMISetLoginAuditCfgRes_T *)pRes;
 
     BMCInfo_t *pBMCInfo = &g_BMCInfo[BMCInst];
     
@@ -3831,10 +3831,10 @@ int AMISetLoginAuditConfig( _NEAR_ INT8U *pReq, INT32U ReqLen, _NEAR_ INT8U *pRe
  * *@param pRes - Response for the command
  * *@param BMCInst - BMC Instance Value
  **/
-int AMIGetLoginAuditConfig( _NEAR_ INT8U *pReq, INT32U ReqLen, _NEAR_ INT8U *pRes ,int BMCInst )
+int AMIGetLoginAuditConfig( INT8U *pReq, INT32U ReqLen, INT8U *pRes ,int BMCInst )
 {
 
-    _NEAR_ AMIGetLoginAuditCfgRes_T *pAMIGetLoginAuditCfgRes = (AMIGetLoginAuditCfgRes_T *)pRes;
+    AMIGetLoginAuditCfgRes_T *pAMIGetLoginAuditCfgRes = (AMIGetLoginAuditCfgRes_T *)pRes;
     BMCInfo_t *pBMCInfo = &g_BMCInfo[BMCInst];
     
     /* Chk request Length */
@@ -3862,7 +3862,7 @@ int AMIGetLoginAuditConfig( _NEAR_ INT8U *pReq, INT32U ReqLen, _NEAR_ INT8U *pRe
  **@param BMCInst - BMC Instance Value
  **/
 int 
-AMIGetAllIPv6Address ( _NEAR_ INT8U *pReq, INT32U ReqLen, _NEAR_ INT8U *pRes ,int BMCInst)
+AMIGetAllIPv6Address ( INT8U *pReq, INT32U ReqLen, INT8U *pRes ,int BMCInst)
 {
     INT8U EthIndex;
     INT8U netindex= 0xFF;
@@ -3978,7 +3978,7 @@ AMIGetAllIPv6Address ( _NEAR_ INT8U *pReq, INT32U ReqLen, _NEAR_ INT8U *pRes ,in
  * *@param BMCInst - BMC Instance Value
  **/
 int
-AMISetUBootMemtest(_NEAR_ INT8U *pReq, INT32U ReqLen, _NEAR_ INT8U *pRes, int BMCInst)
+AMISetUBootMemtest(INT8U *pReq, INT32U ReqLen, INT8U *pRes, int BMCInst)
 {
     AMISetUBootMemtestReq_T *pAMISetUBootMemtestReq = (AMISetUBootMemtestReq_T *)pReq;
     AMISetUBootMemtestRes_T *pAMISetUBootMemtestRes = (AMISetUBootMemtestRes_T *)pRes;
@@ -4016,7 +4016,7 @@ AMISetUBootMemtest(_NEAR_ INT8U *pReq, INT32U ReqLen, _NEAR_ INT8U *pRes, int BM
  * *@param BMCInst - BMC Instance Value
  **/
 int
-AMIGetUBootMemtestStatus(_NEAR_ INT8U *pReq, INT32U ReqLen, _NEAR_ INT8U *pRes, int BMCInst)
+AMIGetUBootMemtestStatus(INT8U *pReq, INT32U ReqLen, INT8U *pRes, int BMCInst)
 {
     AMIGetUBootMemtestStatusRes_T *pAMIGetUBootMemtestStatusRes = (AMIGetUBootMemtestStatusRes_T *)pRes;
     char BootVal[10] = {0};
@@ -4121,9 +4121,9 @@ void CheckFirmwareChange(int BMCInst)
     return;
 }
 
-int AMIGetFeatureStatus( _NEAR_ INT8U *pReq, INT32U ReqLen, _NEAR_ INT8U *pRes,_NEAR_ int BMCInst)
+int AMIGetFeatureStatus( INT8U *pReq, INT32U ReqLen, INT8U *pRes,int BMCInst)
 {
-    _NEAR_  AMIGetFeatureStatusRes_T*       pGetFeatureStatusRes = (AMIGetFeatureStatusRes_T *)pRes;
+    AMIGetFeatureStatusRes_T*       pGetFeatureStatusRes = (AMIGetFeatureStatusRes_T *)pRes;
     char featureName[MAX_CORE_FEATURE_NAME_LEN+1] = "\0";
 
     pGetFeatureStatusRes->CompletionCode = CC_SUCCESS;
@@ -4144,7 +4144,7 @@ return sizeof(AMIGetFeatureStatusRes_T);
 }
 
 
-int AMIYAFUReplaceSignedImageKey ( _NEAR_ INT8U *pReq, INT32U ReqLen, _NEAR_ INT8U *pRes,_NEAR_ int BMCInst )
+int AMIYAFUReplaceSignedImageKey ( INT8U *pReq, INT32U ReqLen, INT8U *pRes,int BMCInst )
 {
     AMIYafuSignedImageKeyReq_T *pAMIYafuSignedImageReq = (AMIYafuSignedImageKeyReq_T *)pReq;
     AMIYafuSignedImageKeyRes_T *pAMIYafuSignedImageRes = (AMIYafuSignedImageKeyRes_T *)pRes;

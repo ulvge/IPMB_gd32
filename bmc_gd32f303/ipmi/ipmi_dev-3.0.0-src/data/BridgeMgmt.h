@@ -49,18 +49,18 @@ typedef struct {
  * Implemented as per ICMB ver 1.0, Revision 1.3
  * @{
 **/
-extern  int GetBridgeState        (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst);
-extern  int SetBridgeState        (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst);
-extern  int GetICMBAddr           (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst);
-extern  int SetICMBAddr           (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst);
-extern  int SetBridgeProxyAddr    (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst);
-extern  int GetBridgeProxyAddr    (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst);
-extern  int GetBridgeStatistics   (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst);
-extern  int ClearBridgeStatistics (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst);
-extern  int GetICMBCaps           (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst);
-extern  int GetICMBConnectorInfo  (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst);
-extern  int GetICMBConnectionID   (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst);
-extern  int SendICMBConnectionID  (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst);
+extern  int GetBridgeState        (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst);
+extern  int SetBridgeState        (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst);
+extern  int GetICMBAddr           (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst);
+extern  int SetICMBAddr           (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst);
+extern  int SetBridgeProxyAddr    (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst);
+extern  int GetBridgeProxyAddr    (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst);
+extern  int GetBridgeStatistics   (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst);
+extern  int ClearBridgeStatistics (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst);
+extern  int GetICMBCaps           (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst);
+extern  int GetICMBConnectorInfo  (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst);
+extern  int GetICMBConnectionID   (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst);
+extern  int SendICMBConnectionID  (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst);
 /** @} */
 
 #endif  /*BRIDGE_MGMT_H*/

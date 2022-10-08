@@ -57,18 +57,18 @@
 /*** Global Variables ***/
 
 /**
- * @var _FAR_ INT8U	g_SerialPkt [MAX_SERIAL_PKT_SIZE]
+ * @var INT8U	g_SerialPkt [MAX_SERIAL_PKT_SIZE]
  * @brief Serial buffer. Interrupt puts bytes in this buffer
  * @warning Must be used by the serial interface task and serial inetrrupt
  **/
-//extern _FAR_ INT8U g_SerialPkt [MAX_SERIAL_PKT_SIZE];
+//extern INT8U g_SerialPkt [MAX_SERIAL_PKT_SIZE];
 
 /**
- * @var _FAR_ INT8U	g_SerialPktIx
+ * @var INT8U	g_SerialPktIx
  * @brief Serial buffer index. 
  * @warning Must be used by the serial interface task and serial inetrrupt
  **/
-//extern _FAR_ INT16U g_SerialPktIx;
+//extern INT16U g_SerialPktIx;
 
 /*** Function Prototypes ***/
 
@@ -83,6 +83,6 @@ extern void OnSerialByteReceived (INT8U byte,int BMCInst);
  * @brief Hangs up the modem
  **/
 extern void HangUpModem (void);
-extern bool ProcessSerialReq (_NEAR_ MsgPkt_T *pReq, _NEAR_ MsgPkt_T *pRes);
+extern bool ProcessSerialReq (MsgPkt_T *pReq, MsgPkt_T *pRes);
 
 #endif /* SERIALIFC_H */

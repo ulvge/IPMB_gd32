@@ -39,10 +39,10 @@ const CmdHndlrMap_T g_Oem_CmdHndlr[] =
 };
 
 
-int GetFan(_NEAR_ INT8U *pReq, INT8U ReqLen, _NEAR_ INT8U *pRes, _NEAR_ int BMCInst)
+int GetFan(INT8U *pReq, INT8U ReqLen, INT8U *pRes, int BMCInst)
 {
 	
-	_NEAR_  FANPWM_T* pGetFanPWMRes = (_NEAR_ FANPWM_T*) pRes;
+	FANPWM_T* pGetFanPWMRes = (FANPWM_T*) pRes;
 	pGetFanPWMRes->channel = *pReq;
 	INT16U fanRpm = 0;
 	if ( ReqLen < 0x1 ) 
@@ -61,7 +61,7 @@ int GetFan(_NEAR_ INT8U *pReq, INT8U ReqLen, _NEAR_ INT8U *pRes, _NEAR_ int BMCI
 
 	return sizeof(FANPWM_T);
 }
-int SetFan(_NEAR_ INT8U *pReq, INT8U ReqLen, _NEAR_ INT8U *pRes, _NEAR_ int BMCInst)
+int SetFan(INT8U *pReq, INT8U ReqLen, INT8U *pRes, int BMCInst)
 {
 	const SetSensorReq_T *pOemReq = (const SetSensorReq_T *)pReq;
 	GetSensorReadingRes_T* sensor_reading_res = (GetSensorReadingRes_T*)pRes;
@@ -89,14 +89,14 @@ int SetFan(_NEAR_ INT8U *pReq, INT8U ReqLen, _NEAR_ INT8U *pRes, _NEAR_ int BMCI
 	return sizeof(GetSensorReadingRes_T);
 }
 
-int UpdateFirmware(_NEAR_ INT8U *pReq, INT8U ReqLen, _NEAR_ INT8U *pRes, _NEAR_ int BMCInst)
+int UpdateFirmware(INT8U *pReq, INT8U ReqLen, INT8U *pRes, int BMCInst)
 {
 
 
 	return 0;
 }
 
-int GetCPUInfo(_NEAR_ INT8U *pReq, INT8U ReqLen, _NEAR_ INT8U *pRes, _NEAR_ int BMCInst)
+int GetCPUInfo(INT8U *pReq, INT8U ReqLen, INT8U *pRes, int BMCInst)
 {
     GetCPUInfoRes_T *cpu_res = (GetCPUInfoRes_T *)pRes;
 
@@ -162,7 +162,7 @@ int GetCPUInfo(_NEAR_ INT8U *pReq, INT8U ReqLen, _NEAR_ INT8U *pRes, _NEAR_ int 
 extern uint64_t g_utc_time_bmc_firmware_build;
 extern uint16_t g_bmc_firmware_version;
 
-int GetBMCInfo(_NEAR_ INT8U *pReq, INT8U ReqLen, _NEAR_ INT8U *pRes, _NEAR_ int BMCInst)
+int GetBMCInfo(INT8U *pReq, INT8U ReqLen, INT8U *pRes, int BMCInst)
 {
     GetBMCInfoRes_T *bmc_res = (GetBMCInfoRes_T *)pRes;
 

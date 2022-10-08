@@ -136,10 +136,10 @@ static BootCfgRsvdBits_T m_RsvdBitsCheck [] = {
  * GetChassisCaps
  *-------------------------------------*/
 int
-GetChassisCaps (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,int BMCInst)
+GetChassisCaps (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst)
 {
-    _NEAR_  GetChassisCapabilitiesRes_T*    pGetChassisCapsRes = 
-        (_NEAR_ GetChassisCapabilitiesRes_T*) pRes;
+    GetChassisCapabilitiesRes_T*    pGetChassisCapsRes = 
+        (GetChassisCapabilitiesRes_T*) pRes;
     BMCInfo_t *pBMCInfo = &g_BMCInfo;
     
     IPMI_DBG_PRINT ("\nGET Chassis CAPABILITIES\n");
@@ -155,11 +155,11 @@ GetChassisCaps (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,int BMCInst
  * GetChassisStatus
  *-------------------------------------*/
 int
-GetChassisStatus (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,int BMCInst)
+GetChassisStatus (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst)
 {
     INT8U                   PSGood=0;
-    _NEAR_  GetChassisStatusRes_T*  pGetChassisStatusRes =
-        (_NEAR_ GetChassisStatusRes_T*) pRes;
+    GetChassisStatusRes_T*  pGetChassisStatusRes =
+        (GetChassisStatusRes_T*) pRes;
     BMCInfo_t *pBMCInfo = &g_BMCInfo;
 
 
@@ -180,13 +180,13 @@ extern xQueueHandle FTUartWrite_Queue;
  * ChassisControl
  *-------------------------------------*/
 int
-ChassisControl ( _NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,int BMCInst )
+ChassisControl ( INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst )
 {
-    _NEAR_  ChassisControlReq_T*    pChassisControlReq = 
-        (_NEAR_  ChassisControlReq_T*) pReq;
-    _NEAR_  ChassisControlRes_T*    pChassisControlRes = 
-        (_NEAR_  ChassisControlRes_T*) pRes;
-    _FAR_ BMCInfo_t* pBMCInfo = &g_BMCInfo;
+    ChassisControlReq_T*    pChassisControlReq = 
+        (ChassisControlReq_T*) pReq;
+    ChassisControlRes_T*    pChassisControlRes = 
+        (ChassisControlRes_T*) pRes;
+    BMCInfo_t* pBMCInfo = &g_BMCInfo;
     SamllMsgPkt_T Msg;
     BaseType_t err = pdFALSE;
 
@@ -216,13 +216,13 @@ ChassisControl ( _NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,int BMCIns
  * GetChassisIdentify
  *-------------------------------------*/
 int
-GetChassisIdentify (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,int BMCInst)
+GetChassisIdentify (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst)
 {
-    _NEAR_ ChassisIdentifyReq_T*    pChassisIdentifyReq =
-        (_NEAR_ ChassisIdentifyReq_T*) pReq;
-    _NEAR_ ChassisIdentifyRes_T*    pChassisIdentifyRes =
-        (_NEAR_ ChassisIdentifyRes_T*) pRes;
-    _FAR_ BMCInfo_t* pBMCInfo = &g_BMCInfo;
+    ChassisIdentifyReq_T*    pChassisIdentifyReq =
+        (ChassisIdentifyReq_T*) pReq;
+    ChassisIdentifyRes_T*    pChassisIdentifyRes =
+        (ChassisIdentifyRes_T*) pRes;
+    BMCInfo_t* pBMCInfo = &g_BMCInfo;
 
     IPMI_DBG_PRINT ("GET Chassis IDENTIFY\n");
 
@@ -237,12 +237,12 @@ GetChassisIdentify (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,int BMC
  * SetChassisCaps
  *-------------------------------------*/
 int
-SetChassisCaps (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,int BMCInst)
+SetChassisCaps (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst)
 {
-    _NEAR_  SetChassisCapabilitiesReq_T*    pSetChassisCapsReq =
-        (_NEAR_ SetChassisCapabilitiesReq_T*) pReq;
-    _NEAR_  SetChassisCapabilitiesRes_T*    pSetChassisCapsRes =
-        (_NEAR_ SetChassisCapabilitiesRes_T*) pRes;
+    SetChassisCapabilitiesReq_T*    pSetChassisCapsReq =
+        (SetChassisCapabilitiesReq_T*) pReq;
+    SetChassisCapabilitiesRes_T*    pSetChassisCapsRes =
+        (SetChassisCapabilitiesRes_T*) pRes;
     BMCInfo_t *pBMCInfo = &g_BMCInfo;
 
     IPMI_DBG_PRINT ("SET Chassis CAPABILITIES\n");
@@ -259,13 +259,13 @@ SetChassisCaps (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,int BMCInst
  * SetPowerRestorePolicy
  *-------------------------------------*/
 int
-SetPowerRestorePolicy (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,int BMCInst)
+SetPowerRestorePolicy (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst)
 {
     
-    _NEAR_  SetPowerRestorePolicyReq_T* pSetPowerRestorePolicyReq =
-        (_NEAR_ SetPowerRestorePolicyReq_T*) pReq;
-    _NEAR_  SetPowerRestorePolicyRes_T* pSetPowerRestorePolicyRes =
-        (_NEAR_ SetPowerRestorePolicyRes_T*) pRes;  
+    SetPowerRestorePolicyReq_T* pSetPowerRestorePolicyReq =
+        (SetPowerRestorePolicyReq_T*) pReq;
+    SetPowerRestorePolicyRes_T* pSetPowerRestorePolicyRes =
+        (SetPowerRestorePolicyRes_T*) pRes;  
     BMCInfo_t *pBMCInfo = &g_BMCInfo;
     
     IPMI_DBG_PRINT ("\nSET POWER RESORE POLICY\n");
@@ -282,10 +282,10 @@ SetPowerRestorePolicy (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,int 
  * GetSysRestartCause
  *-------------------------------------*/
 int
-GetSysRestartCause (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,int BMCInst)
+GetSysRestartCause (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst)
 {    
-    _NEAR_  GetSystemRestartCauseRes_T* pGetSysRestartCauseRes =
-        (_NEAR_ GetSystemRestartCauseRes_T*) pRes;
+    GetSystemRestartCauseRes_T* pGetSysRestartCauseRes =
+        (GetSystemRestartCauseRes_T*) pRes;
     BMCInfo_t *pBMCInfo = &g_BMCInfo;
     INT8U curchannel;
 
@@ -306,9 +306,9 @@ GetSysRestartCause (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,int BMC
  * GetPOHCounter
  *-------------------------------------*/
 int
-GetPOHCounter (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,int BMCInst)
+GetPOHCounter (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst)
 {
-    _NEAR_  GetPOHCounterRes_T* pGetPOHCounterRes = (_NEAR_ GetPOHCounterRes_T*) pRes;
+    GetPOHCounterRes_T* pGetPOHCounterRes = (GetPOHCounterRes_T*) pRes;
     BMCInfo_t *pBMCInfo = &g_BMCInfo;
 
     IPMI_DBG_PRINT ("GET POH COUNTER\n");
@@ -323,10 +323,10 @@ GetPOHCounter (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,int BMCInst)
  * SetSysBOOTOptions
  *-------------------------------------*/
 int
-SetSysBOOTOptions (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,int BMCInst)
+SetSysBOOTOptions (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst)
 {
-    _NEAR_ SetBootOptionsReq_T* pBootOptReq = (_NEAR_ SetBootOptionsReq_T*) pReq;
-    _NEAR_ SetBootOptionsRes_T* pBootOptRes = (_NEAR_ SetBootOptionsRes_T*) pRes;
+    SetBootOptionsReq_T* pBootOptReq = (SetBootOptionsReq_T*) pReq;
+    SetBootOptionsRes_T* pBootOptRes = (SetBootOptionsRes_T*) pRes;
     BMCInfo_t *pBMCInfo = &g_BMCInfo;
     INT8U                Parameter;
     BootOptions_T*       pBootOptions;
@@ -347,10 +347,10 @@ SetSysBOOTOptions (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,int BMCI
  * GetSysBOOTOptions
  *-------------------------------------*/
 int 
-GetSysBOOTOptions (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,int BMCInst)
+GetSysBOOTOptions (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst)
 {
-    _NEAR_  GetBootOptionsReq_T* pGetBootOptReq = (_NEAR_ GetBootOptionsReq_T*) pReq;
-    _NEAR_  GetBootOptionsRes_T* pGetBootOptRes = (_NEAR_ GetBootOptionsRes_T*) pRes;
+    GetBootOptionsReq_T* pGetBootOptReq = (GetBootOptionsReq_T*) pReq;
+    GetBootOptionsRes_T* pGetBootOptRes = (GetBootOptionsRes_T*) pRes;
     BMCInfo_t *pBMCInfo = &g_BMCInfo;
     INT8U                ParamSel,SSIComputeBladeSupport;
     int                  ResponseLength;
@@ -369,10 +369,10 @@ GetSysBOOTOptions (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,int BMCI
  * SetFPButtonEnables
  *-------------------------------------*/
 int
-SetFPButtonEnables (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,int BMCInst)
+SetFPButtonEnables (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst)
 {
 #if 0 //FQLI
-    _FAR_   PMConfig_T*          pPMConfig;
+      PMConfig_T*          pPMConfig;
     bool                         bRet;
     SetFPBtnEnablesRes_T*        pFPBtnEnablesRes = (SetFPBtnEnablesRes_T*)pRes;
     SetFPBtnEnablesReq_T*   pFPBtnEnablesReq = (SetFPBtnEnablesReq_T*)pReq;
@@ -385,7 +385,7 @@ SetFPButtonEnables (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,int BMC
         pFPBtnEnablesRes->CompletionCode = CC_NORMAL;
 
         // retrieve chassis status from the NVStore
-        pPMConfig = (_FAR_ PMConfig_T*)GetNVRAddr(NVRH_PMCONFIG);
+        pPMConfig = (PMConfig_T*)GetNVRAddr(NVRH_PMCONFIG);
 
         // store the front panel enables to the NVStore
         pPMConfig->ChassisConfig.ChassisPowerState.FPBtnEnables = pFPBtnEnablesReq->ButtonEnables;
@@ -406,8 +406,8 @@ SetFPButtonEnables (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,int BMC
 
 #else //AMI
 
-    _NEAR_  SetFPBtnEnablesReq_T* pFPBtnEnablesReq = (_NEAR_ SetFPBtnEnablesReq_T*)pReq;
-    _NEAR_  SetFPBtnEnablesRes_T* pFPBtnEnablesRes = (_NEAR_ SetFPBtnEnablesRes_T*)pRes;
+    SetFPBtnEnablesReq_T* pFPBtnEnablesReq = (SetFPBtnEnablesReq_T*)pReq;
+    SetFPBtnEnablesRes_T* pFPBtnEnablesRes = (SetFPBtnEnablesRes_T*)pRes;
     BMCInfo_t *pBMCInfo = &g_BMCInfo;
 
     IPMI_DBG_PRINT ("Set FP Button Enables\n");
@@ -424,12 +424,12 @@ SetFPButtonEnables (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,int BMC
  * SetPowerCycleInterval
  *-------------------------------------*/
 int
-SetPowerCycleInterval (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,int BMCInst)
+SetPowerCycleInterval (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst)
 {    
-    _NEAR_  SetPowerCycleIntervalReq_T* pSetPowerCycleInterval =
-        (_NEAR_ SetPowerCycleIntervalReq_T*) pReq;
-    _NEAR_  SetPowerCycleIntervalRes_T* pSetPowerCycleIntervalRes =
-        (_NEAR_ SetPowerCycleIntervalRes_T*) pRes;
+    SetPowerCycleIntervalReq_T* pSetPowerCycleInterval =
+        (SetPowerCycleIntervalReq_T*) pReq;
+    SetPowerCycleIntervalRes_T* pSetPowerCycleIntervalRes =
+        (SetPowerCycleIntervalRes_T*) pRes;
     BMCInfo_t *pBMCInfo = &g_BMCInfo;
 
     pSetPowerCycleIntervalRes->CompletionCode  = CC_NORMAL;

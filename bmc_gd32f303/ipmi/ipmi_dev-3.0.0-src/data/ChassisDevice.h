@@ -104,18 +104,18 @@
  * IPMI Chassis Device Command Handlers. Invoked by the message handler
  * @{
  **/
-extern int GetChassisCaps       (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst);
-extern int GetChassisStatus     (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst);
-extern int ChassisControl       (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst);
-extern int SetChassisCaps       (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst);
-extern int SetPowerRestorePolicy(_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst);
-extern int GetChassisIdentify   (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst);
-extern int GetSysRestartCause   (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst);
-extern int GetPOHCounter        (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst);
-extern int SetSysBOOTOptions    (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst);
-extern int GetSysBOOTOptions    (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst);
-extern int SetFPButtonEnables (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst);
-extern int SetPowerCycleInterval (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst);
+extern int GetChassisCaps       (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst);
+extern int GetChassisStatus     (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst);
+extern int ChassisControl       (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst);
+extern int SetChassisCaps       (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst);
+extern int SetPowerRestorePolicy(INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst);
+extern int GetChassisIdentify   (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst);
+extern int GetSysRestartCause   (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst);
+extern int GetPOHCounter        (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst);
+extern int SetSysBOOTOptions    (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst);
+extern int GetSysBOOTOptions    (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst);
+extern int SetFPButtonEnables (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst);
+extern int SetPowerCycleInterval (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst);
 extern void SetACPIState(INT8U State, int BMCInst);
 
 

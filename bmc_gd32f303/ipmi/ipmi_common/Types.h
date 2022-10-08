@@ -69,8 +69,6 @@
 typedef unsigned int		INTU;
 typedef bool   BOOL ;
 
-#define _NEAR_ 
-#define _FAR_ 
 
 #define uint8 INT8U
 #define uint16 INT16U

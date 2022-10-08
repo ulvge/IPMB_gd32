@@ -46,7 +46,7 @@ typedef struct
 
 /*** External Definitions ***/
 #define MAX_FRU_DATA_AREA_SIZE  (MAX_FRU_AREA_INFO_SIZE - sizeof(FRUCommonHdr_T) )
-#define FRU_DATA_START(pfru)    ((_FAR_ INT8U*)(&(((_FAR_ FRURepository_T*) pfru)->FruInfo)))
+#define FRU_DATA_START(pfru)    ((INT8U*)(&(((FRURepository_T*) pfru)->FruInfo)))
 
 
 /**

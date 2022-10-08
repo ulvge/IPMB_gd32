@@ -62,7 +62,7 @@
 /*-----------------------
  * Command Handler Type
  *----------------------*/
-typedef int (*pCmdHndlr_T) (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,int BMCInst);
+typedef int (*pCmdHndlr_T) (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst);
 
 /*----------------------
  * Command Handler map
@@ -81,7 +81,7 @@ typedef struct
 /*-------------------------------
  * Extended Command Handler Type
  *-------------------------------*/
-typedef int (*pExCmdHndlr_T) (_NEAR_ INT8U* pReq, INT32U ReqLen, _NEAR_ INT8U* pRes,int BMCInst);
+typedef int (*pExCmdHndlr_T) (INT8U* pReq, INT32U ReqLen, INT8U* pRes,int BMCInst);
 
 /*------------------------------
  * Extended Command Handler map
@@ -197,8 +197,8 @@ typedef struct
     INT8U			Request	 [MSG_PAYLOAD_SIZE];		/**< Request Data	buffer	*/
     INT8U			ResponseSize;						/**< Size of the response	*/
     INT8U			Response [MSG_PAYLOAD_SIZE];		/**< Response Data buffer	*/
-    _FAR_ INT8U*    pRequest;                   /**< Pointer to Request data    */
-    _FAR_ INT8U*    pResponse;                  /**< Pointer to Response data   */
+    INT8U*    pRequest;                   /**< Pointer to Request data    */
+    INT8U*    pResponse;                  /**< Pointer to Response data   */
 
 } PACKED  IPMICmdMsg_T;
 
@@ -241,7 +241,7 @@ typedef enum
 			 
 /* Extern declaration */                                    
 extern pCmdHndlr_T GetCmdHndlr(CmdHndlrMap_T *pCmdHndlrMap, INT8U Cmd);
-extern int	  GetMsgHndlrMap (INT8U NetFn, _FAR_ CmdHndlrMap_T ** pCmdHndlrMap);
+extern int	  GetMsgHndlrMap (INT8U NetFn, CmdHndlrMap_T ** pCmdHndlrMap);
 
 /**
 *@fn GroupExtnGetMsgHndlrMap
@@ -252,10 +252,10 @@ extern int	  GetMsgHndlrMap (INT8U NetFn, _FAR_ CmdHndlrMap_T ** pCmdHndlrMap);
 */
 extern int 	  GroupExtnGetMsgHndlrMap (INT8U NetFn, INT8U GroupExtnCode, CmdHndlrMap_T ** pCmdHndlrMap,int BMCInst);
 
-extern _FAR_  PendingBridgedResTbl_T  m_PendingBridgedResTbl[MAX_PENDING_BRIDGE_TBL][MAX_PENDING_BRIDGE_RES];
-extern INT32U CalculateCheckSum2 (_FAR_ INT8U* Pkt, INT32U Len);
-extern void  SwapIPMIMsgHdr (const IPMIMsgHdr_T* pIPMIMsgReq, _NEAR_ IPMIMsgHdr_T* pIPMIMsgRes);
-extern void  SwapUDSIPMIMsg (_NEAR_ MsgPkt_T* pIPMIMsgReq, _NEAR_ MsgPkt_T* pIPMIMsgRes);
+extern  PendingBridgedResTbl_T  m_PendingBridgedResTbl[MAX_PENDING_BRIDGE_TBL][MAX_PENDING_BRIDGE_RES];
+extern INT32U CalculateCheckSum2 (INT8U* Pkt, INT32U Len);
+extern void  SwapIPMIMsgHdr (const IPMIMsgHdr_T* pIPMIMsgReq, IPMIMsgHdr_T* pIPMIMsgRes);
+extern void  SwapUDSIPMIMsg (MsgPkt_T* pIPMIMsgReq, MsgPkt_T* pIPMIMsgRes);
 
 /**
 * @fn GetIfcSupport
@@ -342,7 +342,7 @@ extern const CmdHndlrMap_T g_APP_CmdHndlr [];
 /*----------------------------------------------------
  * Receive Message Queue Names
  *----------------------------------------------------*/
-extern _FAR_ char g_RcvMsgQ [4][RCVMSGQ_LENGTH];
+extern char g_RcvMsgQ [4][RCVMSGQ_LENGTH];
 
 /*------------------------------------------------------------------
  *@fn RespondSendMessage
@@ -355,7 +355,7 @@ extern _FAR_ char g_RcvMsgQ [4][RCVMSGQ_LENGTH];
  *
  *@return none
  *-----------------------------------------------------------------*/
-extern void RespondSendMessage ( _NEAR_ MsgPkt_T* pReq, INT8U Status, int BMCInst);
+extern void RespondSendMessage ( MsgPkt_T* pReq, INT8U Status, int BMCInst);
 
 /**
 *@fn ValidateMsgHdr
@@ -364,7 +364,7 @@ extern void RespondSendMessage ( _NEAR_ MsgPkt_T* pReq, INT8U Status, int BMCIns
 *@return Returns -1 in case of the response to the bridged message
 *            Returns 0 otherwise
 */
-//extern int  ValidateMsgHdr (_NEAR_ MsgPkt_T* pReq, int BMCInst);
+//extern int  ValidateMsgHdr (MsgPkt_T* pReq, int BMCInst);
 
 /**
 *@fn GetUTC_Offset
@@ -375,7 +375,7 @@ extern int GetUTC_Offset(void);
 extern void *MsgCoreHndlr(void *pArg);
 
 extern void
-ProcessIPMIReq(_NEAR_ MsgPkt_T *pReq, _NEAR_ MsgPkt_T *pRes);
+ProcessIPMIReq(MsgPkt_T *pReq, MsgPkt_T *pRes);
 
 
 #ifdef __cplusplus

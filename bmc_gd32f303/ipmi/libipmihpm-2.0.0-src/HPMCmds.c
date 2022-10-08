@@ -60,9 +60,9 @@ InitBlkVar(void)
  * @return The response length.
 **/
 int
-GetTargetUpgradeCapablities (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes, _NEAR_ int BMCInst)
+GetTargetUpgradeCapablities (INT8U* pReq, INT8U ReqLen, INT8U* pRes, int BMCInst)
 {
-    _NEAR_ GetTargetUpgradeCapablitiesRes_T*  pGetTargetUpgCapRes = (_NEAR_ GetTargetUpgradeCapablitiesRes_T*) pRes;
+    GetTargetUpgradeCapablitiesRes_T*  pGetTargetUpgCapRes = (GetTargetUpgradeCapablitiesRes_T*) pRes;
     
     pGetTargetUpgCapRes->CompletionCode        = CC_NORMAL;
     pGetTargetUpgCapRes->Identifier            = PICMG_IDENTIFIER;
@@ -104,12 +104,12 @@ GetTargetUpgradeCapablities (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRe
  * @return The response length.
 **/
 int
-GetComponentProperties (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes, _NEAR_ int BMCInst)
+GetComponentProperties (INT8U* pReq, INT8U ReqLen, INT8U* pRes, int BMCInst)
 {
-    _NEAR_ GetComponentPropertiesReq_T* pGetCompPropReq = (_NEAR_ GetComponentPropertiesReq_T*) pReq;
-    _NEAR_ GetCompPropGeneralRes_T* pGeneralRes  = (_NEAR_ GetCompPropGeneralRes_T*) pRes;
-    _NEAR_ GetCompPropFWRes_T*      pFWRes       = (_NEAR_ GetCompPropFWRes_T*)      pRes;
-    _NEAR_ GetCompPropDescStrRes_T* pDescStrRes  = (_NEAR_ GetCompPropDescStrRes_T*) pRes;
+    GetComponentPropertiesReq_T* pGetCompPropReq = (GetComponentPropertiesReq_T*) pReq;
+    GetCompPropGeneralRes_T* pGeneralRes  = (GetCompPropGeneralRes_T*) pRes;
+    GetCompPropFWRes_T*      pFWRes       = (GetCompPropFWRes_T*)      pRes;
+    GetCompPropDescStrRes_T* pDescStrRes  = (GetCompPropDescStrRes_T*) pRes;
 	int RetVal = 0;
     INT8U	ResLen = 0;
     static FirmwareVersion_T CurrFwVersion[MAX_COMPONENTS], RBFwVersion[MAX_COMPONENTS], DeferFwVersion[MAX_COMPONENTS];
@@ -241,10 +241,10 @@ GetComponentProperties (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes, _N
  * @return The response length.
 **/
 int
-InitiateUpgradeAction (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes, _NEAR_ int BMCInst)
+InitiateUpgradeAction (INT8U* pReq, INT8U ReqLen, INT8U* pRes, int BMCInst)
 {
-    _NEAR_ InitiateUpgActionReq_T* pInitiateUpgActionReq = (_NEAR_ InitiateUpgActionReq_T*) pReq;
-    _NEAR_ InitiateUpgActionRes_T* pInitiateUpgActionRes = (_NEAR_ InitiateUpgActionRes_T*) pRes;
+    InitiateUpgActionReq_T* pInitiateUpgActionReq = (InitiateUpgActionReq_T*) pReq;
+    InitiateUpgActionRes_T* pInitiateUpgActionRes = (InitiateUpgActionRes_T*) pRes;
     
     pInitiateUpgActionRes->CompletionCode = CC_CMD_INPROGRESS;
     pInitiateUpgActionRes->Identifier      = PICMG_IDENTIFIER;
@@ -314,9 +314,9 @@ InitiateUpgradeAction (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes, _NE
  * QuerySelfTestResults
  *---------------------------------------*/
 int
-QuerySelfTestResults (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes, _NEAR_ int BMCInst)
+QuerySelfTestResults (INT8U* pReq, INT8U ReqLen, INT8U* pRes, int BMCInst)
 {
-	_NEAR_ QuerySelfTestResultsRes_T* 	pQuerySelfTestRes = (_NEAR_ QuerySelfTestResultsRes_T*) pRes;
+	QuerySelfTestResultsRes_T* 	pQuerySelfTestRes = (QuerySelfTestResultsRes_T*) pRes;
 
     pQuerySelfTestRes->CompletionCode  	= CC_NORMAL;
 	pQuerySelfTestRes->Identifier		= PICMG_IDENTIFIER;
@@ -372,9 +372,9 @@ QuerySelfTestResults (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes, _NEA
  * @return The response length.
 **/
 int
-AbortFirmwareUpgrade (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes, _NEAR_ int BMCInst)
+AbortFirmwareUpgrade (INT8U* pReq, INT8U ReqLen, INT8U* pRes, int BMCInst)
 {
-    _NEAR_ AbortFirmwareUpgradeRes_T* pAbortFWUpgradeRes = (_NEAR_ AbortFirmwareUpgradeRes_T*) pRes;
+    AbortFirmwareUpgradeRes_T* pAbortFWUpgradeRes = (AbortFirmwareUpgradeRes_T*) pRes;
 
     pAbortFWUpgradeRes->Identifier = PICMG_IDENTIFIER;
     pAbortFWUpgradeRes->CompletionCode = HandleAbortFirmwareUpgrade();
@@ -398,11 +398,11 @@ AbortFirmwareUpgrade (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes, _NEA
  * @return The response length.
 **/
 int
-UploadFirmwareBlock (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes, _NEAR_ int BMCInst)
+UploadFirmwareBlock (INT8U* pReq, INT8U ReqLen, INT8U* pRes, int BMCInst)
 {
   
-    _NEAR_ UploadFirmwareBlkReq_T* pUploadFWBlkReq = (_NEAR_ UploadFirmwareBlkReq_T*) pReq;
-    _NEAR_ UploadFirmwareBlkRes_T* pUploadFWBlkRes = (_NEAR_ UploadFirmwareBlkRes_T*) pRes;
+    UploadFirmwareBlkReq_T* pUploadFWBlkReq = (UploadFirmwareBlkReq_T*) pReq;
+    UploadFirmwareBlkRes_T* pUploadFWBlkRes = (UploadFirmwareBlkRes_T*) pRes;
     INT8U DataLen = 0;
     int RetVal = 0;
     
@@ -482,11 +482,11 @@ UploadFirmwareBlock (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes, _NEAR
  * @return The response length.
 **/
 int
-FinishFirmwareUpload (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes, _NEAR_ int BMCInst)
+FinishFirmwareUpload (INT8U* pReq, INT8U ReqLen, INT8U* pRes, int BMCInst)
 {
 
-    _NEAR_ FinishFWUploadReq_T* pFinishFWUploadReq = (_NEAR_ FinishFWUploadReq_T*) pReq;
-    _NEAR_ FinishFWUploadRes_T* pFinishFWUploadRes = (_NEAR_ FinishFWUploadRes_T*) pRes;
+    FinishFWUploadReq_T* pFinishFWUploadReq = (FinishFWUploadReq_T*) pReq;
+    FinishFWUploadRes_T* pFinishFWUploadRes = (FinishFWUploadRes_T*) pRes;
             
     pFinishFWUploadRes->CompletionCode = CC_CMD_INPROGRESS;
     pFinishFWUploadRes->Identifier = PICMG_IDENTIFIER;
@@ -534,9 +534,9 @@ FinishFirmwareUpload (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes, _NEA
  * @return The response length.
 **/
 int
-GetUpgradeStatus (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes, _NEAR_ int BMCInst)
+GetUpgradeStatus (INT8U* pReq, INT8U ReqLen, INT8U* pRes, int BMCInst)
 {
-    _NEAR_ GetUpgradeStatusRes_T*  pGetUpgradeStatus = (_NEAR_ GetUpgradeStatusRes_T*) pRes;
+    GetUpgradeStatusRes_T*  pGetUpgradeStatus = (GetUpgradeStatusRes_T*) pRes;
     HPMCmdStatus_T HPMCmdStatus;
 
     GetHPMStatus(&HPMCmdStatus);
@@ -569,9 +569,9 @@ GetUpgradeStatus (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes, _NEAR_ i
  * @return The response length.
 **/
 int
-ActivateFirmware (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes, _NEAR_ int BMCInst)
+ActivateFirmware (INT8U* pReq, INT8U ReqLen, INT8U* pRes, int BMCInst)
 {
-    _NEAR_ ActivateFWRes_T* pActivateFWRes = (_NEAR_ ActivateFWRes_T*) pRes;
+    ActivateFWRes_T* pActivateFWRes = (ActivateFWRes_T*) pRes;
    
     UpdateHPMStatus(CC_CMD_INPROGRESS, CMD_ACTIVATE_FIRMWARE, HPM_LONG_DURATION_CMD);
     
@@ -597,9 +597,9 @@ ActivateFirmware (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes, _NEAR_ i
  * @return The response length.
 **/
 int
-QueryRollbackStatus (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes, _NEAR_ int BMCInst)
+QueryRollbackStatus (INT8U* pReq, INT8U ReqLen, INT8U* pRes, int BMCInst)
 {
-    _NEAR_ QueryRollbackStatusRes_T* pQueryRollbackStatusRes = (_NEAR_ QueryRollbackStatusRes_T*) pRes;
+    QueryRollbackStatusRes_T* pQueryRollbackStatusRes = (QueryRollbackStatusRes_T*) pRes;
 
     pQueryRollbackStatusRes->Identifier = PICMG_IDENTIFIER;
     pQueryRollbackStatusRes->RollbackStatus = 0;
@@ -645,9 +645,9 @@ QueryRollbackStatus (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes, _NEAR
  * @return The response length.
 **/
 int
-InitiateManualRollback (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes, _NEAR_ int BMCInst)
+InitiateManualRollback (INT8U* pReq, INT8U ReqLen, INT8U* pRes, int BMCInst)
 {
-    _NEAR_ InitiateManualRollbackRes_T* pInitiateManualRollbackRes = (_NEAR_ InitiateManualRollbackRes_T*) pRes;
+    InitiateManualRollbackRes_T* pInitiateManualRollbackRes = (InitiateManualRollbackRes_T*) pRes;
     char RunningImage = HPM_IMAGE_1;
 
     pInitiateManualRollbackRes->Identifier = PICMG_IDENTIFIER;

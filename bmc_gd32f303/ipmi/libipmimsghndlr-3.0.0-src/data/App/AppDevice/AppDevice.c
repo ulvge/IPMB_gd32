@@ -110,7 +110,7 @@
 #define TEST_PASSWORD   3
 #define MIN_REQ_LENTH   2
 /*** Global variables ***/
-_FAR_   INT8U   g_TmrRunning;
+  INT8U   g_TmrRunning;
 /*** Module variables ***/
 static INT8U m_Set_ChReserveBit[] ={0xF0,0x0,0x30};
 
@@ -146,7 +146,7 @@ static int IsPrivilegeAvailable(INT8U requestedPrivilege, INT8U channelNumber, i
 * ResetWDT
 *-------------------------------------*/
 int
-ResetWDT (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst)
+ResetWDT (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst)
 {
     INT8U	u8ExpirationFlag;
     BMCInfo_t *pBMCInfo = &g_BMCInfo;
@@ -227,13 +227,13 @@ ResetWDT (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCIns
 * SetWDT
 *---------------------------------------*/
 int
-SetWDT (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst)
+SetWDT (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst)
 {
-    _NEAR_  SetWDTReq_T*    pSetWDTReq = (_NEAR_ SetWDTReq_T*)pReq;
+    SetWDTReq_T*    pSetWDTReq = (SetWDTReq_T*)pReq;
 #if GET_MSG_FLAGS != UNIMPLEMENTED
     GetMsgFlagsRes_T   GetMsgFlagsRes;
 #endif
-    _FAR_ BMCInfo_t* pBMCInfo = &g_BMCInfo;
+    BMCInfo_t* pBMCInfo = &g_BMCInfo;
 
 
     //Check for Reserved bits
@@ -269,8 +269,8 @@ SetWDT (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst)
 
 //    /* Copy the Timer configuration in NVRAM */
 //    LOCK_BMC_SHARED_MEM(BMCInst);
-//    _fmemset ((_FAR_ INT8U*)&pBMCInfo->WDTConfig, 0, sizeof (WDTConfig_T));
-//    _fmemcpy ((_FAR_ INT8U*)&pBMCInfo->WDTConfig, (_FAR_ INT8U*)pSetWDTReq, sizeof (SetWDTReq_T));
+//    _fmemset ((INT8U*)&pBMCInfo->WDTConfig, 0, sizeof (WDTConfig_T));
+//    _fmemcpy ((INT8U*)&pBMCInfo->WDTConfig, (INT8U*)pSetWDTReq, sizeof (SetWDTReq_T));
 //    UNLOCK_BMC_SHARED_MEM(BMCInst);
 
 //    if (TRUE ==BMC_GET_SHARED_MEM(BMCInst)->IsWDTRunning)
@@ -400,15 +400,15 @@ SetWDT (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst)
 * GetWDT
 *---------------------------------------*/
 int
-GetWDT (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst)
+GetWDT (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst)
 {
-    _NEAR_  GetWDTRes_T*    pGetWDTRes = (_NEAR_ GetWDTRes_T*)pRes;
+    GetWDTRes_T*    pGetWDTRes = (GetWDTRes_T*)pRes;
     BMCInfo_t *pBMCInfo = &g_BMCInfo;
 
     /* Copy the current settings from the NVRAM */
 //    LOCK_BMC_SHARED_MEM(BMCInst);
-//    _fmemcpy ((_FAR_ INT8U*)&pGetWDTRes->CurrentSettings,
-//            (_FAR_ INT8U*)&pBMCInfo->WDTConfig, sizeof (WDTConfig_T));
+//    _fmemcpy ((INT8U*)&pGetWDTRes->CurrentSettings,
+//            (INT8U*)&pBMCInfo->WDTConfig, sizeof (WDTConfig_T));
 //    UNLOCK_BMC_SHARED_MEM(BMCInst);
 
 //    // get the WDT expiration from the global veriable in memory, not from the flash
@@ -442,7 +442,7 @@ GetWDT (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst)
 * SetBMCGlobalEnables
 *---------------------------------------*/
 int
-SetBMCGlobalEnables (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst)
+SetBMCGlobalEnables (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst)
 {
     INT8U GblEnblByte = *pReq;
     BMCInfo_t *pBMCInfo = &g_BMCInfo;
@@ -485,9 +485,9 @@ SetBMCGlobalEnables (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_
 * GetBMCGlobalEnables
 *---------------------------------------*/
 int
-GetBMCGlobalEnables (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst)
+GetBMCGlobalEnables (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst)
 {
-    _NEAR_  GetBMCGblEnblRes_T* pGetBMCGblEnblRes = (_NEAR_ GetBMCGblEnblRes_T*)pRes;
+    GetBMCGblEnblRes_T* pGetBMCGblEnblRes = (GetBMCGblEnblRes_T*)pRes;
     BMCInfo_t *pBMCInfo = &g_BMCInfo;
 
 //    OS_THREAD_MUTEX_ACQUIRE(&pBMCInfo->BMCMsgMutex,WAIT_INFINITE);
@@ -503,14 +503,14 @@ GetBMCGlobalEnables (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_
 * ClrMsgFlags
 *---------------------------------------*/
 int
-ClrMsgFlags (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst)
+ClrMsgFlags (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst)
 {
-    _NEAR_ ClearMsgsFlagReq_T* pClearMsgsFlagReq = (_NEAR_ ClearMsgsFlagReq_T*)pReq;
+    ClearMsgsFlagReq_T* pClearMsgsFlagReq = (ClearMsgsFlagReq_T*)pReq;
     INT8U kcsifcnum;
 #if GET_MSG_FLAGS != UNIMPLEMENTED
     GetMsgFlagsRes_T   GetMsgFlagsRes;
 #endif
-    _FAR_ BMCInfo_t* pBMCInfo = &g_BMCInfo;
+    BMCInfo_t* pBMCInfo = &g_BMCInfo;
 
     //Check for Reserved bits
     if(pClearMsgsFlagReq->Flag & (BIT4 | BIT2))
@@ -598,9 +598,9 @@ ClrMsgFlags (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMC
  GetMsgFlags
 ---------------------------------------*/
 int
-GetMsgFlags (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst)
+GetMsgFlags (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst)
 {
-    _NEAR_  GetMsgFlagsRes_T*   pGetMsgFlagsRes = (_NEAR_ GetMsgFlagsRes_T*)pRes;
+    GetMsgFlagsRes_T*   pGetMsgFlagsRes = (GetMsgFlagsRes_T*)pRes;
     BMCInfo_t *pBMCInfo = &g_BMCInfo;
     INT8U kcsifcnum;
 
@@ -648,7 +648,7 @@ GetMsgFlags (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMC
 * EnblMsgChannelRcv
 *---------------------------------------*/
 int
-EnblMsgChannelRcv (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst)
+EnblMsgChannelRcv (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst)
 {
 
     return sizeof (EnblMsgChRcvRes_T);
@@ -659,7 +659,7 @@ EnblMsgChannelRcv (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ i
 * GetMessage
 *---------------------------------------*/
 int
-GetMessage (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst)
+GetMessage (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst)
 {
 
     return 0;
@@ -673,12 +673,12 @@ GetMessage (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCI
 extern xQueueHandle ResponseDatMsg_Queue;
 extern xQueueHandle RecvForwardI2CDatMsg_Queue;
 int
-SendMessage (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst)
+SendMessage (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst)
 {
     char buff[sizeof(MsgPkt_T)];
-    _NEAR_  SendMsgReq_T* pSendMsgReq = (_NEAR_ SendMsgReq_T*)pReq;
-    _NEAR_  SendMsgRes_T* pSendMsgRes = (_NEAR_ SendMsgRes_T*)pRes;
-    _NEAR_  IPMIMsgHdr_T* pIPMIMsgHdr;
+    SendMsgReq_T* pSendMsgReq = (SendMsgReq_T*)pReq;
+    SendMsgRes_T* pSendMsgRes = (SendMsgRes_T*)pRes;
+    IPMIMsgHdr_T* pIPMIMsgHdr;
     INT8U         Tracking;
     INT8U         Channel=0,resaddr=0;
     INT8U         ResLen = 1;
@@ -759,7 +759,7 @@ SendMessage (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMC
 * ReadEvtMsgBuffer
 *---------------------------------------*/
 int
-ReadEvtMsgBuffer (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst)
+ReadEvtMsgBuffer (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst)
 {
 
     return sizeof (ReadEvtMsgBufRes_T);
@@ -770,10 +770,10 @@ ReadEvtMsgBuffer (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ in
 * GetBTIfcCap
 *---------------------------------------*/
 int
-GetBTIfcCap (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst)
+GetBTIfcCap (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst)
 {
-    _NEAR_  GetBTIfcCapRes_T* pGetBTIfcCapRes = (_NEAR_ GetBTIfcCapRes_T*)pRes;
-    _FAR_ BMCInfo_t* pBMCInfo = &g_BMCInfo;
+    GetBTIfcCapRes_T* pGetBTIfcCapRes = (GetBTIfcCapRes_T*)pRes;
+    BMCInfo_t* pBMCInfo = &g_BMCInfo;
     
     if(pBMCInfo->IpmiConfig.BTIfcSupport ==1)
     {
@@ -796,9 +796,9 @@ GetBTIfcCap (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMC
 * GetSystemGUID
 *---------------------------------------*/
 int
-GetSystemGUID (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst)
+GetSystemGUID (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst)
 {
-    _NEAR_ GetSysGUIDRes_T* pGetSysGUIDRes = (_NEAR_ GetSysGUIDRes_T*)pRes;
+    GetSysGUIDRes_T* pGetSysGUIDRes = (GetSysGUIDRes_T*)pRes;
 
     pGetSysGUIDRes->CompletionCode  = CC_NORMAL;
 
@@ -812,17 +812,17 @@ GetSystemGUID (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int B
 * GetChAuthCap
 *---------------------------------------*/
 int
-GetChAuthCap (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst)
+GetChAuthCap (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst)
 {
-    _NEAR_ GetChAuthCapReq_T*   pGetChAuthCapReq = (_NEAR_ GetChAuthCapReq_T*)pReq;
-    _NEAR_ GetChAuthCapRes_T*   pGetChAuthCapRes = (_NEAR_ GetChAuthCapRes_T*)pRes;
-    _FAR_  ChannelUserInfo_T*   pChUserInfo;
-    _FAR_  UserInfo_T*          pUserInfo;
-    _FAR_  ChannelInfo_T*       pChannelInfo;
+    GetChAuthCapReq_T*   pGetChAuthCapReq = (GetChAuthCapReq_T*)pReq;
+    GetChAuthCapRes_T*   pGetChAuthCapRes = (GetChAuthCapRes_T*)pRes;
+     ChannelUserInfo_T*   pChUserInfo;
+     UserInfo_T*          pUserInfo;
+     ChannelInfo_T*       pChannelInfo;
     INT8U                       ChannelNum, Index,curchannel;
     INT8U                       i;
     INT8U 			EthIndex=0;
-    _FAR_ BMCInfo_t* pBMCInfo = &g_BMCInfo;
+    BMCInfo_t* pBMCInfo = &g_BMCInfo;
     INT8U   UserPswd[16] = {0};
     INT8U EncryptionEnabled = 0;
     INT8U    PwdEncKey[MAX_SIZE_KEY + 1] = {0};
@@ -881,10 +881,10 @@ GetChAuthCap (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BM
 * GetSessionChallenge
 *---------------------------------------*/
 int
-GetSessionChallenge (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst)
+GetSessionChallenge (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst)
 {
-    _NEAR_ GetSesChallengeReq_T* pGetSesChalReq = (_NEAR_ GetSesChallengeReq_T*)pReq;
-    _NEAR_ GetSesChallengeRes_T* pGetSesChalRes = (_NEAR_ GetSesChallengeRes_T*)pRes;
+    GetSesChallengeReq_T* pGetSesChalReq = (GetSesChallengeReq_T*)pReq;
+    GetSesChallengeRes_T* pGetSesChalRes = (GetSesChallengeRes_T*)pRes;
 
     pGetSesChalRes->CompletionCode = CC_NORMAL;
     pGetSesChalRes->TempSessionID  = 0x01;
@@ -895,10 +895,10 @@ GetSessionChallenge (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_
 * ActivateSession
 *---------------------------------------*/
 int
-ActivateSession (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst)
+ActivateSession (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst)
 {
-    _NEAR_  ActivateSesReq_T*   pAcvtSesReq = (_NEAR_ ActivateSesReq_T*)pReq;
-    _NEAR_  ActivateSesRes_T*   pAcvtSesRes = (_NEAR_ ActivateSesRes_T*)pRes;
+    ActivateSesReq_T*   pAcvtSesReq = (ActivateSesReq_T*)pReq;
+    ActivateSesRes_T*   pAcvtSesRes = (ActivateSesRes_T*)pRes;
 
         /* Initial Outbound Sequence Number cannot be null */  
     if (pAcvtSesReq->OutboundSeq == 0)  
@@ -923,10 +923,10 @@ ActivateSession (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int
 * SetSessionPrivLevel
 *---------------------------------------*/
 int
-SetSessionPrivLevel (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst)
+SetSessionPrivLevel (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst)
 {
-    _NEAR_  SetSesPrivLevelReq_T*   pSetSesPrivLevelReq = (_NEAR_ SetSesPrivLevelReq_T*)pReq;
-    _NEAR_  SetSesPrivLevelRes_T*   pSetSesPrivLevelRes = (_NEAR_ SetSesPrivLevelRes_T*)pRes;
+    SetSesPrivLevelReq_T*   pSetSesPrivLevelReq = (SetSesPrivLevelReq_T*)pReq;
+    SetSesPrivLevelRes_T*   pSetSesPrivLevelRes = (SetSesPrivLevelRes_T*)pRes;
 
     /* set the privilege for the session */
     pSetSesPrivLevelRes->CompletionCode = CC_NORMAL;
@@ -940,7 +940,7 @@ SetSessionPrivLevel (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_
 * CloseSession
 *---------------------------------------*/
 int
-CloseSession (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst)
+CloseSession (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst)
 {
  
     *pRes = CC_NORMAL;
@@ -952,7 +952,7 @@ CloseSession (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BM
 * GetSessionInfo
 *---------------------------------------*/
 int
-GetSessionInfo (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst)
+GetSessionInfo (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst)
 {
 
 	return (sizeof (GetSesInfoRes_T) - sizeof (SessionInfoRes_T));
@@ -1007,7 +1007,7 @@ GetAuthCodeForTypeV20 (UserInfo_T* pUserInfo,
  * @retval size of the result data.
  */
 int
-GetAuthCode (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,int BMCInst)
+GetAuthCode (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst)
 {
 
     return 0;
@@ -1018,7 +1018,7 @@ GetAuthCode (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,int BMCInst)
 * SetChAccess
 *---------------------------------------*/
 int
-SetChAccess (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst)
+SetChAccess (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst)
 {
 
     *pRes = CC_NORMAL;
@@ -1031,7 +1031,7 @@ SetChAccess (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMC
 * GetChAccess
 *---------------------------------------*/
 int
-GetChAccess (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst)
+GetChAccess (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst)
 {
  
     return sizeof (GetChAccessRes_T);
@@ -1042,7 +1042,7 @@ GetChAccess (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMC
 * GetChInfo
 *---------------------------------------*/
 int
-GetChInfo (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst)
+GetChInfo (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst)
 {
 
     return sizeof (GetChInfoRes_T);
@@ -1070,7 +1070,7 @@ ModifyUsrGrp(char * UserName,INT8U ChannelNum,INT8U OldAccessLimit, INT8U NewAcc
 * SetUserAccess
 *---------------------------------------*/
 int
-SetUserAccess (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst)
+SetUserAccess (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst)
 {
 
     *pRes = CC_NORMAL;
@@ -1083,7 +1083,7 @@ SetUserAccess (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int B
 * GetUserAccess
 *---------------------------------------*/
 int
-GetUserAccess (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst)
+GetUserAccess (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst)
 {
 
 
@@ -1095,7 +1095,7 @@ GetUserAccess (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int B
 * SetUserName
 *---------------------------------------*/
 int
-SetUserName (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst)
+SetUserName (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst)
 {
         *pRes = CC_NORMAL;
         return sizeof (*pRes);
@@ -1106,7 +1106,7 @@ SetUserName (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMC
 * GetUserName
 *---------------------------------------*/
 int
-GetUserName (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst)
+GetUserName (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst)
 {
 
     return sizeof (GetUserNameRes_T);
@@ -1117,7 +1117,7 @@ GetUserName (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMC
 * SetUserPassword
 *---------------------------------------*/
 int
-SetUserPassword (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst)
+SetUserPassword (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst)
 {
 
     return sizeof (*pRes);
@@ -1128,10 +1128,10 @@ SetUserPassword (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int
 * MasterWriteRead
 *---------------------------------------*/
 int
-MasterWriteRead (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst)
+MasterWriteRead (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst)
 {
-    _NEAR_ MasterWriteReadReq_T* pMasterWriteReadReq = (_NEAR_ MasterWriteReadReq_T*)pReq;
-    _NEAR_ MasterWriteReadRes_T* pMasterWriteReadRes = (_NEAR_ MasterWriteReadRes_T*)pRes;
+    MasterWriteReadReq_T* pMasterWriteReadReq = (MasterWriteReadReq_T*)pReq;
+    MasterWriteReadRes_T* pMasterWriteReadRes = (MasterWriteReadRes_T*)pRes;
 
     pMasterWriteReadRes->CompletionCode = CC_NORMAL;
 
@@ -1144,8 +1144,8 @@ MasterWriteRead (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int
 * ComputeAuthCode
 *-------------------------------------------*/
 void
-ComputeAuthCode (_FAR_ INT8U* pPassword, _NEAR_ SessionHdr_T* pSessionHdr,
-                _NEAR_ IPMIMsgHdr_T* pIPMIMsg, _NEAR_ INT8U* pAuthCode,
+ComputeAuthCode (INT8U* pPassword, SessionHdr_T* pSessionHdr,
+                IPMIMsgHdr_T* pIPMIMsg, INT8U* pAuthCode,
                 INT8U ChannelType)
 {
     if (AUTH_TYPE_PASSWORD == pSessionHdr->AuthType)
@@ -1156,7 +1156,7 @@ ComputeAuthCode (_FAR_ INT8U* pPassword, _NEAR_ SessionHdr_T* pSessionHdr,
     {
         INT8U   AuthBuf [MAX_AUTH_PARAM_SIZE];
         INT16U  AuthBufLen = 0;
-        INT8U   IPMIMsgLen = *((_NEAR_ INT8U*) pIPMIMsg - 1);
+        INT8U   IPMIMsgLen = *((INT8U*) pIPMIMsg - 1);
 
         /* Password */
         _fmemcpy (AuthBuf, pPassword, MAX_PASSWORD_LEN);
@@ -1200,7 +1200,7 @@ ComputeAuthCode (_FAR_ INT8U* pPassword, _NEAR_ SessionHdr_T* pSessionHdr,
 * GetSystemInfoParam
 *---------------------------------------*/
 int
-GetSystemInfoParam (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst)
+GetSystemInfoParam (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst)
 {
 
     /* return the size of the response */
@@ -1256,7 +1256,7 @@ int validatestring(INT8U* String,int len,INT8U TOE)
 * SetSystemInfoParam
 *---------------------------------------*/
 int
-SetSystemInfoParam (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst)
+SetSystemInfoParam (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst)
 {
 
     return sizeof(SetSystemInfoParamRes_T);

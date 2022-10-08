@@ -43,8 +43,8 @@
 
 /*** Function Prototypes ***/
 static int  AuthenticateSerialCmd (INT8U NetFn, INT8U Cmd,int BMCInst);
-static void ActivateBasicMode (_NEAR_ IPMIMsgHdr_T* pIPMIReqHdr,
-                               _NEAR_ IPMIMsgHdr_T* pIPMIResHdr,int BMCInst);
+static void ActivateBasicMode (IPMIMsgHdr_T* pIPMIReqHdr,
+                               IPMIMsgHdr_T* pIPMIResHdr,int BMCInst);
 
 
 /**
@@ -55,7 +55,7 @@ static void ActivateBasicMode (_NEAR_ IPMIMsgHdr_T* pIPMIReqHdr,
  * @return the size of the response else return 0 if it fails
  **/
 INT8U
-ProcessSerialMessage (_NEAR_ MsgPkt_T* pReq, _NEAR_ MsgPkt_T* pRes,int BMCInst)
+ProcessSerialMessage (MsgPkt_T* pReq, MsgPkt_T* pRes,int BMCInst)
 {
     // bridge GetMsgFromI2C        from slave
     // ProcessIPMIReq(pReq, pRes);
@@ -86,7 +86,7 @@ AuthenticateSerialCmd (INT8U NetFn, INT8U Cmd,int BMCInst)
  * @param pIPMIResHdr Pointer to the IPMI response message header
  **/
 __attribute__((unused)) static void 
-ActivateBasicMode (_NEAR_ IPMIMsgHdr_T* pIPMIReqHdr, _NEAR_ IPMIMsgHdr_T* pIPMIResHdr,int BMCInst)
+ActivateBasicMode (IPMIMsgHdr_T* pIPMIReqHdr, IPMIMsgHdr_T* pIPMIResHdr,int BMCInst)
 {
  
 }

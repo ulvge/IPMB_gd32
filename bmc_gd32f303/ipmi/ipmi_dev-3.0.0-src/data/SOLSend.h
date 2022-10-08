@@ -30,7 +30,7 @@
 extern int SS_Init (int BMCInst);
 extern int SS_OnSOLPkt (SOLPayLoad_T* p_pkt, INT16U size,int BMCInst);
 extern int SS_IsPktReady  (int BMCInst);
-extern int SS_FormSOLPkt (SOLPayLoad_T* p_pkt, _FAR_ INT16U* p_size,int BMCInst);
+extern int SS_FormSOLPkt (SOLPayLoad_T* p_pkt, INT16U* p_size,int BMCInst);
 extern void OnSOLRedirection (INT8U b,int BMCInst);
 
 extern void*  ReadSerialPkt	  (void* pData);

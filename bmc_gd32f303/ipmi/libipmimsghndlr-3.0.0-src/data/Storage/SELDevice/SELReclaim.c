@@ -149,7 +149,7 @@ void DeleteReclaimAllSELNode(SELEventNode **HeadNode,SELEventNode **TailNode,int
 int DeleteSELReclaimNode(SELEventNode **HeadNode,SELEventNode **TailNode,INT16U RecordID,unsigned int *FileIndex,int BMCInst)
 {
     struct SELEventNode *CurrentNode,*PrevNode = NULL;
-    _FAR_  PEFRecordDetailsConfig_T*        pPEFRecordDetailsConfig;
+     PEFRecordDetailsConfig_T*        pPEFRecordDetailsConfig;
      BMCInfo_t *pBMCInfo = &g_BMCInfo[BMCInst];
 
     CurrentNode = *HeadNode;

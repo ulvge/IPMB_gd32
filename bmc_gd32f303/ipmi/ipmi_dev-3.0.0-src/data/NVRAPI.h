@@ -33,7 +33,7 @@
  * @return			0 if success.
  *					-1 if the entry could not be read.
  *-------------------------------------------------------------------*/
-extern int API_ReadNVR (char *NVRName, INT32U Offset, INT16U Size, _FAR_ INT8U* pBuf);
+extern int API_ReadNVR (char *NVRName, INT32U Offset, INT16U Size, INT8U* pBuf);
 
 
 /*------------------------------------------------------------------*

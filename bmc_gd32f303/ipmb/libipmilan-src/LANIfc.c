@@ -347,7 +347,7 @@ extern xQueueHandle ResponseDatMsg_Queue;
  * @param pReq - Request message.
 **/
 void
-ProcessLANReq (const MsgPkt_T* pReq, _NEAR_ MsgPkt_T *pRes)
+ProcessLANReq (const MsgPkt_T* pReq, MsgPkt_T *pRes)
 {
     // SessionInfo_T*  pSessionInfo;
     // SessionHdr_T*   pSessionHdr;
@@ -407,15 +407,15 @@ ProcessBridgeMsg (const MsgPkt_T* pReq)
         PayLoadLen      = pReq->Size - 1;
         PayLoadType     = pReq->Cmd;
         // PayLoadType    |= (pSessionInfo->SessPyldInfo[PayLoadType].AuxConfig[0] & 0xC0);
-        // PayLoadLen      = Frame20Payload (PayLoadType, (_NEAR_ RMCPHdr_T*)&ResPkt.Data [0],
+        // PayLoadLen      = Frame20Payload (PayLoadType, (RMCPHdr_T*)&ResPkt.Data [0],
         //                              &pReq->Data[1], PayLoadLen, pSessionInfo, BMCInst);
     }
     else
 #endif /*IPMI20_SUPPORT == 1*/
     {
         /* Fill Session Header */
-        _NEAR_ SessionHdr_T* pSessionHdr = (_NEAR_ SessionHdr_T*)(&ResPkt.Data [sizeof(RMCPHdr_T)]);
-        _NEAR_ INT8U*        pPayLoad    = (_NEAR_ INT8U*)(pSessionHdr + 1);
+        SessionHdr_T* pSessionHdr = (SessionHdr_T*)(&ResPkt.Data [sizeof(RMCPHdr_T)]);
+        INT8U*        pPayLoad    = (INT8U*)(pSessionHdr + 1);
 
         // pSessionHdr->AuthType       = pSessionInfo->AuthType;
         // pSessionHdr->SessionSeqNum  = pSessionInfo->OutboundSeq++;
@@ -433,7 +433,7 @@ ProcessBridgeMsg (const MsgPkt_T* pReq)
             PayLoadLen--;
             PayLoadLen += sizeof (SessionHdr_T) + sizeof (RMCPHdr_T);
             // ComputeAuthCode (pSessionInfo->Password, pSessionHdr,
-            //                  (_NEAR_ IPMIMsgHdr_T*) &pPayLoad [AUTH_CODE_LEN+1],
+            //                  (IPMIMsgHdr_T*) &pPayLoad [AUTH_CODE_LEN+1],
             //                  pPayLoad, MULTI_SESSION_CHANNEL);
         }
         else

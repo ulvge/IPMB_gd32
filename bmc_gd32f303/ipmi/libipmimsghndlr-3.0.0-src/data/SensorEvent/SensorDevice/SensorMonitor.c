@@ -72,10 +72,10 @@
 #define MAX_SENSOR_MONITOR_LOOP_COUNT 4
 
 /*** Prototype Declaration ***/
-static void MonitorTSensors (_FAR_ SensorInfo_T*  pSensorInfo,int BMCInst);
-static void MonitorNonTSensors (_FAR_ SensorInfo_T*  pSensorInfo,int BMCInst);
+static void MonitorTSensors (SensorInfo_T*  pSensorInfo,int BMCInst);
+static void MonitorNonTSensors (SensorInfo_T*  pSensorInfo,int BMCInst);
 static void InitSensorPDKHooks (int BMCInst);
-static void SendSignalToAdviser(_NEAR_ SELEventRecord_T *pSelRecord,int BMCInst);
+static void SendSignalToAdviser(SELEventRecord_T *pSelRecord,int BMCInst);
 static int PreEventLog (SensorInfo_T* pSensorInfo, INT8U* pEventData,int BMCInst);
 static void SM_ReArmSensor      (ReArmSensorReq_T* pReArmSensorReq,int BMCInst);
 static void GenerateDeassertionEvent(INT16U EventsToRearm, SensorInfo_T* pSensorInfo,int BMCInst);
@@ -83,7 +83,7 @@ static void ProcessSMMessages   (int BMCInst);
 static int SwapSensorThresholds (int BMCInst, INT8U SensorNum, INT8U OwnerLUN, INT8U OwnerID );
 
 #if (TERMINAL_MODE_SUPPORT == 1)
-static void UpdateThresHealthState (_FAR_ SensorInfo_T*     pSensorInfo, INT8U Level,int BMCInst);
+static void UpdateThresHealthState (SensorInfo_T*     pSensorInfo, INT8U Level,int BMCInst);
 static void UpdateOverallHealthState (int BMCInst);
 #endif
 
@@ -95,7 +95,7 @@ static void UpdateOverallHealthState (int BMCInst);
  */
 void InitPowerOnTick (int BMCInst)
 {
-    _FAR_ BMCInfo_t* pBMCInfo = &g_BMCInfo[BMCInst];
+    BMCInfo_t* pBMCInfo = &g_BMCInfo[BMCInst];
 
     pBMCInfo->SenConfig.PowerOnTick = 0;
 }
@@ -107,7 +107,7 @@ void InitPowerOnTick (int BMCInst)
  */
 void InitSysResetTick (int BMCInst)
 {
-    _FAR_ BMCInfo_t* pBMCInfo = &g_BMCInfo[BMCInst];
+    BMCInfo_t* pBMCInfo = &g_BMCInfo[BMCInst];
 
     pBMCInfo->SenConfig.SysResetTick = 0;
 }
@@ -148,14 +148,14 @@ InitSensorMonitor (int BMCInst)
 SensorInfo_T*
 GetSensorInfo (INT8U SensorNum, INT8U OwnerLUN, int BMCInst)
 {
-    SensorSharedMem_T* pSMSharedMem = (_FAR_ SensorSharedMem_T*)&g_BMCInfo[BMCInst].SensorSharedMem;
+    SensorSharedMem_T* pSMSharedMem = (SensorSharedMem_T*)&g_BMCInfo[BMCInst].SensorSharedMem;
     return &pSMSharedMem->SensorInfo [((OwnerLUN & VALID_LUN) << 8 | SensorNum)];	
 }
 
 static void *
 SensorMonitorTimer(void *pArg)
 {
-    _FAR_ MsgPkt_T Msg;
+    MsgPkt_T Msg;
     int lasterrstate=0;
     int misscount=0;
     HQueue_T hSMHndlr_Q;
@@ -213,8 +213,8 @@ SensorMonitorTask (void *pArg)
 	INT16U  		SensorNum = 0;
     int *inst = (int*) pArg;
     int BMCInst = *inst;
-    _FAR_ SensorInfo_T*        pSensorInfo;
-    _FAR_ BMCInfo_t* pBMCInfo = &g_BMCInfo[BMCInst];
+    SensorInfo_T*        pSensorInfo;
+    BMCInfo_t* pBMCInfo = &g_BMCInfo[BMCInst];
     SensorSharedMem_T*    pSMSharedMem;
     int retval = 0;
 
@@ -242,7 +242,7 @@ SensorMonitorTask (void *pArg)
     pBMCInfo->SenConfig.InitAgentRearm = FALSE;
 
     /* Get the Sensor Shared Memory */
-    pSMSharedMem = (_FAR_ SensorSharedMem_T*)&pBMCInfo->SensorSharedMem;
+    pSMSharedMem = (SensorSharedMem_T*)&pBMCInfo->SensorSharedMem;
     
     /* Diable Global Sensor monitoring during initialization
      * Global Scanning will be enabled when Msghandler
@@ -519,15 +519,15 @@ SensorMonitorTask (void *pArg)
  *PostEventMessage
  *---------------------------------------------------*/
 int
-PostEventMessage (_NEAR_ INT8U *EventMsg, INT8U sysifcflag,INT8U size,int BMCInst)
+PostEventMessage (INT8U *EventMsg, INT8U sysifcflag,INT8U size,int BMCInst)
 {
     INT8U               SelReq [sizeof(SELEventRecord_T)];
     INT8U               SelRes [sizeof(AddSELRes_T)]; //*curchannel;
-    _FAR_ BMCInfo_t* pBMCInfo = &g_BMCInfo[BMCInst];
+    BMCInfo_t* pBMCInfo = &g_BMCInfo[BMCInst];
     MsgPkt_T            MsgToPEF;
-    _NEAR_  SELEventRecord_T*   SelRecord = (_NEAR_ SELEventRecord_T*) SelReq;
-    _NEAR_  AddSELRes_T*        AddSelRes = (_NEAR_ AddSELRes_T*) SelRes;
-    _FAR_  BMCSharedMem_T* pSharedMem = BMC_GET_SHARED_MEM(BMCInst);
+    SELEventRecord_T*   SelRecord = (SELEventRecord_T*) SelReq;
+    AddSELRes_T*        AddSelRes = (AddSELRes_T*) SelRes;
+     BMCSharedMem_T* pSharedMem = BMC_GET_SHARED_MEM(BMCInst);
 
     if (0xFF == pSharedMem->EvRcv_SlaveAddr)
     {
@@ -546,7 +546,7 @@ PostEventMessage (_NEAR_ INT8U *EventMsg, INT8U sysifcflag,INT8U size,int BMCIns
 
         MsgToPEF.Param = IPMB_EVT_MSG_REQUEST;
         MsgToPEF.Size  = size - 1;
-        _fmemcpy ((_FAR_ INT8U*)MsgToPEF.Data, EventMsg + 1,
+        _fmemcpy ((INT8U*)MsgToPEF.Data, EventMsg + 1,
                   size - 1);
 
         PostMsg(&MsgToPEF, IPMB_PRIMARY_IFC_Q,BMCInst);
@@ -573,7 +573,7 @@ PostEventMessage (_NEAR_ INT8U *EventMsg, INT8U sysifcflag,INT8U size,int BMCIns
     /* Post message to Platform Event Filter */
     MsgToPEF.Param = PARAM_SENSOR_EVT_MSG;
     MsgToPEF.Size  = sizeof (SELEventRecord_T);
-    _fmemcpy ((_FAR_ INT8U*)MsgToPEF.Data, (_FAR_ INT8U*)SelReq,
+    _fmemcpy ((INT8U*)MsgToPEF.Data, (INT8U*)SelReq,
               sizeof(SELEventRecord_T));
     IPMI_DBG_PRINT ("Posting Message to PEF\n");
     //PostMsgNonBlock (&MsgToPEF, hPEFTask_Q);
@@ -636,10 +636,10 @@ PostEventMessage (_NEAR_ INT8U *EventMsg, INT8U sysifcflag,INT8U size,int BMCIns
 void
 LoadSensorProperties (INT16U SensorNum, INT8U OwnerID, int BMCInst)    /* Multi-LUN support - SensorNum is equal to (LUN << 8) | Sensor Number */
 {
-    _FAR_ SensorProperties_T   SensorProperties;
-    _FAR_ SensorInfo_T*        pSensorInfo;
-    _FAR_ BMCInfo_t* pBMCInfo = &g_BMCInfo[BMCInst];
-    SensorSharedMem_T* pSMSharedMem = (_FAR_ SensorSharedMem_T*)&g_BMCInfo[BMCInst].SensorSharedMem;
+    SensorProperties_T   SensorProperties;
+    SensorInfo_T*        pSensorInfo;
+    BMCInfo_t* pBMCInfo = &g_BMCInfo[BMCInst];
+    SensorSharedMem_T* pSMSharedMem = (SensorSharedMem_T*)&g_BMCInfo[BMCInst].SensorSharedMem;
 
     if ((g_corefeatures.node_manager == ENABLED)&&(pBMCInfo->NMConfig.NMDevSlaveAddress == OwnerID )){
         /*  Fetch different array according to ownerID. */
@@ -677,7 +677,7 @@ LoadSensorProperties (INT16U SensorNum, INT8U OwnerID, int BMCInst)    /* Multi-
  * @brief ReInitSensor.
 **/
 void
-ReInitSensor (_FAR_ SensorInfo_T*  pSensorInfo, INT8U SensorOwnerID, int BMCInst)
+ReInitSensor (SensorInfo_T*  pSensorInfo, INT8U SensorOwnerID, int BMCInst)
 {
     SDRRecHdr_T* 	    sr;
     INT8U				SensorNum = 0;
@@ -726,7 +726,7 @@ void
 InitSensorPDKHooks (int BMCInst)
 {
     int 			i;
-    SensorSharedMem_T* pSMSharedMem = (_FAR_ SensorSharedMem_T*)&g_BMCInfo[BMCInst].SensorSharedMem;
+    SensorSharedMem_T* pSMSharedMem = (SensorSharedMem_T*)&g_BMCInfo[BMCInst].SensorSharedMem;
 
     /* Initialize PDK Sensor callback routines  */
     for ( i = 0; i < MAX_SENSOR_NUMBERS; i++)
@@ -769,7 +769,7 @@ PostMonitorSensor (void*  pSenInfo,INT8U* pReadFlags,int BMCInst)
  * @brief Init sensors Hooks.
 **/
 int
-InitSensorHook (_FAR_ SensorInfo_T*  pSensorInfo,int BMCInst)
+InitSensorHook (SensorInfo_T*  pSensorInfo,int BMCInst)
 {
     int 	Hooklist,retval=0;
             
@@ -902,7 +902,7 @@ INT16 GetLowDeassertValue(bool IsSigned, INT16 Value, INT8U Hysteresis)
  * @param i - Sensor index.
 **/
 static void
-MonitorTSensors (_FAR_ SensorInfo_T*     pSensorInfo,int BMCInst)
+MonitorTSensors (SensorInfo_T*     pSensorInfo,int BMCInst)
 {
     INT8U                   EventData1;
     INT8U                   EventData3;
@@ -949,7 +949,7 @@ MonitorTSensors (_FAR_ SensorInfo_T*     pSensorInfo,int BMCInst)
     // Added for Sensor Override capability
     int                 Override = 0;
     INT8U ReadFlags = 0;
-    _FAR_ BMCInfo_t* pBMCInfo = &g_BMCInfo[BMCInst];
+    BMCInfo_t* pBMCInfo = &g_BMCInfo[BMCInst];
 
     /* Get Sensor Reading from SP only if it not a settable sensor */
     if (0 == GET_SETTABLE_SENSOR_BIT(pSensorInfo->SensorInit))
@@ -990,12 +990,12 @@ MonitorTSensors (_FAR_ SensorInfo_T*     pSensorInfo,int BMCInst)
                 
 		    if (g_corefeatures.node_manager == ENABLED)
                     {
-                        _FAR_ FullSensorRec_T*      sfs=NULL;
-                        _FAR_ CompactSensorRec_T*   scs=NULL;
+                        FullSensorRec_T*      sfs=NULL;
+                        CompactSensorRec_T*   scs=NULL;
 
                         if (FULL_SDR_REC==pSensorInfo->SDRRec->Type)
                         {
-                            sfs = (_FAR_ FullSensorRec_T*)pSensorInfo->SDRRec;
+                            sfs = (FullSensorRec_T*)pSensorInfo->SDRRec;
                             if (sfs->OwnerID != pBMCInfo->NMConfig.NMDevSlaveAddress)
                             {
                                 pSensorInfo->Err  = IPMI_HAL_GET_SENSOR_READING ((((pSensorInfo->SensorOwnerLun & VALID_LUN) << 8) | pSensorInfo->SensorNumber),  &SensorReading,BMCInst);	/* Multi-LUN support */
@@ -1018,7 +1018,7 @@ MonitorTSensors (_FAR_ SensorInfo_T*     pSensorInfo,int BMCInst)
                         }
                         else if (COMPACT_SDR_REC==pSensorInfo->SDRRec->Type)
                         {
-                            scs = (_FAR_ CompactSensorRec_T*)pSensorInfo->SDRRec;
+                            scs = (CompactSensorRec_T*)pSensorInfo->SDRRec;
                             if (scs->OwnerID != pBMCInfo->NMConfig.NMDevSlaveAddress)
                             {
                                 pSensorInfo->Err  = IPMI_HAL_GET_SENSOR_READING ((((pSensorInfo->SensorOwnerLun & VALID_LUN) << 8) | pSensorInfo->SensorNumber),  &SensorReading,BMCInst);	/* Multi-LUN support */
@@ -1872,7 +1872,7 @@ MonitorTSensors (_FAR_ SensorInfo_T*     pSensorInfo,int BMCInst)
  * @param i - Sensor index.
 */
 static void
-MonitorNonTSensors (_FAR_ SensorInfo_T*  pSensorInfo,int BMCInst)
+MonitorNonTSensors (SensorInfo_T*  pSensorInfo,int BMCInst)
 {
     INT16U                      Event, OffsetBit;
     INT8U                       EventOffset;
@@ -1890,7 +1890,7 @@ MonitorNonTSensors (_FAR_ SensorInfo_T*  pSensorInfo,int BMCInst)
     INT16U                  PreviousState = pSensorInfo->PreviousState;
     INT16U                  SensorReading = 0;
     INT8U ReadFlags=0;
-    _FAR_ BMCInfo_t* pBMCInfo = &g_BMCInfo[BMCInst];
+    BMCInfo_t* pBMCInfo = &g_BMCInfo[BMCInst];
     int Override = 0;
 
         /* Get Sensor Reading from SP only if it not a settable sensor */
@@ -1920,8 +1920,8 @@ MonitorNonTSensors (_FAR_ SensorInfo_T*  pSensorInfo,int BMCInst)
 
 	        if ((Override == 0) || (g_PDKHandle[PDK_SENSOR_OVERRIDE] == NULL))
 	        {
-                    _FAR_ FullSensorRec_T*      sfs=NULL;
-                    _FAR_ CompactSensorRec_T*   scs=NULL;
+                    FullSensorRec_T*      sfs=NULL;
+                    CompactSensorRec_T*   scs=NULL;
 
                     OrgSensorValue = pSensorInfo->SensorReading;
                     /* Call PreMonitorSensor and skip default sensor reading if it returns -1 or non zero */
@@ -1936,7 +1936,7 @@ MonitorNonTSensors (_FAR_ SensorInfo_T*  pSensorInfo,int BMCInst)
                         {
                             if (FULL_SDR_REC==pSensorInfo->SDRRec->Type)
                     	    {
-                            	sfs = (_FAR_ FullSensorRec_T*)pSensorInfo->SDRRec;
+                            	sfs = (FullSensorRec_T*)pSensorInfo->SDRRec;
                         	if (sfs->OwnerID != pBMCInfo->NMConfig.NMDevSlaveAddress)
                         	{
 				                    pSensorInfo->Err  = IPMI_HAL_GET_SENSOR_READING ((((pSensorInfo->SensorOwnerLun & VALID_LUN) << 8) | pSensorInfo->SensorNumber),  &SensorReading,BMCInst);	/* Multi-LUN support */
@@ -1979,7 +1979,7 @@ MonitorNonTSensors (_FAR_ SensorInfo_T*  pSensorInfo,int BMCInst)
                     	    }
                     	    else if (COMPACT_SDR_REC==pSensorInfo->SDRRec->Type)
                     	    {
-                        	scs = (_FAR_ CompactSensorRec_T*)pSensorInfo->SDRRec;
+                        	scs = (CompactSensorRec_T*)pSensorInfo->SDRRec;
                         	if (scs->OwnerID != pBMCInfo->NMConfig.NMDevSlaveAddress)
                         	{
                                 pSensorInfo->Err  = IPMI_HAL_GET_SENSOR_READING ((((pSensorInfo->SensorOwnerLun & VALID_LUN) << 8) | pSensorInfo->SensorNumber),  &SensorReading,BMCInst);	/* Multi-LUN support */
@@ -2341,10 +2341,10 @@ MonitorNonTSensors (_FAR_ SensorInfo_T*  pSensorInfo,int BMCInst)
  *UpdateSysHealthState
 **---------------------------------------------------*/
 static void
-UpdateThresHealthState (_FAR_ SensorInfo_T*     pSensorInfo, INT8U Level, int BMCInst)
+UpdateThresHealthState (SensorInfo_T*     pSensorInfo, INT8U Level, int BMCInst)
 {
     INT8U Status;
-    _FAR_ BMCInfo_t* pBMCInfo = &g_BMCInfo[BMCInst];
+    BMCInfo_t* pBMCInfo = &g_BMCInfo[BMCInst];
     /* Calculate Status */
     Status = (Level + 1) / 2;
     if (Status > HEALTH_STATUS_NR)
@@ -2439,12 +2439,12 @@ UpdateThresHealthState (_FAR_ SensorInfo_T*     pSensorInfo, INT8U Level, int BM
 static void
 UpdateOverallHealthState (int BMCInst)
 {
-    _FAR_ INT8U* pHealthSt = (_FAR_ INT8U*)&(BMC_GET_SHARED_MEM (BMCInst)->HealthState);
+    INT8U* pHealthSt = (INT8U*)&(BMC_GET_SHARED_MEM (BMCInst)->HealthState);
     int          i;
-    _FAR_ BMCInfo_t* pBMCInfo = &g_BMCInfo[BMCInst];
+    BMCInfo_t* pBMCInfo = &g_BMCInfo[BMCInst];
 
     /* Get Individual Status */
-    _fmemcpy (pHealthSt, (_FAR_ INT8U*)&pBMCInfo->SenConfig.HealthState, sizeof (HealthState_T));
+    _fmemcpy (pHealthSt, (INT8U*)&pBMCInfo->SenConfig.HealthState, sizeof (HealthState_T));
 
     pHealthSt [0] = HEALTH_STATUS_OK;
     /*Get Overall Status */
@@ -2482,7 +2482,7 @@ UpdateOverallHealthState (int BMCInst)
     }
 
     /*Reinitialise Status */
-    _fmemset ((_FAR_ INT8U*)&pBMCInfo->SenConfig.HealthState, 0, sizeof (HealthState_T));
+    _fmemset ((INT8U*)&pBMCInfo->SenConfig.HealthState, 0, sizeof (HealthState_T));
 
     return;
 }
@@ -2498,7 +2498,7 @@ GenerateDeassertionEvent(INT16U EventsToRearm, SensorInfo_T* pSensorInfo,int BMC
     INT8U     EventMsg [EVENT_MSG_LENGTH];
     INT8U 	EventData3, offset, ReadableThreshMask;
     INT8U     NonRecoverableHigh =0, NonRecoverableLow=0, CriticalHigh=0, CriticalLow=0, WarningHigh=0, WarningLow =0;
-    _FAR_ BMCInfo_t* pBMCInfo = &g_BMCInfo[BMCInst];
+    BMCInfo_t* pBMCInfo = &g_BMCInfo[BMCInst];
 
     EventMsg [0] = pBMCInfo->IpmiConfig.BMCSlaveAddr;
     EventMsg [1] = (pSensorInfo->SensorOwnerLun & VALID_LUN);
@@ -2638,10 +2638,10 @@ SM_ReArmSensor(ReArmSensorReq_T* pReArmSensorReq,int BMCInst)
     INT8U       i, SensorNum;
     INT16U      EventsToRearm=0, CurrentState, Tmp;
     SensorInfo_T *pSensorInfo;
-    _FAR_ BMCInfo_t* pBMCInfo = &g_BMCInfo[BMCInst];
+    BMCInfo_t* pBMCInfo = &g_BMCInfo[BMCInst];
     //    GetSensorEventEnableRes_T SenEventEnable;
     SensorNum = pReArmSensorReq->SensorNum;
-    SensorSharedMem_T* pSMSharedMem = (_FAR_ SensorSharedMem_T*)&g_BMCInfo[BMCInst].SensorSharedMem;
+    SensorSharedMem_T* pSMSharedMem = (SensorSharedMem_T*)&g_BMCInfo[BMCInst].SensorSharedMem;
 
     OS_THREAD_MUTEX_ACQUIRE(&pBMCInfo->m_hSMSharedMemMutex, SHARED_MEM_TIMEOUT);
     // If the Init Agent is initiating the rearm, set the global flag so that
@@ -2825,7 +2825,7 @@ ProcessSMMessages(int BMCInst)
 {
     static bool s_bRearmAllPending = FALSE;
     static ReArmSensorReq_T    ReArmSensorReq;
-    _FAR_ MsgPkt_T Msg;
+    MsgPkt_T Msg;
     bool  exit = FALSE;
 
     do
@@ -2899,7 +2899,7 @@ ProcessSMMessages(int BMCInst)
  * *@brief Sends the signal to adivser according to the configuration done
  * *@param Sel Record,BMCInstance Value
  * */
-static void SendSignalToAdviser(_NEAR_ SELEventRecord_T *pSelRecord,int BMCInst)
+static void SendSignalToAdviser(SELEventRecord_T *pSelRecord,int BMCInst)
 {
     INT8U EventLevel;
     BMCInfo_t *pBMCInfo = &g_BMCInfo[BMCInst];
@@ -3023,9 +3023,9 @@ static int SwapSensorThresholds (int BMCInst, INT8U SensorNum, INT8U OwnerLUN, I
 {
 	FILE *sensorfp;
 	SensorThresholds SensorRecord;
-	_FAR_ SensorSharedMem_T*  pSenSharedMem;
-	_FAR_ BMCInfo_t* pBMCInfo = &g_BMCInfo[BMCInst];
-	pSenSharedMem = (_FAR_ SensorSharedMem_T*)&pBMCInfo->SensorSharedMem;
+	SensorSharedMem_T*  pSenSharedMem;
+	BMCInfo_t* pBMCInfo = &g_BMCInfo[BMCInst];
+	pSenSharedMem = (SensorSharedMem_T*)&pBMCInfo->SensorSharedMem;
 	char SensorFileName[MAX_SEN_NAME_SIZE];
     INT16U LUNSensorNum;
 	

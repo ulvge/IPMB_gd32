@@ -27,15 +27,15 @@
 
 #define BIOS_FLAG_BIT 32
 
-extern int AMIGetBiosCode (_NEAR_ INT8U* pReq, INT32U ReqLen, _NEAR_ INT8U* pRes, int BMCInst);
+extern int AMIGetBiosCode (INT8U* pReq, INT32U ReqLen, INT8U* pRes, int BMCInst);
 
-extern int AMISendToBios (_NEAR_ INT8U* pReq, INT32U ReqLen, _NEAR_ INT8U* pRes, int BMCInst);
-extern int AMIGetBiosCommand (_NEAR_ INT8U* pReq, INT32U ReqLen, _NEAR_ INT8U* pRes, int BMCInst);
-extern int AMISetBiosResponse (_NEAR_ INT8U* pReq, INT32U ReqLen, _NEAR_ INT8U* pRes, int BMCInst);
-extern int AMIGetBiosResponse (_NEAR_ INT8U* pReq, INT32U ReqLen, _NEAR_ INT8U* pRes, int BMCInst);
-extern int AMISetBiosFlag (_NEAR_ INT8U* pReq, INT32U ReqLen, _NEAR_ INT8U* pRes, int BMCInst);
-extern int AMIGetBiosFlag (_NEAR_ INT8U* pReq, INT32U ReqLen, _NEAR_ INT8U* pRes, int BMCInst);
-extern int AMIPLDMBIOSMsg(_NEAR_ INT8U *pReq,INT32U ReqLen, _NEAR_ INT8U* pRes, int BMCInst);
+extern int AMISendToBios (INT8U* pReq, INT32U ReqLen, INT8U* pRes, int BMCInst);
+extern int AMIGetBiosCommand (INT8U* pReq, INT32U ReqLen, INT8U* pRes, int BMCInst);
+extern int AMISetBiosResponse (INT8U* pReq, INT32U ReqLen, INT8U* pRes, int BMCInst);
+extern int AMIGetBiosResponse (INT8U* pReq, INT32U ReqLen, INT8U* pRes, int BMCInst);
+extern int AMISetBiosFlag (INT8U* pReq, INT32U ReqLen, INT8U* pRes, int BMCInst);
+extern int AMIGetBiosFlag (INT8U* pReq, INT32U ReqLen, INT8U* pRes, int BMCInst);
+extern int AMIPLDMBIOSMsg(INT8U *pReq,INT32U ReqLen, INT8U* pRes, int BMCInst);
 
 
 

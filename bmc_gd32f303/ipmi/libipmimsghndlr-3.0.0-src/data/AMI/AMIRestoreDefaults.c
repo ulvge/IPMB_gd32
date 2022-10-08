@@ -60,7 +60,7 @@ static const INT8U ManageBMCConfigParamLength[] = {
                             63,
 };
 
-int AMIRestoreDefaults(_NEAR_ INT8U* pReq, INT32U ReqLen, _NEAR_ INT8U* pRes,int BMCInst)
+int AMIRestoreDefaults(INT8U* pReq, INT32U ReqLen, INT8U* pRes,int BMCInst)
 {
     RestartService_T Service;
     INT8U curchannel;
@@ -114,7 +114,7 @@ end:
     return sizeof(*pRes);
 }
 
-int AMISetBackupFlag(_NEAR_ INT8U* pReq, INT32U ReqLen, _NEAR_ INT8U* pRes,int BMCInst)
+int AMISetBackupFlag(INT8U* pReq, INT32U ReqLen, INT8U* pRes,int BMCInst)
 {
 	SetBackupFlagReq_T* pBackupFlagReq  =  ( SetBackupFlagReq_T* ) pReq;
 	SetBackupFlagRes_T* pBackupFlagRes  =  ( SetBackupFlagRes_T* ) pRes;
@@ -209,7 +209,7 @@ int AMISetBackupFlag(_NEAR_ INT8U* pReq, INT32U ReqLen, _NEAR_ INT8U* pRes,int B
 
 	return sizeof(SetBackupFlagRes_T);
 }
-int AMIGetBackupFlag(_NEAR_ INT8U* pReq, INT32U ReqLen, _NEAR_ INT8U* pRes,int BMCInst)
+int AMIGetBackupFlag(INT8U* pReq, INT32U ReqLen, INT8U* pRes,int BMCInst)
 {
     GetBackupConfigRes_T* pGetBackupConfigRes = (GetBackupConfigRes_T*) pRes;
     GetBackupConfigReq_T* pGetBackupConfigReq = (GetBackupConfigReq_T*) pReq;
@@ -311,7 +311,7 @@ int AMIGetBackupFlag(_NEAR_ INT8U* pReq, INT32U ReqLen, _NEAR_ INT8U* pRes,int B
      return sizeof(GetBackupConfigRes_T);
 }
 
-int AMIManageBMCConfig(_NEAR_ INT8U* pReq, INT32U ReqLen, _NEAR_ INT8U* pRes,int BMCInst)
+int AMIManageBMCConfig(INT8U* pReq, INT32U ReqLen, INT8U* pRes,int BMCInst)
 {
     AMIManageBMCConfigReq_T* pAMIManageBMCConfigReq  =  ( AMIManageBMCConfigReq_T* ) pReq;
     AMIManageBMCConfigRes_T* pAMIManageBMCConfigRes  =  ( AMIManageBMCConfigRes_T* ) pRes;
@@ -442,7 +442,7 @@ int AMIManageBMCConfig(_NEAR_ INT8U* pReq, INT32U ReqLen, _NEAR_ INT8U* pRes,int
     }
 }
 
-int AMIGetPendStatus(_NEAR_ INT8U *pReq,INT32U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst)
+int AMIGetPendStatus(INT8U *pReq,INT32U ReqLen, INT8U* pRes,int BMCInst)
 {
     AMIGetPendStatusReq_T* pAMIGetPendStatusReq = ( AMIGetPendStatusReq_T* ) pReq;
     AMIGetPendStatusRes_T* pAMIGetPendStatusRes = ( AMIGetPendStatusRes_T* ) pRes;

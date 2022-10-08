@@ -42,14 +42,14 @@
 
 #if FRU_DEVICE == 1
 
-//extern _FAR_ INT8U     g_SelfTestByte;
-//extern  _FAR_  INT8U g_FRUInfo[MAX_PDK_FRU_SUPPORTED];
+//extern INT8U     g_SelfTestByte;
+//extern   INT8U g_FRUInfo[MAX_PDK_FRU_SUPPORTED];
 
 /*-----------------------------------------------------
  * GetFRUAreaInfo
  *----------------------------------------------------*/
 int
-GetFRUAreaInfo (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst)
+GetFRUAreaInfo (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst)
 {
     int Ret=0;
     BMCInfo_t *pBMCInfo = &g_BMCInfo[BMCInst];
@@ -70,7 +70,7 @@ GetFRUAreaInfo (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int 
  * Read FRU Data
  *----------------------------------------------------*/
 int
-ReadFRUData (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst)
+ReadFRUData (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst)
 {
     int Ret=0;
     BMCInfo_t *pBMCInfo = &g_BMCInfo[BMCInst];
@@ -91,7 +91,7 @@ ReadFRUData (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMC
  * Write FRU Data
  *----------------------------------------------------*/
 int
-WriteFRUData (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst)
+WriteFRUData (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst)
 {
     int Ret=0;
     BMCInfo_t *pBMCInfo = &g_BMCInfo[BMCInst];
@@ -117,7 +117,7 @@ InitFRU (int BMCInst)
     INT8U Frudata[64];
     INT8U Checksum=0;
     int ret=0,i,j;
-    _FAR_ BMCInfo_t* pBMCInfo = &g_BMCInfo[BMCInst];
+    BMCInfo_t* pBMCInfo = &g_BMCInfo[BMCInst];
     //pBMCInfo->FRUConfig.total_frus = 1;
 
     for(i=0;pBMCInfo->FRUConfig.FRUInfo[i]!=0xff;i++)

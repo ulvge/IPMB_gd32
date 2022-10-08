@@ -380,7 +380,7 @@ int GetPHYConfig(char* ifcName, PHYConfig_T* phyCfg, unsigned short* mtuSize)
 
 void GetUpdatedCFG(DELAYEDLANRESTART_NWDATA *pDelyedLAN_NwCfgs, INT8U Ethindex, INT8U Flag_SetDNS, int BMCInst)
 {
-	_FAR_ BMCInfo_t* pBMCInfo = &g_BMCInfo[BMCInst];
+	BMCInfo_t* pBMCInfo = &g_BMCInfo[BMCInst];
 	char IfcName[16],IfName[16];
 	int i,j,k;
 	INT8U netindex = 0xFF,EthIndex =0xff;
@@ -718,7 +718,7 @@ void* PendCmdTask (void *pArg)
     PendCmdHndlrTbl_T       *pPendTblEntry = NULL;
     INT8U EthIndex,netindex = 0xFF,Ethindex = 0xff,i,Channel = 1,Flag_SetDNS = 0;
     char IfcName[16];
-    _FAR_ BMCInfo_t* pBMCInfo = &g_BMCInfo[BMCInst];
+    BMCInfo_t* pBMCInfo = &g_BMCInfo[BMCInst];
     unsigned long configured_timeout = 0;
     unsigned char IsLANCmd = 0;
     INT8S   Ifcname[IFNAMSIZ];
@@ -1178,7 +1178,7 @@ int PendSetVLANIfcID(INT8U* pData,INT32U DataLen,INT8U EthIndex,int BMCInst)
     INT16U PriorityLevel[MAX_LAN_CHANNELS]= {0};
     int retValue = 0,Index=0;
     char Ifcname[16];
-    _FAR_ BMCInfo_t* pBMCInfo = &g_BMCInfo[BMCInst];
+    BMCInfo_t* pBMCInfo = &g_BMCInfo[BMCInst];
     SERVICE_CONF_STRUCT g_serviceconf;
 
     memset(Ifcname,0,sizeof(Ifcname));
@@ -1289,7 +1289,7 @@ int PendDeConfigVLANInterface(INT8U* pData, INT32U DataLen,INT8U EthIndex,int BM
     char Ifcname[16] = {0};
     char tmpIfcname[16] = {0};
     SERVICE_CONF_STRUCT g_serviceconf;
-    _FAR_ BMCInfo_t* pBMCInfo = &g_BMCInfo[BMCInst];
+    BMCInfo_t* pBMCInfo = &g_BMCInfo[BMCInst];
 
     //nwReadNWCfg(&NWConfig, EthIndex);
     nwReadNWCfg_v4_v6( &NWConfig, &NWConfig6, EthIndex,g_corefeatures.global_ipv6);
@@ -1386,7 +1386,7 @@ int PendSetVLANPriority(INT8U* pData, INT32U DataLen,INT8U EthIndex,int BMCInst)
     INT16U vlanID=0;
     char IfcName[16];
     memset(IfcName,0,sizeof(IfcName));
-    _FAR_ BMCInfo_t* pBMCInfo = &g_BMCInfo[BMCInst];
+    BMCInfo_t* pBMCInfo = &g_BMCInfo[BMCInst];
     NWCFG_STRUCT* NWConfig = (NWCFG_STRUCT *)pData;
     if(GetIfcName(EthIndex, IfcName,BMCInst) != 0)
     {
@@ -1414,7 +1414,7 @@ int PendSetVLANPriority(INT8U* pData, INT32U DataLen,INT8U EthIndex,int BMCInst)
 int PendSetIPv4Headers(INT8U* pData, INT32U DataLen,INT8U EthIndex,int BMCInst)
 {
     MsgPkt_T MsgPkt;
-    _FAR_ BMCInfo_t* pBMCInfo = &g_BMCInfo[BMCInst];
+    BMCInfo_t* pBMCInfo = &g_BMCInfo[BMCInst];
 
     /* Send a Mesg Request to LANIFC task to reinitialize the LAN sockets after new VLAN IFC*/
     MsgPkt.Param =LAN_CONFIG_IPV4_HEADER;
@@ -2013,7 +2013,7 @@ static int PendSetIPv6Gateway(INT8U* pData, INT32U DataLen, INT8U EthIndex, int 
 
 static int PendSetDHCPv6TimingConf(INT8U* pData, INT32U DataLen, INT8U EthIndex, int BMCInst)
 {
-    _FAR_ BMCInfo_t* pBMCInfo = &g_BMCInfo[BMCInst];
+    BMCInfo_t* pBMCInfo = &g_BMCInfo[BMCInst];
 
     INT8U Parameter[MAX_SUPPORTED_DHCPV6_TIMING_PARAMS][MAX_DHCPV6_TIMING_PARAM_SIZE]=
                     {
@@ -2121,7 +2121,7 @@ static int PendSetDHCPv6TimingConf(INT8U* pData, INT32U DataLen, INT8U EthIndex,
 static int PendSetSLAACTimingConf(INT8U* pData, INT32U DataLen, INT8U EthIndex, int BMCInst)
 {
 
-    _FAR_ BMCInfo_t* pBMCInfo = &g_BMCInfo[BMCInst];
+    BMCInfo_t* pBMCInfo = &g_BMCInfo[BMCInst];
 
     INT8U Parameter[MAX_SUPPORTED_SLAAC_TIMING_PARAMS][MAX_SLAAC_TIMING_PARAM_SIZE]=
                     {
@@ -2217,7 +2217,7 @@ static int PendSetSLAACTimingConf(INT8U* pData, INT32U DataLen, INT8U EthIndex, 
 static int PendConfigBonding(INT8U * pData, INT32U DataLen, INT8U EthIndex, int BMCInst)
 {
     BondIface*pConfigBond = (BondIface*)pData;
-    _FAR_ BMCInfo_t* pBMCInfo = &g_BMCInfo[BMCInst];
+    BMCInfo_t* pBMCInfo = &g_BMCInfo[BMCInst];
     INT8S   Ifcname[IFNAMSIZ];
     INT8U i,Channel=0,Ethindex=0xff;
     INT16U vlanID[MAX_LAN_CHANNELS]={0};
@@ -2534,7 +2534,7 @@ static int PendSetSpeed(INT8U *pData, INT32U DataLen, INT8U Ethindex,int BMCInst
 {
     PHYConfig_T         *PHYConfig = (PHYConfig_T *)pData;
     char Ifcname[16] = {0};
-    _FAR_ BMCInfo_t* pBMCInfo = &g_BMCInfo[BMCInst];
+    BMCInfo_t* pBMCInfo = &g_BMCInfo[BMCInst];
     BondIface   bond;
     unsigned char Upslave;
     
@@ -2566,7 +2566,7 @@ static int PendSetMTUSize(INT8U *pData, INT32U DataLen, INT8U Ethindex,int BMCIn
 {
     INT16U *MTU_size = (INT16U *)pData;
     char Ifcname[16] = {0};
-    _FAR_ BMCInfo_t* pBMCInfo = &g_BMCInfo[BMCInst];
+    BMCInfo_t* pBMCInfo = &g_BMCInfo[BMCInst];
 
     if(GetIfcName(pBMCInfo->LANConfig.g_ethindex, Ifcname, BMCInst) == -1)
     {
@@ -2583,7 +2583,7 @@ static int PendSetNWPHYRegister(INT8U *pData, INT32U DataLen, INT8U Ethindex,int
 {
     SetPHYReg_T *PHYReg = (SetPHYReg_T *)pData;
     char Ifcname[16] = {0};
-    _FAR_ BMCInfo_t* pBMCInfo = &g_BMCInfo[BMCInst];
+    BMCInfo_t* pBMCInfo = &g_BMCInfo[BMCInst];
     INT16S RegValue = 0;
 
     if(GetIfcName(pBMCInfo->LANConfig.g_ethindex, Ifcname, BMCInst) == -1)
@@ -2822,7 +2822,7 @@ static int ForcefulLANRestart(INT8U *pData, INT32U DataLen, INT8U Ethindex,int B
     UINT8 EthIndex = Ethindex;
     char IFname[16];
     char cmd[64];
-    _FAR_ BMCInfo_t* pBMCInfo = &g_BMCInfo[BMCInst];
+    BMCInfo_t* pBMCInfo = &g_BMCInfo[BMCInst];
     if(1 == pBMCInfo->BondConfig.Enable)
     {
         memset(IFname, 0, sizeof(IFname));
@@ -2890,7 +2890,7 @@ static int PendSetNCSIDetect(INT8U *pData, INT32U DataLen, INT8U Ethindex,int BM
 int PendSetIPv6Headers(INT8U* pData, INT32U DataLen,INT8U EthIndex,int BMCInst)
 {
     MsgPkt_T MsgPkt;
-    _FAR_ BMCInfo_t* pBMCInfo = &g_BMCInfo[BMCInst];
+    BMCInfo_t* pBMCInfo = &g_BMCInfo[BMCInst];
 
     MsgPkt.Param =LAN_CONFIG_IPV6_HEADER;
     MsgPkt.Channel = pBMCInfo->LANConfig.g_ethindex;

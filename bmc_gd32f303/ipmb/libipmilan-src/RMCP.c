@@ -73,16 +73,16 @@
 IfcType_T IfcType = LAN_IFC;
 
 /*** Prototype Declaration ***/
-static int   ProcIPMIReq        (_FAR_ SessionInfo_T*  pSessionInfo, INT8U Payload, MiscParams_T *pParams,INT8U Channel,int BMCInst);
-static BOOL  ValidateRMCPHdr    (_NEAR_ RMCPHdr_T* pRMCPHdr);
+static int   ProcIPMIReq        (SessionInfo_T*  pSessionInfo, INT8U Payload, MiscParams_T *pParams,INT8U Channel,int BMCInst);
+static BOOL  ValidateRMCPHdr    (RMCPHdr_T* pRMCPHdr);
 static BOOL  ValidateSessionHdr (INT32U SessionID, INT32U SeqNo, int BMCInst);
-static INT8U ProcessPingMsg     (_NEAR_ RMCPHdr_T* pRMCPReq,
-                                 _NEAR_ RMCPHdr_T* pRMCPRes,int BMCInst);
-static BOOL  ValidateAuthCode   (_NEAR_ INT8U* pAuthCode, _FAR_ INT8U* pPassword,
-                                 _NEAR_ SessionHdr_T* pSessionHdr,
-                                 _NEAR_ IPMIMsgHdr_T* pIPMIMsg);
-static int   Proc20Payload      (_NEAR_ RMCPHdr_T* pRMCPReq,
-                                 _NEAR_ RMCPHdr_T* pRMCPRes, MiscParams_T *pParams, INT8U Channel, int BMCInst);
+static INT8U ProcessPingMsg     (RMCPHdr_T* pRMCPReq,
+                                 RMCPHdr_T* pRMCPRes,int BMCInst);
+static BOOL  ValidateAuthCode   (INT8U* pAuthCode, INT8U* pPassword,
+                                 SessionHdr_T* pSessionHdr,
+                                 IPMIMsgHdr_T* pIPMIMsg);
+static int   Proc20Payload      (RMCPHdr_T* pRMCPReq,
+                                 RMCPHdr_T* pRMCPRes, MiscParams_T *pParams, INT8U Channel, int BMCInst);
 
 
 /*** Local typedefs ***/
@@ -103,8 +103,8 @@ typedef struct
  * @param pRes   - Response message.
  * @return 0 if success, -1 if error.
 **/
-typedef int (*pPayloadHndlr_T) (_NEAR_ INT8U* pReq, INT8U ReqLen,
-                                _NEAR_ INT8U* pRes, MiscParams_T *pParams,INT8U Channel, int BMCInst);
+typedef int (*pPayloadHndlr_T) (INT8U* pReq, INT8U ReqLen,
+                                INT8U* pRes, MiscParams_T *pParams,INT8U Channel, int BMCInst);
 
 /**
  * @struct PayloadTbl_T;
@@ -166,23 +166,23 @@ int RmcpSeqNumValidation(SessionInfo_T* pSessionInfo, INT32U SessionSeqNum, IPMI
  * ProcessRMCPReq
  *-------------------------------------------*/
 INT32U
-ProcessRMCPReq(_NEAR_ RMCPHdr_T* pRMCPReq, _NEAR_ RMCPHdr_T* pRMCPRes, MiscParams_T *pParams,INT8U Channel, int BMCInst)
+ProcessRMCPReq(RMCPHdr_T* pRMCPReq, RMCPHdr_T* pRMCPRes, MiscParams_T *pParams,INT8U Channel, int BMCInst)
 {
-   _FAR_   SessionInfo_T*  pSessionInfo;
-    // _NEAR_  IPMIMsgHdr_T*   pIPMIMsgReq;
-    // _NEAR_  IPMIMsgHdr_T*   pIPMIMsgRes;
-    _NEAR_  MsgPkt_T   pIPMIMsgReq;
-    _NEAR_  MsgPkt_T   pIPMIMsgRes;
-    _NEAR_  INT8U*          pReqMsgAuthCode;
-    _NEAR_  INT8U*          pResMsgAuthCode;
-    _NEAR_  SessionHdr_T*   pReqSessionHdr = (_NEAR_ SessionHdr_T*)(pRMCPReq + 1);
-    _NEAR_  SessionHdr_T*   pResSessionHdr = (_NEAR_ SessionHdr_T*)(pRMCPRes + 1);
+     SessionInfo_T*  pSessionInfo;
+    // IPMIMsgHdr_T*   pIPMIMsgReq;
+    // IPMIMsgHdr_T*   pIPMIMsgRes;
+    MsgPkt_T   pIPMIMsgReq;
+    MsgPkt_T   pIPMIMsgRes;
+    INT8U*          pReqMsgAuthCode;
+    INT8U*          pResMsgAuthCode;
+    SessionHdr_T*   pReqSessionHdr = (SessionHdr_T*)(pRMCPReq + 1);
+    SessionHdr_T*   pResSessionHdr = (SessionHdr_T*)(pRMCPRes + 1);
             INT8U           IPMIMsgLen,AuthType;
             INT32U          SessionID;
             INT32U          SessionSeqNum;
             INT32U          ResLen, IPMIMsgResLen;
-    _FAR_ BMCInfo_t*        pBMCInfo = &g_BMCInfo;
-    _FAR_   UserInfo_T*     pUserInfo;
+    BMCInfo_t*        pBMCInfo = &g_BMCInfo;
+      UserInfo_T*     pUserInfo;
 
 	UNUSED(pSessionInfo);
 	UNUSED(pResMsgAuthCode);
@@ -226,24 +226,24 @@ ProcessRMCPReq(_NEAR_ RMCPHdr_T* pRMCPReq, _NEAR_ RMCPHdr_T* pRMCPRes, MiscParam
     
         if (0 == pReqSessionHdr->AuthType)
         {
-            IPMIMsgLen  = (INT8U) (*((_NEAR_ INT8U*)(pReqSessionHdr + 1)));
+            IPMIMsgLen  = (INT8U) (*((INT8U*)(pReqSessionHdr + 1)));
             pIPMIMsgReq.Size = IPMIMsgLen;
             _fmemcpy(pIPMIMsgReq.Data, ((INT8U*)pRMCPReq)+sizeof(RMCPHdr_T)+sizeof(SessionHdr_T)+1, IPMIMsgLen);
             
 
-            // pIPMIMsgReq = (_NEAR_ IPMIMsgHdr_T*) (((_NEAR_ INT8U*)(pReqSessionHdr + 1)) +
+            // pIPMIMsgReq = (IPMIMsgHdr_T*) (((INT8U*)(pReqSessionHdr + 1)) +
             //               sizeof (IPMIMsgLen));
-            // pIPMIMsgRes = (_NEAR_ IPMIMsgHdr_T*) (((_NEAR_ INT8U*)(pResSessionHdr + 1)) +
+            // pIPMIMsgRes = (IPMIMsgHdr_T*) (((INT8U*)(pResSessionHdr + 1)) +
             //               sizeof (IPMIMsgLen));
         }
         else
         {
-            pReqMsgAuthCode = ((_NEAR_ INT8U*)(pReqSessionHdr + 1));
-            pResMsgAuthCode = ((_NEAR_ INT8U*)(pResSessionHdr + 1));
+            pReqMsgAuthCode = ((INT8U*)(pReqSessionHdr + 1));
+            pResMsgAuthCode = ((INT8U*)(pResSessionHdr + 1));
             IPMIMsgLen      = *(pReqMsgAuthCode + AUTH_CODE_LEN);
-            // pIPMIMsgReq     = (_NEAR_ IPMIMsgHdr_T*) (pReqMsgAuthCode + AUTH_CODE_LEN +
+            // pIPMIMsgReq     = (IPMIMsgHdr_T*) (pReqMsgAuthCode + AUTH_CODE_LEN +
             //                   sizeof (IPMIMsgLen));
-            // pIPMIMsgRes     = (_NEAR_ IPMIMsgHdr_T*) (pResMsgAuthCode + AUTH_CODE_LEN +
+            // pIPMIMsgRes     = (IPMIMsgHdr_T*) (pResMsgAuthCode + AUTH_CODE_LEN +
             //                   sizeof (IPMIMsgLen));
 
 
@@ -296,11 +296,11 @@ ProcessRMCPReq(_NEAR_ RMCPHdr_T* pRMCPReq, _NEAR_ RMCPHdr_T* pRMCPRes, MiscParam
         // {
         //     if(pSessionInfo->OutboundSeq == SEQNUM_ROLLOVER)
         //     {
-        //         ((_NEAR_ SessionHdr_T*)pResSessionHdr)->SessionSeqNum = 0x00;
+        //         ((SessionHdr_T*)pResSessionHdr)->SessionSeqNum = 0x00;
         //     }
         //     else
         //     {
-        //         ((_NEAR_ SessionHdr_T*)pResSessionHdr)->SessionSeqNum =
+        //         ((SessionHdr_T*)pResSessionHdr)->SessionSeqNum =
         //                                     pSessionInfo->OutboundSeq++;
         //     }
         // }
@@ -308,8 +308,8 @@ ProcessRMCPReq(_NEAR_ RMCPHdr_T* pRMCPReq, _NEAR_ RMCPHdr_T* pRMCPRes, MiscParam
         /* Fill Authentication Code */
         // if (0 != pReqSessionHdr->AuthType)
         // {
-        //     // pResMsgAuthCode = (_NEAR_ INT8U*)(pResSessionHdr + 1);
-        //     // pIPMIMsgRes     = (_NEAR_ IPMIMsgHdr_T*)((_NEAR_ INT8U*)(pResSessionHdr + 1) +
+        //     // pResMsgAuthCode = (INT8U*)(pResSessionHdr + 1);
+        //     // pIPMIMsgRes     = (IPMIMsgHdr_T*)((INT8U*)(pResSessionHdr + 1) +
         //     //                   AUTH_CODE_LEN + sizeof (IPMIMsgLen));
         //     // IPMIMsgResLen      = AUTH_CODE_LEN + sizeof (IPMIMsgLen) + pBMCInfo->LANConfig.MsgRes.Size;
         //     // /* Fill IPMI Message */
@@ -321,12 +321,12 @@ ProcessRMCPReq(_NEAR_ RMCPHdr_T* pRMCPReq, _NEAR_ RMCPHdr_T* pRMCPRes, MiscParam
         // }
         // else
         // {
-        //     pIPMIMsgRes = (_NEAR_ IPMIMsgHdr_T*)((_NEAR_ INT8U*)(pResSessionHdr + 1) +
+        //     pIPMIMsgRes = (IPMIMsgHdr_T*)((INT8U*)(pResSessionHdr + 1) +
         //                   sizeof (IPMIMsgLen));
         //     IPMIMsgResLen  = pBMCInfo->LANConfig.MsgRes.Size + sizeof (IPMIMsgLen);
         //     /* Fill IPMI Message */
         //     _fmemcpy (pIPMIMsgRes, pBMCInfo->LANConfig.MsgRes.Data, pBMCInfo->LANConfig.MsgRes.Size);
-        //     *((_NEAR_ INT8U*) (pResSessionHdr + 1)) = pBMCInfo->LANConfig.MsgRes.Size;
+        //     *((INT8U*) (pResSessionHdr + 1)) = pBMCInfo->LANConfig.MsgRes.Size;
         // }
 
         // if( (NETFN_APP == (pIPMIMsgReq->NetFnLUN >> 2)) && (CMD_GET_SESSION_CHALLENGE == pIPMIMsgReq->Cmd) && 
@@ -350,7 +350,7 @@ ProcessRMCPReq(_NEAR_ RMCPHdr_T* pRMCPReq, _NEAR_ RMCPHdr_T* pRMCPRes, MiscParam
  * @return 0 if success, -1 if error.
 **/
 __attribute__((unused)) static int
-ProcIPMIReq (_FAR_  SessionInfo_T*  pSessionInfo, INT8U Payload, MiscParams_T *pParams,INT8U Channel, int BMCInst)
+ProcIPMIReq ( SessionInfo_T*  pSessionInfo, INT8U Payload, MiscParams_T *pParams,INT8U Channel, int BMCInst)
 {
 
     return 0;
@@ -363,7 +363,7 @@ ProcIPMIReq (_FAR_  SessionInfo_T*  pSessionInfo, INT8U Payload, MiscParams_T *p
  * @return TRUE if valid, FALSE if invalid.
 **/
 static BOOL
-ValidateRMCPHdr (_NEAR_ RMCPHdr_T* pRMCPHdr)
+ValidateRMCPHdr (RMCPHdr_T* pRMCPHdr)
 {
     /* If RMCP Packet is NULL */
     if (pRMCPHdr == NULL)
@@ -410,11 +410,11 @@ ValidateSessionHdr (INT32U SessionID, INT32U SeqNo, int BMCInst)
  * @return the response length.
 **/
 static INT8U
-ProcessPingMsg (_NEAR_ RMCPHdr_T* pRMCPReq, _NEAR_ RMCPHdr_T* pRMCPRes,int BMCInst)
+ProcessPingMsg (RMCPHdr_T* pRMCPReq, RMCPHdr_T* pRMCPRes,int BMCInst)
 {
-    _NEAR_ RMCPPingHdr_T* pReqPingHdr = (_NEAR_ RMCPPingHdr_T*)(pRMCPReq + 1);
-    _NEAR_ RMCPPingHdr_T* pResPingHdr = (_NEAR_ RMCPPingHdr_T*)(pRMCPRes + 1);
-    _FAR_ BMCInfo_t*        pBMCInfo = &g_BMCInfo;
+    RMCPPingHdr_T* pReqPingHdr = (RMCPPingHdr_T*)(pRMCPReq + 1);
+    RMCPPingHdr_T* pResPingHdr = (RMCPPingHdr_T*)(pRMCPRes + 1);
+    BMCInfo_t*        pBMCInfo = &g_BMCInfo;
 							 
 	UNUSED(pBMCInfo);
     if (PRESENCE_PING_MSGTYPE != pReqPingHdr->MsgType) { return 0; }
@@ -429,11 +429,11 @@ ProcessPingMsg (_NEAR_ RMCPHdr_T* pRMCPReq, _NEAR_ RMCPHdr_T* pRMCPRes,int BMCIn
 
     /* Fill Response Data */
     _fmemset (pResPingHdr + 1, 0, pResPingHdr->DataLen);
-    *((_NEAR_ INT8U*)(pResPingHdr + 1) + 8) = 0x81;
-    *((_NEAR_ INT8U*)(pResPingHdr + 1) + 4) = PING_IPMI_15_SUPPORT;
+    *((INT8U*)(pResPingHdr + 1) + 8) = 0x81;
+    *((INT8U*)(pResPingHdr + 1) + 4) = PING_IPMI_15_SUPPORT;
 
 #if IPMI20_SUPPORT == 1
-    *((_NEAR_ INT8U*)(pResPingHdr + 1) + 4) |= PING_IPMI_20_SUPPORT;
+    *((INT8U*)(pResPingHdr + 1) + 4) |= PING_IPMI_20_SUPPORT;
 #endif
 
     /*Update the OEM IANA Number for DCMI Discovery (36465 = Data Center Manageability Forum,Spec .1.5)*/
@@ -441,8 +441,8 @@ ProcessPingMsg (_NEAR_ RMCPHdr_T* pRMCPReq, _NEAR_ RMCPHdr_T* pRMCPRes,int BMCIn
     // {
     //     if(pBMCInfo->IpmiConfig.DCMISupport == 1)
     //     {
-    //         *((_NEAR_ INT8U*)(pResPingHdr + 1) + 2) = 0x8E;
-    //         *((_NEAR_ INT8U*)(pResPingHdr + 1) + 3) = 0x71;
+    //         *((INT8U*)(pResPingHdr + 1) + 2) = 0x8E;
+    //         *((INT8U*)(pResPingHdr + 1) + 3) = 0x71;
     //     }
     // }
 
@@ -459,8 +459,8 @@ ProcessPingMsg (_NEAR_ RMCPHdr_T* pRMCPReq, _NEAR_ RMCPHdr_T* pRMCPRes,int BMCIn
  * @return TRUE if valid, FALSE if invalid.
 **/
 __attribute__((unused)) static BOOL
-ValidateAuthCode (_NEAR_ INT8U* pAuthCode, _FAR_ INT8U* pPassword,
-                  _NEAR_ SessionHdr_T* pSessionHdr, _NEAR_ IPMIMsgHdr_T* pIPMIMsg)
+ValidateAuthCode (INT8U* pAuthCode, INT8U* pPassword,
+                  SessionHdr_T* pSessionHdr, IPMIMsgHdr_T* pIPMIMsg)
 {
 
     return true;
@@ -472,8 +472,8 @@ ValidateAuthCode (_NEAR_ INT8U* pAuthCode, _FAR_ INT8U* pPassword,
  * Frame20Payload
  *-------------------------------------------*/
 int
-Frame20Payload (INT8U PayloadType, _NEAR_ RMCPHdr_T* pRMCPPkt,
-                _FAR_ INT8U* pPayload,  INT32U PayloadLen, _FAR_
+Frame20Payload (INT8U PayloadType, RMCPHdr_T* pRMCPPkt,
+                INT8U* pPayload,  INT32U PayloadLen, _FAR_
                 SessionInfo_T* pSessionInfo, int BMCInst)
 {
 
@@ -494,19 +494,19 @@ int RMCPplusSeqNumValidation(SessionInfo_T * pSessionInfo,INT32U SessionSeqNum)
  * @return 0 if success, -1 if error.
 **/
 static int
-Proc20Payload (_NEAR_ RMCPHdr_T* pRMCPReq, _NEAR_ RMCPHdr_T* pRMCPRes, MiscParams_T *pParams,INT8U Channel, int BMCInst)
+Proc20Payload (RMCPHdr_T* pRMCPReq, RMCPHdr_T* pRMCPRes, MiscParams_T *pParams,INT8U Channel, int BMCInst)
 {
-    _NEAR_ SessionHdr2_T*  pReqSession2Hdr = (_NEAR_ SessionHdr2_T*)(pRMCPReq + 1);
-    _NEAR_ SessionHdr2_T*  pResSession2Hdr = (_NEAR_ SessionHdr2_T*)(pRMCPRes + 1);
-    _NEAR_ INT8U*          pReq  = (_NEAR_ INT8U *)(pReqSession2Hdr + 1);
-    _NEAR_ INT8U*          pRes  = (_NEAR_ INT8U *)(pResSession2Hdr + 1);
-    _FAR_  SessionInfo_T*  pSessionInfo = NULL;
-    _NEAR_ INT8U*          pIntPad;
-    _NEAR_ INT8U*          pConfHdr;
-    _NEAR_ INT8U*          pConfPayld;
-    _NEAR_ INT8U*          pReqMsgAuthCode;
-    _FAR_  UserInfo_T*     pUserInfo;
-    _FAR_  BMCInfo_t*      pBMCInfo = &g_BMCInfo;
+    SessionHdr2_T*  pReqSession2Hdr = (SessionHdr2_T*)(pRMCPReq + 1);
+    SessionHdr2_T*  pResSession2Hdr = (SessionHdr2_T*)(pRMCPRes + 1);
+    INT8U*          pReq  = (INT8U *)(pReqSession2Hdr + 1);
+    INT8U*          pRes  = (INT8U *)(pResSession2Hdr + 1);
+     SessionInfo_T*  pSessionInfo = NULL;
+    INT8U*          pIntPad;
+    INT8U*          pConfHdr;
+    INT8U*          pConfPayld;
+    INT8U*          pReqMsgAuthCode;
+     UserInfo_T*     pUserInfo;
+     BMCInfo_t*      pBMCInfo = &g_BMCInfo;
            INT8U           Payload, IntPadLen, ComputedAuthCode [25];
            INT16U          IPMIMsgLen, AuthCodeLen, ConfPayldLen;
            INT32U          SessionID;

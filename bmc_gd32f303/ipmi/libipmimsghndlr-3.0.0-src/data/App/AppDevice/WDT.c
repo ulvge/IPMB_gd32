@@ -64,7 +64,7 @@
 #define PRE_TIMEOUT_MESSAGING_INTR      0x30
 
 /*** Global variables **/
-_FAR_ WDTTmrMgr_T   g_WDTTmrMgr;
+WDTTmrMgr_T   g_WDTTmrMgr;
 
 /*----------------------------------------------------------------
  * WatchDog2 Event Offsets
@@ -92,7 +92,7 @@ WDTTimerTask (void *pArg)
 {
     int *inst = (int*) pArg;
     int BMCInst = *inst;
-    _FAR_ BMCInfo_t* pBMCInfo = &g_BMCInfo[BMCInst];
+    BMCInfo_t* pBMCInfo = &g_BMCInfo[BMCInst];
     INT32U WDTInterval = 0,WDTPreInterval = 0,jiffycmp = 0;
     long long jiffyvalue=0,jiffystart = 0;
     unsigned long Hertz = sysconf(_SC_CLK_TCK);
@@ -291,8 +291,8 @@ WDTTmrAction (INT8U TmrAction, int BMCInst)
     int i = 0;
     INT8U  u8EventOffset;
     INT8U  readFlags = 0;
-    _FAR_ BMCInfo_t* pBMCInfo = &g_BMCInfo[BMCInst];
-    _FAR_ SensorInfo_T*        pSensorInfo;    
+    BMCInfo_t* pBMCInfo = &g_BMCInfo[BMCInst];
+    SensorInfo_T*        pSensorInfo;    
     SensorSharedMem_T*    pSMSharedMem;
 
     if (TmrAction & 0x70)
@@ -424,7 +424,7 @@ WDTTmrAction (INT8U TmrAction, int BMCInst)
         SetWD2SensorReading((1 << u8EventOffset), g_WDTTmrMgr.WDTTmr.TmrUse,g_WDTTmrMgr.WDTTmr.TmrActions,BMCInst);
 	
 	/* Get the Sensor Shared Memory */
-	pSMSharedMem = (_FAR_ SensorSharedMem_T*)&pBMCInfo->SensorSharedMem;
+	pSMSharedMem = (SensorSharedMem_T*)&pBMCInfo->SensorSharedMem;
 	for (i = 0; i < pBMCInfo->SenConfig.ValidSensorCnt; i++)
 	{	
 	    /* When the SensorType is WatchDog, calling WD2EventLog here to create EventLog instead through SensorMonitor */    

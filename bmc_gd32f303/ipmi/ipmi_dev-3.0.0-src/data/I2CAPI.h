@@ -34,7 +34,7 @@
  *					-1 if failed.
  *----------------------------------------------------------------*/
 extern int API_ReadWriteI2C (INT8U Bus,             INT8U SlaveID,
-	   				       	 INT8U NumWrite, _NEAR_ INT8U* WriteBuf,
-			    		   	 INT8U NumRead,  _NEAR_ INT8U* ReadBuf);
+	   				       	 INT8U NumWrite, INT8U* WriteBuf,
+			    		   	 INT8U NumRead,  INT8U* ReadBuf);
 
 #endif	/* I2CAPI_H */

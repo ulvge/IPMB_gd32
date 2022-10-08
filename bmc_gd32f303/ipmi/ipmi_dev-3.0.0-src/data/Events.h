@@ -37,9 +37,9 @@
  * setting/getting event receivers and sending event messages.
  * @{
 **/
-extern int SetEventReceiver (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst);
-extern int GetEventReceiver (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst);
-extern int PlatformEventMessage (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst);
+extern int SetEventReceiver (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst);
+extern int GetEventReceiver (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst);
+extern int PlatformEventMessage (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst);
 /** @} */
 
 #endif  /* EVENTS_H */

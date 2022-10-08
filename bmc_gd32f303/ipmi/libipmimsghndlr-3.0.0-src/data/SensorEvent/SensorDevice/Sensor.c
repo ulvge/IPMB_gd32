@@ -145,9 +145,9 @@ typedef struct
 } SR_SensorInfo_T;
 
 /*** Global Variables ***/
-//_FAR_ INT8U g_NumThreshSensors;
-//_FAR_ INT8U g_NumNonThreshSensors;
-//_FAR_  INT8U g_FRUInfo[MAX_PDK_FRU_SUPPORTED];
+//INT8U g_NumThreshSensors;
+//INT8U g_NumNonThreshSensors;
+// INT8U g_FRUInfo[MAX_PDK_FRU_SUPPORTED];
 //FRUInfo_T   *m_FRUInfo[MAX_PDK_FRU_SUPPORTED];
 //INT8U m_total_frus=0;
 
@@ -170,18 +170,18 @@ static INT8U IpmiReadingDatConvert2Raw(INT8U sensor_type, INT16U value);
  *---------------------------------------*/
 int InitSensor(int BMCInst)
 {
-	_FAR_ SDRRecHdr_T *sr;
-	_FAR_ FullSensorRec_T *sfs;
-	_FAR_ CompactSensorRec_T *scs;
-	_FAR_ FRUDevLocatorRec_T *sfr;
-	_FAR_ OEM_FRURec_T *sof;
+	SDRRecHdr_T *sr;
+	FullSensorRec_T *sfs;
+	CompactSensorRec_T *scs;
+	FRUDevLocatorRec_T *sfr;
+	OEM_FRURec_T *sof;
 	INT16U SharedRecs = 0;
 	INT8U NodeManager = 0;
 	INT16U LUN_SensorNum = 0; /* Multi-LUN support index */
 	int i = 0, len = 0, fruvalid = 0;
-	_FAR_ BMCInfo_t *pBMCInfo = &g_BMCInfo;
+	BMCInfo_t *pBMCInfo = &g_BMCInfo;
 	INT8U Index = 0, FruAddress = 0;
-	_FAR_ SensorSharedMem_T *pSenSharedMem;
+	SensorSharedMem_T *pSenSharedMem;
 	char *str, *saveptr, *tempbuf;  
 	UNUSED(fruvalid);
 
@@ -192,7 +192,7 @@ int InitSensor(int BMCInst)
 	// memset(pBMCInfo->FRUConfig.FRUInfo,0xff,MAX_PDK_FRU_SUPPORTED);
 
 	/* Get the Sensor Shared Memory */
-	pSenSharedMem = (_FAR_ SensorSharedMem_T *)&pBMCInfo->SensorSharedMem; //m_hSensorSharedMem;
+	pSenSharedMem = (SensorSharedMem_T *)&pBMCInfo->SensorSharedMem; //m_hSensorSharedMem;
 
 	/* Create mutex for Sensor shared memory */
 	// OS_THREAD_MUTEX_INIT(g_BMCInfo[BMCInst].SensorSharedMemMutex, PTHREAD_MUTEX_RECURSIVE);
@@ -219,7 +219,7 @@ int InitSensor(int BMCInst)
 		// Populater sensor information for Threshold sensors
 		if (sr->Type == FULL_SDR_REC)
 		{
-			sfs = (_FAR_ FullSensorRec_T *)sr;
+			sfs = (FullSensorRec_T *)sr;
 
 			LUN_SensorNum = (((sfs->OwnerLUN & VALID_LUN) << 8) | sfs->SensorNum); /* Multi-LUN support */
 			IPMI_DBG_PRINT("LUN_SensorNum = %x sfs->OwnerLUN = %x sfs->SensorNum = %x \n", LUN_SensorNum, sfs->OwnerLUN, sfs->SensorNum);
@@ -263,7 +263,7 @@ int InitSensor(int BMCInst)
 		}
 		else if (sr->Type == COMPACT_SDR_REC)
 		{
-			scs = (_FAR_ CompactSensorRec_T *)sr;
+			scs = (CompactSensorRec_T *)sr;
 
 			LUN_SensorNum = ((scs->OwnerLUN & VALID_LUN) << 8 | scs->SensorNum); /* Multi-LUN support */
 			IPMI_DBG_PRINT("LUN_SensorNum = %x scs->OwnerLUN = %x scs->SensorNum = %x \n", LUN_SensorNum, scs->OwnerLUN, scs->SensorNum);
@@ -277,7 +277,7 @@ int InitSensor(int BMCInst)
 				// SDR Record information
 				pSenSharedMem->SensorInfo[LUN_SensorNum].SDRRec = sr; /* Multi-LUN support */
 
-				SharedRecs = ipmitoh_u16(((_FAR_ CompactSensorRec_T *)sr)->RecordSharing) &
+				SharedRecs = ipmitoh_u16(((CompactSensorRec_T *)sr)->RecordSharing) &
 							 SHARED_RECD_COUNT;
 				IPMI_DBG_PRINT_2("Sen %x , Shared Count - %x\n", scs->SensorNum, SharedRecs);
 
@@ -318,7 +318,7 @@ int InitSensor(int BMCInst)
 				// SDR Record information
 				pSenSharedMem->ME_SensorInfo[LUN_SensorNum].SDRRec = sr;
 
-				SharedRecs = ipmitoh_u16(((_FAR_ CompactSensorRec_T *)sr)->RecordSharing) &
+				SharedRecs = ipmitoh_u16(((CompactSensorRec_T *)sr)->RecordSharing) &
 							 SHARED_RECD_COUNT;
 				IPMI_DBG_PRINT_2("Sen %x , Shared Count - %x\n", scs->SensorNum, SharedRecs);
 
@@ -350,7 +350,7 @@ int InitSensor(int BMCInst)
 		}
 		else if (sr->Type == FRU_DEVICE_LOCATOR_SDR_REC)
 		{
-			sfr = (_FAR_ FRUDevLocatorRec_T *)sr;
+			sfr = (FRUDevLocatorRec_T *)sr;
 			/* Collecting the Logical FRU Device ID */
 			if ((sfr->AccessLUNBusID & 0x80) == 0x80)
 			{
@@ -399,7 +399,7 @@ int InitSensor(int BMCInst)
 		}
 		else if (sr->Type == OEM_SDRFRU_REC)
 		{
-			sof = (_FAR_ OEM_FRURec_T *)sr;
+			sof = (OEM_FRURec_T *)sr;
 
 			if (sof->OEM_Fru == OEM_SDR_FRU_REC)
 			{
@@ -464,14 +464,14 @@ SR_FindSDR(INT8U SensorNum, INT8U SensorOwnerLUN, INT8U SensorOwnerID, int BMCIn
  * after acquiring a sensor shared memory mutex
  *-----------------------------------------*/
 extern void
-SR_LoadSDRDefaults(SDRRecHdr_T *sr, _FAR_ SensorInfo_T *pSensorInfo, int BMCInst)
+SR_LoadSDRDefaults(SDRRecHdr_T *sr, SensorInfo_T *pSensorInfo, int BMCInst)
 {
 }
 
 /*-----------------------------------------
  * GetDevSDRInfo
  *-----------------------------------------*/
-void SR_GetDevSDRInfo(_NEAR_ GetSDRInfoRes_T *GetSDRInfoRes, int BMCInst)
+void SR_GetDevSDRInfo(GetSDRInfoRes_T *GetSDRInfoRes, int BMCInst)
 {
 	GetSDRInfoRes->NumSensor = NUM_SENSORS(BMCInst);
 	GetSDRInfoRes->Flags = FL_STATIC_SENSOR + FL_NUM_LUN(0);
@@ -482,12 +482,12 @@ void SR_GetDevSDRInfo(_NEAR_ GetSDRInfoRes_T *GetSDRInfoRes, int BMCInst)
 /*---------------------------------------
  * GetDevSDRInfo
  *---------------------------------------*/
-int GetDevSDRInfo(_NEAR_ INT8U *pReq, INT8U ReqLen, _NEAR_ INT8U *pRes, _NEAR_ int BMCInst)
+int GetDevSDRInfo(INT8U *pReq, INT8U ReqLen, INT8U *pRes, int BMCInst)
 {
-	_FAR_ SDRRecHdr_T *SDRRec;
+	SDRRecHdr_T *SDRRec;
 	BMCInfo_t *pBMCInfo = &g_BMCInfo;
-	_NEAR_ GetSDRInfoReq_T *pGetDevSDRInfoReq = (_NEAR_ GetSDRInfoReq_T *)pReq;
-	_NEAR_ GetSDRInfoRes_T *pGetDevSDRInfoRes = (_NEAR_ GetSDRInfoRes_T *)pRes;
+	GetSDRInfoReq_T *pGetDevSDRInfoReq = (GetSDRInfoReq_T *)pReq;
+	GetSDRInfoRes_T *pGetDevSDRInfoRes = (GetSDRInfoRes_T *)pRes;
 	CompactSensorRec_T *pCompactSDRRec = NULL;
 	FullSensorRec_T *pFullSDRRec = NULL;
 	INT8U NumSDRs = 0;
@@ -611,7 +611,7 @@ int GetDevSDRInfo(_NEAR_ INT8U *pReq, INT8U ReqLen, _NEAR_ INT8U *pRes, _NEAR_ i
 /*---------------------------------------
  * GetDevSDR
  *---------------------------------------*/
-int GetDevSDR(_NEAR_ INT8U *pReq, INT8U ReqLen, _NEAR_ INT8U *pRes, _NEAR_ int BMCInst)
+int GetDevSDR(INT8U *pReq, INT8U ReqLen, INT8U *pRes, int BMCInst)
 {
 	return GetSDR(pReq, ReqLen, pRes, BMCInst);
 }
@@ -619,7 +619,7 @@ int GetDevSDR(_NEAR_ INT8U *pReq, INT8U ReqLen, _NEAR_ INT8U *pRes, _NEAR_ int B
 /*---------------------------------------
  * GetDevSDR
  *---------------------------------------*/
-int ReserveDevSDRRepository(_NEAR_ INT8U *pReq, INT8U ReqLen, _NEAR_ INT8U *pRes, _NEAR_ int BMCInst)
+int ReserveDevSDRRepository(INT8U *pReq, INT8U ReqLen, INT8U *pRes, int BMCInst)
 {
 	return ReserveSDRRepository(pReq, ReqLen, pRes, BMCInst);
 }
@@ -627,14 +627,14 @@ int ReserveDevSDRRepository(_NEAR_ INT8U *pReq, INT8U ReqLen, _NEAR_ INT8U *pRes
 /*---------------------------------------
  * SetSensorType
  *---------------------------------------*/
-int SetSensorType(_NEAR_ INT8U *pReq, INT8U ReqLen, _NEAR_ INT8U *pRes, _NEAR_ int BMCInst)
+int SetSensorType(INT8U *pReq, INT8U ReqLen, INT8U *pRes, int BMCInst)
 {
 	//pRes [0] = CC_INV_CMD;
 	//return sizeof (*pRes);
-	_NEAR_ SetSensorTypeReq_T *pSetSensorTypeReq = (_NEAR_ SetSensorTypeReq_T *)pReq;
-	_NEAR_ SetSensorTypeRes_T *pSetSensorTypeRes = (_NEAR_ SetSensorTypeRes_T *)pRes;
-	_FAR_ SensorSharedMem_T *pSenSharedMem;
-	_FAR_ BMCInfo_t *pBMCInfo = &g_BMCInfo;
+	SetSensorTypeReq_T *pSetSensorTypeReq = (SetSensorTypeReq_T *)pReq;
+	SetSensorTypeRes_T *pSetSensorTypeRes = (SetSensorTypeRes_T *)pRes;
+	SensorSharedMem_T *pSenSharedMem;
+	BMCInfo_t *pBMCInfo = &g_BMCInfo;
 
 	/* Check for the reserved bytes should b zero */
 
@@ -645,7 +645,7 @@ int SetSensorType(_NEAR_ INT8U *pReq, INT8U ReqLen, _NEAR_ INT8U *pRes, _NEAR_ i
 	}
 
 	OS_THREAD_MUTEX_ACQUIRE(&g_BMCInfo.SensorSharedMemMutex, WAIT_INFINITE);
-	pSenSharedMem = (_FAR_ SensorSharedMem_T *)&pBMCInfo->SensorSharedMem; //m_hSensorSharedMem;
+	pSenSharedMem = (SensorSharedMem_T *)&pBMCInfo->SensorSharedMem; //m_hSensorSharedMem;
 
 	if (!pSenSharedMem->SensorInfo[pSetSensorTypeReq->SensorNum].IsSensorPresent)
 	{
@@ -670,16 +670,16 @@ int SetSensorType(_NEAR_ INT8U *pReq, INT8U ReqLen, _NEAR_ INT8U *pRes, _NEAR_ i
 /*---------------------------------------
  * GetSensorType
  *---------------------------------------*/
-int GetSensorType(_NEAR_ INT8U *pReq, INT8U ReqLen, _NEAR_ INT8U *pRes, _NEAR_ int BMCInst)
+int GetSensorType(INT8U *pReq, INT8U ReqLen, INT8U *pRes, int BMCInst)
 {
 	//pRes [0] = CC_INV_CMD;
 	// return sizeof (*pRes);
 
-	_NEAR_ GetSensorTypeReq_T *pGetSensorTypeReq = (_NEAR_ GetSensorTypeReq_T *)pReq;
-	_NEAR_ GetSensorTypeRes_T *pGetSensorTypeRes = (_NEAR_ GetSensorTypeRes_T *)pRes;
-	_FAR_ SensorSharedMem_T *pSenSharedMem;
-	_FAR_ BMCInfo_t *pBMCInfo = &g_BMCInfo;
-	pSenSharedMem = (_FAR_ SensorSharedMem_T *)&pBMCInfo->SensorSharedMem; //m_hSensorSharedMem;
+	GetSensorTypeReq_T *pGetSensorTypeReq = (GetSensorTypeReq_T *)pReq;
+	GetSensorTypeRes_T *pGetSensorTypeRes = (GetSensorTypeRes_T *)pRes;
+	SensorSharedMem_T *pSenSharedMem;
+	BMCInfo_t *pBMCInfo = &g_BMCInfo;
+	pSenSharedMem = (SensorSharedMem_T *)&pBMCInfo->SensorSharedMem; //m_hSensorSharedMem;
 
 	OS_THREAD_MUTEX_ACQUIRE(&pBMCInfo->SensorSharedMemMutex, WAIT_INFINITE);
 
@@ -705,16 +705,16 @@ int GetSensorType(_NEAR_ INT8U *pReq, INT8U ReqLen, _NEAR_ INT8U *pRes, _NEAR_ i
 /*---------------------------------------
  * ReArmSensor
  *---------------------------------------*/
-int ReArmSensor(_NEAR_ INT8U *pReq, INT8U ReqLen, _NEAR_ INT8U *pRes, _NEAR_ int BMCInst)
+int ReArmSensor(INT8U *pReq, INT8U ReqLen, INT8U *pRes, int BMCInst)
 {
-	_FAR_ MsgPkt_T Msg;
+	MsgPkt_T Msg;
 	HQueue_T hSMHndlr_Q;
-	_NEAR_ ReArmSensorReq_T ReArmSensorReq;
-	_NEAR_ ReArmSensorReq_T *pReArmSensorReq = &ReArmSensorReq;
-	_NEAR_ ReArmSensorRes_T *pReArmSensorRes = (_NEAR_ ReArmSensorRes_T *)pRes;
+	ReArmSensorReq_T ReArmSensorReq;
+	ReArmSensorReq_T *pReArmSensorReq = &ReArmSensorReq;
+	ReArmSensorRes_T *pReArmSensorRes = (ReArmSensorRes_T *)pRes;
 
-	_FAR_ SensorSharedMem_T *pSenSharedMem;
-	_FAR_ BMCInfo_t *pBMCInfo = &g_BMCInfo;
+	SensorSharedMem_T *pSenSharedMem;
+	BMCInfo_t *pBMCInfo = &g_BMCInfo;
 
 	_fmemset(&ReArmSensorReq, 0, sizeof(ReArmSensorReq_T));
 	_fmemcpy(&ReArmSensorReq, pReq, ReqLen);
@@ -736,7 +736,7 @@ int ReArmSensor(_NEAR_ INT8U *pReq, INT8U ReqLen, _NEAR_ INT8U *pRes, _NEAR_ int
 	}
 
 	OS_THREAD_MUTEX_ACQUIRE(&pBMCInfo->SensorSharedMemMutex, WAIT_INFINITE);
-	pSenSharedMem = (_FAR_ SensorSharedMem_T *)&pBMCInfo->SensorSharedMem; //m_hSensorSharedMem;
+	pSenSharedMem = (SensorSharedMem_T *)&pBMCInfo->SensorSharedMem; //m_hSensorSharedMem;
 
 	/* Check for the reserved bits */
 	if (pSenSharedMem->SensorInfo[pReArmSensorReq->SensorNum].SensorReadType == THRESHOLD_SENSOR_CLASS)
@@ -803,13 +803,13 @@ int ReArmSensor(_NEAR_ INT8U *pReq, INT8U ReqLen, _NEAR_ INT8U *pRes, _NEAR_ int
 /*---------------------------------------
  * GetSensorEventStatus
  *---------------------------------------*/
-int GetSensorEventStatus(_NEAR_ INT8U *pReq, INT8U ReqLen, _NEAR_ INT8U *pRes, _NEAR_ int BMCInst)
+int GetSensorEventStatus(INT8U *pReq, INT8U ReqLen, INT8U *pRes, int BMCInst)
 {
-	_NEAR_ GetSensorEventStatusReq_T *pSensorEventStatusReq = (_NEAR_ GetSensorEventStatusReq_T *)pReq;
-	_NEAR_ GetSensorEventStatusRes_T *pSensorEventStatusRes = (_NEAR_ GetSensorEventStatusRes_T *)pRes;
-	_FAR_ SensorSharedMem_T *pSenSharedMem;
-	_FAR_ BMCInfo_t *pBMCInfo = &g_BMCInfo;
-	pSenSharedMem = (_FAR_ SensorSharedMem_T *)&pBMCInfo->SensorSharedMem; //m_hSensorSharedMem;
+	GetSensorEventStatusReq_T *pSensorEventStatusReq = (GetSensorEventStatusReq_T *)pReq;
+	GetSensorEventStatusRes_T *pSensorEventStatusRes = (GetSensorEventStatusRes_T *)pRes;
+	SensorSharedMem_T *pSenSharedMem;
+	BMCInfo_t *pBMCInfo = &g_BMCInfo;
+	pSenSharedMem = (SensorSharedMem_T *)&pBMCInfo->SensorSharedMem; //m_hSensorSharedMem;
 
 	if (pBMCInfo->IpmiConfig.OPMASupport == 1)
 	{
@@ -889,15 +889,15 @@ int GetSensorEventStatus(_NEAR_ INT8U *pReq, INT8U ReqLen, _NEAR_ INT8U *pRes, _
 /*---------------------------------------
  * SetSensorHysterisis
  *---------------------------------------*/
-int SetSensorHysterisis(_NEAR_ INT8U *pReq, INT8U ReqLen, _NEAR_ INT8U *pRes, _NEAR_ int BMCInst)
+int SetSensorHysterisis(INT8U *pReq, INT8U ReqLen, INT8U *pRes, int BMCInst)
 {
-	_NEAR_ SetSensorHysterisisReq_T *pSensorHysReq =
-		(_NEAR_ SetSensorHysterisisReq_T *)pReq;
-	_NEAR_ SetSensorHysterisisRes_T *pSensorHysRes =
-		(_NEAR_ SetSensorHysterisisRes_T *)pRes;
-	_FAR_ SensorSharedMem_T *pSenSharedMem;
-	_FAR_ BMCInfo_t *pBMCInfo = &g_BMCInfo;
-	pSenSharedMem = (_FAR_ SensorSharedMem_T *)&pBMCInfo->SensorSharedMem; //m_hSensorSharedMem;
+	SetSensorHysterisisReq_T *pSensorHysReq =
+		(SetSensorHysterisisReq_T *)pReq;
+	SetSensorHysterisisRes_T *pSensorHysRes =
+		(SetSensorHysterisisRes_T *)pRes;
+	SensorSharedMem_T *pSenSharedMem;
+	BMCInfo_t *pBMCInfo = &g_BMCInfo;
+	pSenSharedMem = (SensorSharedMem_T *)&pBMCInfo->SensorSharedMem; //m_hSensorSharedMem;
 
 	if (pBMCInfo->IpmiConfig.OPMASupport == 1)
 	{
@@ -950,15 +950,15 @@ int SetSensorHysterisis(_NEAR_ INT8U *pReq, INT8U ReqLen, _NEAR_ INT8U *pRes, _N
 /*---------------------------------------
  * GetSensorHysterisis
  *---------------------------------------*/
-int GetSensorHysterisis(_NEAR_ INT8U *pReq, INT8U ReqLen, _NEAR_ INT8U *pRes, _NEAR_ int BMCInst)
+int GetSensorHysterisis(INT8U *pReq, INT8U ReqLen, INT8U *pRes, int BMCInst)
 {
-	_NEAR_ GetSensorHysterisisReq_T *pSensorHysReq =
-		(_NEAR_ GetSensorHysterisisReq_T *)pReq;
-	_NEAR_ GetSensorHysterisisRes_T *pSensorHysRes =
-		(_NEAR_ GetSensorHysterisisRes_T *)pRes;
-	_FAR_ SensorSharedMem_T *pSenSharedMem;
-	_FAR_ BMCInfo_t *pBMCInfo = &g_BMCInfo;
-	pSenSharedMem = (_FAR_ SensorSharedMem_T *)&pBMCInfo->SensorSharedMem; //m_hSensorSharedMem;
+	GetSensorHysterisisReq_T *pSensorHysReq =
+		(GetSensorHysterisisReq_T *)pReq;
+	GetSensorHysterisisRes_T *pSensorHysRes =
+		(GetSensorHysterisisRes_T *)pRes;
+	SensorSharedMem_T *pSenSharedMem;
+	BMCInfo_t *pBMCInfo = &g_BMCInfo;
+	pSenSharedMem = (SensorSharedMem_T *)&pBMCInfo->SensorSharedMem; //m_hSensorSharedMem;
 
 	if (pBMCInfo->IpmiConfig.OPMASupport == 1)
 	{
@@ -1012,19 +1012,19 @@ int GetSensorHysterisis(_NEAR_ INT8U *pReq, INT8U ReqLen, _NEAR_ INT8U *pRes, _N
 /*---------------------------------------
  * SetSensorThresholds
  *---------------------------------------*/
-int SetSensorThresholds(_NEAR_ INT8U *pReq, INT8U ReqLen, _NEAR_ INT8U *pRes, _NEAR_ int BMCInst)
+int SetSensorThresholds(INT8U *pReq, INT8U ReqLen, INT8U *pRes, int BMCInst)
 {
-	_NEAR_ SetSensorThresholdReq_T *pSensorThreshReq =
-		(_NEAR_ SetSensorThresholdReq_T *)pReq;
-	_NEAR_ SetSensorThresholdRes_T *pSensorThreshRes =
-		(_NEAR_ SetSensorThresholdRes_T *)pRes;
-	_FAR_ SensorSharedMem_T *pSenSharedMem;
-	_FAR_ BMCInfo_t *pBMCInfo = &g_BMCInfo;
-	_NEAR_ INT8U SettableMask = 0;
+	SetSensorThresholdReq_T *pSensorThreshReq =
+		(SetSensorThresholdReq_T *)pReq;
+	SetSensorThresholdRes_T *pSensorThreshRes =
+		(SetSensorThresholdRes_T *)pRes;
+	SensorSharedMem_T *pSenSharedMem;
+	BMCInfo_t *pBMCInfo = &g_BMCInfo;
+	INT8U SettableMask = 0;
 	INT16U LUNSensorNum = 0;
 	INT16U OwnerLUN = 0;
 
-	pSenSharedMem = (_FAR_ SensorSharedMem_T *)&pBMCInfo->SensorSharedMem; //m_hSensorSharedMem;
+	pSenSharedMem = (SensorSharedMem_T *)&pBMCInfo->SensorSharedMem; //m_hSensorSharedMem;
 
 	//	if(g_corefeatures.more_than_256_sensors == ENABLED)
 	//	{
@@ -1166,14 +1166,14 @@ int SetSensorThresholds(_NEAR_ INT8U *pReq, INT8U ReqLen, _NEAR_ INT8U *pRes, _N
 /*---------------------------------------
  * GetSensorThresholds
  *---------------------------------------*/
-int GetSensorThresholds(_NEAR_ INT8U *pReq, INT8U ReqLen, _NEAR_ INT8U *pRes, _NEAR_ int BMCInst)
+int GetSensorThresholds(INT8U *pReq, INT8U ReqLen, INT8U *pRes, int BMCInst)
 {
-	_NEAR_ GetSensorThresholdReq_T *pSensorThreshReq =
-		(_NEAR_ GetSensorThresholdReq_T *)pReq;
-	_NEAR_ GetSensorThresholdRes_T *pSensorThreshRes =
-		(_NEAR_ GetSensorThresholdRes_T *)pRes;
-	_FAR_ SensorSharedMem_T *pSenSharedMem;
-	_FAR_ BMCInfo_t *pBMCInfo = &g_BMCInfo;
+	GetSensorThresholdReq_T *pSensorThreshReq =
+		(GetSensorThresholdReq_T *)pReq;
+	GetSensorThresholdRes_T *pSensorThreshRes =
+		(GetSensorThresholdRes_T *)pRes;
+	SensorSharedMem_T *pSenSharedMem;
+	BMCInfo_t *pBMCInfo = &g_BMCInfo;
 	INT16U LUNSensorNum = 0;
 	INT16U OwnerLUN = 0;
 
@@ -1230,7 +1230,7 @@ int GetSensorThresholds(_NEAR_ INT8U *pReq, INT8U ReqLen, _NEAR_ INT8U *pRes, _N
 
 	return sizeof(GetSensorThresholdRes_T);
 #if 0
-	pSenSharedMem = (_FAR_ SensorSharedMem_T *)&pBMCInfo->SensorSharedMem; //m_hSensorSharedMem;
+	pSenSharedMem = (SensorSharedMem_T *)&pBMCInfo->SensorSharedMem; //m_hSensorSharedMem;
 
 	//	if(g_corefeatures.more_than_256_sensors == ENABLED)
 	//	{
@@ -1309,15 +1309,15 @@ int GetSensorThresholds(_NEAR_ INT8U *pReq, INT8U ReqLen, _NEAR_ INT8U *pRes, _N
 /*---------------------------------------
  * GetSensorReadingFactors
  *---------------------------------------*/
-int GetSensorReadingFactors(_NEAR_ INT8U *pReq, INT8U ReqLen, _NEAR_ INT8U *pRes, _NEAR_ int BMCInst)
+int GetSensorReadingFactors(INT8U *pReq, INT8U ReqLen, INT8U *pRes, int BMCInst)
 {
-	_NEAR_ GetSensorReadingFactorReq_T *pSensorFactorsReq =
-		(_NEAR_ GetSensorReadingFactorReq_T *)pReq;
-	_NEAR_ GetSensorReadingFactorRes_T *pSensorFactorsRes =
-		(_NEAR_ GetSensorReadingFactorRes_T *)pRes;
-	_FAR_ SensorSharedMem_T *pSenSharedMem;
-	_FAR_ BMCInfo_t *pBMCInfo = &g_BMCInfo;
-	pSenSharedMem = (_FAR_ SensorSharedMem_T *)&pBMCInfo->SensorSharedMem; //m_hSensorSharedMem;
+	GetSensorReadingFactorReq_T *pSensorFactorsReq =
+		(GetSensorReadingFactorReq_T *)pReq;
+	GetSensorReadingFactorRes_T *pSensorFactorsRes =
+		(GetSensorReadingFactorRes_T *)pRes;
+	SensorSharedMem_T *pSenSharedMem;
+	BMCInfo_t *pBMCInfo = &g_BMCInfo;
+	pSenSharedMem = (SensorSharedMem_T *)&pBMCInfo->SensorSharedMem; //m_hSensorSharedMem;
 
 	// if (pBMCInfo->IpmiConfig.OPMASupport == 1)
 	// {
@@ -1353,21 +1353,21 @@ int GetSensorReadingFactors(_NEAR_ INT8U *pReq, INT8U ReqLen, _NEAR_ INT8U *pRes
 /*---------------------------------------
  * SetSensorEventEnable
  *---------------------------------------*/
-int SetSensorEventEnable(_NEAR_ INT8U *pReq, INT8U ReqLen, _NEAR_ INT8U *pRes, _NEAR_ int BMCInst)
+int SetSensorEventEnable(INT8U *pReq, INT8U ReqLen, INT8U *pRes, int BMCInst)
 {
-	_FAR_ SensorInfo_T *pSensorInfo;
+	SensorInfo_T *pSensorInfo;
 	INT8U LocalReq[6];
-	_NEAR_ SetSensorEventEnableReq_T *pSensorEvtEnReq;
-	_NEAR_ SetSensorEventEnableRes_T *pSensorEvtEnRes =
-		(_NEAR_ SetSensorEventEnableRes_T *)pRes;
+	SetSensorEventEnableReq_T *pSensorEvtEnReq;
+	SetSensorEventEnableRes_T *pSensorEvtEnRes =
+		(SetSensorEventEnableRes_T *)pRes;
 	INT16U AssertMask, DeassertMask;
 	INT16U ValidMask = htoipmi_u16(0x0FFF);
-	_FAR_ SensorSharedMem_T *pSenSharedMem;
-	_FAR_ BMCInfo_t *pBMCInfo = &g_BMCInfo;
+	SensorSharedMem_T *pSenSharedMem;
+	BMCInfo_t *pBMCInfo = &g_BMCInfo;
 	INT16U LUNSensorNum = 0;
 	INT16U OwnerLUN = 0;
 
-	pSenSharedMem = (_FAR_ SensorSharedMem_T *)&pBMCInfo->SensorSharedMem; //m_hSensorSharedMem;
+	pSenSharedMem = (SensorSharedMem_T *)&pBMCInfo->SensorSharedMem; //m_hSensorSharedMem;
 
 	if (pBMCInfo->IpmiConfig.OPMASupport == 1)
 	{
@@ -1382,7 +1382,7 @@ int SetSensorEventEnable(_NEAR_ INT8U *pReq, INT8U ReqLen, _NEAR_ INT8U *pRes, _
 
 	memset(LocalReq, 0, sizeof(LocalReq));
 	memcpy(LocalReq, pReq, ReqLen);
-	pSensorEvtEnReq = (_NEAR_ SetSensorEventEnableReq_T *)LocalReq;
+	pSensorEvtEnReq = (SetSensorEventEnableReq_T *)LocalReq;
 
 	//	if(g_corefeatures.more_than_256_sensors == ENABLED)
 	//	{
@@ -1576,17 +1576,17 @@ int SetSensorEventEnable(_NEAR_ INT8U *pReq, INT8U ReqLen, _NEAR_ INT8U *pRes, _
 /*---------------------------------------
  * GetSensorEventEnable
  *---------------------------------------*/
-int GetSensorEventEnable(_NEAR_ INT8U *pReq, INT8U ReqLen, _NEAR_ INT8U *pRes, _NEAR_ int BMCInst)
+int GetSensorEventEnable(INT8U *pReq, INT8U ReqLen, INT8U *pRes, int BMCInst)
 {
-	_NEAR_ GetSensorEventEnableReq_T *pSensorEvtEnReq =
-		(_NEAR_ GetSensorEventEnableReq_T *)pReq;
-	_NEAR_ GetSensorEventEnableRes_T *pSensorEvtEnRes =
-		(_NEAR_ GetSensorEventEnableRes_T *)pRes;
-	_FAR_ SensorSharedMem_T *pSenSharedMem;
-	_FAR_ BMCInfo_t *pBMCInfo = &g_BMCInfo;
+	GetSensorEventEnableReq_T *pSensorEvtEnReq =
+		(GetSensorEventEnableReq_T *)pReq;
+	GetSensorEventEnableRes_T *pSensorEvtEnRes =
+		(GetSensorEventEnableRes_T *)pRes;
+	SensorSharedMem_T *pSenSharedMem;
+	BMCInfo_t *pBMCInfo = &g_BMCInfo;
 	INT16U ValidMask = htoipmi_u16(0x0FFF);
 
-	pSenSharedMem = (_FAR_ SensorSharedMem_T *)&pBMCInfo->SensorSharedMem; //m_hSensorSharedMem;
+	pSenSharedMem = (SensorSharedMem_T *)&pBMCInfo->SensorSharedMem; //m_hSensorSharedMem;
 
 	if (pBMCInfo->IpmiConfig.OPMASupport == 1)
 	{
@@ -1652,10 +1652,10 @@ static int
 CheckForEntityPresence(INT8U SensorNum, INT8U OwnerLUN, INT8U EventTypeCode, INT8U SensorType, int BMCInst)
 {
 	int RetVal = NOT_FOUND_SCAN_ENABLED;
-	_FAR_ SensorInfo_T *pSensorInfo;
+	SensorInfo_T *pSensorInfo;
 	int i;
-	_FAR_ BMCInfo_t *pBMCInfo = &g_BMCInfo;
-	_FAR_ SensorSharedMem_T *pSenSharedMem = (_FAR_ SensorSharedMem_T *)&pBMCInfo->SensorSharedMem;
+	BMCInfo_t *pBMCInfo = &g_BMCInfo;
+	SensorSharedMem_T *pSenSharedMem = (SensorSharedMem_T *)&pBMCInfo->SensorSharedMem;
 	int override = 0;
 
 	pSensorInfo = &(pSenSharedMem->SensorInfo[((OwnerLUN & VALID_LUN) << 8 | SensorNum)]);
@@ -1740,9 +1740,9 @@ CheckForEntityPresence(INT8U SensorNum, INT8U OwnerLUN, INT8U EventTypeCode, INT
 static int
 IsSensorPresence(INT8U EntityID, INT8U EntityIns, INT8U SensorNum, INT8U OwnerLUN, int BMCInst)
 {
-	_FAR_ SDRRecHdr_T *sr = NULL;
-	_FAR_ CommonSensorRec_T *scs = NULL;
-	_FAR_ BMCInfo_t *pBMCInfo = &g_BMCInfo;
+	SDRRecHdr_T *sr = NULL;
+	CommonSensorRec_T *scs = NULL;
+	BMCInfo_t *pBMCInfo = &g_BMCInfo;
 
 	int RetVal, tmpRet = -1;
 
@@ -1757,7 +1757,7 @@ IsSensorPresence(INT8U EntityID, INT8U EntityIns, INT8U SensorNum, INT8U OwnerLU
 			COMPACT_SDR_REC == sr->Type)
 		{
 			/* Populate sensor information for full or Compact Record */
-			scs = (_FAR_ CommonSensorRec_T *)sr;
+			scs = (CommonSensorRec_T *)sr;
 			TDBG("COMPACT SDR REC SensorNum : %x, OwnerLUN : %x, EntityID : %x, EventTypeCode : %x\n",
 				 scs->SensorNum, scs->OwnerLUN, scs->EntityID, scs->EventTypeCode);
 
@@ -1825,8 +1825,8 @@ IsEntityAssociationPresence(INT8U EntityID, INT8U EntityIns)
 static int
 IsFRUPresence(INT8U EntityID, INT8U EntityIns, int BMCInst)
 {
-	//	_FAR_ SDRRecHdr_T* sr = NULL;
-	//	_FAR_ FRUDevLocatorRec_T* frudl;
+	//	SDRRecHdr_T* sr = NULL;
+	//	FRUDevLocatorRec_T* frudl;
 	//	FRUReadReq_T FRUReadReq;
 	//	INT8U FRUReadRes[64];
 
@@ -1838,7 +1838,7 @@ IsFRUPresence(INT8U EntityID, INT8U EntityIns, int BMCInst)
 	//		// Check for FRU Device locator SDR Record
 	//		if (sr->Type == FRU_DEVICE_LOCATOR_SDR_REC)
 	//		{
-	//			frudl = (_FAR_ FRUDevLocatorRec_T*) sr;
+	//			frudl = (FRUDevLocatorRec_T*) sr;
 	//			TDBG("if Success : EntityID : %x, EntityIns : %x\n",
 	//					frudl->EntityID, frudl->EntityIns);
 	//			// If EntityID and EntityIns are equal try to read the fru data.
@@ -1876,11 +1876,11 @@ IsFRUPresence(INT8U EntityID, INT8U EntityIns, int BMCInst)
 
 int InitSensorScanningBit(int BMCInst)
 {
-	_FAR_ SDRRecHdr_T *sr = NULL;
-	_FAR_ CommonSensorRec_T *scs = NULL;
+	SDRRecHdr_T *sr = NULL;
+	CommonSensorRec_T *scs = NULL;
 	int RetVal;
-	_FAR_ BMCInfo_t *pBMCInfo = &g_BMCInfo;
-	_FAR_ SensorSharedMem_T *pSenSharedMem = (_FAR_ SensorSharedMem_T *)&pBMCInfo->SensorSharedMem;
+	BMCInfo_t *pBMCInfo = &g_BMCInfo;
+	SensorSharedMem_T *pSenSharedMem = (SensorSharedMem_T *)&pBMCInfo->SensorSharedMem;
 	INT16U LUNSensorNum;
 
 	TDBG("Entered : %s\n", __func__);
@@ -1892,7 +1892,7 @@ int InitSensorScanningBit(int BMCInst)
 		if (FULL_SDR_REC == sr->Type ||
 			COMPACT_SDR_REC == sr->Type)
 		{
-			scs = (_FAR_ CommonSensorRec_T *)sr;
+			scs = (CommonSensorRec_T *)sr;
 
 			if ((pBMCInfo->IpmiConfig.BMCSlaveAddr == scs->OwnerID))
 			{
@@ -2022,16 +2022,16 @@ int CompareValues(BOOL isSigned, INT8U val1, INT8U val2)
 /*-----------------------------------------
  * GetSensorReading
  *-----------------------------------------*/
-int GetSensorReading(_NEAR_ INT8U *pReq, INT8U ReqLen, _NEAR_ INT8U *pRes, _NEAR_ int BMCInst)
+int GetSensorReading(INT8U *pReq, INT8U ReqLen, INT8U *pRes, int BMCInst)
 {
-	_NEAR_ GetSensorReadingReq_T *pSensorReadReq =
-		(_NEAR_ GetSensorReadingReq_T *)pReq;
-	_NEAR_ GetSensorReadingRes_T *pSensorReadRes =
-		(_NEAR_ GetSensorReadingRes_T *)pRes;
+	GetSensorReadingReq_T *pSensorReadReq =
+		(GetSensorReadingReq_T *)pReq;
+	GetSensorReadingRes_T *pSensorReadRes =
+		(GetSensorReadingRes_T *)pRes;
 	INT16U SensorReading;
 	bool SensorIsSigned = FALSE;
-	_FAR_ SensorSharedMem_T *pSenSharedMem;
-	_FAR_ BMCInfo_t *pBMCInfo = &g_BMCInfo;
+	SensorSharedMem_T *pSenSharedMem;
+	BMCInfo_t *pBMCInfo = &g_BMCInfo;
 	INT16U LUNSensorNum = 0;
 	INT16U OwnerLUN = 0;
 	INT16U tmp_value = 0;
@@ -2055,7 +2055,7 @@ int GetSensorReading(_NEAR_ INT8U *pReq, INT8U ReqLen, _NEAR_ INT8U *pRes, _NEAR
 	sensor_reading_res->SensorReading = IpmiReadingDatConvert2Raw(adcRes.sensorUnitType, adcRes.adcVal);
 	return sizeof(GetSensorReadingRes_T);
 #if 0	
-	pSenSharedMem = (_FAR_ SensorSharedMem_T *)&pBMCInfo->SensorSharedMem; //m_hSensorSharedMem;
+	pSenSharedMem = (SensorSharedMem_T *)&pBMCInfo->SensorSharedMem; //m_hSensorSharedMem;
 
 	//	if(g_corefeatures.more_than_256_sensors == ENABLED)
 	//	{
@@ -2220,15 +2220,15 @@ int GetSensorReading(_NEAR_ INT8U *pReq, INT8U ReqLen, _NEAR_ INT8U *pRes, _NEAR
 /*-----------------------------------------
  * SetSensorReading
  *-----------------------------------------*/
-int SetSensorReading(_NEAR_ INT8U *pReq, INT8U ReqLen, _NEAR_ INT8U *pRes, _NEAR_ int BMCInst)
+int SetSensorReading(INT8U *pReq, INT8U ReqLen, INT8U *pRes, int BMCInst)
 {
-	_NEAR_ SetSensorReadingReq_T *pSensorReadReq =
-		(_NEAR_ SetSensorReadingReq_T *)pReq;
-	_NEAR_ SetSensorReadingRes_T *pSensorReadRes =
-		(_NEAR_ SetSensorReadingRes_T *)pRes;
-	_FAR_ SensorSharedMem_T *pSenSharedMem;
-	_FAR_ BMCInfo_t *pBMCInfo = &g_BMCInfo;
-	pSenSharedMem = (_FAR_ SensorSharedMem_T *)&pBMCInfo->SensorSharedMem; //m_hSensorSharedMem;
+	SetSensorReadingReq_T *pSensorReadReq =
+		(SetSensorReadingReq_T *)pReq;
+	SetSensorReadingRes_T *pSensorReadRes =
+		(SetSensorReadingRes_T *)pRes;
+	SensorSharedMem_T *pSenSharedMem;
+	BMCInfo_t *pBMCInfo = &g_BMCInfo;
+	pSenSharedMem = (SensorSharedMem_T *)&pBMCInfo->SensorSharedMem; //m_hSensorSharedMem;
 
 	/* Check for the reserved bits */
 	if (pSenSharedMem->SensorInfo[pSensorReadReq->SensorNum].SensorReadType == THRESHOLD_SENSOR_CLASS)
@@ -2405,10 +2405,10 @@ int SetSensorReading(_NEAR_ INT8U *pReq, INT8U ReqLen, _NEAR_ INT8U *pRes, _NEAR
 /*-------------------------------------------
  * GetSensorSDR
  *-------------------------------------------*/
-_FAR_ SDRRecHdr_T *
+SDRRecHdr_T *
 SR_GetSensorSDR(INT8U SensorNum, int BMCInst)
 {
-	_FAR_ SDRRecHdr_T *SDRRec;
+	SDRRecHdr_T *SDRRec;
 
 	/* Search for the record containing the sensor */
 	SDRRec = SDR_GetFirstSDRRec(BMCInst);
@@ -2417,7 +2417,7 @@ SR_GetSensorSDR(INT8U SensorNum, int BMCInst)
 		switch (SDRRec->Type)
 		{
 		case FULL_SDR_REC:
-			if (((_FAR_ FullSensorRec_T *)SDRRec)->SensorNum == SensorNum)
+			if (((FullSensorRec_T *)SDRRec)->SensorNum == SensorNum)
 			{
 				return SDRRec;
 			}
@@ -2425,11 +2425,11 @@ SR_GetSensorSDR(INT8U SensorNum, int BMCInst)
 
 		case COMPACT_SDR_REC:
 		{
-			INT16U SharedRecs = ipmitoh_u16(((_FAR_ CompactSensorRec_T *)SDRRec)->RecordSharing) &
+			INT16U SharedRecs = ipmitoh_u16(((CompactSensorRec_T *)SDRRec)->RecordSharing) &
 								SHARED_RECD_COUNT;
-			if ((SensorNum == ((_FAR_ CompactSensorRec_T *)SDRRec)->SensorNum) ||
-				((SensorNum >= (((_FAR_ CompactSensorRec_T *)SDRRec)->SensorNum)) &&
-				 (SensorNum < (((_FAR_ CompactSensorRec_T *)SDRRec)->SensorNum + SharedRecs))))
+			if ((SensorNum == ((CompactSensorRec_T *)SDRRec)->SensorNum) ||
+				((SensorNum >= (((CompactSensorRec_T *)SDRRec)->SensorNum)) &&
+				 (SensorNum < (((CompactSensorRec_T *)SDRRec)->SensorNum + SharedRecs))))
 			{
 				return SDRRec;
 			}
@@ -2457,9 +2457,9 @@ SR_GetSensorSDR(INT8U SensorNum, int BMCInst)
 static void
 FindNumSensors(int BMCInst)
 {
-	_FAR_ SDRRecHdr_T *pSDRRec;
-	_FAR_ FullSensorRec_T *pFSR;
-	_FAR_ CompactSensorRec_T *pCSR;
+	SDRRecHdr_T *pSDRRec;
+	FullSensorRec_T *pFSR;
+	CompactSensorRec_T *pCSR;
 
 	pFSR = 0;
 	pCSR = 0;
@@ -2472,7 +2472,7 @@ FindNumSensors(int BMCInst)
 		{
 		case FULL_SDR_REC:
 
-			pFSR = (_FAR_ FullSensorRec_T *)pSDRRec;
+			pFSR = (FullSensorRec_T *)pSDRRec;
 			if (THRESHOLD_SENSOR_CLASS == pFSR->EventTypeCode)
 			{
 				g_BMCInfo.SenConfig.NumThreshSensors++;
@@ -2485,7 +2485,7 @@ FindNumSensors(int BMCInst)
 
 		case COMPACT_SDR_REC:
 
-			pCSR = (_FAR_ CompactSensorRec_T *)pSDRRec;
+			pCSR = (CompactSensorRec_T *)pSDRRec;
 			if (THRESHOLD_SENSOR_CLASS == pCSR->EventTypeCode)
 			{
 				g_BMCInfo.SenConfig.NumThreshSensors += (ipmitoh_u16(pCSR->RecordSharing) &
@@ -2517,9 +2517,9 @@ int GetRecordIdsforDCMISensor(INT8U EntityID, INT8U SensorType, INT8U EntityInst
 							  INT8U StartingEntityInstance, INT16U *pBuf, INT8U *pTotalValidInstances, int BMCInst)
 {
 	int i, ValidInstances;
-	_FAR_ SensorSharedMem_T *pSenSharedMem;
-	_FAR_ BMCInfo_t *pBMCInfo = &g_BMCInfo;
-	pSenSharedMem = (_FAR_ SensorSharedMem_T *)&pBMCInfo->SensorSharedMem; //m_hSensorSharedMem;
+	SensorSharedMem_T *pSenSharedMem;
+	BMCInfo_t *pBMCInfo = &g_BMCInfo;
+	pSenSharedMem = (SensorSharedMem_T *)&pBMCInfo->SensorSharedMem; //m_hSensorSharedMem;
 
 	if (0 != EntityInstance)
 	{
@@ -2598,14 +2598,14 @@ int GetDCMITempReading(INT8U EntityID, INT8U SensorType, INT8U EntityInstance,
 					   INT8U StartingEntityInstance, INT8U *pBuf, INT8U *pTotalValidInstances, int BMCInst)
 {
 	int i, ValidInstances, j = 0;
-	_FAR_ SensorSharedMem_T *pSenSharedMem;
-	_FAR_ BMCInfo_t *pBMCInfo = &g_BMCInfo;
-	_FAR_ SDRRecHdr_T *pSDRRec;
-	_FAR_ FullSensorRec_T *FullSDR;
+	SensorSharedMem_T *pSenSharedMem;
+	BMCInfo_t *pBMCInfo = &g_BMCInfo;
+	SDRRecHdr_T *pSDRRec;
+	FullSensorRec_T *FullSDR;
 	float convreading = 0;
 	INT8U MinReading = 0, MaxReading = 0, Linear = 0;
 
-	pSenSharedMem = (_FAR_ SensorSharedMem_T *)&pBMCInfo->SensorSharedMem; //m_hSensorSharedMem;
+	pSenSharedMem = (SensorSharedMem_T *)&pBMCInfo->SensorSharedMem; //m_hSensorSharedMem;
 
 	if (0 != EntityInstance)
 	{
@@ -2641,7 +2641,7 @@ int GetDCMITempReading(INT8U EntityID, INT8U SensorType, INT8U EntityInstance,
 						{
 							pSDRRec = GetSDRRec(pSenSharedMem->SensorInfo[i].SDRRec->ID, BMCInst);
 
-							FullSDR = (_FAR_ FullSensorRec_T *)pSDRRec;
+							FullSDR = (FullSensorRec_T *)pSDRRec;
 							MinReading = FullSDR->MinReading;
 							MaxReading = FullSDR->MaxReading;
 							Linear = FullSDR->Linearization;
@@ -2695,7 +2695,7 @@ int GetDCMITempReading(INT8U EntityID, INT8U SensorType, INT8U EntityInstance,
 						else
 						{
 							pSDRRec = GetSDRRec(pSenSharedMem->SensorInfo[i].SDRRec->ID, BMCInst);
-							FullSDR = (_FAR_ FullSensorRec_T *)pSDRRec;
+							FullSDR = (FullSensorRec_T *)pSDRRec;
 							MinReading = FullSDR->MinReading;
 							MaxReading = FullSDR->MaxReading;
 							Linear = FullSDR->Linearization;

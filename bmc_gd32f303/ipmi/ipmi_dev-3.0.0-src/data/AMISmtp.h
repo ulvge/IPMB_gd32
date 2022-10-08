@@ -26,8 +26,8 @@
 
 extern int g_enablesmtpauth;
 
-extern int  SetSMTPConfigParams (_NEAR_ INT8U* pReq, INT32U ReqLen, _NEAR_ INT8U* pRes, int BMCInst);
-extern int  GetSMTPConfigParams (_NEAR_ INT8U* pReq, INT32U ReqLen, _NEAR_ INT8U* pRes, int BMCInst);
+extern int  SetSMTPConfigParams (INT8U* pReq, INT32U ReqLen, INT8U* pRes, int BMCInst);
+extern int  GetSMTPConfigParams (INT8U* pReq, INT32U ReqLen, INT8U* pRes, int BMCInst);
 extern int GetSMTP_PrimaryServer(SMTP_STRUCT *mail, INT8U SetSelector, INT8U EthIndex, int BMCInst);
 extern int GetSMTP_SecondaryServer(SMTP_STRUCT *mail, INT8U SetSelector, INT8U EthIndex, int BMCInst);
 

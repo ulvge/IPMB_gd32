@@ -96,10 +96,10 @@ typedef struct {
     INT8U   CompletionCode;
 } PACKED  AMISetSDCardPartRes_T;
 
-extern int AMIControlDebugMsg(_NEAR_ INT8U *pReq, INT32U ReqLen, _NEAR_ INT8U *pRes, int BMCInst);
-extern int AMIGetDebugMsgStatus(_NEAR_ INT8U *pReq, INT32U ReqLen, _NEAR_ INT8U *pRes, int BMCInst);
-extern int AMIGetSDCardPartition (_NEAR_ INT8U *pReq, INT32U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst);
-extern int AMISetSDCardPartition (_NEAR_ INT8U *pReq, INT32U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst);
+extern int AMIControlDebugMsg(INT8U *pReq, INT32U ReqLen, INT8U *pRes, int BMCInst);
+extern int AMIGetDebugMsgStatus(INT8U *pReq, INT32U ReqLen, INT8U *pRes, int BMCInst);
+extern int AMIGetSDCardPartition (INT8U *pReq, INT32U ReqLen, INT8U* pRes,int BMCInst);
+extern int AMISetSDCardPartition (INT8U *pReq, INT32U ReqLen, INT8U* pRes,int BMCInst);
 
 #endif //__IPMI_AMICMDS_H__
 

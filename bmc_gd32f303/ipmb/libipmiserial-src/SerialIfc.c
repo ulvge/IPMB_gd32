@@ -79,11 +79,11 @@ extern xQueueHandle ResponseDatMsg_Queue;
 /*** Function Prototypes ***/
 static int      InitSerialPort          (int BMCInst);
 static void*    RecvSerialPkt           (void*);
-static int      ValidateSerialCheckSum  (_FAR_ INT8U* Pkt, INT16U Len);
-static int      ProcessSerPortReq       (_NEAR_ MsgPkt_T* pReq,  MsgPkt_T *pRes);
-static int      ProcessBridgeReq        (_NEAR_ MsgPkt_T* pReq,  MsgPkt_T *pRes);
-static INT16U   EncodeSerialPkt         (_NEAR_ INT8U* Pkt, INT16U Len, _NEAR_ INT8U* EnPkt);
-static INT16U   DecodeSerialPkt         (_NEAR_ INT8U* Pkt, INT16U Len);
+static int      ValidateSerialCheckSum  (INT8U* Pkt, INT16U Len);
+static int      ProcessSerPortReq       (MsgPkt_T* pReq,  MsgPkt_T *pRes);
+static int      ProcessBridgeReq        (MsgPkt_T* pReq,  MsgPkt_T *pRes);
+static INT16U   EncodeSerialPkt         (INT8U* Pkt, INT16U Len, INT8U* EnPkt);
+static INT16U   DecodeSerialPkt         (INT8U* Pkt, INT16U Len);
 static void     OnBasicModeByteReceived (INT8U byte,int BMCInst);
 //static void     CreatTerminalTask (int BMCInst);
 
@@ -92,7 +92,7 @@ static void     OnBasicModeByteReceived (INT8U byte,int BMCInst);
  * @param Addr holds the address of structure which contains BMCInst,Argument
  * and Length of Argument.
  **/
-bool ProcessSerialReq (_NEAR_ MsgPkt_T *pReq, _NEAR_ MsgPkt_T *pRes)
+bool ProcessSerialReq (MsgPkt_T *pReq, MsgPkt_T *pRes)
 {
     int ret = -1; 
 
@@ -138,7 +138,7 @@ __attribute__((unused)) static void*  RecvSerialPkt (void* pArg)
  * @param BMCInst holds the Instance value of BMC
  **/
 static int
-ProcessSerPortReq (_NEAR_ MsgPkt_T* pReq,  MsgPkt_T *pRes)  // get ipmitool msg and send I2C msg to slave
+ProcessSerPortReq (MsgPkt_T* pReq,  MsgPkt_T *pRes)  // get ipmitool msg and send I2C msg to slave
 {
     INT8U       ResLen;
     INT8U       HandShake;
@@ -184,7 +184,7 @@ ProcessSerPortReq (_NEAR_ MsgPkt_T* pReq,  MsgPkt_T *pRes)  // get ipmitool msg 
  * @param BMCInst holds the Instance value of BMC
  **/
 __attribute__((unused)) static int
-ProcessBridgeReq (_NEAR_ MsgPkt_T* pReq,  MsgPkt_T *pRes)  // recv I2C msg and send to ipmitool
+ProcessBridgeReq (MsgPkt_T* pReq,  MsgPkt_T *pRes)  // recv I2C msg and send to ipmitool
 {
     pRes->Size = EncodeSerialPkt (pReq->Data, pReq->Size, pRes->Data);
 
@@ -215,7 +215,7 @@ OnBasicModeByteReceived (INT8U byte,int BMCInst)
  * @return Size of the Encoded packet
  **/
 static INT16U
-EncodeSerialPkt (_NEAR_ INT8U* Pkt, INT16U Len, _NEAR_ INT8U* EnPkt)
+EncodeSerialPkt (INT8U* Pkt, INT16U Len, INT8U* EnPkt)
 {
     INT16U index = 0;
     INT16U i;
@@ -254,7 +254,7 @@ EncodeSerialPkt (_NEAR_ INT8U* Pkt, INT16U Len, _NEAR_ INT8U* EnPkt)
 }
 
 static INT16U
-DecodeSerialPkt (_NEAR_ INT8U* Pkt, INT16U Len)
+DecodeSerialPkt (INT8U* Pkt, INT16U Len)
 {
 	uint32	i;
 	uint8	byESCByteRecvd=0;
@@ -298,7 +298,7 @@ DecodeSerialPkt (_NEAR_ INT8U* Pkt, INT16U Len)
 }
 
 // static INT16U
-// DecodeSerialPkt (_NEAR_ INT8U* Pkt, INT16U Len, _NEAR_ INT8U* EnPkt)
+// DecodeSerialPkt (INT8U* Pkt, INT16U Len, INT8U* EnPkt)
 // {
 // 	uint32	i;
 // 	uint8	byESCByteRecvd=0;
@@ -349,7 +349,7 @@ DecodeSerialPkt (_NEAR_ INT8U* Pkt, INT16U Len)
  * @return 0 if checksum correct else -1.
  **/
 static int
-ValidateSerialCheckSum (_FAR_ INT8U* Pkt, INT16U Len)
+ValidateSerialCheckSum (INT8U* Pkt, INT16U Len)
 {
     INT16U i;
     INT8U Sum;

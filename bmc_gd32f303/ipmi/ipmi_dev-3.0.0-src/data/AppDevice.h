@@ -49,9 +49,9 @@
  * IPMI BMC Watchdog Timer Command Handlers. Invoked by the message handler
  * @{
  **/
-extern int      ResetWDT            (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst);
-extern int      SetWDT              (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst);
-extern int      GetWDT              (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst);
+extern int      ResetWDT            (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst);
+extern int      SetWDT              (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst);
+extern int      GetWDT              (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst);
 /** @} */
 
 /**
@@ -60,34 +60,34 @@ extern int      GetWDT              (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ IN
  * IPMI BMC Device and Messaging Command Handlers. Invoked by the message handler
  * @{
  **/
-extern int      SetBMCGlobalEnables (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst);
-extern int      GetBMCGlobalEnables (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst);
-extern int      ClrMsgFlags         (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst);
-extern int      GetMsgFlags         (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst);
-extern int      EnblMsgChannelRcv   (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst);
-extern int      GetMessage          (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst);
-extern int      SendMessage         (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst);
-extern int      ReadEvtMsgBuffer    (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst);
-extern int      GetBTIfcCap         (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst);
-extern int      GetSystemGUID       (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst);
-extern int      GetChAuthCap        (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst);
-extern int      GetSessionChallenge (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst);
-extern int      ActivateSession     (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst);
-extern int      SetSessionPrivLevel (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst);
-extern int      CloseSession        (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst);
-extern int      GetSessionInfo      (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst);
-extern int      GetAuthCode         (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst);
-extern int      SetChAccess         (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst);
-extern int      GetChAccess         (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst);
-extern int      GetChInfo           (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst);
-extern int      SetUserAccess       (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst);
-extern int      GetUserAccess       (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst);
-extern int      SetUserName         (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst);
-extern int      GetUserName         (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst);
-extern int      SetUserPassword     (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst);
-extern int      MasterWriteRead     (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst);
-extern int		SetSystemInfoParam  (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst);
-extern int 		GetSystemInfoParam  (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst);
+extern int      SetBMCGlobalEnables (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst);
+extern int      GetBMCGlobalEnables (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst);
+extern int      ClrMsgFlags         (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst);
+extern int      GetMsgFlags         (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst);
+extern int      EnblMsgChannelRcv   (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst);
+extern int      GetMessage          (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst);
+extern int      SendMessage         (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst);
+extern int      ReadEvtMsgBuffer    (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst);
+extern int      GetBTIfcCap         (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst);
+extern int      GetSystemGUID       (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst);
+extern int      GetChAuthCap        (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst);
+extern int      GetSessionChallenge (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst);
+extern int      ActivateSession     (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst);
+extern int      SetSessionPrivLevel (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst);
+extern int      CloseSession        (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst);
+extern int      GetSessionInfo      (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst);
+extern int      GetAuthCode         (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst);
+extern int      SetChAccess         (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst);
+extern int      GetChAccess         (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst);
+extern int      GetChInfo           (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst);
+extern int      SetUserAccess       (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst);
+extern int      GetUserAccess       (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst);
+extern int      SetUserName         (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst);
+extern int      GetUserName         (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst);
+extern int      SetUserPassword     (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst);
+extern int      MasterWriteRead     (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst);
+extern int		SetSystemInfoParam  (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst);
+extern int 		GetSystemInfoParam  (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst);
 extern INT8U  IsChannelSuppGroups(INT8U ChannelNum, int BMCInst);
 extern int ModifyUsrGrp(char * UserName,INT8U ChannelNum,INT8U OldAccessLimit, INT8U NewAccessLimit );
 

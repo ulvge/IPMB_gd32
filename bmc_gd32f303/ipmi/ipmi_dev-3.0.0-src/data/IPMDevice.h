@@ -31,7 +31,7 @@
 
 
 /**
- * @var _FAR_ INT8U g_ACPISysPwrState
+ * @var INT8U g_ACPISysPwrState
  * @brief Contains System ACPI state.
  * @warning Should not be accessed from task other than Message Handler
  **/
@@ -39,10 +39,10 @@
  /*Commented it inorder to access the data across the processes and moved it to the
  shared memory structure BMCSharedMem_T in SharedMem.h file*/
 
-//extern _FAR_ INT8U      g_ACPISysPwrState;
+//extern INT8U      g_ACPISysPwrState;
 
 /**
- * @var _FAR_ INT8U g_ACPIDevPwrState
+ * @var INT8U g_ACPIDevPwrState
  * @brief Contains Device ACPI state.
  * @warning Should not be accessed from task other than Message Handler
  **/
@@ -50,7 +50,7 @@
  /*Commented it inorder to access the data across the processes and moved it to the
  shared memory structure BMCSharedMem_T in SharedMem.h file*/
 
-//	extern _FAR_ INT8U      g_ACPIDevPwrState;
+//	extern INT8U      g_ACPIDevPwrState;
 
 /*** Function Prototypes ***/
 /**
@@ -59,14 +59,14 @@
  * IPMI IPM Device Command Handlers. Invoked by the message handler
  * @{
  **/
-extern int GetDevID             (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst);
-extern int ColdReset            (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst);
-extern int WarmReset            (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst);
-extern int GetSelfTestResults   (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst);
-extern int MfgTestOn            (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst);
-extern int SetACPIPwrState      (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst);
-extern int GetACPIPwrState      (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst);
-extern int GetDevGUID           (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst);
+extern int GetDevID             (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst);
+extern int ColdReset            (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst);
+extern int WarmReset            (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst);
+extern int GetSelfTestResults   (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst);
+extern int MfgTestOn            (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst);
+extern int SetACPIPwrState      (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst);
+extern int GetACPIPwrState      (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst);
+extern int GetDevGUID           (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst);
 /** @} */
 
 INT8U GetDevAddr(void);

@@ -38,7 +38,7 @@
  * @var g_IsDiscovered
  * @brief Bridge device discovery status.
 **/
-extern _FAR_ BOOL g_IsDiscovered;
+extern BOOL g_IsDiscovered;
 
 /**
  * @defgroup bdf Bridge Discovery Command handlers
@@ -47,11 +47,11 @@ extern _FAR_ BOOL g_IsDiscovered;
  * Implemented as per ICMB ver 1.0, Revision 1.3
  * @{
 **/
-extern int PrepareForDiscovery  (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst);
-extern int GetAddresses         (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst);
-extern int SetDiscovered        (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst);
-extern int GetChassisDeviceID   (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst);
-extern int SetChassisDeviceID   (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst);
+extern int PrepareForDiscovery  (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst);
+extern int GetAddresses         (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst);
+extern int SetDiscovered        (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst);
+extern int GetChassisDeviceID   (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst);
+extern int SetChassisDeviceID   (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst);
 /** @} */
 
 #endif /*BRIDGE_DISCOVERY_H */

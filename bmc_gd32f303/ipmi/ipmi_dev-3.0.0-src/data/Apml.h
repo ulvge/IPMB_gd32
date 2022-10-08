@@ -371,25 +371,25 @@ typedef struct
 extern int ApmlInit(int BMCInst);
 extern int ApmlClose(int BMCInst);
 
-extern int ApmlGetInterfaceVersion (_NEAR_ INT8U* pReq,INT8U ReqLen,_NEAR_ INT8U* pRes,_NEAR_ int BMCInst);
-extern int ApmlReadRMIReg (_NEAR_ INT8U* pReq,INT8U ReqLen,_NEAR_ INT8U* pRes,_NEAR_ int BMCInst);
-extern int ApmlWriteRMIReg (_NEAR_ INT8U* pReq,INT8U ReqLen,_NEAR_ INT8U* pRes,_NEAR_ int BMCInst);
-extern int ApmlReadCPUId (_NEAR_ INT8U* pReq,INT8U ReqLen,_NEAR_ INT8U* pRes,_NEAR_ int BMCInst);
-extern int ApmlReadHTCReg (_NEAR_ INT8U* pReq,INT8U ReqLen,_NEAR_ INT8U* pRes,_NEAR_ int BMCInst);
-extern int ApmlWriteHTCReg (_NEAR_ INT8U* pReq,INT8U ReqLen,_NEAR_ INT8U* pRes,_NEAR_ int BMCInst);
-extern int ApmlReadPState (_NEAR_ INT8U* pReq,INT8U ReqLen,_NEAR_ INT8U* pRes,_NEAR_ int BMCInst);
-extern int ApmlReadMaxPState (_NEAR_ INT8U* pReq,INT8U ReqLen,_NEAR_ INT8U* pRes,_NEAR_ int BMCInst);
-extern int ApmlReadPStateLimit (_NEAR_ INT8U* pReq,INT8U ReqLen,_NEAR_ INT8U* pRes,_NEAR_ int BMCInst);
-extern int ApmlWritePStateLimit (_NEAR_ INT8U* pReq,INT8U ReqLen,_NEAR_ INT8U* pRes,_NEAR_ int BMCInst);
-extern int ApmlReadMCR (_NEAR_ INT8U* pReq,INT8U ReqLen,_NEAR_ INT8U* pRes,_NEAR_ int BMCInst);
-extern int ApmlWriteMCR (_NEAR_ INT8U* pReq,INT8U ReqLen,_NEAR_ INT8U* pRes,_NEAR_ int BMCInst);
-extern int ApmlReadTSIReg (_NEAR_ INT8U* pReq,INT8U ReqLen,_NEAR_ INT8U* pRes,_NEAR_ int BMCInst);
-extern int ApmlWriteTSIReg (_NEAR_ INT8U* pReq,INT8U ReqLen,_NEAR_ INT8U* pRes,_NEAR_ int BMCInst);
+extern int ApmlGetInterfaceVersion (INT8U* pReq,INT8U ReqLen,INT8U* pRes,int BMCInst);
+extern int ApmlReadRMIReg (INT8U* pReq,INT8U ReqLen,INT8U* pRes,int BMCInst);
+extern int ApmlWriteRMIReg (INT8U* pReq,INT8U ReqLen,INT8U* pRes,int BMCInst);
+extern int ApmlReadCPUId (INT8U* pReq,INT8U ReqLen,INT8U* pRes,int BMCInst);
+extern int ApmlReadHTCReg (INT8U* pReq,INT8U ReqLen,INT8U* pRes,int BMCInst);
+extern int ApmlWriteHTCReg (INT8U* pReq,INT8U ReqLen,INT8U* pRes,int BMCInst);
+extern int ApmlReadPState (INT8U* pReq,INT8U ReqLen,INT8U* pRes,int BMCInst);
+extern int ApmlReadMaxPState (INT8U* pReq,INT8U ReqLen,INT8U* pRes,int BMCInst);
+extern int ApmlReadPStateLimit (INT8U* pReq,INT8U ReqLen,INT8U* pRes,int BMCInst);
+extern int ApmlWritePStateLimit (INT8U* pReq,INT8U ReqLen,INT8U* pRes,int BMCInst);
+extern int ApmlReadMCR (INT8U* pReq,INT8U ReqLen,INT8U* pRes,int BMCInst);
+extern int ApmlWriteMCR (INT8U* pReq,INT8U ReqLen,INT8U* pRes,int BMCInst);
+extern int ApmlReadTSIReg (INT8U* pReq,INT8U ReqLen,INT8U* pRes,int BMCInst);
+extern int ApmlWriteTSIReg (INT8U* pReq,INT8U ReqLen,INT8U* pRes,int BMCInst);
 
-extern int ApmlReadTDPLimitReg (_NEAR_ INT8U* pReq,INT8U ReqLen,_NEAR_ INT8U* pRes,_NEAR_ int BMCInst); 
-extern int ApmlWriteTDPLimitReg (_NEAR_ INT8U* pReq,INT8U ReqLen,_NEAR_ INT8U* pRes,_NEAR_ int BMCInst); 
-extern int ApmlReadProcessorPowerReg (_NEAR_ INT8U* pReq,INT8U ReqLen,_NEAR_ INT8U* pRes,_NEAR_ int BMCInst); 
-extern int ApmlReadPowerAveragingReg (_NEAR_ INT8U* pReq,INT8U ReqLen,_NEAR_ INT8U* pRes,_NEAR_ int BMCInst); 
-extern int ApmlReadDramThrottleReg (_NEAR_ INT8U* pReq,INT8U ReqLen,_NEAR_ INT8U* pRes,_NEAR_ int BMCInst);
-extern int ApmlWriteDramThrottleReg (_NEAR_ INT8U* pReq,INT8U ReqLen,_NEAR_ INT8U* pRes,_NEAR_ int BMCInst);
+extern int ApmlReadTDPLimitReg (INT8U* pReq,INT8U ReqLen,INT8U* pRes,int BMCInst); 
+extern int ApmlWriteTDPLimitReg (INT8U* pReq,INT8U ReqLen,INT8U* pRes,int BMCInst); 
+extern int ApmlReadProcessorPowerReg (INT8U* pReq,INT8U ReqLen,INT8U* pRes,int BMCInst); 
+extern int ApmlReadPowerAveragingReg (INT8U* pReq,INT8U ReqLen,INT8U* pRes,int BMCInst); 
+extern int ApmlReadDramThrottleReg (INT8U* pReq,INT8U ReqLen,INT8U* pRes,int BMCInst);
+extern int ApmlWriteDramThrottleReg (INT8U* pReq,INT8U ReqLen,INT8U* pRes,int BMCInst);
 #endif //_APML_H_

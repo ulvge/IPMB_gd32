@@ -37,16 +37,16 @@ typedef struct{
  * (IPMI 2.0 feature)
  * @{
  **/
-extern int GetNetFnSup      (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst);
-extern int GetCmdSup        (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst);
-extern int GetSubFnSup      (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst);
-extern int GetConfigCmds    (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst);
-extern int GetConfigSubFns  (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst);
-extern int SetCmdEnables    (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst);
-extern int GetCmdEnables    (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst);
-extern int SetSubFnEnables  (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst);
-extern int GetSubFnEnables  (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst);
-extern int GetOEMNetFnIANASupport  (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst);
+extern int GetNetFnSup      (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst);
+extern int GetCmdSup        (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst);
+extern int GetSubFnSup      (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst);
+extern int GetConfigCmds    (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst);
+extern int GetConfigSubFns  (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst);
+extern int SetCmdEnables    (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst);
+extern int GetCmdEnables    (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst);
+extern int SetSubFnEnables  (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst);
+extern int GetSubFnEnables  (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst);
+extern int GetOEMNetFnIANASupport  (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst);
 /** @} */
 
 #endif /* FIREWALL_H */

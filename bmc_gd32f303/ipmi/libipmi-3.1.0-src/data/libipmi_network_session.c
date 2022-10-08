@@ -752,7 +752,7 @@ void FillNetworkSessionTrailer(IPMI20_SESSION_T *pSession, SessionHdr2_T*	pSessi
 #else
     ((unsigned char(*)(const EVP_MD *,const void *,int,const unsigned char *,size_t,unsigned char *,unsigned int*))g_CryptoHandle[CRYPTO_HMAC])( ((const EVP_MD *(*)(void))g_CryptoHandle[CRYPTO_EVP_SHA1])(), 
                    (INT8U *)pSession->hNetworkSession->byKey1, MAX_KEY1_SIZE
-                   , (_FAR_ INT8U*)pSessionHeader, AuthCodeLen
+                   , (INT8U*)pSessionHeader, AuthCodeLen
                    , (INT8U *)pbyAuthCode, NULL);
 #endif
 
@@ -951,7 +951,7 @@ void AuthAlg_HMAC_SHA1(uint8 *szKey, uint16 wKeyLen,
 #else
     ((unsigned char(*)(const EVP_MD *,const void *,int,const unsigned char *,size_t,unsigned char *,unsigned int*))g_CryptoHandle[CRYPTO_HMAC])(((const EVP_MD *(*)(void))g_CryptoHandle[CRYPTO_EVP_SHA1])()
                    ,(INT8U *)szKey, wKeyLen
-                   , (_FAR_ INT8U*)pbyHMAC, wHMACLen
+                   , (INT8U*)pbyHMAC, wHMACLen
                    , (INT8U *)pResultAuthCode, NULL);
 #endif
 
@@ -1637,7 +1637,7 @@ uint8 ValidationSessionTrailer(IPMI20_SESSION_T* pSession, uint8 *pbyResData)
 #else
     ((unsigned char(*)(const EVP_MD *,const void *,int,const unsigned char *,size_t,unsigned char *,unsigned int*))g_CryptoHandle[CRYPTO_HMAC])( ((const EVP_MD *(*)(void))g_CryptoHandle[CRYPTO_EVP_SHA1])(), 
                    (INT8U *)pSession->hNetworkSession->byKey1, MAX_KEY1_SIZE
-                   , (_FAR_ INT8U*)pbyResData, AuthCodeLen
+                   , (INT8U*)pbyResData, AuthCodeLen
                    , (INT8U *)pbyAuthCode, NULL);
 #endif
 

@@ -104,7 +104,7 @@ static int IsValidPrivilege(INT8U authtype);
  * SOLActivating
  *---------------------------------------*/
 int
-SOLActivating (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst)
+SOLActivating (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst)
 {
 
     /**
@@ -123,12 +123,12 @@ SOLActivating (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int B
  * GetSOLConfig
  *---------------------------------------*/
 int
-GetSOLConfig (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst)
+GetSOLConfig (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst)
 {
-    _NEAR_ GetSOLConfigReq_T*   GetReq = (_NEAR_ GetSOLConfigReq_T*) pReq;
-    _NEAR_ GetSOLConfigRes_T*   GetRes = (_NEAR_ GetSOLConfigRes_T*) pRes;
-    _NEAR_ GetSOLConfigOEMRes_T*   GetOEMRes = (_NEAR_ GetSOLConfigOEMRes_T*) pRes;
-    _FAR_  BMCSharedMem_T*      pSharedMem = BMC_GET_SHARED_MEM (BMCInst);
+    GetSOLConfigReq_T*   GetReq = (GetSOLConfigReq_T*) pReq;
+    GetSOLConfigRes_T*   GetRes = (GetSOLConfigRes_T*) pRes;
+    GetSOLConfigOEMRes_T*   GetOEMRes = (GetSOLConfigOEMRes_T*) pRes;
+     BMCSharedMem_T*      pSharedMem = BMC_GET_SHARED_MEM (BMCInst);
     BMCInfo_t *pBMCInfo = &g_BMCInfo[BMCInst];
     INT8U Size,curchannel;
     INT8U ChannelNum, EthIndex;
@@ -208,20 +208,20 @@ GetSOLConfig (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BM
         case SOL_SET_IN_PROGRESS:
 
             LOCK_BMC_SHARED_MEM(BMCInst);
-            (*(_NEAR_ INT8U*)(GetRes + 1)) = BMC_GET_SHARED_MEM(BMCInst)->m_SOL_SetInProgress;
+            (*(INT8U*)(GetRes + 1)) = BMC_GET_SHARED_MEM(BMCInst)->m_SOL_SetInProgress;
             UNLOCK_BMC_SHARED_MEM(BMCInst);
             Size = Size + sizeof (INT8U);
             break;
 
         case SOL_ENABLE_PARAM:
 
-            (*(_NEAR_ INT8U*)(GetRes + 1)) = pBMCInfo->SOLCfg[EthIndex].SOLEnable;
+            (*(INT8U*)(GetRes + 1)) = pBMCInfo->SOLCfg[EthIndex].SOLEnable;
             Size = Size + sizeof (INT8U);
             break;
 
         case SOL_AUTHENTICATION_PARAM:
 
-            (*(_NEAR_ INT8U*)(GetRes + 1)) = pBMCInfo->SOLCfg[EthIndex].SOLAuth;
+            (*(INT8U*)(GetRes + 1)) = pBMCInfo->SOLCfg[EthIndex].SOLAuth;
             Size = Size + sizeof (INT8U);
             break;
 
@@ -233,26 +233,26 @@ GetSOLConfig (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BM
 
         case SOL_RETRY_PARAM:
 
-            (*((_NEAR_ INT8U*)(GetRes + 1))) = pBMCInfo->SOLCfg[EthIndex].SOLRetryCount;
-            (*((_NEAR_ INT8U*)(GetRes + 1) + 1)) = pBMCInfo->SOLCfg[EthIndex].SOLRetryInterval;
+            (*((INT8U*)(GetRes + 1))) = pBMCInfo->SOLCfg[EthIndex].SOLRetryCount;
+            (*((INT8U*)(GetRes + 1) + 1)) = pBMCInfo->SOLCfg[EthIndex].SOLRetryInterval;
             Size = Size + sizeof (INT16U);
             break;
 
         case SOL_NVOL_BIT_RATE_PARAM:
 
-            (*(_NEAR_ INT8U*)(GetRes + 1)) = pBMCInfo->SOLCfg[EthIndex].NVBitRate;
+            (*(INT8U*)(GetRes + 1)) = pBMCInfo->SOLCfg[EthIndex].NVBitRate;
             Size = Size + sizeof (INT8U);
             break;
 
         case SOL_VOL_BIT_RATE_PARAM:
 
-            (*(_NEAR_ INT8U*)(GetRes + 1)) = pSharedMem->SOLBitRate[EthIndex];
+            (*(INT8U*)(GetRes + 1)) = pSharedMem->SOLBitRate[EthIndex];
             Size = Size + sizeof (INT8U);
             break;
 
         case SOL_PAYLD_CHANNEL_PARAM:
 
-            (*(_NEAR_ INT8U*)(GetRes + 1)) = pBMCInfo->SOLCfg[EthIndex].PayldChannel;
+            (*(INT8U*)(GetRes + 1)) = pBMCInfo->SOLCfg[EthIndex].PayldChannel;
             Size = Size + sizeof (INT8U);
             break;
 
@@ -305,11 +305,11 @@ GetSOLConfig (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BM
  * SetSOLConfig
  *---------------------------------------*/
 int
-SetSOLConfig (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst)
+SetSOLConfig (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst)
 {
-    _NEAR_ SetSOLConfigReq_T*   SetReq = (_NEAR_ SetSOLConfigReq_T*) pReq;
-    _NEAR_ SetSOLConfigOEMReq_T*   pSetOEMReq = (_NEAR_ SetSOLConfigOEMReq_T*) pReq;
-    _FAR_  BMCSharedMem_T*      pSharedMem = BMC_GET_SHARED_MEM (BMCInst);
+    SetSOLConfigReq_T*   SetReq = (SetSOLConfigReq_T*) pReq;
+    SetSOLConfigOEMReq_T*   pSetOEMReq = (SetSOLConfigOEMReq_T*) pReq;
+     BMCSharedMem_T*      pSharedMem = BMC_GET_SHARED_MEM (BMCInst);
     BMCInfo_t *pBMCInfo = &g_BMCInfo[BMCInst];
     int i=0, j=0;
     INT8U ChannelNum, EthIndex,curchannel;
@@ -384,7 +384,7 @@ SetSOLConfig (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BM
     switch (SetReq->ParamSel)
     {
         case SOL_SET_IN_PROGRESS:
-            if(((*(_NEAR_ INT8U*)(SetReq + 1)) & SOL_SET_IN_PROGRESS_MASK) == SOL_SET_IN_PROGRESS_MASK)
+            if(((*(INT8U*)(SetReq + 1)) & SOL_SET_IN_PROGRESS_MASK) == SOL_SET_IN_PROGRESS_MASK)
             {
                 *pRes = CC_INV_DATA_FIELD;
                 return sizeof (*pRes);
@@ -394,26 +394,26 @@ SetSOLConfig (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BM
             UNLOCK_BMC_SHARED_MEM(BMCInst);
             /* Commit Write is optional and supported
              * only if rollback is supported */
-            if ((SET_COMPLETE != (*(_NEAR_ INT8U*)(SetReq + 1))) &&
-                (SET_IN_PROGRESS != (*(_NEAR_ INT8U*)(SetReq + 1))))
+            if ((SET_COMPLETE != (*(INT8U*)(SetReq + 1))) &&
+                (SET_IN_PROGRESS != (*(INT8U*)(SetReq + 1))))
             {
                 *pRes = CC_PARAM_NOT_SUPPORTED;
                 return sizeof (*pRes);
             }
             else if ((SET_IN_PROGRESS == m_SOL_SetInProgress) &&
-                (SET_IN_PROGRESS == (*(_NEAR_ INT8U*)(SetReq + 1))))
+                (SET_IN_PROGRESS == (*(INT8U*)(SetReq + 1))))
             {
                 /*Set In Progress already Set */
                 *pRes = CC_SET_IN_PROGRESS;
                 return sizeof (*pRes);
             }
             LOCK_BMC_SHARED_MEM(BMCInst);
-            BMC_GET_SHARED_MEM(BMCInst)->m_SOL_SetInProgress = (*(_NEAR_ INT8U*)(SetReq + 1));
+            BMC_GET_SHARED_MEM(BMCInst)->m_SOL_SetInProgress = (*(INT8U*)(SetReq + 1));
             UNLOCK_BMC_SHARED_MEM(BMCInst);
             break;
 
         case SOL_ENABLE_PARAM:
-            pBMCInfo->SOLCfg[EthIndex].SOLEnable = (*(_NEAR_ INT8U*)(SetReq + 1));
+            pBMCInfo->SOLCfg[EthIndex].SOLEnable = (*(INT8U*)(SetReq + 1));
             break;
 
         case SOL_AUTHENTICATION_PARAM:
@@ -421,58 +421,58 @@ SetSOLConfig (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BM
             #34323: Check if user is setting reserved bits. This cannot be handled at main logic
             of reserve bit checking.
             */
-            if (0 != IsValidPrivilege((0x3F & (*(_NEAR_ INT8U*)(SetReq + 1)))))
+            if (0 != IsValidPrivilege((0x3F & (*(INT8U*)(SetReq + 1)))))
             {
                 *pRes = CC_INV_DATA_FIELD;
                 return sizeof (*pRes);    
             }
 
-            pBMCInfo->SOLCfg[EthIndex].SOLAuth = (*(_NEAR_ INT8U*)(SetReq + 1));
+            pBMCInfo->SOLCfg[EthIndex].SOLAuth = (*(INT8U*)(SetReq + 1));
             break;
 
         case SOL_ACCUM_THRESHOLD_PARAM:
-                if(((*(_NEAR_ INT8U*)(SetReq + 1)) == 0) || ((*((_NEAR_ INT8U*)(SetReq +1)+1)) == 0))
+                if(((*(INT8U*)(SetReq + 1)) == 0) || ((*((INT8U*)(SetReq +1)+1)) == 0))
                 {
                     *pRes = CC_INV_DATA_FIELD;
                     return sizeof (*pRes);           
                 }
                     
-                pBMCInfo->SOLCfg[EthIndex].CharAccThresh = (*(_NEAR_ INT16U*)(SetReq + 1));
+                pBMCInfo->SOLCfg[EthIndex].CharAccThresh = (*(INT16U*)(SetReq + 1));
                 break;
 
         case SOL_RETRY_PARAM:
 
-            pBMCInfo->SOLCfg[EthIndex].SOLRetryCount = (*((_NEAR_ INT8U*)(SetReq +1) ) );
-            pBMCInfo->SOLCfg[EthIndex].SOLRetryInterval = (*((_NEAR_ INT8U*)(SetReq +1)+1));
+            pBMCInfo->SOLCfg[EthIndex].SOLRetryCount = (*((INT8U*)(SetReq +1) ) );
+            pBMCInfo->SOLCfg[EthIndex].SOLRetryInterval = (*((INT8U*)(SetReq +1)+1));
             break;
 
         case SOL_NVOL_BIT_RATE_PARAM:
 
-            if ( 0 != IsBaudRateValid (*(_NEAR_ INT8U*)(SetReq + 1)))
+            if ( 0 != IsBaudRateValid (*(INT8U*)(SetReq + 1)))
             {
                 /*Invalid baud rate setting */
                 *pRes = CC_INV_DATA_FIELD;
                 return sizeof (*pRes);
             }
-            if((*(_NEAR_ INT8U*)(SetReq+1)) == 0)
-            *(_NEAR_ INT8U*)(SetReq+1) = BAUD_RATE_9600;
+            if((*(INT8U*)(SetReq+1)) == 0)
+            *(INT8U*)(SetReq+1) = BAUD_RATE_9600;
 
-            pBMCInfo->SOLCfg[EthIndex].NVBitRate = *(_NEAR_ INT8U*)(SetReq + 1);
+            pBMCInfo->SOLCfg[EthIndex].NVBitRate = *(INT8U*)(SetReq + 1);
 
             break;
 
         case SOL_VOL_BIT_RATE_PARAM:
 
-            if ( 0 != IsBaudRateValid (*(_NEAR_ INT8U*)(SetReq + 1)))
+            if ( 0 != IsBaudRateValid (*(INT8U*)(SetReq + 1)))
             {
                 /*Invalid baud rate setting */
                 *pRes = CC_INV_DATA_FIELD;
                 return sizeof (*pRes);
             }
-            if((*(_NEAR_ INT8U*)(SetReq+1)) == 0)
-            *(_NEAR_ INT8U*)(SetReq+1) = BAUD_RATE_9600;
+            if((*(INT8U*)(SetReq+1)) == 0)
+            *(INT8U*)(SetReq+1) = BAUD_RATE_9600;
 
-            pSharedMem->SOLBitRate[EthIndex] = *(_NEAR_ INT8U*)(SetReq + 1);
+            pSharedMem->SOLBitRate[EthIndex] = *(INT8U*)(SetReq + 1);
 
             break;
 

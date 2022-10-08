@@ -98,7 +98,7 @@ static INT8U CheckInputParams(AMISetLogConfReq_T *pSetSyslogConf, INT32U ReqLen)
  * @retval  	CC_NORMAL, on success,
  * 				CC_UNSPECIFIED_ERR, if any unknown errors.
  */
-int AMIGetLogConf(_NEAR_ INT8U* pReq, INT32U ReqLen, _NEAR_ INT8U* pRes,int BMCInst)
+int AMIGetLogConf(INT8U* pReq, INT32U ReqLen, INT8U* pRes,int BMCInst)
 {
 	INT32U  size;
     AMIGetLogConfRes_T *pGetSyslogConf = (AMIGetLogConfRes_T *)pRes;
@@ -137,7 +137,7 @@ int AMIGetLogConf(_NEAR_ INT8U* pReq, INT32U ReqLen, _NEAR_ INT8U* pRes,int BMCI
  * 				CC_INV_DATA_FIELD, if the given data is not valid,
  * 				CC_UNSPECIFIED_ERR, if any unknown errors.
  */
-int AMISetLogConf(_NEAR_ INT8U* pReq, INT32U ReqLen, _NEAR_ INT8U* pRes,int BMCInst)
+int AMISetLogConf(INT8U* pReq, INT32U ReqLen, INT8U* pRes,int BMCInst)
 {
 
     AMISetLogConfReq_T *pSetSyslogConf = (AMISetLogConfReq_T *)pReq;

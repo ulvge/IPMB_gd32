@@ -30,7 +30,7 @@
  * @return 	-0  if Success
  *			-1	if failed.
  *-----------------------------------------------------------------*/
-extern int API_PlatformEvtMsg (_FAR_ INT8U* pEventMsg, int BMCInst);
+extern int API_PlatformEvtMsg (INT8U* pEventMsg, int BMCInst);
 
 
 

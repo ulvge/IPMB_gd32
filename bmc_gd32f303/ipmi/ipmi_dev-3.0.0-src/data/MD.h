@@ -59,8 +59,8 @@ typedef struct
 /*--------------------------
  * Extern Declarations
  *--------------------------*/
-extern void AuthCodeCalMD2 (_NEAR_ INT8U* String, _NEAR_ INT8U*	MD2Result, INT8U StrLen);
-extern void AuthCodeCalMD5 (_NEAR_ INT8U* Str, _NEAR_ INT8U* MD5Result, INT16U StrLen);
+extern void AuthCodeCalMD2 (INT8U* String, INT8U*	MD2Result, INT8U StrLen);
+extern void AuthCodeCalMD5 (INT8U* Str, INT8U* MD5Result, INT16U StrLen);
 extern void MD5_128(char*    k,int      lk, char*    d,  int      ld, char*    out, int      t );
 
 #endif	/* MD_H */

@@ -195,24 +195,24 @@ typedef struct
 #pragma pack(  )
 #endif
 
-extern int AMIRestoreDefaults (_NEAR_ INT8U* pReq, INT32U ReqLen, _NEAR_ INT8U* pRes,int BMCInst);
+extern int AMIRestoreDefaults (INT8U* pReq, INT32U ReqLen, INT8U* pRes,int BMCInst);
 
-extern int AMIGetPreserveConfStatus(_NEAR_ INT8U* pReq, INT32U ReqLen, _NEAR_ INT8U* pRes,int BMCInst);
+extern int AMIGetPreserveConfStatus(INT8U* pReq, INT32U ReqLen, INT8U* pRes,int BMCInst);
 
-extern int AMISetPreserveConfStatus(_NEAR_ INT8U* pReq, INT32U ReqLen, _NEAR_ INT8U* pRes,int BMCInst);
+extern int AMISetPreserveConfStatus(INT8U* pReq, INT32U ReqLen, INT8U* pRes,int BMCInst);
 
-extern int AMISetAllPreserveConfStatus(_NEAR_ INT8U* pReq, INT32U ReqLen, _NEAR_ INT8U* pRes,int BMCInst);
+extern int AMISetAllPreserveConfStatus(INT8U* pReq, INT32U ReqLen, INT8U* pRes,int BMCInst);
 
-extern int AMIGetAllPreserveConfStatus(_NEAR_ INT8U* pReq, INT32U ReqLen, _NEAR_ INT8U* pRes,int BMCInst);
+extern int AMIGetAllPreserveConfStatus(INT8U* pReq, INT32U ReqLen, INT8U* pRes,int BMCInst);
 
-extern int AMISetBackupFlag(_NEAR_ INT8U* pReq, INT32U ReqLen, _NEAR_ INT8U* pRes,int BMCInst);
+extern int AMISetBackupFlag(INT8U* pReq, INT32U ReqLen, INT8U* pRes,int BMCInst);
 
-extern int AMIGetBackupFlag(_NEAR_ INT8U* pReq, INT32U ReqLen, _NEAR_ INT8U* pRes,int BMCInst);
+extern int AMIGetBackupFlag(INT8U* pReq, INT32U ReqLen, INT8U* pRes,int BMCInst);
 
-extern int AMIManageBMCConfig(_NEAR_ INT8U* pReq, INT32U ReqLen, _NEAR_ INT8U* pRes,int BMCInst);
+extern int AMIManageBMCConfig(INT8U* pReq, INT32U ReqLen, INT8U* pRes,int BMCInst);
 
-extern int AMIGetPendStatus(_NEAR_ INT8U *pReq,INT32U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst);
+extern int AMIGetPendStatus(INT8U *pReq,INT32U ReqLen, INT8U* pRes,int BMCInst);
 
-extern int AMIGetLifeCycleEvtLog(_NEAR_ INT8U *pReq,INT32U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst);
+extern int AMIGetLifeCycleEvtLog(INT8U *pReq,INT32U ReqLen, INT8U* pRes,int BMCInst);
 
 #endif // __AMIRESTOREDEF_H__

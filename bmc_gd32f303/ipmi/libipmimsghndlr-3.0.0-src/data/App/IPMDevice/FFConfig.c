@@ -83,13 +83,13 @@ const FFSubFnTbl_T  m_FFSubFnTbl [] =
  * CheckCmdCfg
  *------------------*/
 int
-CheckCmdCfg (_FAR_ CmdHndlrMap_T* pCmdHndlrMap, INT8U ChannelNum, 
+CheckCmdCfg (CmdHndlrMap_T* pCmdHndlrMap, INT8U ChannelNum, 
                                 INT8U NetFn, INT8U Cmd,int BMCInst)
 {
 
     BMCInfo_t *pBMCInfo = &g_BMCInfo[BMCInst];
-    _FAR_ FFCmdConfigTbl_T* pFFCmdCfgTbl = &pBMCInfo->FFCmdConfigTbl[0];
-    _FAR_ ChannelInfo_T*	pChInfo = getChannelInfo (ChannelNum, BMCInst);
+    FFCmdConfigTbl_T* pFFCmdCfgTbl = &pBMCInfo->FFCmdConfigTbl[0];
+    ChannelInfo_T*	pChInfo = getChannelInfo (ChannelNum, BMCInst);
     int i;
     INT8U   FFConfig, Index;
 
@@ -133,9 +133,9 @@ CheckCmdCfg (_FAR_ CmdHndlrMap_T* pCmdHndlrMap, INT8U ChannelNum,
  * GetCmdSupCfgMask
  *------------------*/
 int
-GetCmdSupCfgMask (INT8U NetFn, INT8U Cmd, _NEAR_ INT16U* pFFConfig,INT8U GroupExtCode,int BMCInst)
+GetCmdSupCfgMask (INT8U NetFn, INT8U Cmd, INT16U* pFFConfig,INT8U GroupExtCode,int BMCInst)
 {
-    _FAR_ CmdHndlrMap_T*    pCmdHndlrMap;
+    CmdHndlrMap_T*    pCmdHndlrMap;
 
     if (0 != GetMsgHndlrMap (NetFn, &pCmdHndlrMap,BMCInst))
     {
@@ -173,11 +173,11 @@ GetCmdSupCfgMask (INT8U NetFn, INT8U Cmd, _NEAR_ INT16U* pFFConfig,INT8U GroupEx
 /*------------------
  * GetCmdCfgAddr
  *------------------*/
-_FAR_ INT8U*
+INT8U*
 GetCmdCfgAddr (INT8U NetFn, INT8U Cmd, int BMCInst)
 {
     BMCInfo_t *pBMCInfo = &g_BMCInfo[BMCInst];
-    _FAR_ FFCmdConfigTbl_T* pFFCmdCfgTbl = &pBMCInfo->FFCmdConfigTbl[0];
+    FFCmdConfigTbl_T* pFFCmdCfgTbl = &pBMCInfo->FFCmdConfigTbl[0];
       int				i;
 
     /* Check the command is enabled or disabled */
@@ -197,9 +197,9 @@ GetCmdCfgAddr (INT8U NetFn, INT8U Cmd, int BMCInst)
  * GetSubFnMask
  *------------------*/
 int
-GetSubFnMask (INT8U ChannelNum, INT8U NetFn, INT8U Cmd, _NEAR_ INT32U* pSubFnMask,int BMCInst)
+GetSubFnMask (INT8U ChannelNum, INT8U NetFn, INT8U Cmd, INT32U* pSubFnMask,int BMCInst)
 {
-    _FAR_ ChannelInfo_T*    pChInfo;
+    ChannelInfo_T*    pChInfo;
     int               i;
 
     pChInfo = getChannelInfo (ChannelNum, BMCInst);
@@ -223,9 +223,9 @@ GetSubFnMask (INT8U ChannelNum, INT8U NetFn, INT8U Cmd, _NEAR_ INT32U* pSubFnMas
  * GetSubFnMaskAdditional
  *------------------*/
 int
-GetSubFnMaskAdditional (INT8U ChannelNum, INT8U NetFn, INT8U Cmd, _NEAR_ INT32U* pSubFnMask,int BMCInst)
+GetSubFnMaskAdditional (INT8U ChannelNum, INT8U NetFn, INT8U Cmd, INT32U* pSubFnMask,int BMCInst)
 {
-    _FAR_ ChannelInfo_T*    pChInfo;
+    ChannelInfo_T*    pChInfo;
     int               i;
 
     pChInfo = getChannelInfo (ChannelNum, BMCInst);

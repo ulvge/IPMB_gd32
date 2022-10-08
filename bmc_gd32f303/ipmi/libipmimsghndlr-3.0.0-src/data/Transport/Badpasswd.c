@@ -120,7 +120,7 @@ int CheckPasswordViolation(INT8U SerialorLAN,INT8U Ch,int BMCInst)
 void MonitorPassword(int BMCInst)
 {
     int i=0;
-    _FAR_ BMCInfo_t* pBMCInfo = &g_BMCInfo[BMCInst]; 
+    BMCInfo_t* pBMCInfo = &g_BMCInfo[BMCInst]; 
 
     OS_THREAD_MUTEX_ACQUIRE(&pBMCInfo->ChUserMutex,WAIT_INFINITE);
     for(i=0;i<MAX_NUM_CHANNELS;i++)
@@ -200,7 +200,7 @@ int LockUser(INT8U Userid,INT8U Channel,int BMCInst)
         return 0;
     }
 
-    _FAR_ BMCInfo_t* pBMCInfo = &g_BMCInfo[BMCInst]; 
+    BMCInfo_t* pBMCInfo = &g_BMCInfo[BMCInst]; 
     INT8U ThresholdNum= 0xFF; 
 
     if(IsLANChannel(Channel,BMCInst))
@@ -251,7 +251,7 @@ int UnlockUser(INT8U Userid,INT8U Channel,int BMCInst)
         return 0;
     }
 
-    _FAR_ BMCInfo_t* pBMCInfo = &g_BMCInfo[BMCInst]; 
+    BMCInfo_t* pBMCInfo = &g_BMCInfo[BMCInst]; 
     INT8U ThresholdNum= 0xFF; 
 
     if(pChannelInfo != NULL)
@@ -294,7 +294,7 @@ int ClearUserLockAttempts(INT8U SerialorLAN,int BMCInst)
     INT8U Index=0;//,EthIndex=0;
     ChannelInfo_T*pChannelInfo=NULL;
     ChannelUserInfo_T*  pChUserInfo = NULL;
-     _FAR_ BMCInfo_t* pBMCInfo = &g_BMCInfo[BMCInst]; 
+     BMCInfo_t* pBMCInfo = &g_BMCInfo[BMCInst]; 
 
     TDBG("Inside ClearUserlock \n");
     for(i=0;i<MAX_NUM_CHANNELS;i++)
@@ -331,7 +331,7 @@ int ClearUserLockAttempts(INT8U SerialorLAN,int BMCInst)
 int GenerateLockEvent(INT8U Channel,INT8U UserID,int BMCInst)
 {
     INT8U EventMsg[9],EthIndex=0,GenEvent=0;
-    _FAR_ BMCInfo_t* pBMCInfo = &g_BMCInfo[BMCInst]; 
+    BMCInfo_t* pBMCInfo = &g_BMCInfo[BMCInst]; 
 
     if(IsLANChannel(Channel,BMCInst))
     {

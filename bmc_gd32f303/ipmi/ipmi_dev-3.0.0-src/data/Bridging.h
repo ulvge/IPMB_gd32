@@ -28,7 +28,7 @@
  * @var g_IsDiscovered
  * @brief Bridging status.
 **/
-extern _FAR_ BOOL g_IsBridging;
+extern BOOL g_IsBridging;
 
 
 /*** External Definitions ***/
@@ -42,8 +42,8 @@ extern _FAR_ BOOL g_IsBridging;
  * Implemented as per ICMB ver 1.0, Revision 1.3
  * @{
 **/
-extern  int BridgeReq (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst);
-extern  int BridgeMsg (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst);
+extern  int BridgeReq (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst);
+extern  int BridgeMsg (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst);
 /** @} */
 
 #endif  /*BRIDGING*/

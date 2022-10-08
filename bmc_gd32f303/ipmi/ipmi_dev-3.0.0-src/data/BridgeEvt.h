@@ -46,12 +46,12 @@ typedef struct {
  * Implemented as per ICMB ver 1.0, Revision 1.3
  * @{
 **/
-extern  int GetEventCount   (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst);
-extern  int SetEventDest    (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst);
-extern  int SetEventReceptionState (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst);
-extern  int SendICMBEventMsg(_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst);
-extern  int GetEventDest    (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst);
-extern  int GetEventReceptionState (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst);
+extern  int GetEventCount   (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst);
+extern  int SetEventDest    (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst);
+extern  int SetEventReceptionState (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst);
+extern  int SendICMBEventMsg(INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst);
+extern  int GetEventDest    (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst);
+extern  int GetEventReceptionState (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst);
 /** @} */
 
 #endif  /*BRIDGE_EVT_H*/

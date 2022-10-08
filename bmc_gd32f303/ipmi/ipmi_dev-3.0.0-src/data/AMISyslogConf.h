@@ -32,7 +32,7 @@
  * @retval  	CC_NORMAL, on success,
  * 				CC_UNSPECIFIED_ERR, if any unknown errors.
  */
-extern int AMIGetLogConf(_NEAR_ INT8U* pReq, INT32U ReqLen, _NEAR_ INT8U* pRes,int BMCInst);
+extern int AMIGetLogConf(INT8U* pReq, INT32U ReqLen, INT8U* pRes,int BMCInst);
 /**
  * @fn AMIGetLogConf
  * @brief Get the log configuration file.
@@ -42,7 +42,7 @@ extern int AMIGetLogConf(_NEAR_ INT8U* pReq, INT32U ReqLen, _NEAR_ INT8U* pRes,i
  * @retval  	CC_NORMAL, on success,
  * 				CC_UNSPECIFIED_ERR, if any unknown errors.
  */
-extern int AMISetLogConf(_NEAR_ INT8U* pReq, INT32U ReqLen, _NEAR_ INT8U* pRes,int BMCInst);
+extern int AMISetLogConf(INT8U* pReq, INT32U ReqLen, INT8U* pRes,int BMCInst);
 
 /**
  * @fn AMIGetExtendedLogConf
@@ -54,7 +54,7 @@ extern int AMISetLogConf(_NEAR_ INT8U* pReq, INT32U ReqLen, _NEAR_ INT8U* pRes,i
  *                CC_UNSPECIFIED_ERR, if any unknown errors.
  */
 
-extern int AMIGetExtendedLogConf (_NEAR_ INT8U* pReq, INT32U ReqLen, _NEAR_ INT8U* pRes,int BMCInst);
+extern int AMIGetExtendedLogConf (INT8U* pReq, INT32U ReqLen, INT8U* pRes,int BMCInst);
 
 /**
  * @fn AMISetExtendedLogConf
@@ -66,7 +66,7 @@ extern int AMIGetExtendedLogConf (_NEAR_ INT8U* pReq, INT32U ReqLen, _NEAR_ INT8
  *                  CC_UNSPECIFIED_ERR, if any unknown errors.
  */
 
-extern int AMISetExtendedLogConf (_NEAR_ INT8U* pReq, INT32U ReqLen, _NEAR_ INT8U* pRes,int BMCInst);
+extern int AMISetExtendedLogConf (INT8U* pReq, INT32U ReqLen, INT8U* pRes,int BMCInst);
 
 #endif // __AMISYSLOGCONF_H__
 

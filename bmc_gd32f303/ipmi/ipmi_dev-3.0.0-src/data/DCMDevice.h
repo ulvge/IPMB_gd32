@@ -92,20 +92,20 @@
 #define SET_THERMAL_LIMIT_RESERVED           0x8F
 
 
-extern int GetDCMICapabilityInfo (INT8U* pReq, INT8U ReqLen, INT8U* pRes,_NEAR_ int BMCInst);
-extern int GetPowerReading (INT8U* pReq, INT8U ReqLen, INT8U* pRes,_NEAR_ int BMCInst);
-extern int GetPowerLimit (INT8U* pReq, INT8U ReqLen, INT8U* pRes,_NEAR_ int BMCInst);
-extern int SetPowerLimit (INT8U* pReq, INT8U ReqLen, INT8U* pRes,_NEAR_ int BMCInst);
-extern int ActivatePowerLimit (INT8U* pReq, INT8U ReqLen, INT8U* pRes,_NEAR_ int BMCInst);
-extern int GetDCMISensorInfo (INT8U* pReq, INT8U ReqLen, INT8U* pRes,_NEAR_ int BMCInst);
-extern int GetAssetTag (INT8U* pReq, INT8U ReqLen, INT8U* pRes,_NEAR_ int BMCInst);
+extern int GetDCMICapabilityInfo (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst);
+extern int GetPowerReading (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst);
+extern int GetPowerLimit (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst);
+extern int SetPowerLimit (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst);
+extern int ActivatePowerLimit (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst);
+extern int GetDCMISensorInfo (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst);
+extern int GetAssetTag (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst);
 extern void DCMIPowerSamplingTask (int BMCInst);
-extern int SetAssetTag (INT8U* pReq, INT8U ReqLen, INT8U* pRes,_NEAR_ int BMCInst);
-extern int GetManagementControllerIdString (INT8U* pReq, INT8U ReqLen, INT8U* pRes,_NEAR_ int BMCInst);
-extern int SetManagementControllerIdString (INT8U* pReq, INT8U ReqLen, INT8U* pRes,_NEAR_ int BMCInst);
+extern int SetAssetTag (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst);
+extern int GetManagementControllerIdString (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst);
+extern int SetManagementControllerIdString (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst);
 extern void DCMIThermalSamplingTask(int BMCInst);
-extern int SetThermalLimit(INT8U* pReq, INT8U ReqLen, INT8U* pRes,_NEAR_ int BMCInst);
-extern int GetThermalLimit(INT8U* pReq, INT8U ReqLen, INT8U* pRes,_NEAR_ int BMCInst);
-extern int GetTemperatureReading(INT8U* pReq, INT8U ReqLen, INT8U* pRes,_NEAR_ int BMCInst);
+extern int SetThermalLimit(INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst);
+extern int GetThermalLimit(INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst);
+extern int GetTemperatureReading(INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst);
 
 #endif  /* IPMDEVICE_H */

@@ -34,19 +34,19 @@
  * IPMI2.0 RMCP+ Payload Command Handlers. Invoked by the message handler
  * @{
  **/
-extern int  ActivatePayload     (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst);
-extern int  DeactivatePayload   (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst);
-extern int  GetPayldActStatus   (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst);
-extern int  GetPayldInstInfo    (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst);
-extern int  SetUsrPayloadAccess (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst);
-extern int  GetUsrPayloadAccess (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst);
-extern int  GetChPayloadSupport (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst);
-extern int  GetChPayloadVersion (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst);
-extern int  GetChOemPayloadInfo (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst);
-extern int  GetChCipherSuites   (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst);
-extern int  SusResPayldEncrypt  (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst);
-extern int  SetChSecurityKeys   (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst);
-extern int  GetSysIfcCaps       (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst);
+extern int  ActivatePayload     (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst);
+extern int  DeactivatePayload   (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst);
+extern int  GetPayldActStatus   (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst);
+extern int  GetPayldInstInfo    (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst);
+extern int  SetUsrPayloadAccess (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst);
+extern int  GetUsrPayloadAccess (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst);
+extern int  GetChPayloadSupport (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst);
+extern int  GetChPayloadVersion (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst);
+extern int  GetChOemPayloadInfo (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst);
+extern int  GetChCipherSuites   (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst);
+extern int  SusResPayldEncrypt  (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst);
+extern int  SetChSecurityKeys   (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst);
+extern int  GetSysIfcCaps       (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst);
 /** @} */
 
 #endif  /* APPDEVICE_H */

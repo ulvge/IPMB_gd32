@@ -39,7 +39,7 @@
 #define ARM_PEF_TEMP_DISABLE        0xFE
 
 /*** Global Variable ***/
-//_FAR_ PEFTmrMgr_T           g_PEFTmrMgr;
+//PEFTmrMgr_T           g_PEFTmrMgr;
 
 /**
  * PEFTimerTask
@@ -47,9 +47,9 @@
 void
 PEFTimerTask (int BMCInst)
 {
-    _FAR_ PEFRecordDetailsConfig_T* pNVRPEFRecordDetailsConfig;
+    PEFRecordDetailsConfig_T* pNVRPEFRecordDetailsConfig;
     INT8U  sysPwrState;
-    _FAR_ BMCInfo_t* pBMCInfo = &g_BMCInfo[BMCInst];
+    BMCInfo_t* pBMCInfo = &g_BMCInfo[BMCInst];
     pNVRPEFRecordDetailsConfig = &pBMCInfo->PEFRecordDetailsConfig;
 
     LOCK_BMC_SHARED_MEM(BMCInst);
@@ -169,7 +169,7 @@ PETAckTimerTask (int BMCInst)
         MsgPkt.Channel= pPETAckMgr[i].Channel ;
         MsgPkt.Channel	 |=( (pPETAckMgr[i].DestSel & 0x0F) << 4);
 
-        _fmemcpy (MsgPkt.Data,(_FAR_ INT8U*)&pPETAckMgr[i].EvtRecord,sizeof (SELEventRecord_T));
+        _fmemcpy (MsgPkt.Data,(INT8U*)&pPETAckMgr[i].EvtRecord,sizeof (SELEventRecord_T));
         PostMsgNonBlock (&MsgPkt, PEF_TASK_Q,BMCInst);
     }
 
@@ -186,9 +186,9 @@ PEFStartDlyTimerTask(int BMCInst)
 	static INT8U PresysPwrState = 0;
     static INT8U EnableCountStartupDly = FALSE;
     static INT8U EnableCountAlertStartupDly = FALSE;
-    _FAR_ PEFConfig_T* pPEFConfig;
+    PEFConfig_T* pPEFConfig;
     
-	_FAR_ BMCInfo_t* pBMCInfo = &g_BMCInfo[BMCInst];
+	BMCInfo_t* pBMCInfo = &g_BMCInfo[BMCInst];
 
      pPEFConfig = &pBMCInfo->PEFConfig;
 	

@@ -375,7 +375,7 @@ int
 InitInternalSensors (SensorInfo_T *pSensorInfo,int BMCInst)
 {
     int i = 0;
-    _FAR_ BMCInfo_t* pBMCInfo = &g_BMCInfo[BMCInst];
+    BMCInfo_t* pBMCInfo = &g_BMCInfo[BMCInst];
     INT8U SSIComputeBladeSupport = g_corefeatures.ssi_support;
 
     /* Register core internal sensor handler
@@ -451,7 +451,7 @@ void* GetSensorInfoFromSensorType (INT8U SensorType, int BMCInst)
     int 		  i;
     INT8U   	  u8SensorNumber = 0xFF;
     SensorInfo_T* pSensorInfo = NULL;
-    _FAR_ BMCInfo_t* pBMCInfo = &g_BMCInfo[BMCInst];
+    BMCInfo_t* pBMCInfo = &g_BMCInfo[BMCInst];
 
     for (i = 0; i< pBMCInfo->InternalSensorTblSize ; i++)
     {
@@ -487,7 +487,7 @@ int
 SELSensorInit (void*  pSenInfo,int BMCInst)
 {
     SensorInfo_T*  pSensorInfo = pSenInfo;
-    _FAR_ BMCInfo_t* pBMCInfo = &g_BMCInfo[BMCInst];
+    BMCInfo_t* pBMCInfo = &g_BMCInfo[BMCInst];
     SELInfo_T	SelInfo;
     INT16U      RecordCount = 0;
 
@@ -537,7 +537,7 @@ int
 SELMonitor (void *pSenInfo, INT8U* pReadFlags,int BMCInst)
 {
 	SensorInfo_T*  pSensorInfo = pSenInfo;
-    _FAR_ BMCInfo_t* pBMCInfo = &g_BMCInfo[BMCInst];
+    BMCInfo_t* pBMCInfo = &g_BMCInfo[BMCInst];
     /*Fill Current Sensor reading  */
     pSensorInfo->SensorReading = pBMCInfo->InternalSensorTbl[INTERNAL_SENSOR_SEL].SensorReading;
 
@@ -722,7 +722,7 @@ int SELEventLogExt (void* pSenInfo, INT8U* pReadFlags,int BMCInst)
 int 
 SetSELSensorReading (INT16U Reading,int BMCInst)
 {
-    _FAR_ BMCInfo_t* pBMCInfo = &g_BMCInfo[BMCInst];
+    BMCInfo_t* pBMCInfo = &g_BMCInfo[BMCInst];
     /* Set New sensor reading */
     pBMCInfo->InternalSensorTbl[INTERNAL_SENSOR_SEL].SensorReading =  Reading;
     return 0;
@@ -739,7 +739,7 @@ int
 WD2SensorInit (void*  pSenInfo,int BMCInst)
 {
     SensorInfo_T*  pSensorInfo = pSenInfo;
-    _FAR_ BMCInfo_t* pBMCInfo = &g_BMCInfo[BMCInst];
+    BMCInfo_t* pBMCInfo = &g_BMCInfo[BMCInst];
     /* Get SEL Information */
 
     pSensorInfo->PreviousState = 0;
@@ -764,7 +764,7 @@ int
 WD2Monitor (void* pSenInfo, INT8U* pReadFlags,int BMCInst)
 {
 	 SensorInfo_T*  pSensorInfo = pSenInfo;
-     _FAR_ BMCInfo_t* pBMCInfo = &g_BMCInfo[BMCInst];
+     BMCInfo_t* pBMCInfo = &g_BMCInfo[BMCInst];
     /*Fill Current Sensor reading  */
     pSensorInfo->SensorReading = pBMCInfo->InternalSensorTbl[INTERNAL_SENSOR_WD2].SensorReading;
 
@@ -791,7 +791,7 @@ int
 WD2EventLog (void* pSenInfo, INT8U* pReadFlags,int BMCInst)
 {
     SensorInfo_T*  		pSensorInfo = pSenInfo;
-    _FAR_ BMCInfo_t* pBMCInfo = &g_BMCInfo[BMCInst];
+    BMCInfo_t* pBMCInfo = &g_BMCInfo[BMCInst];
     INT8U				EventMsg [EVENT_MSG_LENGTH];
     INT8U				u8EventOccured;
     INT16U				u16EventHistory;
@@ -964,7 +964,7 @@ WD2EventLogExt (void* pSenInfo, INT8U* pReadFlags,int BMCInst)
 int 
 SetWD2SensorReading (INT16U Reading, INT8U u8TmrUse, INT8U u8TmrActions,int BMCInst)
 {
-    _FAR_ BMCInfo_t* pBMCInfo = &g_BMCInfo[BMCInst];
+    BMCInfo_t* pBMCInfo = &g_BMCInfo[BMCInst];
     // mutex the WDT sensor event flags
     pthread_mutex_lock(&sg_WDTSensorMutex);
 
@@ -996,7 +996,7 @@ SetWD2SensorReading (INT16U Reading, INT8U u8TmrUse, INT8U u8TmrActions,int BMCI
 int 
 RestartWD2Sensor(int BMCInst)
 {
-    _FAR_ BMCInfo_t* pBMCInfo = &g_BMCInfo[BMCInst];
+    BMCInfo_t* pBMCInfo = &g_BMCInfo[BMCInst];
     // mutex the WDT sensor event flags
     pthread_mutex_lock(&sg_WDTSensorMutex);
 
@@ -1032,7 +1032,7 @@ int
 OpStateSensorInit (void* pSenInfo, int BMCInst)
 {
     SensorInfo_T* pSensorInfo = pSenInfo;
-    _FAR_ BMCInfo_t* pBMCInfo = &g_BMCInfo[BMCInst];
+    BMCInfo_t* pBMCInfo = &g_BMCInfo[BMCInst];
 
     pSensorInfo->PreviousState = 0;
     pSensorInfo->SensorReading = 0;
@@ -1049,7 +1049,7 @@ int
 OpStateMonitor (void *pSenInfo, INT8U* pReadFlags, int BMCInst)
 {
     SensorInfo_T* pSensorInfo = pSenInfo;
-    _FAR_ BMCInfo_t* pBMCInfo = &g_BMCInfo[BMCInst];
+    BMCInfo_t* pBMCInfo = &g_BMCInfo[BMCInst];
     STATUS Status = ST_OK;
     INT8U CurrentState;
 
@@ -1422,7 +1422,7 @@ ServiceStateEventLogExt (void* pSenInfo, INT8U* pReadFlags, int BMCInst)
 int RAIDSensorInit (void*  pSenInfo,int BMCInst)
 {
     SensorInfo_T*  pSensorInfo = pSenInfo;
-    _FAR_ BMCInfo_t* pBMCInfo = &g_BMCInfo[BMCInst];
+    BMCInfo_t* pBMCInfo = &g_BMCInfo[BMCInst];
     INT8U Index = 0;
 
     pSensorInfo->PreviousState = 0;
@@ -1481,7 +1481,7 @@ int
 RAIDMonitor (void* pSenInfo, INT8U* pReadFlags,int BMCInst)
 {
     SensorInfo_T*  pSensorInfo = pSenInfo;
-    _FAR_ BMCInfo_t* pBMCInfo = &g_BMCInfo[BMCInst];
+    BMCInfo_t* pBMCInfo = &g_BMCInfo[BMCInst];
     void* libcomphandle = NULL;
     int (*GetROCReading)(INT8U*, INT8U, INT8U) = NULL;
     INT8U   Index = 0;

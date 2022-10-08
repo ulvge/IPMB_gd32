@@ -65,7 +65,7 @@ typedef struct
  * @brief Processes the terminal requests
  * @param pReq Pointer to request message packet
  **/
-extern void ProcessTerminalReq (_NEAR_ MsgPkt_T* pReq,int BMCInst);
+extern void ProcessTerminalReq (MsgPkt_T* pReq,int BMCInst);
 
 /**
  * @brief Called by the interrupt after receiving a byte through serial port
@@ -77,7 +77,7 @@ extern void OnTerminalByte (INT8U byte,int BMCInst);
  * @brief Processes the ECHO request from serial interface
  * @param pReq Pointer to request message packet
  **/
-extern void ProcessEchoReq (_NEAR_ MsgPkt_T* pReq,int BMCInst);
+extern void ProcessEchoReq (MsgPkt_T* pReq,int BMCInst);
 
 /**
  * @brief This function is called to process Terminal mode command.

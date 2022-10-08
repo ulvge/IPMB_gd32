@@ -111,7 +111,7 @@ static PEFCfgRsvdBits_T m_RsvdBitsCheck [] = {
 
 
 
-static _FAR_ SELEventRecord_T m_AlertImmRecord = /**< Contains Event Record for Alert Immidiate command */
+static SELEventRecord_T m_AlertImmRecord = /**< Contains Event Record for Alert Immidiate command */
 {
     {
         0xFFFF,             /*Record ID */
@@ -135,9 +135,9 @@ static _FAR_ SELEventRecord_T m_AlertImmRecord = /**< Contains Event Record for 
  * GetPEFCapabilities
  *---------------------------------------*/
 int 
-GetPEFCapabilities (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst)
+GetPEFCapabilities (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst)
 {
-    _NEAR_ GetPEFCapRes_T* pGetPEFCapRes = (_NEAR_ GetPEFCapRes_T*)pRes;
+    GetPEFCapRes_T* pGetPEFCapRes = (GetPEFCapRes_T*)pRes;
 
     pGetPEFCapRes->CompletionCode   = CC_NORMAL;
     pGetPEFCapRes->PEFVersion       = IPMI_PEF_VERSION;
@@ -154,10 +154,10 @@ GetPEFCapabilities (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ 
  * ArmPEFPostponeTimer
  *---------------------------------------*/
 int
-ArmPEFPostponeTimer (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst)
+ArmPEFPostponeTimer (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst)
 {
-    _NEAR_ ArmPEFTmrRes_T*  pArmPEFTmrRes = (_NEAR_ ArmPEFTmrRes_T*)pRes;
-    //_FAR_  PEFConfig_T*     pNVRPEFConfig;
+    ArmPEFTmrRes_T*  pArmPEFTmrRes = (ArmPEFTmrRes_T*)pRes;
+    // PEFConfig_T*     pNVRPEFConfig;
     BMCInfo_t *pBMCInfo = &g_BMCInfo[BMCInst];
 
     OS_THREAD_MUTEX_ACQUIRE(&pBMCInfo->PefConfig.PEFSharedMemMutex,WAIT_INFINITE);
@@ -220,14 +220,14 @@ ArmPEFPostponeTimer (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_
  * SetPEFConfigParams
  *---------------------------------------*/
 int 
-SetPEFConfigParams (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst)
+SetPEFConfigParams (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst)
 {
     INT8U               ParamSel;
-    _FAR_   PEFConfig_T*        pNvrPefConfig;
-    _FAR_ BMCInfo_t* pBMCInfo = &g_BMCInfo[BMCInst];
+      PEFConfig_T*        pNvrPefConfig;
+    BMCInfo_t* pBMCInfo = &g_BMCInfo[BMCInst];
     int					i = 0, j = 0;
     INT8U tmp=0;
-    _FAR_   INT8U  m_PEF_SetInProgress; /**< Contains setting PEF configuration status */
+      INT8U  m_PEF_SetInProgress; /**< Contains setting PEF configuration status */
     int ret;
     /* Store ParamSel */
     ParamSel = pReq[0];
@@ -608,10 +608,10 @@ SetPEFConfigParams (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ 
  * GetPEFConfigParams
  *---------------------------------------*/
 int
-GetPEFConfigParams (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst)
+GetPEFConfigParams (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst)
 {
-    _NEAR_  GetPEFConfigReq_T*  pGetConfigReq = (_NEAR_ GetPEFConfigReq_T*)pReq;
-    _FAR_   PEFConfig_T*        pNvrPefConfig;
+    GetPEFConfigReq_T*  pGetConfigReq = (GetPEFConfigReq_T*)pReq;
+      PEFConfig_T*        pNvrPefConfig;
     INT8U               ParamSel, Index=0;
     BMCInfo_t *pBMCInfo = &g_BMCInfo[BMCInst];
 
@@ -889,14 +889,14 @@ GetPEFConfigParams (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ 
                 /*Make set selector 0 based for array access*/
                 pGetConfigReq->SetSel--;
                 /*Copy the specified block */
-                _fmemcpy ((_FAR_ char*)&pRes[Index],
-                (_FAR_ const char*)pNvrPefConfig->AlertStringEntry[pGetConfigReq->SetSel].AlertString[pGetConfigReq->BlockSel],ALERT_STR_BLOCK_SIZE);
+                _fmemcpy ((char*)&pRes[Index],
+                (const char*)pNvrPefConfig->AlertStringEntry[pGetConfigReq->SetSel].AlertString[pGetConfigReq->BlockSel],ALERT_STR_BLOCK_SIZE);
             }
             else
             {
                 /*Copy the specified block */
-                _fmemcpy((_FAR_ char*)&pRes[Index],
-                (_FAR_ const char*)BMC_GET_SHARED_MEM (BMCInst)->AlertStringEntry.AlertString[pGetConfigReq->BlockSel],
+                _fmemcpy((char*)&pRes[Index],
+                (const char*)BMC_GET_SHARED_MEM (BMCInst)->AlertStringEntry.AlertString[pGetConfigReq->BlockSel],
                 ALERT_STR_BLOCK_SIZE);
             }
 
@@ -916,10 +916,10 @@ GetPEFConfigParams (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ 
  * SetLastProcessedEventId
  *---------------------------------------*/
 int 
-SetLastProcessedEventId (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst)
+SetLastProcessedEventId (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst)
 {
-    _NEAR_  SetLastEvtIDReq_T*  pSetLastEvtIDReq = (_NEAR_  SetLastEvtIDReq_T*)pReq;
-    _FAR_   PEFRecordDetailsConfig_T*        pNvrPEFRecordDetailsConfig;
+    SetLastEvtIDReq_T*  pSetLastEvtIDReq = (SetLastEvtIDReq_T*)pReq;
+      PEFRecordDetailsConfig_T*        pNvrPEFRecordDetailsConfig;
     BMCInfo_t *pBMCInfo = &g_BMCInfo[BMCInst];
     struct SELEventNode *SELNode= NULL;
     
@@ -980,10 +980,10 @@ SUCCESS:
  * GetLastProcessedEventId
  *---------------------------------------*/
 int 
-GetLastProcessedEventId (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst)
+GetLastProcessedEventId (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst)
 {
-    _NEAR_  GetLastEvtIDRes_T*  pGetLastEvtIDRes = (_NEAR_ GetLastEvtIDRes_T*)pRes;
-    _FAR_   PEFRecordDetailsConfig_T*        pNvrPEFRecordDetailsConfig;
+    GetLastEvtIDRes_T*  pGetLastEvtIDRes = (GetLastEvtIDRes_T*)pRes;
+      PEFRecordDetailsConfig_T*        pNvrPEFRecordDetailsConfig;
     BMCInfo_t *pBMCInfo = &g_BMCInfo[BMCInst];
 
     /*Get non volatile PEF configuration */
@@ -1006,14 +1006,14 @@ GetLastProcessedEventId (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_N
  * AlertImmediate
  *---------------------------------------*/
 int 
-AlertImmediate (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst)
+AlertImmediate (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst)
 {
     MsgPkt_T		MsgPkt;
     INT8U EthIndex=0;
     BMCInfo_t *pBMCInfo = &g_BMCInfo[BMCInst];
-    _NEAR_  AlertImmReq_T*  pAlertImmReq = (_NEAR_ AlertImmReq_T*)pReq;
-    _NEAR_  AlertImmRes_T*  pAlertImmRes = (_NEAR_ AlertImmRes_T*)pRes;
-    _NEAR_  SELEventRecord_T*  pAlertSELRec = (_NEAR_ SELEventRecord_T*)MsgPkt.Data;
+    AlertImmReq_T*  pAlertImmReq = (AlertImmReq_T*)pReq;
+    AlertImmRes_T*  pAlertImmRes = (AlertImmRes_T*)pRes;
+    SELEventRecord_T*  pAlertSELRec = (SELEventRecord_T*)MsgPkt.Data;
     ChannelInfo_T*      pChannelInfo;
 
     if(0x3 != ReqLen  && 0xB != ReqLen)  //0x3 for mandatory field and with  0xb  for optional field
@@ -1119,10 +1119,10 @@ AlertImmediate (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int 
 /*---------------------------------------
  * PETAcknowledge
  *---------------------------------------*/
-int PETAcknowledge (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst)
+int PETAcknowledge (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst)
 {
     BMCInfo_t *pBMCInfo = &g_BMCInfo[BMCInst];
-    _NEAR_  PETAckReq_T* pPETAckReq = (_NEAR_ PETAckReq_T*)pReq;
+    PETAckReq_T* pPETAckReq = (PETAckReq_T*)pReq;
             MsgPkt_T     MsgPkt;
 
     IPMI_DBG_PRINT ("PETAcknowledge\n");

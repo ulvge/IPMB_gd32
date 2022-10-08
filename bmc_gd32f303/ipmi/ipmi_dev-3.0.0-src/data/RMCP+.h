@@ -58,9 +58,9 @@ extern const INT8U  g_CipherRec[MAX_CIPHER_SUITES_BYTES];
  * keys for encoding/decoding furthur messages.
  * @{
 **/
-extern int  RSSPOpenSessionReq (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes, MiscParams_T *pParams,INT8U Channel, int BMCInst);
-extern int  RAKPMsg1           (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes, MiscParams_T *pParams,INT8U Channel, int BMCInst);
-extern int  RAKPMsg3           (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes, MiscParams_T *pParams,INT8U Channel, int BMCInst);
+extern int  RSSPOpenSessionReq (INT8U* pReq, INT8U ReqLen, INT8U* pRes, MiscParams_T *pParams,INT8U Channel, int BMCInst);
+extern int  RAKPMsg1           (INT8U* pReq, INT8U ReqLen, INT8U* pRes, MiscParams_T *pParams,INT8U Channel, int BMCInst);
+extern int  RAKPMsg3           (INT8U* pReq, INT8U ReqLen, INT8U* pRes, MiscParams_T *pParams,INT8U Channel, int BMCInst);
 /** @} */
 
 /**

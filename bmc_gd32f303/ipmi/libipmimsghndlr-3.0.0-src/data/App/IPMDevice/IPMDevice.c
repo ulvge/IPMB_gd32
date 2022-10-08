@@ -41,8 +41,8 @@
 
 
 //To get the data across the processes added in Shared memory structure in SharedMem.h
-//_FAR_ INT8U     g_ACPISysPwrState;
-//_FAR_ INT8U     g_ACPIDevPwrState;
+//INT8U     g_ACPISysPwrState;
+//INT8U     g_ACPIDevPwrState;
 
 /*** Module Variables ***/
 
@@ -71,9 +71,9 @@ static void GetFirmwareVersion(unsigned int* Major,unsigned int* Minor,unsigned 
  * GetDevID
  *---------------------------------------*/
 int
-GetDevID (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst)
+GetDevID (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst)
 {
-    _NEAR_ GetDevIDRes_T*  pGetDevIDRes = (_NEAR_ GetDevIDRes_T*) pRes;
+    GetDevIDRes_T*  pGetDevIDRes = (GetDevIDRes_T*) pRes;
     static unsigned int Major,Minor,Rev;
     static unsigned char MinorBCD;
     static int firsttime = 1;
@@ -112,7 +112,7 @@ extern xQueueHandle g_chassisCtrl_Queue;
  * ColdReset
  *---------------------------------------*/
 int
-ColdReset (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst)
+ColdReset (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst)
 {
     g_BMCInfo.Msghndlr.ColdReset = 1;
     *pRes = CC_NORMAL;  
@@ -133,7 +133,7 @@ ColdReset (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCIn
  * WarmReset
  *---------------------------------------*/
 int
-WarmReset (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst)
+WarmReset (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst)
 {
 
 	*pRes = CC_NORMAL;
@@ -145,9 +145,9 @@ WarmReset (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCIn
  * GetSelfTestResults
  *---------------------------------------*/
 int
-GetSelfTestResults (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst)
+GetSelfTestResults (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst)
 {
-    _NEAR_ GetSelfTestRes_T*  pGetSelfTest = (_NEAR_ GetSelfTestRes_T*) pRes;
+    GetSelfTestRes_T*  pGetSelfTest = (GetSelfTestRes_T*) pRes;
 
     pGetSelfTest->CompletionCode  = CC_NORMAL;
 
@@ -159,7 +159,7 @@ GetSelfTestResults (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ 
  * MfgTestOn
  *---------------------------------------*/
 int
-MfgTestOn (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst)
+MfgTestOn (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst)
 {
 
     g_BMCInfo.Msghndlr.ManufacturingTestOnMode = TRUE;
@@ -173,7 +173,7 @@ MfgTestOn (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCIn
  * SetACPIPwrState
  *---------------------------------------*/
 int
-SetACPIPwrState (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst)
+SetACPIPwrState (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst)
 {
 	return -1;
 }
@@ -183,9 +183,9 @@ SetACPIPwrState (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int
  * GetACPIPwrState
  *---------------------------------------*/
 int
-GetACPIPwrState (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst)
+GetACPIPwrState (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst)
 {
-    _NEAR_ GetACPIPwrStateRes_T*  pGetACPIRes = (_NEAR_ GetACPIPwrStateRes_T*) pRes;
+    GetACPIPwrStateRes_T*  pGetACPIRes = (GetACPIPwrStateRes_T*) pRes;
 
     pGetACPIRes->CompletionCode  = CC_NORMAL;
 
@@ -202,9 +202,9 @@ GetACPIPwrState (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int
  * GetDevGUID
  *---------------------------------------*/
 int
-GetDevGUID (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst)
+GetDevGUID (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst)
 {
-    _NEAR_ GetDevGUIDRes_T*  pGetDevGUIDRes = (_NEAR_ GetDevGUIDRes_T*) pRes;
+    GetDevGUIDRes_T*  pGetDevGUIDRes = (GetDevGUIDRes_T*) pRes;
 
     pGetDevGUIDRes->CompletionCode  = CC_NORMAL;
 //    LOCK_BMC_SHARED_MEM (BMCInst);

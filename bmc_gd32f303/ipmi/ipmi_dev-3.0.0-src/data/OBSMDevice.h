@@ -22,21 +22,21 @@
 #include "Types.h"
 
 /*** Function Prototypes ***/
-extern int  OBSMGetOpenBladeProps		(_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,int BMCInst);
-extern int  OBSMGetAddrInfo				(_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,int BMCInst);
-extern int  OBSMPlatformEvtMsg			(_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,int BMCInst);
-extern int  OBSMManagedModuleBMICtrl	(_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes);
-extern int  OBSMManagedModulePayldCtrl	(_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes);
-extern int  OBSMSetSysEvntLogPolicy		(_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes);
-extern int  OBSMSetModuleActvnPolicy	(_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes);
-extern int  OBSMGetModuleActvnPolicy	(_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes);
-extern int  OBSMSetModuleActivation		(_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes);
-extern int  OBSMSetPwrLevel				(_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes);
-extern int  OBSMGetPwrLevel				(_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes);
-extern int  OBSMRenegotiatePwr			(_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes);
-extern int  OBSMSetChannelState			(_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes);
-extern int  OBSMGetChannelState			(_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes);
-extern int  OBSMSetCoolingDomPwr		(_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes);
-extern int  OBSMSetCoolingDomThermState	(_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes);
+extern int  OBSMGetOpenBladeProps		(INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst);
+extern int  OBSMGetAddrInfo				(INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst);
+extern int  OBSMPlatformEvtMsg			(INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst);
+extern int  OBSMManagedModuleBMICtrl	(INT8U* pReq, INT8U ReqLen, INT8U* pRes);
+extern int  OBSMManagedModulePayldCtrl	(INT8U* pReq, INT8U ReqLen, INT8U* pRes);
+extern int  OBSMSetSysEvntLogPolicy		(INT8U* pReq, INT8U ReqLen, INT8U* pRes);
+extern int  OBSMSetModuleActvnPolicy	(INT8U* pReq, INT8U ReqLen, INT8U* pRes);
+extern int  OBSMGetModuleActvnPolicy	(INT8U* pReq, INT8U ReqLen, INT8U* pRes);
+extern int  OBSMSetModuleActivation		(INT8U* pReq, INT8U ReqLen, INT8U* pRes);
+extern int  OBSMSetPwrLevel				(INT8U* pReq, INT8U ReqLen, INT8U* pRes);
+extern int  OBSMGetPwrLevel				(INT8U* pReq, INT8U ReqLen, INT8U* pRes);
+extern int  OBSMRenegotiatePwr			(INT8U* pReq, INT8U ReqLen, INT8U* pRes);
+extern int  OBSMSetChannelState			(INT8U* pReq, INT8U ReqLen, INT8U* pRes);
+extern int  OBSMGetChannelState			(INT8U* pReq, INT8U ReqLen, INT8U* pRes);
+extern int  OBSMSetCoolingDomPwr		(INT8U* pReq, INT8U ReqLen, INT8U* pRes);
+extern int  OBSMSetCoolingDomThermState	(INT8U* pReq, INT8U ReqLen, INT8U* pRes);
 
 #endif  /* OBSMDEVICE_H */

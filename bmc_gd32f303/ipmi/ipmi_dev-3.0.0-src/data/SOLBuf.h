@@ -30,8 +30,8 @@
 extern INT8U InitSOLBuf  		(int send_buf_size, int recv_buf_size,int BMCInst,INT8U *SendBuf,INT8U *RecvBuf);
 extern INT8U ClearSOLBuf 		(int BMCInst);
 extern int   GetSOLBufSize 		(int buf_ix,int BMCInst);
-extern int   AddToSOLBuf 		(int buf_ix, _FAR_ INT8U* p_buf, int size,int BMCInst);
+extern int   AddToSOLBuf 		(int buf_ix, INT8U* p_buf, int size,int BMCInst);
 extern int	 RemoveFromSOLBuf 	(int buf_ix, int size,int BMCInst);
-extern int	 ReadFromSOLBuf     (int buf_ix, int offset, int size, _FAR_ INT8U* p_buf,int BMCInst);
+extern int	 ReadFromSOLBuf     (int buf_ix, int offset, int size, INT8U* p_buf,int BMCInst);
 
 #endif	/* SOLBUF_H */

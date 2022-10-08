@@ -129,10 +129,10 @@
 
 #if SUPPORT_IPMB0_IFC == 1
 /**
- * @var _FAR_ HQueue_T hIPMBFaultRecov_Q
+ * @var HQueue_T hIPMBFaultRecov_Q
  * @brief IPMB Fault recovery queue.
 **/
-extern _FAR_ HQueue_T      hIPMBFaultRecov_Q;
+extern HQueue_T      hIPMBFaultRecov_Q;
 #endif
 
 

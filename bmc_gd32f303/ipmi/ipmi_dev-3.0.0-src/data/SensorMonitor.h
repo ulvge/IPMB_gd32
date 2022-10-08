@@ -289,15 +289,15 @@ typedef struct
  *---------------------------------------*/
 extern int InitInternalSensors (SensorInfo_T *pSensorInfo,int BMCInst);
 extern void LoadSensorProperties (INT16U SensorNum, INT8U OwnerID, int BMCInst);	/* Multi-LUN support */
-extern void ReInitSensor (_FAR_ SensorInfo_T*  pSensorInfo, INT8U SensorOwnerID, int BMCInst);
-extern int InitSensorHook (_FAR_ SensorInfo_T*  pSensorInf,int BMCInst);
+extern void ReInitSensor (SensorInfo_T*  pSensorInfo, INT8U SensorOwnerID, int BMCInst);
+extern int InitSensorHook (SensorInfo_T*  pSensorInf,int BMCInst);
 
 
 /**
  * @var g_SensorValues 
  * @brief Global array that holds current sensor values.
 **/
-extern _FAR_ INT8U  g_SensorValues [];
+extern INT8U  g_SensorValues [];
 
 
 /*
@@ -328,7 +328,7 @@ extern void* SensorMonitorTask (void*);
 /**
  * @brief Post an Event message to System Event Log.
 **/
-extern int PostEventMessage (_NEAR_ INT8U *EventMsg, INT8U sysifcflag,INT8U size, int BMCInst);
+extern int PostEventMessage (INT8U *EventMsg, INT8U sysifcflag,INT8U size, int BMCInst);
 
 /**
  * @brief Returns the current sensor reading

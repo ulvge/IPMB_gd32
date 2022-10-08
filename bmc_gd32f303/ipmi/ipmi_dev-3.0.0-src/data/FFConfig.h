@@ -67,7 +67,7 @@ extern int CheckSubFn (INT8U ChannelNum, INT8U NetFn, INT8U Cmd, INT8U SubFn);
  * @param Cmd Command
  * @return 1 if command enabled, 0 if disabled.
 **/
-extern int CheckCmdCfg (_FAR_ CmdHndlrMap_T* pCmdHndlrMap, 
+extern int CheckCmdCfg (CmdHndlrMap_T* pCmdHndlrMap, 
                         INT8U ChannelNum, INT8U NetFn, INT8U Cmd,int BMCInst);
 
 /**
@@ -76,7 +76,7 @@ extern int CheckCmdCfg (_FAR_ CmdHndlrMap_T* pCmdHndlrMap,
  * @param Cmd - Command.
  * @return The command configuration.
 **/
-extern _FAR_ INT8U* GetCmdCfgAddr (INT8U NetFn, INT8U Cmd, int BMCInst);
+extern INT8U* GetCmdCfgAddr (INT8U NetFn, INT8U Cmd, int BMCInst);
 
 /**
  * @brief Get sub-function mask.
@@ -86,7 +86,7 @@ extern _FAR_ INT8U* GetCmdCfgAddr (INT8U NetFn, INT8U Cmd, int BMCInst);
  * @param pSubFnMask - Sub-function mask.
 **/
 extern int GetSubFnMask (INT8U ChannelNum, INT8U NetFn, 
-                         INT8U Cmd, _NEAR_ INT32U* pSubFnMask,int BMCInst);
+                         INT8U Cmd, INT32U* pSubFnMask,int BMCInst);
 
 /**
  * @brief Get sub-function mask additional.
@@ -96,7 +96,7 @@ extern int GetSubFnMask (INT8U ChannelNum, INT8U NetFn,
  * @param pSubFnMask - Sub-function mask.
 **/
 extern int GetSubFnMaskAdditional (INT8U ChannelNum, INT8U NetFn, 
-                         INT8U Cmd, _NEAR_ INT32U* pSubFnMask,int BMCInst);
+                         INT8U Cmd, INT32U* pSubFnMask,int BMCInst);
 
 /**
  * @brief Get command support configuration mask.
@@ -105,6 +105,6 @@ extern int GetSubFnMaskAdditional (INT8U ChannelNum, INT8U NetFn,
  * @param pFFConfig - Command support configuration information.
  * @return 0 if success, -1 if error.
 **/
-extern int GetCmdSupCfgMask (INT8U NetFn, INT8U Cmd, _NEAR_ INT16U* pFFConfig,INT8U GroupExtCode,int BMCInst);
+extern int GetCmdSupCfgMask (INT8U NetFn, INT8U Cmd, INT16U* pFFConfig,INT8U GroupExtCode,int BMCInst);
 
 #endif /* FF_CONFIG_H */

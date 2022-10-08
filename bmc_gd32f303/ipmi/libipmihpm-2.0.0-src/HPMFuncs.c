@@ -74,8 +74,8 @@ static BOOL ActivateFlashStatus = FALSE;
 static BOOL skip = FALSE;
 static BOOL DeferredAct_Support = FALSE;
 
-static _FAR_ INT8U      CurrCompOnUpg = INVALID_COMPONENT_ID; /* component to be upgraded */
-static _FAR_ INT8U      CurrRollbackComponets = 0x00;
+static INT8U      CurrCompOnUpg = INVALID_COMPONENT_ID; /* component to be upgraded */
+static INT8U      CurrRollbackComponets = 0x00;
 
 static HPMCmdStatus_T	HPMCmdStatus;
 static FWUpgState_T FWUpgState[MAX_COMPONENTS];
@@ -209,8 +209,8 @@ void* HPMTimerTask(void *pArg)
 int ActivateFlashMode(int BMCInst)
 {
     int RetVal = 0;
-    _FAR_ BMCInfo_t* pBMCInfo = &g_BMCInfo[BMCInst]; 
-    _FAR_ SensorSharedMem_T*    pSenSharedMem;
+    BMCInfo_t* pBMCInfo = &g_BMCInfo[BMCInst]; 
+    SensorSharedMem_T*    pSenSharedMem;
 
     if((skip == FALSE) && (ActivateFlashStatus == FALSE))
     {        
@@ -221,7 +221,7 @@ int ActivateFlashMode(int BMCInst)
         else   
             ActivateFlashStatus = FALSE;
             
-        pSenSharedMem = (_FAR_ SensorSharedMem_T*)&pBMCInfo->SensorSharedMem; //m_hSensorSharedMem;   /* Create mutex for Sensor shared memory */
+        pSenSharedMem = (SensorSharedMem_T*)&pBMCInfo->SensorSharedMem; //m_hSensorSharedMem;   /* Create mutex for Sensor shared memory */
         OS_THREAD_MUTEX_ACQUIRE(&pBMCInfo->SensorSharedMemMutex,SHARED_MEM_TIMEOUT);
         pSenSharedMem->GlobalSensorScanningEnable = FALSE;
         /* Release mutex for Sensor shared memory */

@@ -43,7 +43,7 @@
 #define SUPPORT_MULTI_CONTROLLER 1
 /*** Local Definitions ***/
 
-#define SDR_FIRST_FREE_BYTE(BMCInst) (((_FAR_ INT8U *)g_BMCInfo.SDRConfig.SDRRAM) + g_BMCInfo.SDRConfig.SDRRAM->Size)
+#define SDR_FIRST_FREE_BYTE(BMCInst) (((INT8U *)g_BMCInfo.SDRConfig.SDRRAM) + g_BMCInfo.SDRConfig.SDRRAM->Size)
 
 #define MAX_RES_LEN 128
 #define SDR_VERSION 0x51
@@ -452,11 +452,11 @@ FullSensorRec_T g_sensor_sdr[] =
 };
 
 /*** Prototype Declarations ***/
-static BOOL PreCheckSDRUpdateModeCmd(_NEAR_ INT8U *pRes, int BMCInst);
+static BOOL PreCheckSDRUpdateModeCmd(INT8U *pRes, int BMCInst);
 static INT16U SDR_ReserveSDRRepository(int BMCInst);
-static _FAR_ SDRRecHdr_T *GetLastSDRRec(int BMCInst);
+static SDRRecHdr_T *GetLastSDRRec(int BMCInst);
 static void UpdateRepositoryInfo(int BMCInst);
-static _FAR_ SDRRecHdr_T *SDR_GetSDRRec(INT16U RecID, INT16U ReservationID, int BMCInst);
+static SDRRecHdr_T *SDR_GetSDRRec(INT16U RecID, INT16U ReservationID, int BMCInst);
 
 static void SDRInitAgent(int BMCInst);
 
@@ -481,9 +481,9 @@ const INT8U SDRSize[][2] = {
     {BMC_MSG_CHANNEL_INFO_REC, 16},
 };
 
-static INT16U SDR_AddSDRRec(_NEAR_ SDRRecHdr_T *pSDRRecHdr, int BMCInst);
+static INT16U SDR_AddSDRRec(SDRRecHdr_T *pSDRRecHdr, int BMCInst);
 
-static INT16U SDR_PartialAddSDR(_NEAR_ INT8U *SDRData, INT8U Offset, INT8U Size, INT8U IsLast, INT16U ReservationID, int BMCInst);
+static INT16U SDR_PartialAddSDR(INT8U *SDRData, INT8U Offset, INT8U Size, INT8U IsLast, INT16U ReservationID, int BMCInst);
 
 #define CLEAR_SDR_INITIATE_ERASE 0xAA
 #define CLEAR_SDR_GET_STATUS 0x00
@@ -494,11 +494,11 @@ static INT16U SDR_DeleteSDR(INT16U ReservationID, INT16U RecID, int BMCInst);
 /*---------------------------------------
  * GetSDRRepositoryInfo
  *---------------------------------------*/
-int GetSDRRepositoryInfo(_NEAR_ INT8U *pReq, INT8U ReqLen, _NEAR_ INT8U *pRes, _NEAR_ int BMCInst)
+int GetSDRRepositoryInfo(INT8U *pReq, INT8U ReqLen, INT8U *pRes, int BMCInst)
 {
     BMCInfo_t *pBMCInfo = &g_BMCInfo;
-    _NEAR_ SDRRepositoryInfo_T *pSDRRepInfoRes =
-        (_NEAR_ SDRRepositoryInfo_T *)pRes;
+    SDRRepositoryInfo_T *pSDRRepInfoRes =
+        (SDRRepositoryInfo_T *)pRes;
 
     //    OS_THREAD_MUTEX_ACQUIRE(&pBMCInfo->SDRConfig.SDRMutex, WAIT_INFINITE);
     // _fmemcpy (pSDRRepInfoRes, &g_BMCInfo.SDRConfig.RepositoryInfo, sizeof (SDRRepositoryInfo_T));
@@ -527,11 +527,11 @@ int GetSDRRepositoryInfo(_NEAR_ INT8U *pReq, INT8U ReqLen, _NEAR_ INT8U *pRes, _
 /*---------------------------------------
  * GetSDRRepositoryAllocInfo
  *---------------------------------------*/
-int GetSDRRepositoryAllocInfo(_NEAR_ INT8U *pReq, INT8U ReqLen, _NEAR_ INT8U *pRes, _NEAR_ int BMCInst)
+int GetSDRRepositoryAllocInfo(INT8U *pReq, INT8U ReqLen, INT8U *pRes, int BMCInst)
 {
     BMCInfo_t *pBMCInfo = &g_BMCInfo;
-    _NEAR_ SDRRepositoryAllocInfo_T *pSDRRepAllocInfoRes =
-        (_NEAR_ SDRRepositoryAllocInfo_T *)pRes;
+    SDRRepositoryAllocInfo_T *pSDRRepAllocInfoRes =
+        (SDRRepositoryAllocInfo_T *)pRes;
 
     //    OS_THREAD_MUTEX_ACQUIRE(&pBMCInfo->SDRConfig.SDRMutex, WAIT_INFINITE);
     _fmemcpy(pSDRRepAllocInfoRes, &g_BMCInfo.SDRConfig.RepositoryAllocInfo,
@@ -545,11 +545,11 @@ int GetSDRRepositoryAllocInfo(_NEAR_ INT8U *pReq, INT8U ReqLen, _NEAR_ INT8U *pR
 /*---------------------------------------
  * ReserveSDRRepository
  *---------------------------------------*/
-int ReserveSDRRepository(_NEAR_ INT8U *pReq, INT8U ReqLen, _NEAR_ INT8U *pRes, _NEAR_ int BMCInst)
+int ReserveSDRRepository(INT8U *pReq, INT8U ReqLen, INT8U *pRes, int BMCInst)
 {
     BMCInfo_t *pBMCInfo = &g_BMCInfo;
-    _NEAR_ ReserveSDRRepositoryRes_T *pResSDRRepRes =
-        (_NEAR_ ReserveSDRRepositoryRes_T *)pRes;
+    ReserveSDRRepositoryRes_T *pResSDRRepRes =
+        (ReserveSDRRepositoryRes_T *)pRes;
 
     //    OS_THREAD_MUTEX_ACQUIRE(&pBMCInfo->SDRConfig.SDRMutex, WAIT_INFINITE);
     /* Shouldnt allow to reserve when the SDR is in update mode */
@@ -571,12 +571,12 @@ int ReserveSDRRepository(_NEAR_ INT8U *pReq, INT8U ReqLen, _NEAR_ INT8U *pRes, _
 /*---------------------------------------
  * GetSDR
  *---------------------------------------*/
-int GetSDR(_NEAR_ INT8U *pReq, INT8U ReqLen, _NEAR_ INT8U *pRes, _NEAR_ int BMCInst)
+int GetSDR(INT8U *pReq, INT8U ReqLen, INT8U *pRes, int BMCInst)
 {
-    _FAR_ SDRRecHdr_T *pSDRRec;
-    _NEAR_ GetSDRReq_T *pGetSDRReq = (_NEAR_ GetSDRReq_T *)pReq;
-    _NEAR_ GetSDRRes_T *pGetSDRRes = (_NEAR_ GetSDRRes_T *)pRes;
-    _FAR_ BMCInfo_t *pBMCInfo = &g_BMCInfo;
+    SDRRecHdr_T *pSDRRec;
+    GetSDRReq_T *pGetSDRReq = (GetSDRReq_T *)pReq;
+    GetSDRRes_T *pGetSDRRes = (GetSDRRes_T *)pRes;
+    BMCInfo_t *pBMCInfo = &g_BMCInfo;
     INT8U SDRLen = 0; //*curchannel;
 
     if (pGetSDRReq->RecID > RECODER_MAX_NUM)
@@ -685,7 +685,7 @@ int GetSDR(_NEAR_ INT8U *pReq, INT8U ReqLen, _NEAR_ INT8U *pRes, _NEAR_ int BMCI
 //    pGetSDRRes->CompletionCode = CC_NORMAL;
 //    pGetSDRRes->NextRecID = SDR_GetNextSDRId(pSDRRec->ID, BMCInst);
 //    _fmemcpy(pGetSDRRes + 1,
-//             ((_FAR_ INT8U *)pSDRRec) + pGetSDRReq->Offset,
+//             ((INT8U *)pSDRRec) + pGetSDRReq->Offset,
 //             pGetSDRReq->Size);
 //    //    OS_THREAD_MUTEX_RELEASE(&pBMCInfo->SDRConfig.SDRMutex);
 
@@ -695,12 +695,12 @@ int GetSDR(_NEAR_ INT8U *pReq, INT8U ReqLen, _NEAR_ INT8U *pRes, _NEAR_ int BMCI
 /*---------------------------------------
  * AddSDR
  *---------------------------------------*/
-int AddSDR(_NEAR_ INT8U *pReq, INT8U ReqLen, _NEAR_ INT8U *pRes, _NEAR_ int BMCInst)
+int AddSDR(INT8U *pReq, INT8U ReqLen, INT8U *pRes, int BMCInst)
 {
     INT16U RecID;
-    _NEAR_ SDRRecHdr_T *pSDRRec = (_NEAR_ SDRRecHdr_T *)pReq;
-    _NEAR_ AddSDRRes_T *pAddSDRRes = (_NEAR_ AddSDRRes_T *)pRes;
-    _FAR_ BMCInfo_t *pBMCInfo = &g_BMCInfo;
+    SDRRecHdr_T *pSDRRec = (SDRRecHdr_T *)pReq;
+    AddSDRRes_T *pAddSDRRes = (AddSDRRes_T *)pRes;
+    BMCInfo_t *pBMCInfo = &g_BMCInfo;
 
     /*Check the Minimum length of the SDR record*/
     if (ReqLen < sizeof(SDRRecHdr_T))
@@ -748,13 +748,13 @@ int AddSDR(_NEAR_ INT8U *pReq, INT8U ReqLen, _NEAR_ INT8U *pRes, _NEAR_ int BMCI
 /*---------------------------------------
  * PartialAddSDR
  *---------------------------------------*/
-int PartialAddSDR(_NEAR_ INT8U *pReq, INT8U ReqLen, _NEAR_ INT8U *pRes, _NEAR_ int BMCInst)
+int PartialAddSDR(INT8U *pReq, INT8U ReqLen, INT8U *pRes, int BMCInst)
 {
     INT8U Size;
     INT16U RecID;
-    _NEAR_ PartialAddSDRReq_T *pPartialAddReq = (_NEAR_ PartialAddSDRReq_T *)pReq;
-    _NEAR_ PartialAddSDRRes_T *pPartialAddRes = (_NEAR_ PartialAddSDRRes_T *)pRes;
-    _FAR_ BMCInfo_t *pBMCInfo = &g_BMCInfo;
+    PartialAddSDRReq_T *pPartialAddReq = (PartialAddSDRReq_T *)pReq;
+    PartialAddSDRRes_T *pPartialAddRes = (PartialAddSDRRes_T *)pRes;
+    BMCInfo_t *pBMCInfo = &g_BMCInfo;
 
     if (ReqLen < (sizeof(PartialAddSDRReq_T) + 1))
     {
@@ -790,7 +790,7 @@ int PartialAddSDR(_NEAR_ INT8U *pReq, INT8U ReqLen, _NEAR_ INT8U *pRes, _NEAR_ i
         return sizeof(pPartialAddRes->CompletionCode);
     }
 
-    RecID = SDR_PartialAddSDR((_NEAR_ INT8U *)(pPartialAddReq + 1),
+    RecID = SDR_PartialAddSDR((INT8U *)(pPartialAddReq + 1),
                               pPartialAddReq->Offset,
                               Size,
                               pPartialAddReq->Progress & 0xf,
@@ -815,11 +815,11 @@ int PartialAddSDR(_NEAR_ INT8U *pReq, INT8U ReqLen, _NEAR_ INT8U *pRes, _NEAR_ i
 /*---------------------------------------
  * DeleteSDR
  *---------------------------------------*/
-int DeleteSDR(_NEAR_ INT8U *pReq, INT8U ReqLen, _NEAR_ INT8U *pRes, _NEAR_ int BMCInst)
+int DeleteSDR(INT8U *pReq, INT8U ReqLen, INT8U *pRes, int BMCInst)
 {
-    _FAR_ BMCInfo_t *pBMCInfo = &g_BMCInfo;
-    _NEAR_ DeleteSDRReq_T *pDeleteSDRReq = (_NEAR_ DeleteSDRReq_T *)pReq;
-    _NEAR_ DeleteSDRRes_T *pDeleteSDRRes = (_NEAR_ DeleteSDRRes_T *)pRes;
+    BMCInfo_t *pBMCInfo = &g_BMCInfo;
+    DeleteSDRReq_T *pDeleteSDRReq = (DeleteSDRReq_T *)pReq;
+    DeleteSDRRes_T *pDeleteSDRRes = (DeleteSDRRes_T *)pRes;
     INT16U RecID;
 
     OS_THREAD_MUTEX_ACQUIRE(&pBMCInfo->SDRConfig.SDRMutex, WAIT_INFINITE);
@@ -855,12 +855,12 @@ int DeleteSDR(_NEAR_ INT8U *pReq, INT8U ReqLen, _NEAR_ INT8U *pRes, _NEAR_ int B
 /*---------------------------------------
  * ClearSDRRepository
  *---------------------------------------*/
-int ClearSDRRepository(_NEAR_ INT8U *pReq, INT8U ReqLen, _NEAR_ INT8U *pRes, _NEAR_ int BMCInst)
+int ClearSDRRepository(INT8U *pReq, INT8U ReqLen, INT8U *pRes, int BMCInst)
 {
     int status;
-    _NEAR_ ClearSDRReq_T *pClrSDRReq = (_NEAR_ ClearSDRReq_T *)pReq;
-    _NEAR_ ClearSDRRes_T *pClrSDRRes = (_NEAR_ ClearSDRRes_T *)pRes;
-    _FAR_ BMCInfo_t *pBMCInfo = &g_BMCInfo;
+    ClearSDRReq_T *pClrSDRReq = (ClearSDRReq_T *)pReq;
+    ClearSDRRes_T *pClrSDRRes = (ClearSDRRes_T *)pRes;
+    BMCInfo_t *pBMCInfo = &g_BMCInfo;
 
     //    OS_THREAD_MUTEX_ACQUIRE(&pBMCInfo->SDRConfig.SDRMutex, WAIT_INFINITE);
     if (TRUE != PreCheckSDRUpdateModeCmd(pRes, BMCInst))
@@ -894,11 +894,11 @@ int ClearSDRRepository(_NEAR_ INT8U *pReq, INT8U ReqLen, _NEAR_ INT8U *pRes, _NE
 /*---------------------------------------
  * GetSDRRepositoryTime
  *---------------------------------------*/
-int GetSDRRepositoryTime(_NEAR_ INT8U *pReq, INT8U ReqLen, _NEAR_ INT8U *pRes, _NEAR_ int BMCInst)
+int GetSDRRepositoryTime(INT8U *pReq, INT8U ReqLen, INT8U *pRes, int BMCInst)
 {
     INT32U SDRTime;
-    _NEAR_ GetSDRRepositoryTimeRes_T *pGetSDRTimeRes =
-        (_NEAR_ GetSDRRepositoryTimeRes_T *)pRes;
+    GetSDRRepositoryTimeRes_T *pGetSDRTimeRes =
+        (GetSDRRepositoryTimeRes_T *)pRes;
     BMCInfo_t *pBMCInfo = &g_BMCInfo;
 
     //    OS_THREAD_MUTEX_ACQUIRE(&pBMCInfo->SDRConfig.SDRMutex, WAIT_INFINITE);
@@ -914,10 +914,10 @@ int GetSDRRepositoryTime(_NEAR_ INT8U *pReq, INT8U ReqLen, _NEAR_ INT8U *pRes, _
 /*--------------------------------------
  *  * SetSDRRepositoryTime
  *   * -------------------------------------*/
-int SetSDRRepositoryTime(_NEAR_ INT8U *pReq, INT8U ReqLen, _NEAR_ INT8U *pRes, _NEAR_ int BMCInst)
+int SetSDRRepositoryTime(INT8U *pReq, INT8U ReqLen, INT8U *pRes, int BMCInst)
 {
 
-    _NEAR_ SetSDRRepositoryTimeReq_T *pSetSDRTimeReq = (_NEAR_ SetSDRRepositoryTimeReq_T *)pReq;
+    SetSDRRepositoryTimeReq_T *pSetSDRTimeReq = (SetSDRRepositoryTimeReq_T *)pReq;
     BMCInfo_t *pBMCInfo = &g_BMCInfo;
 
     pSetSDRTimeReq->Time = ipmitoh_u32(pSetSDRTimeReq->Time);
@@ -947,11 +947,11 @@ int SetSDRRepositoryTime(_NEAR_ INT8U *pReq, INT8U ReqLen, _NEAR_ INT8U *pRes, _
 /*---------------------------------------
  * EnterSDRUpdateMode
  *---------------------------------------*/
-int EnterSDRUpdateMode(_NEAR_ INT8U *pReq, INT8U ReqLen, _NEAR_ INT8U *pRes, _NEAR_ int BMCInst)
+int EnterSDRUpdateMode(INT8U *pReq, INT8U ReqLen, INT8U *pRes, int BMCInst)
 {
-    _NEAR_ EnterSDRUpdateModeRes_T *pEnterSDRUpdateModeRes =
-        (_NEAR_ EnterSDRUpdateModeRes_T *)pRes;
-    _FAR_ BMCInfo_t *pBMCInfo = &g_BMCInfo;
+    EnterSDRUpdateModeRes_T *pEnterSDRUpdateModeRes =
+        (EnterSDRUpdateModeRes_T *)pRes;
+    BMCInfo_t *pBMCInfo = &g_BMCInfo;
     INT8U curchannel;
 
     OS_THREAD_TLS_GET(g_tls.CurChannel, curchannel);
@@ -967,11 +967,11 @@ int EnterSDRUpdateMode(_NEAR_ INT8U *pReq, INT8U ReqLen, _NEAR_ INT8U *pRes, _NE
 /*------------------------------------------
  * ExitSDRUpdateMode
  *------------------------------------------*/
-int ExitSDRUpdateMode(_NEAR_ INT8U *pReq, INT8U ReqLen, _NEAR_ INT8U *pRes, _NEAR_ int BMCInst)
+int ExitSDRUpdateMode(INT8U *pReq, INT8U ReqLen, INT8U *pRes, int BMCInst)
 {
-    _NEAR_ ExitSDRUpdateModeRes_T *pExitSDRUpdateModeRes =
-        (_NEAR_ ExitSDRUpdateModeRes_T *)pRes;
-    _FAR_ BMCInfo_t *pBMCInfo = &g_BMCInfo;
+    ExitSDRUpdateModeRes_T *pExitSDRUpdateModeRes =
+        (ExitSDRUpdateModeRes_T *)pRes;
+    BMCInfo_t *pBMCInfo = &g_BMCInfo;
 
     OS_THREAD_MUTEX_ACQUIRE(&pBMCInfo->SDRConfig.SDRMutex, WAIT_INFINITE);
     if (TRUE != PreCheckSDRUpdateModeCmd(pRes, BMCInst))
@@ -990,15 +990,15 @@ int ExitSDRUpdateMode(_NEAR_ INT8U *pReq, INT8U ReqLen, _NEAR_ INT8U *pRes, _NEA
 /*-------------------------------------------------
  * RunInitializationAgent
  *--------------------------------------------------*/
-int RunInitializationAgent(_NEAR_ INT8U *pReq, INT8U ReqLen, _NEAR_ INT8U *pRes, _NEAR_ int BMCInst)
+int RunInitializationAgent(INT8U *pReq, INT8U ReqLen, INT8U *pRes, int BMCInst)
 {
-    _NEAR_ RunInitAgentRes_T *pRunInitAgentRes =
-        (_NEAR_ RunInitAgentRes_T *)pRes;
-    _FAR_ BMCInfo_t *pBMCInfo = &g_BMCInfo;
+    RunInitAgentRes_T *pRunInitAgentRes =
+        (RunInitAgentRes_T *)pRes;
+    BMCInfo_t *pBMCInfo = &g_BMCInfo;
     int i = 0, retval = 0;
     SensorInfo_T *pSensorInfo;
     INT16U SensorNum = 0;
-    SensorSharedMem_T *pSMSharedMem = (_FAR_ SensorSharedMem_T *)&pBMCInfo->SensorSharedMem;
+    SensorSharedMem_T *pSMSharedMem = (SensorSharedMem_T *)&pBMCInfo->SensorSharedMem;
 
     /* Reserved bit Checking */
     if ((pReq[0] & 0xFE) != 0x00)
@@ -1084,10 +1084,10 @@ int RunInitializationAgent(_NEAR_ INT8U *pReq, INT8U ReqLen, _NEAR_ INT8U *pRes,
 /*-----------------------------------------
  * GetSDRRec
  *-----------------------------------------*/
-_FAR_ SDRRecHdr_T *
+SDRRecHdr_T *
 GetSDRRec(INT16U RecID, int BMCInst)
 {
-    _FAR_ SDRRecHdr_T *pSDRRec;
+    SDRRecHdr_T *pSDRRec;
 
     /* If ID == 0x0000  return first record */
     if (0 == RecID)
@@ -1128,14 +1128,14 @@ GetSDRRec(INT16U RecID, int BMCInst)
  *-----------------------------------------------------*/
 int InitSDR(int BMCInst)
 {
-    _FAR_ INT8U *pSDRRec;
-    _FAR_ SDRRecHdr_T *pSDRRecord;
+    INT8U *pSDRRec;
+    SDRRecHdr_T *pSDRRecord;
     int i; /* Multi-LUN support index will have more than 256 sensors*/
 
-    _FAR_ INT8U OEM_Recdata[MAX_OEM_REC_LEN];
-    _FAR_ BMCInfo_t *pBMCInfo = &g_BMCInfo;
+    INT8U OEM_Recdata[MAX_OEM_REC_LEN];
+    BMCInfo_t *pBMCInfo = &g_BMCInfo;
 
-    //    pBMCInfo->SDRConfig.SDRRAM = (_FAR_ SDRRepository_T*) GetSDRSELNVRAddr(NVRH_SDR, BMCInst);
+    //    pBMCInfo->SDRConfig.SDRRAM = (SDRRepository_T*) GetSDRSELNVRAddr(NVRH_SDR, BMCInst);
     //    pSDRRec    = GetSDRSELNVRAddr (NVRH_SDR + sizeof(SDRRepository_T), BMCInst);
     pBMCInfo->SDRConfig.SDRRAM->NumRecords = 0;
     pBMCInfo->SDRConfig.LatestRecordID = 0;
@@ -1153,10 +1153,10 @@ int InitSDR(int BMCInst)
     while (TRUE)
     {
 #if (0x01 == MARK_FOR_DELETION_SUPPORT)
-        if ((0x5A == ((_FAR_ E2ROMHdr_T *)pSDRRec)->Valid) || (0x01 == ((_FAR_ E2ROMHdr_T *)pSDRRec)->Valid))
+        if ((0x5A == ((E2ROMHdr_T *)pSDRRec)->Valid) || (0x01 == ((E2ROMHdr_T *)pSDRRec)->Valid))
         {
             //count the records marked for deletion.
-            if (0x01 == ((_FAR_ E2ROMHdr_T *)pSDRRec)->Valid)
+            if (0x01 == ((E2ROMHdr_T *)pSDRRec)->Valid)
             {
                 pBMCInfo->SDRConfig.NumMarkedRecords++;
             }
@@ -1165,14 +1165,14 @@ int InitSDR(int BMCInst)
                 pBMCInfo->SDRConfig.SDRRAM->NumRecords++;
             }
 #else
-        if (0x5A == ((_FAR_ E2ROMHdr_T *)pSDRRec)->Valid)
+        if (0x5A == ((E2ROMHdr_T *)pSDRRec)->Valid)
         {
             pBMCInfo->SDRConfig.SDRRAM->NumRecords++;
 #endif
 
-            pBMCInfo->SDRConfig.LatestRecordID = ((SDRRecHdr_T *)(((_FAR_ E2ROMHdr_T *)pSDRRec) + 1))->ID;
-            pBMCInfo->SDRConfig.SDRRAM->Size += ((_FAR_ E2ROMHdr_T *)pSDRRec)->Len;
-            pSDRRec += ((_FAR_ E2ROMHdr_T *)pSDRRec)->Len;
+            pBMCInfo->SDRConfig.LatestRecordID = ((SDRRecHdr_T *)(((E2ROMHdr_T *)pSDRRec) + 1))->ID;
+            pBMCInfo->SDRConfig.SDRRAM->Size += ((E2ROMHdr_T *)pSDRRec)->Len;
+            pSDRRec += ((E2ROMHdr_T *)pSDRRec)->Len;
         }
         /* if No more Records */
         else
@@ -1244,7 +1244,7 @@ int InitSDR(int BMCInst)
 INT16U
 SDR_GetNextSDRId(INT16U RecID, int BMCInst)
 {
-    _FAR_ SDRRecHdr_T *pSDRRec;
+    SDRRecHdr_T *pSDRRec;
 
     pSDRRec = GetSDRRec(RecID, BMCInst);
     if (0 == pSDRRec)
@@ -1268,7 +1268,7 @@ SDR_GetNextSDRId(INT16U RecID, int BMCInst)
 /*--------------------------------------------------
  * SDR_GetFirstSDRRec
  *--------------------------------------------------*/
-_FAR_ SDRRecHdr_T *
+SDRRecHdr_T *
 SDR_GetFirstSDRRec(int BMCInst)
 {
     return ReadSDRRepository(NULL, BMCInst);
@@ -1277,8 +1277,8 @@ SDR_GetFirstSDRRec(int BMCInst)
 /*--------------------------------------------------
  * SDR_GetNextSDRRec
  *-------------------------------------------------*/
-_FAR_ SDRRecHdr_T *
-SDR_GetNextSDRRec(_FAR_ SDRRecHdr_T *pSDRRec, int BMCInst)
+SDRRecHdr_T *
+SDR_GetNextSDRRec(SDRRecHdr_T *pSDRRec, int BMCInst)
 {
     return ReadSDRRepository(pSDRRec, BMCInst);
 }
@@ -1286,17 +1286,17 @@ SDR_GetNextSDRRec(_FAR_ SDRRecHdr_T *pSDRRec, int BMCInst)
 /*--------------------------------------------------
  * ReadSDRRepository
  *-------------------------------------------------*/
-_FAR_ SDRRecHdr_T *
-ReadSDRRepository(_FAR_ SDRRecHdr_T *pSDRRec, int BMCInst)
+SDRRecHdr_T *
+ReadSDRRepository(SDRRecHdr_T *pSDRRec, int BMCInst)
 {
-    _FAR_ E2ROMHdr_T *InternalHdr;
+    E2ROMHdr_T *InternalHdr;
     INT8U SDRSize = 0;
-    _FAR_ SDRRecHdr_T *pSDRRes = NULL;
+    SDRRecHdr_T *pSDRRes = NULL;
 		int i;
 
     if (pSDRRec == NULL)
     {
-        return (_FAR_ SDRRecHdr_T *)&g_sensor_sdr[0];
+        return (SDRRecHdr_T *)&g_sensor_sdr[0];
     }
     else
     {
@@ -1304,7 +1304,7 @@ ReadSDRRepository(_FAR_ SDRRecHdr_T *pSDRRec, int BMCInst)
         {
             if(pSDRRec->ID == g_sensor_sdr[i].hdr.ID)
             {
-                return  (_FAR_ SDRRecHdr_T *)&g_sensor_sdr[i];
+                return  (SDRRecHdr_T *)&g_sensor_sdr[i];
             }
         }
         //        IPMI_DBG_PRINT_1("Reading the next record of %x \n", pSDRRec->ID);
@@ -1316,10 +1316,10 @@ ReadSDRRepository(_FAR_ SDRRecHdr_T *pSDRRec, int BMCInst)
 /*--------------------------------------------------
  * WriteSDRRepository
  *-------------------------------------------------*/
-void WriteSDRRepository(_FAR_ SDRRecHdr_T *pSDRRec, INT8U Offset, INT8U Size, INT8U SdrSize, int BMCInst)
+void WriteSDRRepository(SDRRecHdr_T *pSDRRec, INT8U Offset, INT8U Size, INT8U SdrSize, int BMCInst)
 {
-    _FAR_ E2ROMHdr_T *InternalHdr = (_FAR_ E2ROMHdr_T *)SDR_FIRST_FREE_BYTE(BMCInst);
-    _FAR_ INT8U *WriteAddr;
+    E2ROMHdr_T *InternalHdr = (E2ROMHdr_T *)SDR_FIRST_FREE_BYTE(BMCInst);
+    INT8U *WriteAddr;
 
     /* Update Validity and Length */
     if (Offset < sizeof(SDRRecHdr_T) && ((Offset + Size) >= sizeof(SDRRecHdr_T)))
@@ -1328,7 +1328,7 @@ void WriteSDRRepository(_FAR_ SDRRecHdr_T *pSDRRec, INT8U Offset, INT8U Size, IN
         InternalHdr->Len = SdrSize;
     }
 
-    WriteAddr = (_FAR_ INT8U *)(InternalHdr + 1);
+    WriteAddr = (INT8U *)(InternalHdr + 1);
     memset((WriteAddr + Offset), 0, SdrSize);
     _fmemcpy((WriteAddr + Offset), pSDRRec, Size);
 
@@ -1341,9 +1341,9 @@ void WriteSDRRepository(_FAR_ SDRRecHdr_T *pSDRRec, INT8U Offset, INT8U Size, IN
  * @return TRUE/FALSE
 **/
 static BOOL
-PreCheckSDRUpdateModeCmd(_NEAR_ INT8U *pRes, int BMCInst)
+PreCheckSDRUpdateModeCmd(INT8U *pRes, int BMCInst)
 {
-    _FAR_ BMCInfo_t *pBMCInfo = &g_BMCInfo;
+    BMCInfo_t *pBMCInfo = &g_BMCInfo;
     INT8U curchannel;
 
     OS_THREAD_TLS_GET(g_tls.CurChannel, curchannel);
@@ -1391,7 +1391,7 @@ SDR_ReserveSDRRepository(int BMCInst)
  * @param ReservationID - SDR Reservation ID.
  * @return SDR record.
 **/
-static _FAR_ SDRRecHdr_T *
+static SDRRecHdr_T *
 SDR_GetSDRRec(INT16U RecID, INT16U ReservationID, int BMCInst)
 {
 
@@ -1441,7 +1441,7 @@ ValidateSDRSize(INT8U SDRType, INT8U Size)
  * @return Record ID.
 **/
 static INT16U
-SDR_AddSDRRec(_NEAR_ SDRRecHdr_T *pSDRRec, int BMCInst)
+SDR_AddSDRRec(SDRRecHdr_T *pSDRRec, int BMCInst)
 {
     INT16U SDRSize;
     INT8U AllocSize;
@@ -1525,12 +1525,12 @@ SDR_AddSDRRec(_NEAR_ SDRRecHdr_T *pSDRRec, int BMCInst)
  * @return the record id.
 **/
 static INT16U
-SDR_PartialAddSDR(_NEAR_ INT8U *SDRData, INT8U Offset, INT8U Size,
+SDR_PartialAddSDR(INT8U *SDRData, INT8U Offset, INT8U Size,
                   INT8U IsLast, INT16U ReservationID, int BMCInst)
 
 {
     INT16U RecID;
-    _FAR_ SDRRecHdr_T *pSDRRecInNVR;
+    SDRRecHdr_T *pSDRRecInNVR;
     INT8U SdrSize = 0;
     int nRet;
 
@@ -1563,7 +1563,7 @@ SDR_PartialAddSDR(_NEAR_ INT8U *SDRData, INT8U Offset, INT8U Size,
         return INVALID_RECORD_ID;
     }
 
-    pSDRRecInNVR = (_FAR_ SDRRecHdr_T *)(SDR_FIRST_FREE_BYTE(BMCInst) +
+    pSDRRecInNVR = (SDRRecHdr_T *)(SDR_FIRST_FREE_BYTE(BMCInst) +
                                          sizeof(E2ROMHdr_T));
     RecID = g_BMCInfo.SDRConfig.LatestRecordID + 1;
 
@@ -1572,12 +1572,12 @@ SDR_PartialAddSDR(_NEAR_ INT8U *SDRData, INT8U Offset, INT8U Size,
     {
         if (Offset < sizeof(SDRRecHdr_T))
         {
-            _NEAR_ SDRRecHdr_T SDRHdr;
+            SDRRecHdr_T SDRHdr;
 
             memcpy((INT8U *)&SDRHdr, (INT8U *)pSDRRecInNVR, Offset);
             memcpy(((INT8U *)&SDRHdr) + Offset, SDRData, sizeof(SDRRecHdr_T) - Offset);
 
-            ((_NEAR_ SDRRecHdr_T *)pSDRRecInNVR)->ID = SDRHdr.ID = RecID;
+            ((SDRRecHdr_T *)pSDRRecInNVR)->ID = SDRHdr.ID = RecID;
             memcpy(SDRData, ((INT8U *)&SDRHdr) + Offset, sizeof(SDRRecHdr_T) - Offset);
 
             if (FALSE == ValidateSDRSize(SDRHdr.Type, SDRHdr.Len + sizeof(SDRRecHdr_T)))
@@ -1617,7 +1617,7 @@ SDR_PartialAddSDR(_NEAR_ INT8U *SDRData, INT8U Offset, INT8U Size,
         return INVALID_RECORD_ID;
     }
 
-    WriteSDRRepository((_FAR_ SDRRecHdr_T *)SDRData, Offset, Size, SdrSize, BMCInst);
+    WriteSDRRepository((SDRRecHdr_T *)SDRData, Offset, Size, SdrSize, BMCInst);
 
     /* If this is the last data update the data fields and flush. */
     if (IsLast == 1)
@@ -1681,17 +1681,17 @@ SDR_DeleteSDR(INT16U ReservationID, INT16U RecID, int BMCInst)
 {
 
     //#define MARK_FOR_DELETION
-    _FAR_ SDRRecHdr_T *pSDRRec = NULL;
+    SDRRecHdr_T *pSDRRec = NULL;
     int nRet;
     BMCInfo_t *pBMCInfo = &g_BMCInfo;
 #if (0x01 == MARK_FOR_DELETION_SUPPORT)
-    _FAR_ E2ROMHdr_T *pRec = NULL;
+    E2ROMHdr_T *pRec = NULL;
 #else
-    _FAR_ INT8U *pDestLocation = NULL;
-    _FAR_ INT8U *pSrcData = NULL;
-    _FAR_ INT8U *pFreeBytes = NULL;
-    _NEAR_ INT8U deleteSDR_Size;
-    _NEAR_ INT16U size;
+    INT8U *pDestLocation = NULL;
+    INT8U *pSrcData = NULL;
+    INT8U *pFreeBytes = NULL;
+    INT8U deleteSDR_Size;
+    INT16U size;
 #endif
 
     /* Bail out with error, if both the conditions are False (Reservation not valid)
@@ -1746,7 +1746,7 @@ SDR_DeleteSDR(INT16U ReservationID, INT16U RecID, int BMCInst)
             pSrcData = pDestLocation + deleteSDR_Size;
 
             pFreeBytes = (INT8U *)SDR_FIRST_FREE_BYTE(BMCInst);
-            size = (_FAR_ INT8U *)pFreeBytes - (_FAR_ INT8U *)pDestLocation;
+            size = (INT8U *)pFreeBytes - (INT8U *)pDestLocation;
 
             _fmemcpy(pDestLocation, pSrcData, size - deleteSDR_Size);
             _fmemset((pFreeBytes - deleteSDR_Size), '\0', deleteSDR_Size);
@@ -1793,7 +1793,7 @@ static int
 SDR_ClearSDRRepository(INT16U ReservationID, INT8U InitOrStatus, int BMCInst)
 {
     int nRet, i;
-    _FAR_ BMCInfo_t *pBMCInfo = &g_BMCInfo;
+    BMCInfo_t *pBMCInfo = &g_BMCInfo;
 
     /* Bail out with error, if both the conditions are False (Reservation not valid)
     1. Reservation ID matches, not equal to 0x00 & SDR is not in Update mode  /
@@ -1824,7 +1824,7 @@ SDR_ClearSDRRepository(INT16U ReservationID, INT8U InitOrStatus, int BMCInst)
     {
         return 0;
     }
-    _fmemset(((_FAR_ INT8U *)g_BMCInfo.SDRConfig.SDRRAM + 16), 0xFF, (pBMCInfo->IpmiConfig.SDRAllocationSize * 1024) - 16);
+    _fmemset(((INT8U *)g_BMCInfo.SDRConfig.SDRRAM + 16), 0xFF, (pBMCInfo->IpmiConfig.SDRAllocationSize * 1024) - 16);
 
     /* Flush the NVRAM */
 //    FlushSDR (g_BMCInfo.SDRConfig.SDRRAM, (pBMCInfo->IpmiConfig.SDRAllocationSize * 1024), nRet,BMCInst);
@@ -1885,15 +1885,15 @@ SDR_ClearSDRRepository(INT16U ReservationID, INT8U InitOrStatus, int BMCInst)
  * @brief Get the last SDR record.
  * @return the last SDR record.
 **/
-static _FAR_ SDRRecHdr_T *
+static SDRRecHdr_T *
 GetLastSDRRec(int BMCInst)
 {
-    _FAR_ SDRRecHdr_T *pSDRRec;
+    SDRRecHdr_T *pSDRRec;
 
     pSDRRec = SDR_GetFirstSDRRec(BMCInst);
     while (TRUE)
     {
-        _FAR_ SDRRecHdr_T *pCurSDRRec;
+        SDRRecHdr_T *pCurSDRRec;
 
         /* Save this record and get the next record */
         pCurSDRRec = pSDRRec;
@@ -1913,7 +1913,7 @@ GetLastSDRRec(int BMCInst)
 static void
 UpdateRepositoryInfo(int BMCInst)
 {
-    _FAR_ BMCInfo_t *pBMCInfo = &g_BMCInfo;
+    BMCInfo_t *pBMCInfo = &g_BMCInfo;
     /* Update the version */
     g_BMCInfo.SDRConfig.RepositoryInfo.Version = SDR_VERSION;
 
@@ -1961,9 +1961,9 @@ SDRInitAgent(int BMCInst)
 {
     INT8U i, Count = 0;
     INT8U CmdRes[MAX_RES_LEN];
-    _FAR_ SDRRecHdr_T *pSDRRec;
+    SDRRecHdr_T *pSDRRec;
     HQueue_T IfcQ;
-    _FAR_ BMCInfo_t *pBMCInfo = &g_BMCInfo;
+    BMCInfo_t *pBMCInfo = &g_BMCInfo;
 
     //    if(g_PDKHandle[PDK_BEFOREINITAGENT] != NULL)
     //    {
@@ -1977,7 +1977,7 @@ SDRInitAgent(int BMCInst)
     /* Turn off Event Generation */
     {
         //        SetEvtRcvReq_T SetEvtRcvReq = { 0xFF, 0 };
-        //        SetEventReceiver ((_NEAR_ INT8U*)&SetEvtRcvReq,
+        //        SetEventReceiver ((INT8U*)&SetEvtRcvReq,
         //                          sizeof (SetEvtRcvReq_T), CmdRes,BMCInst);
     }
 #endif
@@ -1993,7 +1993,7 @@ SDRInitAgent(int BMCInst)
     {
         if (MANAGEMENT_DEV_LOC_REC == pSDRRec->Type)
         {
-            _FAR_ MgmtCtrlrDevLocator_T *pMgmtDevLocRec = (_FAR_ MgmtCtrlrDevLocator_T *)pSDRRec;
+            MgmtCtrlrDevLocator_T *pMgmtDevLocRec = (MgmtCtrlrDevLocator_T *)pSDRRec;
             if (pBMCInfo->IpmiConfig.BMCSlaveAddr != pMgmtDevLocRec->DevSlaveAddr)
             {
                 pBMCInfo->MgmtTbl[Count].OWNERID = pMgmtDevLocRec->DevSlaveAddr;
@@ -2012,10 +2012,10 @@ SDRInitAgent(int BMCInst)
         {
             MsgPkt_T Req;
             IPMIMsgHdr_T *pIPMIMsgHdr = 0;
-            _NEAR_ SetEvtRcvReq_T *SetEvtRcvReq = 0;
+            SetEvtRcvReq_T *SetEvtRcvReq = 0;
             memset(&Req, 0, sizeof(MsgPkt_T));
             pIPMIMsgHdr = (IPMIMsgHdr_T *)Req.Data;
-            SetEvtRcvReq = (_NEAR_ SetEvtRcvReq_T *)&Req.Data[sizeof(IPMIMsgHdr_T)];
+            SetEvtRcvReq = (SetEvtRcvReq_T *)&Req.Data[sizeof(IPMIMsgHdr_T)];
             pIPMIMsgHdr->ResAddr = pBMCInfo->MgmtTbl[i].OWNERID;
             pIPMIMsgHdr->NetFnLUN = (NETFN_SENSOR << 2) | BMC_LUN_00;
             pIPMIMsgHdr->ChkSum = ~(pIPMIMsgHdr->ResAddr + pIPMIMsgHdr->NetFnLUN) + 1;
@@ -2099,7 +2099,7 @@ SDRInitAgent(int BMCInst)
         if (FULL_SDR_REC == pSDRRec->Type)
         {
             /* For all records of type 01h */
-            _FAR_ FullSensorRec_T *pFullRec = (_FAR_ FullSensorRec_T *)pSDRRec;
+            FullSensorRec_T *pFullRec = (FullSensorRec_T *)pSDRRec;
             INT16U ValidMask = htoipmi_u16(0x0FFF);
             // If not a threshold sensor, then 15 event bits are used.
             if (pFullRec->EventTypeCode != 0x01)
@@ -2118,7 +2118,7 @@ SDRInitAgent(int BMCInst)
                 SetSEReq.AssertionMask = ValidMask;
                 SetSEReq.DeAssertionMask = ValidMask;
 
-                //     SetSensorEventEnable ((_NEAR_ INT8U*)&SetSEReq,
+                //     SetSensorEventEnable ((INT8U*)&SetSEReq,
                 //     sizeof (SetSensorEventEnableReq_T), CmdRes,BMCInst);
             }
 
@@ -2131,7 +2131,7 @@ SDRInitAgent(int BMCInst)
                 SetSensorTypeReq.SensorNum = pFullRec->SensorNum;
                 SetSensorTypeReq.SensorType = pFullRec->SensorType;
                 SetSensorTypeReq.EventTypeCode = pFullRec->EventTypeCode;
-                SetSensorType((_NEAR_ INT8U *)&SetSensorTypeReq, sizeof(SetSensorTypeReq), CmdRes, BMCInst);
+                SetSensorType((INT8U *)&SetSensorTypeReq, sizeof(SetSensorTypeReq), CmdRes, BMCInst);
             }
 #endif
 
@@ -2150,7 +2150,7 @@ SDRInitAgent(int BMCInst)
                     SetThresholdReq.UpperCritical = pFullRec->UpperCritical;
                     SetThresholdReq.UpperNonRecoverable = pFullRec->UpperNonRecoverable;
 
-                    SetSensorThresholds((_NEAR_ INT8U *)&SetThresholdReq,
+                    SetSensorThresholds((INT8U *)&SetThresholdReq,
                                         sizeof(SetSensorThresholdReq_T), CmdRes, BMCInst);
                 }
             }
@@ -2166,7 +2166,7 @@ SDRInitAgent(int BMCInst)
                     SetHysteresisReq.PositiveHysterisis = pFullRec->PositiveHysterisis;
                     SetHysteresisReq.NegativeHysterisis = pFullRec->NegativeHysterisis;
 
-                    SetSensorHysterisis((_NEAR_ INT8U *)&SetHysteresisReq,
+                    SetSensorHysterisis((INT8U *)&SetHysteresisReq,
                                         sizeof(SetSensorHysterisisReq_T), CmdRes, BMCInst);
                 }
             }
@@ -2182,14 +2182,14 @@ SDRInitAgent(int BMCInst)
                 SetSEReq.AssertionMask = (pFullRec->AssertionEventMask & ValidMask);
                 SetSEReq.DeAssertionMask = (pFullRec->DeAssertionEventMask & ValidMask);
 
-                //                SetSensorEventEnable ((_NEAR_ INT8U*)&SetSEReq,
+                //                SetSensorEventEnable ((INT8U*)&SetSEReq,
                 //                                                        sizeof (SetSensorEventEnableReq_T), CmdRes,BMCInst);
             }
         }
 
         if (pSDRRec->Type == COMPACT_SDR_REC)
         {
-            _FAR_ CompactSensorRec_T *pCompactRec = (_FAR_ CompactSensorRec_T *)pSDRRec;
+            CompactSensorRec_T *pCompactRec = (CompactSensorRec_T *)pSDRRec;
             INT16U ValidMask = htoipmi_u16(0x0FFF);
             // If not a threshold sensor, then 15 event bits are used.
             if (pCompactRec->EventTypeCode != 0x01)
@@ -2208,7 +2208,7 @@ SDRInitAgent(int BMCInst)
                 SetSEReq.AssertionMask = ValidMask;
                 SetSEReq.DeAssertionMask = ValidMask;
 
-                //                SetSensorEventEnable ((_NEAR_ INT8U*)&SetSEReq,
+                //                SetSensorEventEnable ((INT8U*)&SetSEReq,
                 //                sizeof (SetSensorEventEnableReq_T), CmdRes,BMCInst);
             }
 
@@ -2221,7 +2221,7 @@ SDRInitAgent(int BMCInst)
                 SetSensorTypeReq.SensorNum = pCompactRec->SensorNum;
                 SetSensorTypeReq.SensorType = pCompactRec->SensorType;
                 SetSensorTypeReq.EventTypeCode = pCompactRec->EventTypeCode;
-                SetSensorType((_NEAR_ INT8U *)&SetSensorTypeReq, sizeof(SetSensorTypeReq), CmdRes, BMCInst);
+                SetSensorType((INT8U *)&SetSensorTypeReq, sizeof(SetSensorTypeReq), CmdRes, BMCInst);
             }
 #endif
 
@@ -2234,7 +2234,7 @@ SDRInitAgent(int BMCInst)
                 SetHysteresisReq.PositiveHysterisis = pCompactRec->PositiveHysteris;
                 SetHysteresisReq.NegativeHysterisis = pCompactRec->NegativeHysterisis;
 
-                SetSensorHysterisis((_NEAR_ INT8U *)&SetHysteresisReq,
+                SetSensorHysterisis((INT8U *)&SetHysteresisReq,
                                     sizeof(SetSensorHysterisisReq_T), CmdRes, BMCInst);
             }
 
@@ -2249,7 +2249,7 @@ SDRInitAgent(int BMCInst)
                 SetSEReq.AssertionMask = (pCompactRec->AssertionEventMask & ValidMask);
                 SetSEReq.DeAssertionMask = (pCompactRec->DeAssertionEventMask & ValidMask);
 
-                //                SetSensorEventEnable ((_NEAR_ INT8U*)&SetSEReq,
+                //                SetSensorEventEnable ((INT8U*)&SetSEReq,
                 //                                                        sizeof (SetSensorEventEnableReq_T), CmdRes,BMCInst);
             }
         }
@@ -2260,7 +2260,7 @@ SDRInitAgent(int BMCInst)
     /* Enable Event Generation */
     {
         //        SetEvtRcvReq_T SetEvtRcvReq = { 0x20, 0 };
-        //        SetEventReceiver ((_NEAR_ INT8U*)&SetEvtRcvReq,
+        //        SetEventReceiver ((INT8U*)&SetEvtRcvReq,
         //                                        sizeof (SetEvtRcvReq_T), CmdRes,BMCInst);
     }
 #endif
@@ -2272,7 +2272,7 @@ SDRInitAgent(int BMCInst)
     {
         MsgPkt_T Req;
         IPMIMsgHdr_T *pIPMIMsgHdr = (IPMIMsgHdr_T *)Req.Data;
-        _NEAR_ SetEvtRcvReq_T *SetEvtRcvReq = (_NEAR_ SetEvtRcvReq_T *)&Req.Data[sizeof(IPMIMsgHdr_T)];
+        SetEvtRcvReq_T *SetEvtRcvReq = (SetEvtRcvReq_T *)&Req.Data[sizeof(IPMIMsgHdr_T)];
         pIPMIMsgHdr->ResAddr = pBMCInfo->MgmtTbl[i].OWNERID;
         pIPMIMsgHdr->NetFnLUN = (NETFN_SENSOR << 2) | BMC_LUN_00;
         pIPMIMsgHdr->ChkSum = ~(pIPMIMsgHdr->ResAddr + pIPMIMsgHdr->NetFnLUN) + 1;

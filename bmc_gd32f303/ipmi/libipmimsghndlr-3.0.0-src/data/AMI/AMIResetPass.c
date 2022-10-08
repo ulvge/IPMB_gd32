@@ -90,11 +90,11 @@ static int validate_email(const char *emailaddr)
     return (valid >= 1);
 }
 
-int AMISetEmailForUser(_NEAR_ INT8U* pReq, INT32U ReqLen, _NEAR_ INT8U* pRes, int BMCInst)
+int AMISetEmailForUser(INT8U* pReq, INT32U ReqLen, INT8U* pRes, int BMCInst)
 {
 
     AMISetUserEmailReq_T *pSetUserEmail = (AMISetUserEmailReq_T *)pReq;
-     _FAR_ UserInfo_T* pUserInfo;
+     UserInfo_T* pUserInfo;
     BMCInfo_t *pBMCInfo = &g_BMCInfo[BMCInst];
     TDBG("Inside AMISetEmailForUser %d \n", pSetUserEmail->UserID);
 
@@ -126,12 +126,12 @@ int AMISetEmailForUser(_NEAR_ INT8U* pReq, INT32U ReqLen, _NEAR_ INT8U* pRes, in
 
 }
 
-int AMIGetEmailForUser(_NEAR_ INT8U* pReq, INT32U ReqLen, _NEAR_ INT8U* pRes, int BMCInst)
+int AMIGetEmailForUser(INT8U* pReq, INT32U ReqLen, INT8U* pRes, int BMCInst)
 {
-    _NEAR_  AMIGetUserEmailRes_T*  pAMIGetUserEmailRes = (_NEAR_ AMIGetUserEmailRes_T *) pRes;
+    AMIGetUserEmailRes_T*  pAMIGetUserEmailRes = (AMIGetUserEmailRes_T *) pRes;
     BMCInfo_t *pBMCInfo = &g_BMCInfo[BMCInst];
     int UserID = *(INT8U *)pReq;
-    _FAR_ UserInfo_T* pUserInfo;
+    UserInfo_T* pUserInfo;
     TDBG("Inside AMIGetEmailForUser %d \n", UserID);
 
     OS_THREAD_MUTEX_ACQUIRE(&pBMCInfo->ChUserMutex,WAIT_INFINITE);
@@ -154,7 +154,7 @@ int AMIGetEmailForUser(_NEAR_ INT8U* pReq, INT32U ReqLen, _NEAR_ INT8U* pRes, in
     return sizeof(AMIGetUserEmailRes_T);
 }
 
-int AMIResetPassword(_NEAR_ INT8U* pReq, INT32U ReqLen, _NEAR_ INT8U* pRes, int BMCInst)
+int AMIResetPassword(INT8U* pReq, INT32U ReqLen, INT8U* pRes, int BMCInst)
 {
     AMIResetPasswordReq_T *pCmdReq  = (AMIResetPasswordReq_T *)pReq;
     char eMailAdd[EMAIL_ADDR_SIZE];
@@ -162,7 +162,7 @@ int AMIResetPassword(_NEAR_ INT8U* pReq, INT32U ReqLen, _NEAR_ INT8U* pRes, int 
     SetUserPswdReq_T ReqSetUserPswd;
     SetUserPswdRes_T ResSetUserPswd;
     char ClearPswd[MAX_PASSWORD_LEN];
-    _FAR_ UserInfo_T* pUserInfo = NULL;
+    UserInfo_T* pUserInfo = NULL;
     char OldPswd[MAX_PASSWORD_LEN];
     int ret;
     int smtpServerFlag=0;// 0 - primary 1- secondary
@@ -370,11 +370,11 @@ end:
 
 }
 
-int AMISetEmailFormatUser(_NEAR_ INT8U* pReq, INT32U ReqLen, _NEAR_ INT8U* pRes, int BMCInst)
+int AMISetEmailFormatUser(INT8U* pReq, INT32U ReqLen, INT8U* pRes, int BMCInst)
 {
 
     AMISetUserEmailFormatReq_T *pSetUserEmail = (AMISetUserEmailFormatReq_T *)pReq;
-     _FAR_ UserInfo_T* pUserInfo;
+     UserInfo_T* pUserInfo;
     BMCInfo_t *pBMCInfo = &g_BMCInfo[BMCInst];
     int cnt=0;
     TDBG("Inside AMISetEmailFormatUser %d \n", pSetUserEmail->UserID);
@@ -415,11 +415,11 @@ int AMISetEmailFormatUser(_NEAR_ INT8U* pReq, INT32U ReqLen, _NEAR_ INT8U* pRes,
 
 }
 
-int AMIGetEmailFormatUser(_NEAR_ INT8U* pReq, INT32U ReqLen, _NEAR_ INT8U* pRes, int BMCInst)
+int AMIGetEmailFormatUser(INT8U* pReq, INT32U ReqLen, INT8U* pRes, int BMCInst)
 {
     BMCInfo_t *pBMCInfo = &g_BMCInfo[BMCInst];
     int UserID = *(INT8U *)pReq;
-    _FAR_ UserInfo_T* pUserInfo;
+    UserInfo_T* pUserInfo;
     TDBG("Inside AMIGetEmailFormatUser %d \n", UserID);
 
     OS_THREAD_MUTEX_ACQUIRE(&pBMCInfo->ChUserMutex,WAIT_INFINITE);
@@ -455,9 +455,9 @@ int AMIGetEmailFormatUser(_NEAR_ INT8U* pReq, INT32U ReqLen, _NEAR_ INT8U* pRes,
 *		@param BMCInst- BMC Instance
 *		@return Returns size of AMISetRootPasswordRes_T
 */
-int AMIGetRootUserAccess (_NEAR_ INT8U* pReq, INT32U ReqLen, _NEAR_ INT8U* pRes, int BMCInst)
+int AMIGetRootUserAccess (INT8U* pReq, INT32U ReqLen, INT8U* pRes, int BMCInst)
 {
-	_NEAR_  AMIGetRootUserAccessRes_T*     pGetRootUserAccessRes = (_NEAR_ AMIGetRootUserAccessRes_T*)pRes;
+	AMIGetRootUserAccessRes_T*     pGetRootUserAccessRes = (AMIGetRootUserAccessRes_T*)pRes;
 
 	INT8U    UserId,UserAccessState;
 	INT16S   Err = 0;
@@ -489,10 +489,10 @@ return sizeof (AMIGetRootUserAccessRes_T);
 *		@return Returns size of AMISetRootPasswordRes_T
 */
 
-int AMISetRootPassword (_NEAR_ INT8U *pReq, INT32U ReqLen, _NEAR_ INT8U *pRes,int BMCInst)
+int AMISetRootPassword (INT8U *pReq, INT32U ReqLen, INT8U *pRes,int BMCInst)
 {
 
-    _NEAR_  AMISetRootPasswordReq_T*     pSetRootPswdReq = (_NEAR_ AMISetRootPasswordReq_T*)pReq;
+    AMISetRootPasswordReq_T*     pSetRootPswdReq = (AMISetRootPasswordReq_T*)pReq;
     INT16S  Err = 0;     
 
     if(ReqLen < OP_ONLY_CMD_LENGTH)     //Checking for minimum command Request length
@@ -555,12 +555,12 @@ return sizeof (*pRes);
 *		@param BMCInst- BMC Instance
 *		@return Returns size of AMIGetUserShelltypeRes_T
 */
-int AMIGetUserShelltype(_NEAR_ INT8U *pReq, INT32U ReqLen, _NEAR_ INT8U *pRes,int BMCInst)
+int AMIGetUserShelltype(INT8U *pReq, INT32U ReqLen, INT8U *pRes,int BMCInst)
 {
-    _NEAR_  AMIGetUserShelltypeReq_T*       pGetUserShellReq = (_NEAR_ AMIGetUserShelltypeReq_T*)pReq;
-    _NEAR_  AMIGetUserShelltypeRes_T*       pGetUserShellRes = (_NEAR_ AMIGetUserShelltypeRes_T*)pRes;
-    _FAR_ BMCInfo_t* pBMCInfo = &g_BMCInfo[BMCInst];
-    _FAR_   UserInfo_T*             pUserInfo = NULL;
+    AMIGetUserShelltypeReq_T*       pGetUserShellReq = (AMIGetUserShelltypeReq_T*)pReq;
+    AMIGetUserShelltypeRes_T*       pGetUserShellRes = (AMIGetUserShelltypeRes_T*)pRes;
+    BMCInfo_t* pBMCInfo = &g_BMCInfo[BMCInst];
+      UserInfo_T*             pUserInfo = NULL;
     INT8U   UserId=0;
 
     UserId = pGetUserShellReq->UserID & 0x3F;
@@ -602,11 +602,11 @@ return sizeof (AMIGetUserShelltypeRes_T);
 *		@return Returns size of AMISetUserShelltypeRes_T
 */
 
-int AMISetUserShelltype(_NEAR_ INT8U *pReq, INT32U ReqLen, _NEAR_ INT8U *pRes,int BMCInst)
+int AMISetUserShelltype(INT8U *pReq, INT32U ReqLen, INT8U *pRes,int BMCInst)
 {
-    _NEAR_  AMISetUserShelltypeReq_T*       pSetUserShellReq = (_NEAR_ AMISetUserShelltypeReq_T*)pReq;
-     _FAR_   UserInfo_T*             pUserInfo = NULL;
-    _FAR_ BMCInfo_t* pBMCInfo = &g_BMCInfo[BMCInst];
+    AMISetUserShelltypeReq_T*       pSetUserShellReq = (AMISetUserShelltypeReq_T*)pReq;
+       UserInfo_T*             pUserInfo = NULL;
+    BMCInfo_t* pBMCInfo = &g_BMCInfo[BMCInst];
     INT8U   UserId=0, ShellType;
     INT8U oldshell = -1, newshell = -1;
 

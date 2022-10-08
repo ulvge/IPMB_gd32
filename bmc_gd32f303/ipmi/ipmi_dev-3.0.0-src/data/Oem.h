@@ -36,11 +36,11 @@ extern const CmdHndlrMap_T g_Oem_CmdHndlr [];
  * sensor values.
  * @{
 **/
-extern int SetFan (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst);
-extern int UpdateFirmware(_NEAR_ INT8U *pReq, INT8U ReqLen, _NEAR_ INT8U *pRes, _NEAR_ int BMCInst);
+extern int SetFan (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst);
+extern int UpdateFirmware(INT8U *pReq, INT8U ReqLen, INT8U *pRes, int BMCInst);
 
-extern int GetCPUInfo(_NEAR_ INT8U *pReq, INT8U ReqLen, _NEAR_ INT8U *pRes, _NEAR_ int BMCInst);
-extern int GetBMCInfo(_NEAR_ INT8U *pReq, INT8U ReqLen, _NEAR_ INT8U *pRes, _NEAR_ int BMCInst);
+extern int GetCPUInfo(INT8U *pReq, INT8U ReqLen, INT8U *pRes, int BMCInst);
+extern int GetBMCInfo(INT8U *pReq, INT8U ReqLen, INT8U *pRes, int BMCInst);
 /** @} */
 
 

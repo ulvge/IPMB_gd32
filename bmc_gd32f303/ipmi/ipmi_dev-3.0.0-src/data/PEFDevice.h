@@ -36,14 +36,14 @@
  * IPMI PEF Device and Alerting Command Handlers. Invoked by the message handler
  * @{
  **/
-extern int GetPEFCapabilities       (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst);
-extern int ArmPEFPostponeTimer      (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst);
-extern int SetPEFConfigParams       (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst);
-extern int GetPEFConfigParams       (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst);
-extern int SetLastProcessedEventId  (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst);
-extern int GetLastProcessedEventId  (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst);
-extern int AlertImmediate           (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst);
-extern int PETAcknowledge           (_NEAR_ INT8U* pReq, INT8U ReqLen, _NEAR_ INT8U* pRes,_NEAR_ int BMCInst);
+extern int GetPEFCapabilities       (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst);
+extern int ArmPEFPostponeTimer      (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst);
+extern int SetPEFConfigParams       (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst);
+extern int GetPEFConfigParams       (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst);
+extern int SetLastProcessedEventId  (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst);
+extern int GetLastProcessedEventId  (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst);
+extern int AlertImmediate           (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst);
+extern int PETAcknowledge           (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst);
 /** @} */
 
 #define SEND_ALERT_IMM 0x0

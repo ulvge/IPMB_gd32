@@ -33,11 +33,11 @@
 #define OP_DISABLE_USER_ID       0
 #define LINUX_ROOT_USER_UID      0 
 
-extern int AMIResetPassword(_NEAR_ INT8U* pReq, INT32U ReqLen, _NEAR_ INT8U* pRes, int BMCInst);
-extern int AMIGetEmailForUser(_NEAR_ INT8U* pReq, INT32U ReqLen, _NEAR_ INT8U* pRes, int BMCInst);
-extern int AMISetEmailForUser(_NEAR_ INT8U* pReq, INT32U ReqLen, _NEAR_ INT8U* pRes, int BMCInst);
-extern int AMIGetEmailFormatUser(_NEAR_ INT8U* pReq, INT32U ReqLen, _NEAR_ INT8U* pRes, int BMCInst);
-extern int AMISetEmailFormatUser(_NEAR_ INT8U* pReq, INT32U ReqLen, _NEAR_ INT8U* pRes, int BMCInst);
+extern int AMIResetPassword(INT8U* pReq, INT32U ReqLen, INT8U* pRes, int BMCInst);
+extern int AMIGetEmailForUser(INT8U* pReq, INT32U ReqLen, INT8U* pRes, int BMCInst);
+extern int AMISetEmailForUser(INT8U* pReq, INT32U ReqLen, INT8U* pRes, int BMCInst);
+extern int AMIGetEmailFormatUser(INT8U* pReq, INT32U ReqLen, INT8U* pRes, int BMCInst);
+extern int AMISetEmailFormatUser(INT8U* pReq, INT32U ReqLen, INT8U* pRes, int BMCInst);
 
 
 #endif // __AMISMTP_H__ 
