@@ -157,30 +157,62 @@
         <Bp>
           <Number>0</Number>
           <Type>0</Type>
-          <LineNumber>761</LineNumber>
+          <LineNumber>508</LineNumber>
           <EnabledFlag>1</EnabledFlag>
-          <Address>134228914</Address>
+          <Address>134225680</Address>
           <ByteObject>0</ByteObject>
           <HtxType>0</HtxType>
           <ManyObjects>0</ManyObjects>
           <SizeOfObject>0</SizeOfObject>
           <BreakByAccess>0</BreakByAccess>
           <BreakIfRCount>1</BreakIfRCount>
-          <Filename>&lt;1&gt;..\bsp\bsp_i2c.c</Filename>
+          <Filename>&lt;1&gt;..\ipmi\libipmimsghndlr-3.0.0-src\data\SensorEvent\SensorDevice\Sensor.c</Filename>
           <ExecCommand></ExecCommand>
-          <Expression>\\bmc_rom\../bsp/bsp_i2c.c\761</Expression>
+          <Expression>\\bmc_rom\../ipmi/libipmimsghndlr-3.0.0-src/data/SensorEvent/SensorDevice/Sensor.c\508</Expression>
+        </Bp>
+        <Bp>
+          <Number>1</Number>
+          <Type>0</Type>
+          <LineNumber>499</LineNumber>
+          <EnabledFlag>1</EnabledFlag>
+          <Address>134225654</Address>
+          <ByteObject>0</ByteObject>
+          <HtxType>0</HtxType>
+          <ManyObjects>0</ManyObjects>
+          <SizeOfObject>0</SizeOfObject>
+          <BreakByAccess>0</BreakByAccess>
+          <BreakIfRCount>1</BreakIfRCount>
+          <Filename>&lt;1&gt;..\ipmi\libipmimsghndlr-3.0.0-src\data\SensorEvent\SensorDevice\Sensor.c</Filename>
+          <ExecCommand></ExecCommand>
+          <Expression>\\bmc_rom\../ipmi/libipmimsghndlr-3.0.0-src/data/SensorEvent/SensorDevice/Sensor.c\499</Expression>
+        </Bp>
+        <Bp>
+          <Number>2</Number>
+          <Type>0</Type>
+          <LineNumber>250</LineNumber>
+          <EnabledFlag>1</EnabledFlag>
+          <Address>0</Address>
+          <ByteObject>0</ByteObject>
+          <HtxType>0</HtxType>
+          <ManyObjects>0</ManyObjects>
+          <SizeOfObject>0</SizeOfObject>
+          <BreakByAccess>0</BreakByAccess>
+          <BreakIfRCount>0</BreakIfRCount>
+          <Filename>&lt;1&gt;..\ipmi\libipmimsghndlr-3.0.0-src\data\MsgHndlr.c</Filename>
+          <ExecCommand></ExecCommand>
+          <Expression></Expression>
         </Bp>
       </Breakpoint>
       <WatchWindow1>
         <Ww>
           <count>0</count>
           <WinNumber>1</WinNumber>
-          <ItemText>MsgReq.Param</ItemText>
+          <ItemText>full_sdr-&gt;buff</ItemText>
         </Ww>
         <Ww>
           <count>1</count>
           <WinNumber>1</WinNumber>
-          <ItemText>MsgReq</ItemText>
+          <ItemText>full_sdr-&gt;full_sensor_rec</ItemText>
         </Ww>
       </WatchWindow1>
       <WatchWindow2>

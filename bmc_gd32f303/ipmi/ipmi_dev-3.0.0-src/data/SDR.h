@@ -61,7 +61,8 @@ extern SDRRepository_T*     g_SDRRAM;
  * These commands provide read/write access to BMC's SDR repository.
  * @{
 **/
-extern int GetSDRRepositoryInfo      (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst);
+extern INT8U GetSDRRepositoryNum(void);
+extern int GetSDRRepositoryInfo(INT8U *pReq, INT8U ReqLen, INT8U *pRes, int BMCInst);
 extern int GetSDRRepositoryAllocInfo (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst);
 extern int ReserveSDRRepository      (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst);
 extern int GetSDR                    (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst);
@@ -89,6 +90,7 @@ extern INT16U   SDR_GetNextSDRId     (INT16U RecID,int BMCInst);
  * @return the next SDR Record header.
 **/
 extern SDRRecHdr_T*   ReadSDRRepository (SDRRecHdr_T* pSDRRec,int BMCInst);
+extern FullSensorRec_T *ReadSensorRecByID(INT8U id, int BMCInst);
 
 /**
  * @brief Write into SDR Repository.

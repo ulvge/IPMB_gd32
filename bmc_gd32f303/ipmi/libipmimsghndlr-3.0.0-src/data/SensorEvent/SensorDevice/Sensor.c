@@ -502,22 +502,23 @@ int GetDevSDRInfo(INT8U *pReq, INT8U ReqLen, INT8U *pRes, int BMCInst)
 		return sizeof(INT8U);
 	}
 
-	pGetDevSDRInfoRes->CompletionCode = CC_NORMAL;
+#if 1
+    INT8U senNum = GetSDRRepositoryNum();//SENSOR_NUM
+    pGetDevSDRInfoRes->CompletionCode = CC_NORMAL;
 	if (ReqLen == 0)
 	{ // no reqest paremeter
-		pGetDevSDRInfoRes->NumSensor = SENSOR_NUM;
+		pGetDevSDRInfoRes->NumSensor = senNum;
 	}
 	else if ((pGetDevSDRInfoReq->Operation & 0x01) == 0)
 	{ // get sdr count
-		pGetDevSDRInfoRes->NumSensor = SENSOR_NUM;
+		pGetDevSDRInfoRes->NumSensor = senNum;
 	}
 	else
 	{ // get sensor count
-		pGetDevSDRInfoRes->NumSensor = SENSOR_NUM;
+		pGetDevSDRInfoRes->NumSensor = senNum;
 	}
 	return sizeof(GetSDRInfoRes_T); 
-	#if 0
-
+#else
 	/* Check for proper operation flag before proceeding with task */
 	if ((pGetDevSDRInfoReq->Operation != SDR_INFO_SDR_COUNT) &&
 		(pGetDevSDRInfoReq->Operation != SDR_INFO_SENSOR_COUNT) && (ReqLen == 1))
@@ -1180,53 +1181,55 @@ int GetSensorThresholds(INT8U *pReq, INT8U ReqLen, INT8U *pRes, int BMCInst)
 	GetSensorThresholdRes_T *thresholds_res = (GetSensorThresholdRes_T *)pRes;
 
 	thresholds_res->CompletionCode = CC_NORMAL;
-	if(pSensorThreshReq->SensorNum > SENSOR_NUM){
-		thresholds_res->CompletionCode = CC_SDR_REC_NOT_PRESENT;
-		return sizeof(INT8U);
-	}
+    INT8U senNum = GetSDRRepositoryNum();//SENSOR_NUM
+//	if(pSensorThreshReq->SensorNum > senNum){
+//		thresholds_res->CompletionCode = CC_SDR_REC_NOT_PRESENT;
+//		return sizeof(INT8U);
+//	}
 
 	thresholds_res->GetFlags = 0x3F;
 
-	if(pSensorThreshReq->SensorNum >0 && pSensorThreshReq->SensorNum <= SENSOR_TEMP_NUM){
-		thresholds_res->LowerNonRecoverable = IpmiReadingDatConvert2Raw(IPMI_UNIT_DEGREES_C, 20);
-		thresholds_res->LowerCritical = IpmiReadingDatConvert2Raw(IPMI_UNIT_DEGREES_C, 30);
-		thresholds_res->LowerNonCritical = IpmiReadingDatConvert2Raw(IPMI_UNIT_DEGREES_C, 40);
-
-		thresholds_res->UpperNonCritical = IpmiReadingDatConvert2Raw(IPMI_UNIT_DEGREES_C, 150);
-		thresholds_res->UpperCritical = IpmiReadingDatConvert2Raw(IPMI_UNIT_DEGREES_C, 160);
-		thresholds_res->UpperNonRecoverable = IpmiReadingDatConvert2Raw(IPMI_UNIT_DEGREES_C, 200);	
-	}else if(pSensorThreshReq->SensorNum > SENSOR_TEMP_NUM && pSensorThreshReq->SensorNum <= SENSOR_NUM){
-		INT8U LowerCritical, UpperCritical;
-		switch(pSensorThreshReq->SensorNum - SENSOR_TEMP_NUM-1)
-		{
-		case 0:  // 3.3
-			LowerCritical = 120;
-			UpperCritical = 136;
-			break;
-		case 1:  // 1.8
-			LowerCritical = 130;
-			UpperCritical = 150;
-			break;
-		case 2:  // 1.1
-			LowerCritical = 80;
-			UpperCritical = 90;
-			break;
-		case 3:  // 0.9
-			LowerCritical = 65;
-			UpperCritical = 75;
-			break;
-		default:
-			break;
-		}
-		thresholds_res->LowerNonRecoverable = 0;
-		thresholds_res->LowerCritical = LowerCritical;
-		thresholds_res->LowerNonCritical = LowerCritical;
-
-		thresholds_res->UpperNonCritical = UpperCritical;
-		thresholds_res->UpperCritical = UpperCritical;
-		thresholds_res->UpperNonRecoverable = 255;	
+	//const ADCChannlesConfig *chanCfg = NULL;
+    uint16_t adcVal;
+	//bool get_res = adc_getValByIndex(pSensorThreshReq->SensorNum - 1, &chanCfg, &adcVal);
+	ADCChannlesRes adcRes;
+	bool get_res = adc_getValByChannel(pSensorThreshReq->SensorNum, &adcRes);
+    if(!get_res){
+		thresholds_res->CompletionCode = CC_SDR_REC_NOT_PRESENT;
+		return sizeof(INT8U);
 	}
+	if(IPMI_UNIT_DEGREES_C == adcRes.sensorUnitType) {
+		thresholds_res->LowerNonRecoverable = IpmiReadingDatConvert2Raw(adcRes.sensorUnitType, 20);
+		thresholds_res->LowerCritical = IpmiReadingDatConvert2Raw(adcRes.sensorUnitType, 30);
+		thresholds_res->LowerNonCritical = IpmiReadingDatConvert2Raw(adcRes.sensorUnitType, 40);
 
+		thresholds_res->UpperNonCritical = IpmiReadingDatConvert2Raw(adcRes.sensorUnitType, 150);
+		thresholds_res->UpperCritical = IpmiReadingDatConvert2Raw(adcRes.sensorUnitType, 160);
+		thresholds_res->UpperNonRecoverable = IpmiReadingDatConvert2Raw(adcRes.sensorUnitType, 200);	
+	}else if(IPMI_UNIT_VOLTS == adcRes.sensorUnitType) {
+		//INT8U LowerCritical, UpperCritical;
+        FullSensorRec_T *pSdr = ReadSensorRecByID(pSensorThreshReq->SensorNum, BMCInst);
+//        switch(chanCfg->adcChannl)
+//		{
+//		case ADC_CHANNEL_P1V8:
+//			LowerCritical = 120;
+//			UpperCritical = 136;
+//			break;
+//		case ADC_CHANNEL_P12V:
+//			LowerCritical = 130;
+//			UpperCritical = 150;
+//			break;
+//		default:
+//			break;
+//		}
+		thresholds_res->LowerNonRecoverable = pSdr->LowerNonRecoverable;
+		thresholds_res->LowerCritical = pSdr->LowerCritical;
+		thresholds_res->LowerNonCritical = pSdr->LowerNonCritical;
+
+		thresholds_res->UpperNonCritical = pSdr->UpperNonCritical;
+		thresholds_res->UpperCritical = pSdr->UpperCritical;
+		thresholds_res->UpperNonRecoverable = pSdr->UpperNonRecoverable;	
+	}
 
 	return sizeof(GetSensorThresholdRes_T);
 #if 0
@@ -2047,12 +2050,17 @@ int GetSensorReading(INT8U *pReq, INT8U ReqLen, INT8U *pRes, int BMCInst)
 	sensor_reading_res->ComparisonStatus = 0x00;
 	sensor_reading_res->OptionalStatus = 0x00;
 
+	printf("pSensorReadReq->SensorNum = %d", pSensorReadReq->SensorNum);
+    
+	const ADCChannlesConfig *chanCfg = NULL;
+    uint16_t adcVal;
 	get_res = adc_getValByChannel(pSensorReadReq->SensorNum, &adcRes);
 	if(!get_res){
 		sensor_reading_res->CompletionCode = CC_SDR_REC_NOT_PRESENT;
 		return sizeof(*pRes);
 	}
 	sensor_reading_res->SensorReading = IpmiReadingDatConvert2Raw(adcRes.sensorUnitType, adcRes.adcVal);
+	//sensor_reading_res->SensorReading = IpmiReadingDatConvert2Raw(chanCfg->sensorUnitType, adcVal);
 	return sizeof(GetSensorReadingRes_T);
 #if 0	
 	pSenSharedMem = (SensorSharedMem_T *)&pBMCInfo->SensorSharedMem; //m_hSensorSharedMem;

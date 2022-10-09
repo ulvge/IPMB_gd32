@@ -337,7 +337,7 @@ void ProcessIPMIReq(MsgPkt_T *pReq, MsgPkt_T *pRes)
 
     /* Calculate the Second CheckSum */
     pRes->Data[pRes->Size - 1] = CalculateCheckSum2(pRes->Data, pRes->Size - 1); 
-	printf("check sum = %x", pRes->Data[pRes->Size - 1]);
+	//printf("check sum = %x", pRes->Data[pRes->Size - 1]);
     return;
 }
 

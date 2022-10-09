@@ -695,7 +695,7 @@ SendMessage (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst)
     {
         *pRes = CC_REQ_INV_LEN;
         return  sizeof (*pRes);
-    }
+    }  
 
     if(pSendMsgReq->ChNoTrackReq == 0xC0)
     {

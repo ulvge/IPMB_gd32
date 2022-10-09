@@ -2,6 +2,7 @@
 #include "libipmi.h"
 #include "OSPort.h"
 
+/// @brief need to sync with g_sensor_sdr
 const static ADCChannlesConfig g_adcChannlConfig[] = {
 #if 0
     {ADC0, RCU_ADC0, GPIOA, RCU_GPIOA, GPIO_PIN_0, "P0V9 VCC"},
@@ -18,9 +19,9 @@ const static ADCChannlesConfig g_adcChannlConfig[] = {
     {ADC0, RCU_ADC0, GPIOC, RCU_GPIOC, GPIO_PIN_3, "P1V2 VDDQ"},
     {ADC0, RCU_ADC0, GPIOC, RCU_GPIOC, GPIO_PIN_4, "CPUTemp"}
 #else
-    {ADC_CHANNEL_0, ADC0, RCU_ADC0, GPIOA, RCU_GPIOA, GPIO_PIN_0, IPMI_UNIT_VOLTS, "P1V8 VCC"},
-    {ADC_CHANNEL_8, ADC0, RCU_ADC0, GPIOB, RCU_GPIOB, GPIO_PIN_0, IPMI_UNIT_DEGREES_C, "X100 temp"},
-    {ADC_CHANNEL_10, ADC0, RCU_ADC0, GPIOC, RCU_GPIOC, GPIO_PIN_0, IPMI_UNIT_VOLTS, "P12V standby"},
+    {ADC_CHANNEL_TEMP_X100, ADC0, RCU_ADC0, GPIOB, RCU_GPIOB, GPIO_PIN_0, IPMI_UNIT_DEGREES_C, "X100 temp"},
+    {ADC_CHANNEL_P1V8,      ADC0, RCU_ADC0, GPIOA, RCU_GPIOA, GPIO_PIN_0, IPMI_UNIT_VOLTS, "P1V8 VCC"},
+    {ADC_CHANNEL_P12V,      ADC0, RCU_ADC0, GPIOC, RCU_GPIOC, GPIO_PIN_0, IPMI_UNIT_VOLTS, "P12V standby"},
 #endif
 };      
 
@@ -39,17 +40,6 @@ uint8_t adc_getChannelNum(void)
     return ADC_CHANNLE_CONFIG_NUM;
 }
 
-BOOLEAN adc_getValByIndex(uint8_t idx, const ADCChannlesConfig **channlCfg, uint16_t *adcVal)
-{
-	if (idx > ADC_CHANNLE_CONFIG_NUM)
-	{
-		return false;
-	}
-	*channlCfg = &g_adcChannlConfig[idx];
-	//const ADCChannlesConfig *channlCfg2 = &g_adcChannlConfig[idx];
-	*adcVal = g_adcVals[idx];	
-	return true;
-}
 
 /*get temprate value */
 float get_temprate_convers_value(uint16_t channel)
@@ -145,6 +135,18 @@ void adc_sample_all(void)
         g_adcVals[j] = sum / ADC_SAMPLE_TIMES;
     }
     adc_test();
+}            
+
+BOOLEAN adc_getValByIndex(uint8_t idx, const ADCChannlesConfig **channlCfg, uint16_t *adcVal)
+{
+	if (idx > ADC_CHANNLE_CONFIG_NUM)
+	{
+		return false;
+	}
+	*channlCfg = &g_adcChannlConfig[idx];
+	//const ADCChannlesConfig *channlCfg2 = &g_adcChannlConfig[idx];
+	*adcVal = g_adcVals[idx];	
+	return true;
 }
 BOOLEAN adc_getValByChannel(uint8_t channel, ADCChannlesRes *val)
 {
