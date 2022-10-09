@@ -84,7 +84,7 @@
 #define IPMB_ONCE_READ_MAX_LEN 0x50
 #define RECODER_MAX_NUM sizeof(g_sensor_sdr) / sizeof(FullSensorRec_T)
 
-//Sensor
+//Recoder ID:must++
 FullSensorRec_T g_sensor_sdr[] =
 {
     #if 0
@@ -247,7 +247,7 @@ FullSensorRec_T g_sensor_sdr[] =
      #endif   
     
     {        /* SDR Record header */
-        0x0000, //Recoder ID
+        0x0001, //Recoder ID
         0x51,   //SDR Version
         0x01,   //Record Type
         64,     //Record Length = full sensor: 64
@@ -592,7 +592,7 @@ int GetSDR(INT8U *pReq, INT8U ReqLen, INT8U *pRes, int BMCInst)
     if (pGetSDRReq->RecID > RECODER_MAX_NUM)
     {                                                        // support max RECODER_MAX_NUM records
         pGetSDRRes->CompletionCode = CC_SDR_REC_NOT_PRESENT; // code
-        //return sizeof(INT8U);
+        return sizeof(INT8U);
     }
     if (pGetSDRReq->Size > IPMB_ONCE_READ_MAX_LEN)
     {                                                            // request read bytes exceeed supported
@@ -1328,6 +1328,22 @@ ReadSensorRecByID(INT8U id, int BMCInst)
     
     FullSensorRec_T *pSdr;
     pSdr = (FullSensorRec_T *)ReadSDRRepository(&SDRRec_T, BMCInst);
+    return pSdr;
+}
+/*--------------------------------------------------
+ * ReadSensorRecByID
+ *-------------------------------------------------*/
+FullSensorRec_T *
+ReadSensorRecByName(INT8U sensorName, int BMCInst)
+{
+    FullSensorRec_T *pSdr;
+    for(int i=0; i < GetSDRRepositoryNum(); i++)
+    {
+        if(sensorName == g_sensor_sdr[i].SensorNum)
+        {
+            return  &g_sensor_sdr[i];
+        }
+    }
     return pSdr;
 }
 /*--------------------------------------------------

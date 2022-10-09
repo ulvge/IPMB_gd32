@@ -1208,7 +1208,11 @@ int GetSensorThresholds(INT8U *pReq, INT8U ReqLen, INT8U *pRes, int BMCInst)
 		thresholds_res->UpperNonRecoverable = IpmiReadingDatConvert2Raw(adcRes.sensorUnitType, 200);	
 	}else if(IPMI_UNIT_VOLTS == adcRes.sensorUnitType) {
 		//INT8U LowerCritical, UpperCritical;
-        FullSensorRec_T *pSdr = ReadSensorRecByID(pSensorThreshReq->SensorNum, BMCInst);
+        FullSensorRec_T *pSdr = ReadSensorRecByName(pSensorThreshReq->SensorNum, BMCInst);   
+        if (pSdr == NULL){
+            thresholds_res->CompletionCode = CC_SDR_REC_NOT_PRESENT; // code
+            return sizeof(INT8U);
+        }
 //        switch(chanCfg->adcChannl)
 //		{
 //		case ADC_CHANNEL_P1V8:
