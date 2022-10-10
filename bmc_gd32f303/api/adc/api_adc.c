@@ -1,6 +1,7 @@
 #include "adc/api_adc.h"
 #include "libipmi.h"
 #include "OSPort.h"
+#include "math.h"
 
 /// @brief need to sync with g_sensor_sdr
 const static ADCChannlesConfig g_adcChannlConfig[] = {
@@ -30,7 +31,8 @@ const static ADCChannlesConfig g_adcChannlConfig[] = {
 static uint16_t g_adcVals[ADC_CHANNLE_CONFIG_NUM] = {0};
 
 static void adc_test(void);
-	
+static float adc_sampleVal2Temp2(uint16 adcValue);
+
 void sample_init(void)
 {
     adc_init(g_adcChannlConfig, sizeof(g_adcChannlConfig) / sizeof(g_adcChannlConfig[0]));
@@ -51,13 +53,7 @@ float get_temprate_convers_value(uint16_t channel)
         return 0;
     }
 
-    adcx = res.adcVal;
-    temperate = (float)adcx * (VREFVOL / ADC_BIT);
-
-    /* get temperate conversion value */
-    temperate = (SENSOR_V25_VALUE - temperate) / SENSOR_AVG_SLOPE + SENSOR_TEMP25_VALUE;
-
-    return temperate;
+    return adc_sampleVal2Temp2(res.adcVal);
 }
 
 /* get vref voltage value*/
@@ -148,15 +144,57 @@ BOOLEAN adc_getValByIndex(uint8_t idx, const ADCChannlesConfig **channlCfg, uint
 	*adcVal = g_adcVals[idx];	
 	return true;
 }
+// convert methods 1
+static uint16_t adc_sampleVal2Temp(uint16 adcValue)
+{
+    static const float resistanceInSeries = 10000.0; //ntc串联的分压电阻
+    static const float ntcBvalue = 3500.0;  //B 值
+    static const float ntcR25 = 10000.0; //25度时电阻ֵ
+    static const float KelvinsZero = 273.15; //绝对零度
+    static const float sysPowerVoltage = VREFVOL * 1000;
+    static const float resolution = sysPowerVoltage / ADC_BIT;
+    static const float T25 = 298.15; //25 =KelvinsZero+25
+
+    uint16_t ntcVoltage = adcValue * resolution;
+    float ntcCurrent = (sysPowerVoltage - ntcVoltage)/ resistanceInSeries; //计算NTC的电流(A)
+    float ntcResistance = ntcVoltage / ntcCurrent; //计算当前电阻值
+    float temperature = (ntcBvalue * T25) / (T25 * (log(ntcResistance) - log(ntcR25)) + ntcBvalue);
+    temperature -= KelvinsZero; //计算最终温度
+	return temperature * 2;
+}
+// convert methods 2
+static float adc_sampleVal2Temp2(uint16 adcValue)
+{
+    float temperate = (float)adcValue * (VREFVOL / ADC_BIT);
+
+    /* get temperate conversion value */
+    temperate = (SENSOR_V25_VALUE - temperate) / SENSOR_AVG_SLOPE + SENSOR_TEMP25_VALUE;
+
+    return temperate;
+}
+static uint16_t adc_convertVal(uint8_t sensorUnitType, uint16 raw)
+{
+    uint16_t res;
+    switch (sensorUnitType)
+    {
+    case IPMI_UNIT_DEGREES_C:
+        res = adc_sampleVal2Temp(raw);
+        break;
+    case IPMI_UNIT_VOLTS:
+    default:
+        res = raw;
+        break;
+    }
+	return res;
+}
 BOOLEAN adc_getValByChannel(uint8_t channel, ADCChannlesRes *val)
 {
     for (UINT32 i = 0; i < ADC_CHANNLE_CONFIG_NUM; i++)
     {
         if (g_adcChannlConfig[i].adcChannl == channel)
         {
-            val->adcVal = g_adcVals[i];
             val->sensorUnitType = g_adcChannlConfig[i].sensorUnitType;
-            //memcpy(val->alias, g_adcChannlConfig[i].alias, strlen(g_adcChannlConfig[i].alias));
+            val->adcVal = adc_convertVal(val->sensorUnitType, g_adcVals[i]);
             val->alias = g_adcChannlConfig[i].alias;
             return true;
         }

@@ -1197,43 +1197,19 @@ int GetSensorThresholds(INT8U *pReq, INT8U ReqLen, INT8U *pRes, int BMCInst)
     if(!get_res){
 		thresholds_res->CompletionCode = CC_SDR_REC_NOT_PRESENT;
 		return sizeof(INT8U);
+	}                           
+	FullSensorRec_T *pSdr = ReadSensorRecByName(pSensorThreshReq->SensorNum, BMCInst);   
+	if (pSdr == NULL){
+		thresholds_res->CompletionCode = CC_SDR_REC_NOT_PRESENT; // code
+		return sizeof(INT8U);
 	}
-	if(IPMI_UNIT_DEGREES_C == adcRes.sensorUnitType) {
-		thresholds_res->LowerNonRecoverable = IpmiReadingDatConvert2Raw(adcRes.sensorUnitType, 20);
-		thresholds_res->LowerCritical = IpmiReadingDatConvert2Raw(adcRes.sensorUnitType, 30);
-		thresholds_res->LowerNonCritical = IpmiReadingDatConvert2Raw(adcRes.sensorUnitType, 40);
+	thresholds_res->LowerNonRecoverable = pSdr->LowerNonRecoverable;
+	thresholds_res->LowerCritical = pSdr->LowerCritical;
+	thresholds_res->LowerNonCritical = pSdr->LowerNonCritical;
 
-		thresholds_res->UpperNonCritical = IpmiReadingDatConvert2Raw(adcRes.sensorUnitType, 150);
-		thresholds_res->UpperCritical = IpmiReadingDatConvert2Raw(adcRes.sensorUnitType, 160);
-		thresholds_res->UpperNonRecoverable = IpmiReadingDatConvert2Raw(adcRes.sensorUnitType, 200);	
-	}else if(IPMI_UNIT_VOLTS == adcRes.sensorUnitType) {
-		//INT8U LowerCritical, UpperCritical;
-        FullSensorRec_T *pSdr = ReadSensorRecByName(pSensorThreshReq->SensorNum, BMCInst);   
-        if (pSdr == NULL){
-            thresholds_res->CompletionCode = CC_SDR_REC_NOT_PRESENT; // code
-            return sizeof(INT8U);
-        }
-//        switch(chanCfg->adcChannl)
-//		{
-//		case ADC_CHANNEL_P1V8:
-//			LowerCritical = 120;
-//			UpperCritical = 136;
-//			break;
-//		case ADC_CHANNEL_P12V:
-//			LowerCritical = 130;
-//			UpperCritical = 150;
-//			break;
-//		default:
-//			break;
-//		}
-		thresholds_res->LowerNonRecoverable = pSdr->LowerNonRecoverable;
-		thresholds_res->LowerCritical = pSdr->LowerCritical;
-		thresholds_res->LowerNonCritical = pSdr->LowerNonCritical;
-
-		thresholds_res->UpperNonCritical = pSdr->UpperNonCritical;
-		thresholds_res->UpperCritical = pSdr->UpperCritical;
-		thresholds_res->UpperNonRecoverable = pSdr->UpperNonRecoverable;	
-	}
+	thresholds_res->UpperNonCritical = pSdr->UpperNonCritical;
+	thresholds_res->UpperCritical = pSdr->UpperCritical;
+	thresholds_res->UpperNonRecoverable = pSdr->UpperNonRecoverable;	
 
 	return sizeof(GetSensorThresholdRes_T);
 #if 0

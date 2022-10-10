@@ -244,7 +244,7 @@ FullSensorRec_T g_sensor_sdr[] =
         0xC0 + sizeof "1GNet_Tmp",
         "1GNet_Tmp"
     },
-     #endif   
+    #endif 
     
     {        /* SDR Record header */
         0x0001, //Recoder ID
@@ -271,24 +271,24 @@ FullSensorRec_T g_sensor_sdr[] =
         IPMI_UNIT_VOLTS,  //Sensor Units 2 -Base Unit
         0x00,           //Sensor Units 3 -Modifier Unit
         0x00,           //Linearization
-        16,             //0x14,            //M
+        0x81,             //0x14,            //M
         0x00,           //M,Tolerance
         0x00 & 0xff,    //B
         0x3E & 0xFF,    //B,Accuracy
         0x34,           //Accuracy,Accuracy exponent
-        (14 << 4) + 13, //R exponent,B exponent
+        (0x0C << 4) + (0x0 & 0x0F), //R exponent,B exponent 
         0x00,           //Analog Characteristics Flags
         0x00,           //Nominal Reading
         0x00,           //Normal Maximum
         0x00,           //Normal Minimum
         0xFF,           //Sensor Maximum Reading
         0x00,           //Sensor Minimum Reading
-        0xA3,           //Upper Non-Recoverable Threshold
-        0x95,           //Upper Critical Threshold
-        0x87,           //Upper Non-Critical Threshold
-        0x00,           //Lower Non-Recoverable Threshold
-        0x00,           //Lower Critical Threshold
-        0x00,           //Lower Non-Critical Threshold
+        0xa0,           //Upper Non-Recoverable Threshold
+        0x99,           //Upper Critical Threshold
+        0x93,           //Upper Non-Critical Threshold
+        0x77,           //Lower Non-Recoverable Threshold
+        0x7e,           //Lower Critical Threshold
+        0x85,           //Lower Non-Critical Threshold
         0x00,           //Positive-threshold Hysteresis calue
         0x00,           //Negative-threshold Hysteresis calue
         0x00,           //Reserved
@@ -323,21 +323,21 @@ FullSensorRec_T g_sensor_sdr[] =
         IPMI_UNIT_DEGREES_C,  //Sensor Units 2 -Base Unit
         0x00,           //Sensor Units 3 -Modifier Unit
         0x00,           //Linearization
-        16,             //0x14,            //M
-        0x00,           //M,Tolerance
+        5,             //0x14,            //M
+        0x01,           //M,Tolerance
         0x00 & 0xff,    //B
         0x3E & 0xFF,    //B,Accuracy
         0x34,           //Accuracy,Accuracy exponent
-        (14 << 4) + 13, //R exponent,B exponent
+        (0x0F << 4) + 0, //R exponent,B exponent
         0x00,           //Analog Characteristics Flags
         0x00,           //Nominal Reading
         0x00,           //Normal Maximum
         0x00,           //Normal Minimum
         0xFF,           //Sensor Maximum Reading
         0x00,           //Sensor Minimum Reading
-        0xA3,           //Upper Non-Recoverable Threshold
-        0x95,           //Upper Critical Threshold
-        0x87,           //Upper Non-Critical Threshold
+        0xC8,           //Upper Non-Recoverable Threshold
+        0xAA,           //Upper Critical Threshold
+        0x96,           //Upper Non-Critical Threshold
         0x00,           //Lower Non-Recoverable Threshold
         0x00,           //Lower Critical Threshold
         0x00,           //Lower Non-Critical Threshold
@@ -376,24 +376,24 @@ FullSensorRec_T g_sensor_sdr[] =
         IPMI_UNIT_VOLTS,  //Sensor Units 2 -Base Unit
         0x00,           //Sensor Units 3 -Modifier Unit
         0x00,           //Linearization
-        16,             //0x14,            //M
+        0x8e,             //0x14,            //M
         0x00,           //M,Tolerance
         0x00 & 0xff,    //B
         0x3E & 0xFF,    //B,Accuracy
-        0x34,           //Accuracy,Accuracy exponent
-        (14 << 4) + 13, //R exponent,B exponent
+        0x34,           //Accuracy,Accuracy exponent   
+        (0x0d << 4) + (0x0 & 0x0F), //R exponent,B exponent 
         0x00,           //Analog Characteristics Flags
         0x00,           //Nominal Reading
         0x00,           //Normal Maximum
         0x00,           //Normal Minimum
         0xFF,           //Sensor Maximum Reading
         0x00,           //Sensor Minimum Reading
-        0xA3,           //Upper Non-Recoverable Threshold
-        0x95,           //Upper Critical Threshold
-        0x87,           //Upper Non-Critical Threshold
-        0x00,           //Lower Non-Recoverable Threshold
-        0x00,           //Lower Critical Threshold
-        0x00,           //Lower Non-Critical Threshold
+        0x6e,           //Upper Non-Recoverable Threshold
+        0x65,           //Upper Critical Threshold
+        0x5d,           //Upper Non-Critical Threshold
+        0x3b,           //Lower Non-Recoverable Threshold
+        0x44,           //Lower Critical Threshold
+        0x4c,           //Lower Non-Critical Threshold
         0x00,           //Positive-threshold Hysteresis calue
         0x00,           //Negative-threshold Hysteresis calue
         0x00,           //Reserved
@@ -467,11 +467,6 @@ static SDRRecHdr_T *SDR_GetSDRRec(INT16U RecID, INT16U ReservationID, int BMCIns
 static void SDRInitAgent(int BMCInst);
 
 static INT8U ValidateSDRSize(INT8U SDRType, INT8U Size);
-
-static void set_sdr_dat_convert(INT16U M, INT8U Tolerance, INT16U B, INT16U Accuracy, INT8U Accuracy_exp,
-                                INT8U direct, INT8U R_exp, INT8U B_exp,
-                                FullSensorRec_T *sdr_rec);
-static void set_sdr_dat(FullSensorRec_T* sensor_sdr);
 
 const INT8U SDRSize[][2] = {
     //      { SDR Type,                 Maximum Length },
@@ -604,7 +599,6 @@ int GetSDR(INT8U *pReq, INT8U ReqLen, INT8U *pRes, int BMCInst)
         FullSensorRec_U *full_sdr = (FullSensorRec_U *)&g_sensor_sdr[0];
 		pGetSDRReq->RecID = g_sensor_sdr[0].hdr.ID;
         //  MgmtCtrlrDevLocator_T* dev_locator = (MgmtCtrlrDevLocator_T*)&device_locator;
-        set_sdr_dat(&g_sensor_sdr[0]);
         pGetSDRRes->CompletionCode = CC_NORMAL;
         if (RECODER_MAX_NUM > 1)
         {
@@ -626,7 +620,6 @@ int GetSDR(INT8U *pReq, INT8U ReqLen, INT8U *pRes, int BMCInst)
             pGetSDRRes->CompletionCode = CC_SDR_REC_NOT_PRESENT; // code
             return sizeof(INT8U);
         }
-        set_sdr_dat(pCurrentSdr);
         pCurrentSdr->hdr.Len = sizeof(FullSensorRec_U) - pGetSDRReq->Offset;
         
         pGetSDRRes->NextRecID = (pCurrentSdr + 1)->hdr.ID;
@@ -2352,45 +2345,3 @@ SDRInitAgent(int BMCInst)
 }
 
 #endif /* SDR_DEVICE */
-
-// y = L[(Mx + (B*10`K1))*10`K2]      K1 == B_exp     K2 == R_exp
-void set_sdr_dat_convert(INT16U M, INT8U Tolerance, INT16U B, INT16U Accuracy, INT8U Accuracy_exp,
-                         SensorDir_E direct, INT8U R_exp, INT8U B_exp,
-                         FullSensorRec_T *sdr_rec)
-{
-    sdr_rec->M = M & 0xFF;
-    sdr_rec->M_Tolerance = ((M >> 2) & (3 << 6)) | (Tolerance & 0x3F);
-    sdr_rec->B = B & 0xFF;
-    sdr_rec->B_Accuracy = ((B >> 2) & (3 << 6)) | (Accuracy & 0x3F);
-    sdr_rec->Accuracy = ((Accuracy >> 6) & 0xF0) | ((Accuracy_exp << 2) & (3 << 2)) | ((INT8U)direct & 3);
-    sdr_rec->R_B_Exp = ((R_exp << 4) & 0xF0) | (B_exp & 0x0F);
-}
-
-void set_sdr_dat(FullSensorRec_T* sensor_sdr)
-{
-    sensor_sdr->OwnerID = GetDevAddr();
-    switch(sensor_sdr->Units2){
-    case IPMI_UNIT_RPM:
-        set_sdr_dat_convert(32, 255 / 2, (INT16U)0, 1, 1, UNSPECIFIED, (INT8U)0, 0, sensor_sdr); // y = M*x
-        break;
-    case IPMI_UNIT_VOLTS:
-        if(strcmp(sensor_sdr->IDStr, "3.3V") == 0)
-        {
-            set_sdr_dat_convert(258, 255 / 2, (INT16U)0, 1000, 1, INPUT, (INT8U)-4, 0, sensor_sdr);       // y = M*x
-        }
-        else
-        {
-            set_sdr_dat_convert(129, 255 / 2, (INT16U)0, 1000, 1, INPUT, (INT8U)-4, 0, sensor_sdr);       // y = M*x
-        }
-
-        break;
-    case IPMI_UNIT_AMPS:  
-        set_sdr_dat_convert(1, 255 / 2, (INT16U)0, 1, 1, INPUT, (INT8U)-2, 0, sensor_sdr);        // y = M*x
-        break;
-    case IPMI_UNIT_DEGREES_C:  
-        set_sdr_dat_convert(1, 255 / 2, (INT16U)-70, 1, 1, INPUT, (INT8U)0, 0, sensor_sdr);        // y = M*x
-        break;
-    default:
-        break;
-    }
-}
