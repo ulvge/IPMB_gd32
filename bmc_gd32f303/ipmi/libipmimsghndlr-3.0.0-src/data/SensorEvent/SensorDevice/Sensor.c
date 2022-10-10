@@ -1169,40 +1169,27 @@ int SetSensorThresholds(INT8U *pReq, INT8U ReqLen, INT8U *pRes, int BMCInst)
  *---------------------------------------*/
 int GetSensorThresholds(INT8U *pReq, INT8U ReqLen, INT8U *pRes, int BMCInst)
 {
-	GetSensorThresholdReq_T *pSensorThreshReq =
-		(GetSensorThresholdReq_T *)pReq;
-	GetSensorThresholdRes_T *pSensorThreshRes =
-		(GetSensorThresholdRes_T *)pRes;
+	GetSensorThresholdReq_T *pSensorThreshReq = (GetSensorThresholdReq_T *)pReq;
+	GetSensorThresholdRes_T *pSensorThreshRes = (GetSensorThresholdRes_T *)pRes;
 	SensorSharedMem_T *pSenSharedMem;
 	BMCInfo_t *pBMCInfo = &g_BMCInfo;
 	INT16U LUNSensorNum = 0;
 	INT16U OwnerLUN = 0;
 
 	GetSensorThresholdRes_T *thresholds_res = (GetSensorThresholdRes_T *)pRes;
-
-	thresholds_res->CompletionCode = CC_NORMAL;
-    INT8U senNum = GetSDRRepositoryNum();//SENSOR_NUM
-//	if(pSensorThreshReq->SensorNum > senNum){
-//		thresholds_res->CompletionCode = CC_SDR_REC_NOT_PRESENT;
-//		return sizeof(INT8U);
-//	}
-
-	thresholds_res->GetFlags = 0x3F;
-
-	//const ADCChannlesConfig *chanCfg = NULL;
-    uint16_t adcVal;
-	//bool get_res = adc_getValByIndex(pSensorThreshReq->SensorNum - 1, &chanCfg, &adcVal);
 	ADCChannlesRes adcRes;
 	bool get_res = adc_getValByChannel(pSensorThreshReq->SensorNum, &adcRes);
     if(!get_res){
 		thresholds_res->CompletionCode = CC_SDR_REC_NOT_PRESENT;
 		return sizeof(INT8U);
-	}                           
+	}                
 	FullSensorRec_T *pSdr = ReadSensorRecByName(pSensorThreshReq->SensorNum, BMCInst);   
 	if (pSdr == NULL){
 		thresholds_res->CompletionCode = CC_SDR_REC_NOT_PRESENT; // code
 		return sizeof(INT8U);
 	}
+	thresholds_res->CompletionCode = CC_NORMAL;
+	thresholds_res->GetFlags = pSdr->DiscreteReadingMask >> 8;
 	thresholds_res->LowerNonRecoverable = pSdr->LowerNonRecoverable;
 	thresholds_res->LowerCritical = pSdr->LowerCritical;
 	thresholds_res->LowerNonCritical = pSdr->LowerNonCritical;
@@ -2011,9 +1998,8 @@ int GetSensorReading(INT8U *pReq, INT8U ReqLen, INT8U *pRes, int BMCInst)
 		(GetSensorReadingReq_T *)pReq;
 	GetSensorReadingRes_T *pSensorReadRes =
 		(GetSensorReadingRes_T *)pRes;
-	INT16U SensorReading;
 	bool SensorIsSigned = FALSE;
-	SensorSharedMem_T *pSenSharedMem;
+	//SensorSharedMem_T *pSenSharedMem;
 	BMCInfo_t *pBMCInfo = &g_BMCInfo;
 	INT16U LUNSensorNum = 0;
 	INT16U OwnerLUN = 0;
@@ -2022,13 +2008,9 @@ int GetSensorReading(INT8U *pReq, INT8U ReqLen, INT8U *pRes, int BMCInst)
 	bool get_res = false;    
     ADCChannlesRes adcRes;
 
-
-	GetSensorReadingRes_T *sensor_reading_res = (GetSensorReadingRes_T *)pRes;
-
-	sensor_reading_res->CompletionCode = CC_NORMAL;
-	sensor_reading_res->Flags = 0xC0;
-	sensor_reading_res->ComparisonStatus = 0x00;
-	sensor_reading_res->OptionalStatus = 0x00;
+	pSensorReadRes->Flags = 0xC0;
+	//pSensorReadRes->ComparisonStatus = 0x00;
+	//pSensorReadRes->OptionalStatus = 0x00;
 
 	printf("pSensorReadReq->SensorNum = %d", pSensorReadReq->SensorNum);
     
@@ -2036,14 +2018,18 @@ int GetSensorReading(INT8U *pReq, INT8U ReqLen, INT8U *pRes, int BMCInst)
     uint16_t adcVal;
 	get_res = adc_getValByChannel(pSensorReadReq->SensorNum, &adcRes);
 	if(!get_res){
-		sensor_reading_res->CompletionCode = CC_SDR_REC_NOT_PRESENT;
+		pSensorReadRes->CompletionCode = CC_SDR_REC_NOT_PRESENT;
 		return sizeof(*pRes);
 	}
-	sensor_reading_res->SensorReading = IpmiReadingDatConvert2Raw(adcRes.sensorUnitType, adcRes.adcVal);
-	//sensor_reading_res->SensorReading = IpmiReadingDatConvert2Raw(chanCfg->sensorUnitType, adcVal);
-	return sizeof(GetSensorReadingRes_T);
-#if 0	
-	pSenSharedMem = (SensorSharedMem_T *)&pBMCInfo->SensorSharedMem; //m_hSensorSharedMem;
+	FullSensorRec_T *pSdr = ReadSensorRecByName(pSensorReadReq->SensorNum, BMCInst);   
+	if (pSdr == NULL){
+		pSensorReadRes->CompletionCode = CC_SDR_REC_NOT_PRESENT;
+		return sizeof(*pRes);
+	}
+	pSensorReadRes->SensorReading = IpmiReadingDatConvert2Raw(pSdr->Units2, adcRes.adcVal);
+	//return sizeof(GetSensorReadingRes_T);
+#if 1	
+	//pSenSharedMem = (SensorSharedMem_T *)&pBMCInfo->SensorSharedMem; //m_hSensorSharedMem;
 
 	//	if(g_corefeatures.more_than_256_sensors == ENABLED)
 	//	{
@@ -2087,30 +2073,29 @@ int GetSensorReading(INT8U *pReq, INT8U ReqLen, INT8U *pRes, int BMCInst)
 	//		}
 	//	}
 
-	if (!pSenSharedMem->SensorInfo[LUNSensorNum].IsSensorPresent)
-	{
-		/* Release mutex for Sensor shared memory */
-		OS_THREAD_MUTEX_RELEASE(&pBMCInfo->SensorSharedMemMutex);
+	// if (!pSenSharedMem->SensorInfo[LUNSensorNum].IsSensorPresent)
+	// {
+	// 	/* Release mutex for Sensor shared memory */
+	// 	OS_THREAD_MUTEX_RELEASE(&pBMCInfo->SensorSharedMemMutex);
 
-		pSensorReadRes->CompletionCode = CC_SDR_REC_NOT_PRESENT;
-		return sizeof(*pRes);
-	}
+	// 	pSensorReadRes->CompletionCode = CC_SDR_REC_NOT_PRESENT;
+	// 	return sizeof(*pRes);
+	// }
 
-	pSensorReadRes->Flags = pSenSharedMem->SensorInfo[LUNSensorNum].EventFlags & 0xe0;
+	//pSensorReadRes->Flags = pSenSharedMem->SensorInfo[LUNSensorNum].EventFlags & 0xe0;
 
-	if (0 != (pSenSharedMem->SensorInfo[LUNSensorNum].EventFlags & BIT5))
-	{
-		pSensorReadRes->SensorReading = 0;
-		pSensorReadRes->CompletionCode = CC_NORMAL;
-		pSensorReadRes->ComparisonStatus = (((INT8U)(pSensorReadRes->SensorReading & 0x00FF)) & ((INT8U)(pSenSharedMem->SensorInfo[LUNSensorNum].SettableThreshMask & 0x00FF)));
-		pSensorReadRes->OptionalStatus = (((INT8U)(pSensorReadRes->SensorReading >> 8)) & ((INT8U)(pSenSharedMem->SensorInfo[LUNSensorNum].SettableThreshMask >> 8)));
-		// For Discrete sensor, [7] - reserved. Returned as 1b. Ignore on read.
-		pSensorReadRes->OptionalStatus |= 0x80;
-		/* Release mutex for Sensor shared memory */
-		OS_THREAD_MUTEX_RELEASE(&pBMCInfo->SensorSharedMemMutex);
+//	if (0 != (pSenSharedMem->SensorInfo[LUNSensorNum].EventFlags & BIT5))
+//	{
+//		pSensorReadRes->CompletionCode = CC_NORMAL;
+//		pSensorReadRes->ComparisonStatus = (((INT8U)(pSensorReadRes->SensorReading & 0x00FF)) & ((INT8U)(pSenSharedMem->SensorInfo[LUNSensorNum].SettableThreshMask & 0x00FF)));
+//		pSensorReadRes->OptionalStatus = (((INT8U)(pSensorReadRes->SensorReading >> 8)) & ((INT8U)(pSenSharedMem->SensorInfo[LUNSensorNum].SettableThreshMask >> 8)));
+//		// For Discrete sensor, [7] - reserved. Returned as 1b. Ignore on read.
+//		pSensorReadRes->OptionalStatus |= 0x80;
+//		/* Release mutex for Sensor shared memory */
+//		OS_THREAD_MUTEX_RELEASE(&pBMCInfo->SensorSharedMemMutex);
 
-		return sizeof(GetSensorReadingRes_T);
-	}
+//		return sizeof(GetSensorReadingRes_T);
+//	}
 
 	pSensorReadRes->CompletionCode = CC_NORMAL;
 
@@ -2119,83 +2104,69 @@ int GetSensorReading(INT8U *pReq, INT8U ReqLen, INT8U *pRes, int BMCInst)
 	//		OS_THREAD_MUTEX_RELEASE(&pBMCInfo->SensorSharedMemMutex);
 	//		OS_THREAD_MUTEX_ACQUIRE(&pBMCInfo->CachSenReadMutex,WAIT_INFINITE);
 	//	}
-	SensorReading = pSenSharedMem->SensorInfo[LUNSensorNum].SensorReading;
-
 	//	if(g_corefeatures.cached_sensor_reading == ENABLED)
 	//	{
 	//		OS_THREAD_MUTEX_RELEASE(&pBMCInfo->CachSenReadMutex);
 	//		OS_THREAD_MUTEX_ACQUIRE(&pBMCInfo->SensorSharedMemMutex, WAIT_INFINITE);
 	//	}
-	pSensorReadRes->SensorReading = 0;
 
-	SensorIsSigned =
-		(0 != (pSenSharedMem->SensorInfo[LUNSensorNum].InternalFlags & BIT1));
-
-	if (THRESHOLD_SENSOR_CLASS == pSenSharedMem->SensorInfo[LUNSensorNum].EventTypeCode)
-	{
-		pSensorReadRes->SensorReading = (SensorReading & 0x00FF);
+	//if (THRESHOLD_SENSOR_CLASS == pSenSharedMem->SensorInfo[LUNSensorNum].EventTypeCode)
+	if (1)
+	{   
 		pSensorReadRes->ComparisonStatus = 0x00;
-		if ((pSenSharedMem->SensorInfo[LUNSensorNum].DeassertionEventEnablesByte2 & BIT6) == BIT6)
+		//if ((pSenSharedMem->SensorInfo[LUNSensorNum].DeassertionEventEnablesByte2 & BIT6) == BIT6)
 		{
 			if (CompareValues(SensorIsSigned, pSensorReadRes->SensorReading,
-							  pSenSharedMem->SensorInfo[LUNSensorNum].UpperNonRecoverable) >= 0)
+							  pSdr->UpperNonRecoverable) >= 0)
 			{
 				pSensorReadRes->ComparisonStatus |= BIT5;
 			}
 		}
-		if ((pSenSharedMem->SensorInfo[LUNSensorNum].DeassertionEventEnablesByte2 & BIT5) == BIT5)
+		//if ((pSenSharedMem->SensorInfo[LUNSensorNum].DeassertionEventEnablesByte2 & BIT5) == BIT5)
 		{
 			if (CompareValues(SensorIsSigned, pSensorReadRes->SensorReading,
-							  pSenSharedMem->SensorInfo[LUNSensorNum].UpperCritical) >= 0)
+							  pSdr->UpperCritical) >= 0)
 			{
 				pSensorReadRes->ComparisonStatus |= BIT4;
 			}
 		}
-		if ((pSenSharedMem->SensorInfo[LUNSensorNum].DeassertionEventEnablesByte2 & BIT4) == BIT4)
+		//if ((pSenSharedMem->SensorInfo[LUNSensorNum].DeassertionEventEnablesByte2 & BIT4) == BIT4)
 		{
 			if (CompareValues(SensorIsSigned, pSensorReadRes->SensorReading,
-							  pSenSharedMem->SensorInfo[LUNSensorNum].UpperNonCritical) >= 0)
+							  pSdr->UpperNonCritical) >= 0)
 			{
 				pSensorReadRes->ComparisonStatus |= BIT3;
 			}
 		}
-		if ((pSenSharedMem->SensorInfo[LUNSensorNum].AssertionEventEnablesByte2 & BIT6) == BIT6)
+		//if ((pSenSharedMem->SensorInfo[LUNSensorNum].AssertionEventEnablesByte2 & BIT6) == BIT6)
 		{
 			if (CompareValues(SensorIsSigned, pSensorReadRes->SensorReading,
-							  pSenSharedMem->SensorInfo[LUNSensorNum].LowerNonRecoverable) <= 0)
+							  pSdr->LowerNonRecoverable) <= 0)
 			{
 				pSensorReadRes->ComparisonStatus |= BIT2;
 			}
 		}
-		if ((pSenSharedMem->SensorInfo[LUNSensorNum].AssertionEventEnablesByte2 & BIT5) == BIT5)
+		//if ((pSenSharedMem->SensorInfo[LUNSensorNum].AssertionEventEnablesByte2 & BIT5) == BIT5)
 		{
 			if (CompareValues(SensorIsSigned, pSensorReadRes->SensorReading,
-							  pSenSharedMem->SensorInfo[LUNSensorNum].LowerCritical) <= 0)
+							  pSdr->LowerCritical) <= 0)
 			{
 				pSensorReadRes->ComparisonStatus |= BIT1;
 			}
 		}
-		if ((pSenSharedMem->SensorInfo[LUNSensorNum].AssertionEventEnablesByte2 & BIT4) == BIT4)
+		//if ((pSenSharedMem->SensorInfo[LUNSensorNum].AssertionEventEnablesByte2 & BIT4) == BIT4)
 		{
 			if (CompareValues(SensorIsSigned, pSensorReadRes->SensorReading,
-							  pSenSharedMem->SensorInfo[LUNSensorNum].LowerNonCritical) <= 0)
+							  pSdr->LowerNonCritical) <= 0)
 			{
 				pSensorReadRes->ComparisonStatus |= BIT0;
 			}
 		}
 
-		pSensorReadRes->ComparisonStatus &=
-			((pSenSharedMem->SensorInfo[LUNSensorNum].SettableThreshMask) & 0xFF);
+		//pSensorReadRes->ComparisonStatus &= ((pSenSharedMem->SensorInfo[LUNSensorNum].SettableThreshMask) & 0xFF);
 		pSensorReadRes->OptionalStatus = 0;
 		// For Threshold sensor, [7:6] - reserved. Returned as 1b. Ignore on read.
 		pSensorReadRes->ComparisonStatus |= 0xC0;
-	}
-	else
-	{
-		pSensorReadRes->ComparisonStatus = (((INT8U)(SensorReading & 0x00FF)) & ((INT8U)(pSenSharedMem->SensorInfo[LUNSensorNum].SettableThreshMask & 0x00FF)));
-		pSensorReadRes->OptionalStatus = (((INT8U)(SensorReading >> 8)) & ((INT8U)(pSenSharedMem->SensorInfo[LUNSensorNum].SettableThreshMask >> 8)));
-		// For Discrete sensor, [7] - reserved. Returned as 1b. Ignore on read.
-		pSensorReadRes->OptionalStatus |= 0x80;
 	}
 
 	/* Release mutex for Sensor shared memory */

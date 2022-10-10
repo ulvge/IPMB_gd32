@@ -274,7 +274,7 @@ typedef struct
 {
     INT8U   CompletionCode;
     INT8U   SensorReading;
-    INT8U   Flags;
+    INT8U   Flags;          //EventFlags
     INT8U   ComparisonStatus;
     INT8U   OptionalStatus;
 
