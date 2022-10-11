@@ -43,19 +43,19 @@ static void ChassisCtrlTimerCallBack(xTimerHandle pxTimer)
         case CHASSIS_SOFT_OFF :
         case CHASSIS_POWER_OFF :
             GPIO_setPinStatus(GPIO_OUT_CPU_POWER_OFF, DISABLE);    
-			printf("ChassisCtrl : CHASSIS_POWER_OFF");
+			printf("ChassisCtrl : CHASSIS_POWER_OFF\n");
 			break;
         case CHASSIS_POWER_ON :
             GPIO_setPinStatus(GPIO_OUT_CPU_POWER_ON, DISABLE);   
-			printf("ChassisCtrl : CHASSIS_POWER_ON");
+			printf("ChassisCtrl : CHASSIS_POWER_ON\n");
 			break;
         case CHASSIS_POWER_RESET :
             GPIO_setPinStatus(GPIO_OUT_CPU_RESET, DISABLE);   
-			printf("ChassisCtrl : CHASSIS_POWER_RESET");
+			printf("ChassisCtrl : CHASSIS_POWER_RESET\n");
 	        NVIC_SystemReset();
 			break;
         default : 
-			printf("Sorry, CMD doesn't support it yet");
+			printf("Sorry, CMD doesn't support it yet\n");
             break;
     }
     xTimerDelete(pxTimer, 200);
@@ -82,12 +82,12 @@ void ChassisCtrl(SamllMsgPkt_T *msg)
             GPIO_setPinStatus(GPIO_OUT_CPU_RESET, ENABLE);
 			break;
         default :
-			printf("Sorry, CMD doesn't support it yet");
+			printf("Sorry, CMD doesn't support it yet\n");
             return;
     }
 	
     if (ChassisCtrlTimerCreate(msg->Cmd, GPIO_ACTIVE_PULSE_TIME_MS) == pdFAIL){
-	    printf("ChassisCtrl : creteTimer failed");
+	    printf("ChassisCtrl : creteTimer failed\n");
     }
 }
 

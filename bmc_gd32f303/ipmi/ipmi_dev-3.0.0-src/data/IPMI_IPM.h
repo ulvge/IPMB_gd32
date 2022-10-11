@@ -31,12 +31,6 @@
 
 /*** Macro Definitions ***/
 /**
- * @def DEVICE_ID
- * @brief Device ID
- **/
-#define DEVICE_ID                       0x20
-#define DEVICE_SLAVE_ID                 I2C_SLAVE_ADDRESS7
-/**
  * @def SDR_SUPPORT
  * @brief SDR support bit flag 
  **/

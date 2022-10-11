@@ -36,7 +36,9 @@
 //#include "PDKAccess.h"
 //#include "PDKDefs.h"
 #include "IPMIConf.h"
-#include "MsgHndlr.h"
+#include "MsgHndlr.h"   
+#include "bsp_i2c.h"
+#include "ipmi_common.h"
 
 #define AUTH_CAP2BMC_SWITCH_ENABLE  BIT4
 
@@ -54,14 +56,30 @@ static void ActivateBasicMode (IPMIMsgHdr_T* pIPMIReqHdr,
  * @param BMCInst Holds the Instance value of BMC
  * @return the size of the response else return 0 if it fails
  **/
-INT8U
+INT16U
 ProcessSerialMessage (MsgPkt_T* pReq, MsgPkt_T* pRes,int BMCInst)
-{
-    // bridge GetMsgFromI2C        from slave
-    // ProcessIPMIReq(pReq, pRes);
-    // msghandlr and master msg send to ipmitool
-    ProcessIPMIReq(pReq, pRes); //get&hand map
-    return pRes->Size;
+{                                                 
+	IPMIMsgHdr_T *pIPMIReqHdr = (IPMIMsgHdr_T *)pReq->Data;
+    if (pIPMIReqHdr->ResAddr == I2C_SLAVE_ADDRESS7) {
+        // msghandlr and master msg send to ipmitool
+        return ProcessIPMIReq(pReq, pRes); //get&hand map
+    } else {
+        //Forwarded message   
+//		IPMIMsgHdr_T *pIPMIResHdr = (IPMIMsgHdr_T *)pRes->Data;  
+//        pIPMIReqHdr->ResAddr = I2C_SLAVE_ADDRESS7;
+//        SwapIPMIMsgHdr((const IPMIMsgHdr_T *)pIPMIReqHdr, pIPMIResHdr); //get&hand map
+//        pRes->Size = pReq->Size ;
+//		
+//		pIPMIResHdr->ChkSum = CalculateCheckSum((INT8U*)pIPMIResHdr, 2); 
+//		pRes->Data[pRes->Size - 1] = CalculateCheckSum2(pRes->Data, pRes->Size - 1);
+//        
+//		ipmb_set_dualaddr(pIPMIResHdr->ReqAddr);
+//        ipmb_write(pRes->Data, pRes->Size);
+										   
+		ipmb_set_dualaddr(pIPMIReqHdr->ReqAddr);
+		ipmb_write(pReq->Data, pReq->Size);
+        return 0;
+    }
 }
 
 

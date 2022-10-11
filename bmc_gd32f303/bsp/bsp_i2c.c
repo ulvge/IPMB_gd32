@@ -50,6 +50,18 @@ static void i2c_set_as_slave_device_addr(uint32_t i2c_periph, uint8_t device_add
 uint8_t g_device0_addr=0;
 uint8_t g_device1_addr=0;
 uint8_t g_device2_addr=0;
+
+void i2c_dualaddr_set(uint32_t i2c_periph, uint8_t dualaddr)
+{
+    /* configure address */
+    dualaddr = dualaddr & I2C_SADDR1_ADDRESS2;
+    I2C_SADDR1(i2c_periph) &= ~(I2C_SADDR1_ADDRESS2);
+    I2C_SADDR1(i2c_periph) |= dualaddr;
+
+    i2c_dualaddr_enable(i2c_periph, I2C_DUADEN_ENABLE);
+}
+
+
 void i2c_int(void)
 {
     i2c_channel_init(I2C0);
@@ -915,6 +927,7 @@ static void i2c2_config(void)
     i2c_enable(I2C2);
     /* enable acknowledge */
     i2c_ack_config(I2C2, I2C_ACK_ENABLE);
+
         /* enable the I2C0 interrupt */
     i2c_interrupt_enable(I2C2, I2C_INT_ERR);
     i2c_interrupt_enable(I2C2, I2C_INT_EV);

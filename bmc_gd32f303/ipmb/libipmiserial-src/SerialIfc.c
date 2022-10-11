@@ -94,18 +94,13 @@ static void     OnBasicModeByteReceived (INT8U byte,int BMCInst);
  **/
 bool ProcessSerialReq (MsgPkt_T *pReq, MsgPkt_T *pRes)
 {
-    int ret = -1; 
-
     pReq->Size = DecodeSerialPkt(pReq->Data, pReq->Size);
-    ret = ProcessSerPortReq (pReq, pRes);
-
-    if(ret != 0){
-        IPMI_WARNING ("Get msg failed!\n");  
-        return false;  
+    int ret = ProcessSerPortReq (pReq, pRes);
+    pRes->Param = SERIAL_REQUEST;   
+    if(ret == 0){   
+        return true;  
     }
-
-    pRes->Param = SERIAL_REQUEST;    
-    return true;  
+    return false;  
 }
 
 /**
@@ -140,7 +135,7 @@ __attribute__((unused)) static void*  RecvSerialPkt (void* pArg)
 static int
 ProcessSerPortReq (MsgPkt_T* pReq,  MsgPkt_T *pRes)  // get ipmitool msg and send I2C msg to slave
 {
-    INT8U       ResLen;
+    INT16U       ResLen;
     INT8U       HandShake;
     INT8U       EnRes [MAX_SERIAL_PKT_SIZE];
 
@@ -165,7 +160,7 @@ ProcessSerPortReq (MsgPkt_T* pReq,  MsgPkt_T *pRes)  // get ipmitool msg and sen
 
     if (0 == ResLen)
     {
-        IPMI_DBG_PRINT ("SerialIfc: Packet Ignored\n");
+        IPMI_DBG_PRINT ("SerialIfc: Packet Ignored or Forwarded\n");
         return -1;
     }
 

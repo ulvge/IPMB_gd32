@@ -374,7 +374,7 @@ extern int GetUTC_Offset(void);
 
 extern void *MsgCoreHndlr(void *pArg);
 
-extern void
+extern INT32U
 ProcessIPMIReq(MsgPkt_T *pReq, MsgPkt_T *pRes);
 
 

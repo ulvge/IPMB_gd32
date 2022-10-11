@@ -26,14 +26,17 @@
 #ifdef USE_I2C0_AS_IPMB
     #define ipmb_write(pbuf, len)                i2c0_bytes_write(pbuf, len)
     #define ipmb_set_addr(addr)                  i2c0_set_as_slave_device_addr(addr)
+    #define ipmb_set_dualaddr(dualaddr)          i2c_dualaddr_set(I2C0, dualaddr)
     #define ipmb_read(pbuf, len)                 i2c0_get_slave_device_data(pbuf, len)
 #elif USE_I2C1_AS_IPMB
     #define ipmb_write(pbuf, len)                i2c1_bytes_write(pbuf, len)
     #define ipmb_set_addr(addr)                  i2c1_set_as_slave_device_addr(addr)
+    #define ipmb_set_dualaddr(dualaddr)         i2c_dualaddr_set(I2C1, dualaddr)
     #define ipmb_read(pbuf, len)                 i2c1_get_slave_device_data(pbuf, len)
 #elif USE_I2C2_AS_IPMB
     #define ipmb_write(pbuf, len)                i2c2_bytes_write(pbuf, len)
     #define ipmb_set_addr(addr)                  i2c2_set_as_slave_device_addr(addr)
+    #define ipmb_set_dualaddr(dualaddr)         i2c_dualaddr_set(I2C2, dualaddr)
     #define ipmb_read(pbuf, len)                 i2c2_get_slave_device_data(pbuf, len)
 #endif
 
@@ -92,6 +95,7 @@
 
 void i2c_channel_init(uint32_t i2cx);
 void i2c_int(void);
+void i2c_dualaddr_set(uint32_t i2c_periph, uint8_t dualaddr);
 
 bool i2c0_bytes_write(const uint8_t* p_buffer, uint16_t len);
 bool i2c0_bytes_read(const uint8_t device_addr, const uint8_t read_addr, uint8_t* p_buffer, uint16_t len);
@@ -103,7 +107,7 @@ bool i2c1_bytes_write(const uint8_t* p_buffer, uint16_t len);
 bool i2c1_bytes_read(const uint8_t device_addr, const uint8_t read_addr, uint8_t* p_buffer, uint16_t len);
 bool i2c1_get_slave_device_data(uint8_t* p_buffer, uint32_t* len);
 void i2c1_set_as_slave_device_addr(uint8_t device_addr);
- 
+
 #ifdef I2C2
 bool i2c2_bytes_write(const uint8_t* p_buffer, uint16_t len);
 bool i2c2_bytes_read(const uint8_t device_addr, const uint8_t read_addr, uint8_t* p_buffer, uint16_t len);

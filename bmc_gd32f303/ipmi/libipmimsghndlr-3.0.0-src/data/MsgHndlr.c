@@ -92,7 +92,7 @@ xQueueHandle RecvForwardI2CDatMsg_Queue = NULL;
 /*-----------------------------------------------------------------------------
 * Function Prototypes
 *-----------------------------------------------------------------------------*/
-static void device_addr_set(void);
+static void device_addr_set(uint8_t slaveAddr7);
 
 /*--------------------------------------------------------------------
 * Module Variables
@@ -214,7 +214,7 @@ void *MsgCoreHndlr(void *pArg)
     __attribute__((unused)) int i;
 
     MsgHndlrInit();
-    device_addr_set();
+    device_addr_set(I2C_SLAVE_ADDRESS7);
 
     if (errCOULD_NOT_ALLOCATE_REQUIRED_MEMORY ==                                             
 		xTaskCreate(vTaskResponseDatWrite, "Task ResponseDatWrite", 256, NULL, 24, &xHandleTaskResponseDatWrite)) {
@@ -281,7 +281,7 @@ void *MsgCoreHndlr(void *pArg)
 *@param pRes Response for the requested command
 *@return none
 */
-void ProcessIPMIReq(MsgPkt_T *pReq, MsgPkt_T *pRes)
+INT32U ProcessIPMIReq(MsgPkt_T *pReq, MsgPkt_T *pRes)
 {
     CmdHndlrMap_T *pCmdHndlrMap;
     INT32U HdrOffset = sizeof(IPMIMsgHdr_T);
@@ -292,12 +292,12 @@ void ProcessIPMIReq(MsgPkt_T *pReq, MsgPkt_T *pRes)
 
     pRes->Size = 0;
     if (pReq == NULL || pReq->Size == 0) {
-        return;
+        return 0;
     }
     if (!CheckMsgValidation(pReq->Data, pReq->Size))
     {
         IPMI_DBG_PRINT("IPMI Msg Check ERR");
-        return;
+        return 0;
     }
 
     // LOG_I("Process");
@@ -338,7 +338,7 @@ void ProcessIPMIReq(MsgPkt_T *pReq, MsgPkt_T *pRes)
     /* Calculate the Second CheckSum */
     pRes->Data[pRes->Size - 1] = CalculateCheckSum2(pRes->Data, pRes->Size - 1); 
 	//printf("check sum = %x", pRes->Data[pRes->Size - 1]);
-    return;
+    return pRes->Size;
 }
 
 /**
@@ -366,7 +366,6 @@ void SwapIPMIMsgHdr(const IPMIMsgHdr_T *pIPMIMsgReq, IPMIMsgHdr_T *pIPMIMsgRes)
 
     return;
 }
-
 /**
 *@fn UnImplementedFunc
 *@brief Executes if the requested command in unimplemented
@@ -578,13 +577,9 @@ int GetIfcSupport(INT16U IfcSupt, INT8U *IfcSupport, int BMCInst)
 }
 
 
-static void device_addr_set(void)
+static void device_addr_set(uint8_t slaveAddr7)
 {
-    uint8_t device_addr = 0;
-
-    device_addr = I2C_SLAVE_ADDRESS7;
-
-    ipmb_set_addr(device_addr);
-    SetDevAddr(device_addr);
+    ipmb_set_addr(slaveAddr7);
+    SetDevAddr(slaveAddr7);
 }
 

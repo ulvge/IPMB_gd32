@@ -153,7 +153,56 @@
           <Name>UL2CM3(-S0 -C0 -P0 )  -FN1 -FC1000 -FD20000000 -FF0GD32F10x_MD -FL020000 -FS08000000 -FP0($$Device:GD32F103VB$Flash\GD32F10x_MD.FLM)</Name>
         </SetRegEntry>
       </TargetDriverDllRegistry>
-      <Breakpoint/>
+      <Breakpoint>
+        <Bp>
+          <Number>0</Number>
+          <Type>0</Type>
+          <LineNumber>745</LineNumber>
+          <EnabledFlag>1</EnabledFlag>
+          <Address>134234892</Address>
+          <ByteObject>0</ByteObject>
+          <HtxType>0</HtxType>
+          <ManyObjects>0</ManyObjects>
+          <SizeOfObject>0</SizeOfObject>
+          <BreakByAccess>0</BreakByAccess>
+          <BreakIfRCount>1</BreakIfRCount>
+          <Filename>&lt;1&gt;..\ipmi\libipmimsghndlr-3.0.0-src\data\App\AppDevice\AppDevice.c</Filename>
+          <ExecCommand></ExecCommand>
+          <Expression>\\bmc_rom\../ipmi/libipmimsghndlr-3.0.0-src/data/App/AppDevice/AppDevice.c\745</Expression>
+        </Bp>
+        <Bp>
+          <Number>1</Number>
+          <Type>0</Type>
+          <LineNumber>134</LineNumber>
+          <EnabledFlag>1</EnabledFlag>
+          <Address>134248636</Address>
+          <ByteObject>0</ByteObject>
+          <HtxType>0</HtxType>
+          <ManyObjects>0</ManyObjects>
+          <SizeOfObject>0</SizeOfObject>
+          <BreakByAccess>0</BreakByAccess>
+          <BreakIfRCount>1</BreakIfRCount>
+          <Filename>&lt;1&gt;..\user\main.c</Filename>
+          <ExecCommand></ExecCommand>
+          <Expression>\\bmc_rom\../user/main.c\134</Expression>
+        </Bp>
+        <Bp>
+          <Number>2</Number>
+          <Type>0</Type>
+          <LineNumber>70</LineNumber>
+          <EnabledFlag>1</EnabledFlag>
+          <Address>0</Address>
+          <ByteObject>0</ByteObject>
+          <HtxType>0</HtxType>
+          <ManyObjects>0</ManyObjects>
+          <SizeOfObject>0</SizeOfObject>
+          <BreakByAccess>0</BreakByAccess>
+          <BreakIfRCount>0</BreakIfRCount>
+          <Filename>&lt;1&gt;..\ipmb\libipmiserial-src\Serial.c</Filename>
+          <ExecCommand></ExecCommand>
+          <Expression></Expression>
+        </Bp>
+      </Breakpoint>
       <WatchWindow1>
         <Ww>
           <count>0</count>
@@ -175,6 +224,11 @@
           <WinNumber>1</WinNumber>
           <ItemText>count</ItemText>
         </Ww>
+        <Ww>
+          <count>4</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>pIPMIResHdr</ItemText>
+        </Ww>
       </WatchWindow1>
       <WatchWindow2>
         <Ww>
@@ -195,29 +249,49 @@
         <Ww>
           <count>3</count>
           <WinNumber>2</WinNumber>
-          <ItemText>temp_vals[i][j]</ItemText>
+          <ItemText>pIPMIReqHdr</ItemText>
         </Ww>
         <Ww>
           <count>4</count>
           <WinNumber>2</WinNumber>
-          <ItemText>pSenSharedMem-&gt;SensorInfo[0]</ItemText>
+          <ItemText>pRes-&gt;Data</ItemText>
         </Ww>
         <Ww>
           <count>5</count>
           <WinNumber>2</WinNumber>
-          <ItemText>pSenSharedMem-&gt;SensorInfo[0].IsSensorPresent</ItemText>
+          <ItemText>pReq-&gt;Data</ItemText>
         </Ww>
         <Ww>
           <count>6</count>
           <WinNumber>2</WinNumber>
-          <ItemText>pSensorReadRes</ItemText>
+          <ItemText>addrMask</ItemText>
+        </Ww>
+        <Ww>
+          <count>7</count>
+          <WinNumber>2</WinNumber>
+          <ItemText>((0xFFFFFFFFUL &lt;&lt; (1)) &amp; (0xFFFFFFFFUL &gt;&gt; (31U - (uint32_t)(7))))</ItemText>
+        </Ww>
+        <Ww>
+          <count>8</count>
+          <WinNumber>2</WinNumber>
+          <ItemText>((0xFFFFFFFFUL &lt;&lt; (0)) &amp; (0xFFFFFFFFUL &gt;&gt; (31U - (uint32_t)(3))))</ItemText>
+        </Ww>
+        <Ww>
+          <count>9</count>
+          <WinNumber>2</WinNumber>
+          <ItemText>addrMask4</ItemText>
+        </Ww>
+        <Ww>
+          <count>10</count>
+          <WinNumber>2</WinNumber>
+          <ItemText>addrMask5</ItemText>
         </Ww>
       </WatchWindow2>
       <MemoryWindow1>
         <Mm>
           <WinNumber>1</WinNumber>
           <SubType>0</SubType>
-          <ItemText>pReq-&gt;Data</ItemText>
+          <ItemText>pRes-&gt;Data</ItemText>
           <AccSizeX>0</AccSizeX>
         </Mm>
       </MemoryWindow1>

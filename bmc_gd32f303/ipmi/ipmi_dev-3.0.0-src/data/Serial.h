@@ -88,6 +88,6 @@
  * @param pRes Pointer to response message packet
  * @return Size of the response data
  **/
-extern INT8U ProcessSerialMessage (MsgPkt_T* pReq, MsgPkt_T* pRes,int BMCInst);
+extern INT16U ProcessSerialMessage (MsgPkt_T* pReq, MsgPkt_T* pRes,int BMCInst);
 
 #endif /* SERIAL_H */
