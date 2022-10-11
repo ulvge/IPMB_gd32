@@ -7,7 +7,6 @@
 	 
 #include <stdbool.h>
 #include "bsp_adc.h"
-#include "gd32f10x_adc.h"
 
 /* para definitions */
 

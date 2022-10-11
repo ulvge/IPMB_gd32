@@ -4,21 +4,23 @@
 #include "math.h"
 
 /// @brief need to sync with g_sensor_sdr
+//  GetSensorReading() call adc_getValByChannel. master to calc the real val by M&R.
+// so, salve cant't calc the real val by self
 const static ADCChannlesConfig g_adcChannlConfig[] = {
-#if 0
-    {ADC0, RCU_ADC0, GPIOA, RCU_GPIOA, GPIO_PIN_0, "P0V9 VCC"},
-    {ADC0, RCU_ADC0, GPIOA, RCU_GPIOA, GPIO_PIN_1, "P2V5"},
-    {ADC0, RCU_ADC0, GPIOA, RCU_GPIOA, GPIO_PIN_2, "VBat"}, 
-    {ADC0, RCU_ADC0, GPIOA, RCU_GPIOA, GPIO_PIN_5, "workTemp"},
-    {ADC0, RCU_ADC0, GPIOA, RCU_GPIOA, GPIO_PIN_6, "P12V"},
-    {ADC0, RCU_ADC0, GPIOA, RCU_GPIOA, GPIO_PIN_7, "P3V3"},
+#ifdef GD32F3x
+    {ADC_CHANNEL_P1V8, ADC0, RCU_ADC0, GPIOA, RCU_GPIOA, GPIO_PIN_0, IPMI_UNIT_VOLTS, "P0V9 VCC"},
+    {ADC_CHANNEL_P1V8, ADC0, RCU_ADC0, GPIOA, RCU_GPIOA, GPIO_PIN_1, IPMI_UNIT_VOLTS, "P2V5"},
+    {ADC_CHANNEL_P1V8, ADC0, RCU_ADC0, GPIOA, RCU_GPIOA, GPIO_PIN_2, IPMI_UNIT_VOLTS, "VBat"},
+    {ADC_CHANNEL_P1V8, ADC0, RCU_ADC0, GPIOA, RCU_GPIOA, GPIO_PIN_5, IPMI_UNIT_DEGREES_C, "workTemp"},
+    {ADC_CHANNEL_P1V8, ADC0, RCU_ADC0, GPIOA, RCU_GPIOA, GPIO_PIN_6, IPMI_UNIT_VOLTS, "P12V"},
+    {ADC_CHANNEL_P1V8, ADC0, RCU_ADC0, GPIOA, RCU_GPIOA, GPIO_PIN_7, IPMI_UNIT_VOLTS, "P3V3"},
 	
-    {ADC0, RCU_ADC0, GPIOB, RCU_GPIOB, GPIO_PIN_1, "P1V8"},  
+    {ADC_CHANNEL_P1V8, ADC0, RCU_ADC0, GPIOB, RCU_GPIOB, GPIO_PIN_1, IPMI_UNIT_VOLTS, "P1V8"},  
 	
-    {ADC0, RCU_ADC0, GPIOC, RCU_GPIOC, GPIO_PIN_0, "P0V75 Vcore"},
-    {ADC0, RCU_ADC0, GPIOC, RCU_GPIOC, GPIO_PIN_1, "VTT"},
-    {ADC0, RCU_ADC0, GPIOC, RCU_GPIOC, GPIO_PIN_3, "P1V2 VDDQ"},
-    {ADC0, RCU_ADC0, GPIOC, RCU_GPIOC, GPIO_PIN_4, "CPUTemp"}
+    {ADC_CHANNEL_P1V8, ADC0, RCU_ADC0, GPIOC, RCU_GPIOC, GPIO_PIN_0, IPMI_UNIT_VOLTS, "P0V75 Vcore"},
+    {ADC_CHANNEL_P1V8, ADC0, RCU_ADC0, GPIOC, RCU_GPIOC, GPIO_PIN_1, IPMI_UNIT_VOLTS, "VTT"},
+    {ADC_CHANNEL_P1V8, ADC0, RCU_ADC0, GPIOC, RCU_GPIOC, GPIO_PIN_3, IPMI_UNIT_VOLTS, "P1V2 VDDQ"},
+    {ADC_CHANNEL_P1V8, ADC0, RCU_ADC0, GPIOC, RCU_GPIOC, GPIO_PIN_4, IPMI_UNIT_DEGREES_C, "CPUTemp"}
 #else
     {ADC_CHANNEL_TEMP_X100, ADC0, RCU_ADC0, GPIOB, RCU_GPIOB, GPIO_PIN_0, IPMI_UNIT_DEGREES_C, "X100 temp"},
     {ADC_CHANNEL_P1V8,      ADC0, RCU_ADC0, GPIOA, RCU_GPIOA, GPIO_PIN_0, IPMI_UNIT_VOLTS, "P1V8 VCC"},
@@ -144,8 +146,10 @@ BOOLEAN adc_getValByIndex(uint8_t idx, const ADCChannlesConfig **channlCfg, uint
 	*adcVal = g_adcVals[idx];	
 	return true;
 }
-// convert methods 1
-static uint16_t adc_sampleVal2Temp(uint16 adcValue)
+/// @brief convert methods 1 利用公式
+/// @param adcValue 
+/// @return 
+static uint16_t adc_sampleVal2Temp1(uint16 adcValue)
 {
     static const float resistanceInSeries = 10000.0; //ntc串联的分压电阻
     static const float ntcBvalue = 3500.0;  //B 值
@@ -160,9 +164,14 @@ static uint16_t adc_sampleVal2Temp(uint16 adcValue)
     float ntcResistance = ntcVoltage / ntcCurrent; //计算当前电阻值
     float temperature = (ntcBvalue * T25) / (T25 * (log(ntcResistance) - log(ntcR25)) + ntcBvalue);
     temperature -= KelvinsZero; //计算最终温度
+    if (temperature < 0) { // If the temperature is below 0 ° C, set it to above 0 ° C to avoid errors caused by symbols
+        temperature = 0.05;
+    }
 	return temperature * 2;
 }
-// convert methods 2
+/// @brief convert methods 2 取近似值
+/// @param adcValue 
+/// @return 
 static float adc_sampleVal2Temp2(uint16 adcValue)
 {
     float temperate = (float)adcValue * (VREFVOL / ADC_BIT);
@@ -177,13 +186,13 @@ static uint16_t adc_convertVal(uint8_t sensorUnitType, uint16 raw)
     uint16_t res;
     switch (sensorUnitType)
     {
-    case IPMI_UNIT_DEGREES_C:
-        res = adc_sampleVal2Temp(raw);
-        break;
-    case IPMI_UNIT_VOLTS:
-    default:
-        res = raw;
-        break;
+        case IPMI_UNIT_DEGREES_C:
+            res = adc_sampleVal2Temp1(raw);
+            break;
+        case IPMI_UNIT_VOLTS:
+        default:
+            res = raw;
+            break;
     }
 	return res;
 }
