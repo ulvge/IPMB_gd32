@@ -18,7 +18,7 @@ __IO bool g_CPUStatus = false;
 static void vTaskFTUartWrite(void *pvParameters);
 static void vTaskFTUartRead(void *pvParameters);
 
-static INT16U EncodeSerialPkt(INT8U *Pkt, INT16U Len, INT8U *EnPkt);
+static INT16U EncodeSerialPkt2(INT8U *Pkt, INT16U Len, INT8U *EnPkt, INT8U enPktLength);
 static INT16U DecodeSerialPkt(INT8U *Pkt, INT16U Len);
 
 static void FTMsgProcess(INT8U *pReq, INT8U len);
@@ -145,7 +145,7 @@ int GetEncodeCmd(INT8U cmd, INT8U *pReq)
 	int len;
 
 	len = GetRawCmd(cmd, cmd_buf);
-	return EncodeSerialPkt(cmd_buf, len, pReq);   
+	return EncodeSerialPkt2(cmd_buf, len, pReq, MSG_PAYLOAD_SIZE);   
 }
 
 static void FTMsgProcess(INT8U *pReq, INT8U len)
@@ -227,8 +227,7 @@ static void vTimerCallback(xTimerHandle pxTimer)
  * @param EnPkt Pointer to encoded packet
  * @return Size of the Encoded packet
  **/
-INT16U
-EncodeSerialPkt(INT8U *Pkt, INT16U Len, INT8U *EnPkt)
+static INT16U EncodeSerialPkt2(INT8U *Pkt, INT16U Len, INT8U *EnPkt, INT8U enPktLength)
 {
 	INT16U index = 0;
 	INT16U i;
@@ -257,6 +256,10 @@ EncodeSerialPkt(INT8U *Pkt, INT16U Len, INT8U *EnPkt)
 		default:
 			EnPkt[index++] = (*(Pkt + i));
 			break;
+		}
+		if (index >= (enPktLength - 1)) {
+			LOG_E("EncodeSerialPkt ERR! Exceeding the maximum length");
+			return 0;
 		}
 	}
 

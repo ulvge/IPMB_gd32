@@ -80,9 +80,8 @@ extern xQueueHandle ResponseDatMsg_Queue;
 static int      InitSerialPort          (int BMCInst);
 static void*    RecvSerialPkt           (void*);
 static int      ValidateSerialCheckSum  (INT8U* Pkt, INT16U Len);
-static int      ProcessSerPortReq       (MsgPkt_T* pReq,  MsgPkt_T *pRes);
+static bool      ProcessSerPortReq       (MsgPkt_T* pReq,  MsgPkt_T *pRes);
 static int      ProcessBridgeReq        (MsgPkt_T* pReq,  MsgPkt_T *pRes);
-static INT16U   EncodeSerialPkt         (INT8U* Pkt, INT16U Len, INT8U* EnPkt);
 static INT16U   DecodeSerialPkt         (INT8U* Pkt, INT16U Len);
 static void     OnBasicModeByteReceived (INT8U byte,int BMCInst);
 //static void     CreatTerminalTask (int BMCInst);
@@ -94,13 +93,10 @@ static void     OnBasicModeByteReceived (INT8U byte,int BMCInst);
  **/
 bool ProcessSerialReq (MsgPkt_T *pReq, MsgPkt_T *pRes)
 {
-    pReq->Size = DecodeSerialPkt(pReq->Data, pReq->Size);
-    int ret = ProcessSerPortReq (pReq, pRes);
-    pRes->Param = SERIAL_REQUEST;   
-    if(ret == 0){   
-        return true;  
+    if (pReq->Param == SERIAL_REQUEST) { // if src is serial, need to decode,if I2C,no need
+        pReq->Size = DecodeSerialPkt(pReq->Data, pReq->Size);
     }
-    return false;  
+    return ProcessSerPortReq (pReq, pRes);
 }
 
 /**
@@ -132,8 +128,7 @@ __attribute__((unused)) static void*  RecvSerialPkt (void* pArg)
  * @param pReq Pointer to Request Message packet
  * @param BMCInst holds the Instance value of BMC
  **/
-static int
-ProcessSerPortReq (MsgPkt_T* pReq,  MsgPkt_T *pRes)  // get ipmitool msg and send I2C msg to slave
+static bool ProcessSerPortReq (MsgPkt_T* pReq,  MsgPkt_T *pRes)  // get ipmitool msg and send I2C msg to slave
 {
     INT16U       ResLen;
     INT8U       HandShake;
@@ -143,33 +138,29 @@ ProcessSerPortReq (MsgPkt_T* pReq,  MsgPkt_T *pRes)  // get ipmitool msg and sen
     if (0 != ValidateSerialCheckSum (pReq->Data, pReq->Size))
     {
         IPMI_DBG_PRINT ("**** Checksum Failed ****\n");
-        return -1;
+        return false;
     }
     /* 2 Send Basic Mode Handshake to the remote Console*/
     HandShake = HANDSHAKE_BYTE;
     serial_write(&HandShake, sizeof(HandShake));
 
     /* 3 Post to Message Handler and get the response */
-  //  pReq->Channel = 0;
-    pReq->Param = SERIAL_BASIC_MODE;
-    // pReq->Size = 0;
-
-    IPMI_DBG_PRINT ("\nRequest Message :\n");
-
     ResLen = ProcessSerialMessage (pReq, pRes,0);
 
     if (0 == ResLen)
     {
-        IPMI_DBG_PRINT ("SerialIfc: Packet Ignored or Forwarded\n");
-        return -1;
+        IPMI_DBG_PRINT ("SerialIfc: Packet invalid\n");
+        return false;
+    }
+    if (pRes->Param == FORWARD_IPMB_REQUEST) {
+        return true; //no need to encode,because forward by I2C
     }
 
     /* 4 encode and ransmit the response */
-    pRes->Size = EncodeSerialPkt (pRes->Data, ResLen, EnRes);
-
+    pRes->Size = EncodeSerialPkt (pRes->Data, ResLen, EnRes, sizeof(EnRes));
     _fmemcpy(pRes->Data, EnRes, pRes->Size);
 
-    return 0;
+    return true;
 }
 
 
@@ -181,7 +172,7 @@ ProcessSerPortReq (MsgPkt_T* pReq,  MsgPkt_T *pRes)  // get ipmitool msg and sen
 __attribute__((unused)) static int
 ProcessBridgeReq (MsgPkt_T* pReq,  MsgPkt_T *pRes)  // recv I2C msg and send to ipmitool
 {
-    pRes->Size = EncodeSerialPkt (pReq->Data, pReq->Size, pRes->Data);
+    pRes->Size = EncodeSerialPkt (pReq->Data, pReq->Size, pRes->Data, MSG_PAYLOAD_SIZE);
 
     /* Transmit the packet*/
     // SendSerialPkt (1, EnPkt, EnPktLen,0);
@@ -209,8 +200,8 @@ OnBasicModeByteReceived (INT8U byte,int BMCInst)
  * @param EnPkt Pointer to encoded packet
  * @return Size of the Encoded packet
  **/
-static INT16U
-EncodeSerialPkt (INT8U* Pkt, INT16U Len, INT8U* EnPkt)
+INT16U
+EncodeSerialPkt (INT8U* Pkt, INT16U Len, INT8U* EnPkt,INT8U enPktLength)
 {
     INT16U index = 0;
     INT16U i;
@@ -239,7 +230,11 @@ EncodeSerialPkt (INT8U* Pkt, INT16U Len, INT8U* EnPkt)
             default:
                 EnPkt [index++] = (*(Pkt + i));
                 break;
-        }
+        } 
+		if (index >= (enPktLength - 1)) {
+			LOG_E("EncodeSerialPkt ERR! Exceeding the maximum length");
+			return 0;
+		}
     }
 
     /* Put the STOP Byte */

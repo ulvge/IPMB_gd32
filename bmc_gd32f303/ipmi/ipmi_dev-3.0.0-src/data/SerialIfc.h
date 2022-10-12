@@ -84,5 +84,5 @@ extern void OnSerialByteReceived (INT8U byte,int BMCInst);
  **/
 extern void HangUpModem (void);
 extern bool ProcessSerialReq (MsgPkt_T *pReq, MsgPkt_T *pRes);
-
+extern INT16U   EncodeSerialPkt         (INT8U* Pkt, INT16U Len, INT8U* EnPkt, INT8U enPktLength);
 #endif /* SERIALIFC_H */

@@ -92,7 +92,8 @@ xQueueHandle RecvForwardI2CDatMsg_Queue = NULL;
 /*-----------------------------------------------------------------------------
 * Function Prototypes
 *-----------------------------------------------------------------------------*/
-static void device_addr_set(uint8_t slaveAddr7);
+static void device_addr_set(uint8_t slaveAddr7); 
+static BOOLEAN ProcessIPMBForardResponse(MsgPkt_T *pReq, MsgPkt_T *pRes);
 
 /*--------------------------------------------------------------------
 * Module Variables
@@ -170,14 +171,16 @@ static void vTaskResponseDatWrite(void *pvParameters)
 
     while (1)
     {
+        memset(buff, 0, sizeof(buff));
         xQueueReceive(ResponseDatMsg_Queue, buff, portMAX_DELAY);
 
         switch(ResMsg->Param)
         {
         case IPMI_REQUEST:
+        case FORWARD_IPMB_REQUEST:
+            LOG_RAW("\nNORMAL_RESPONSE\r\n");
         case NORMAL_RESPONSE:
             ipmb_write(ResMsg->Data, ResMsg->Size);
-            // LOG_RAW("I2C write->:");
             break;
         case SERIAL_REQUEST:
             LOG_RAW("send ack msg of original\r\n");
@@ -232,6 +235,7 @@ void *MsgCoreHndlr(void *pArg)
             vTaskDelay(1000);
             continue;
         }
+        memset(buff, 0, sizeof(buff));
         err = xQueueReceive(RecvDatMsg_Queue, buff, portMAX_DELAY);
         if (err == pdFALSE)
         {
@@ -244,11 +248,18 @@ void *MsgCoreHndlr(void *pArg)
 			if (Req->Size == 0){
 				continue;
 			}
-            ProcessIPMIReq(Req, &Res);
+			Res.Param = NORMAL_RESPONSE;
+            if (ProcessIPMIReq(Req, &Res) == 0){
+				continue;
+			}
             break;
         case SERIAL_REQUEST:
-         // ProcessSerPortReq ProcessSerialMessage ProcessIPMIReq
             if (ProcessSerialReq(Req, &Res) == false){
+				continue;
+			}
+            break;
+        case FORWARD_IPMB_RESPONSE:// from forward, encode&packing forward msg
+            if (ProcessIPMBForardResponse(Req, &Res) == false){
 				continue;
 			}
             break;
@@ -274,6 +285,32 @@ void *MsgCoreHndlr(void *pArg)
     }
 }
 
+static BOOLEAN ProcessIPMBForardResponse(MsgPkt_T *pReq, MsgPkt_T *pRes)
+{           
+    INT8U EnRes [MAX_SERIAL_PKT_SIZE];
+    // check ori msg is valid
+    pRes->Size = 0;
+    if (pReq == NULL || pReq->Size == 0) {
+        return false;
+    }
+	
+    IPMIMsgHdr_T *pIPMIReqHdr = (IPMIMsgHdr_T *)pReq->Data;
+
+	pIPMIReqHdr->ResAddr = ipmb_get_dualaddr(); //restore the request address
+	pIPMIReqHdr->ChkSum = CalculateCheckSum(pReq->Data, 2); // recalc the chksum
+    if (!CheckMsgValidation(pReq->Data, pReq->Size))
+    {
+        IPMI_DBG_PRINT("IPMB Forard Msg Check ERR\n");
+        return false;
+    }
+    //
+    /* Normal IPMI Command response */
+    pRes->Param = SERIAL_REQUEST;
+    /* 4 encode and ransmit the response */ 
+    pRes->Size = EncodeSerialPkt (pReq->Data, pReq->Size, EnRes, sizeof(EnRes));
+    _fmemcpy(pRes->Data, EnRes, pRes->Size);
+    return true;
+}
 /**
 *@fn ProcessIPMIReq
 *@brief Processes the requested IPMI command
@@ -306,7 +343,6 @@ INT32U ProcessIPMIReq(MsgPkt_T *pReq, MsgPkt_T *pRes)
     // pRes->NetFnLUN	= pReq->NetFnLUN | 0x04;
 
     /* Normal IPMI Command response */
-    pRes->Param = NORMAL_RESPONSE;
     pRes->Size = HdrOffset + sizeof(INT8U);
 
     //    IPMI_DBG_PRINT("Processing IPMI Packet.\n");

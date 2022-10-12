@@ -61,6 +61,11 @@ void i2c_dualaddr_set(uint32_t i2c_periph, uint8_t dualaddr)
     i2c_dualaddr_enable(i2c_periph, I2C_DUADEN_ENABLE);
 }
 
+uint8_t i2c_dualaddr_get(uint32_t i2c_periph)
+{
+    uint8_t addr8 = I2C_SADDR1(i2c_periph) &= (I2C_SADDR1_ADDRESS2);
+    return addr8;
+}
 
 void i2c_int(void)
 {
@@ -204,7 +209,7 @@ static void i2c0_config(void)
 static void i2c1_config(void)
 {
     // **************************** I2C1 *********************************************
-    i2c_clock_config(I2C1, I2C_CLOCK_400K, I2C_DTCY_2);
+    i2c_clock_config(I2C1, I2C_CLOCK_100K, I2C_DTCY_2);
     /* I2C address configure */
     i2c_mode_addr_config(I2C1, I2C_I2CMODE_ENABLE, I2C_ADDFORMAT_7BITS, I2C1_SLAVE_ADDRESS7);
     /* enable I2C1 */
@@ -761,16 +766,22 @@ void I2C1_EV_IRQHandler(void)
         /* clear the STPDET bit */
         //i2c_interrupt_flag_clear(I2C1, I2C_INT_FLAG_STPDET);
         i2c_enable(I2C1);
-        g_i2c_Req.Param = IPMI_REQUEST;
         if(RecvForwardI2CDatMsg_Queue != NULL && RecvDatMsg_Queue != NULL)
         {
-            if((g_i2c_Req.Data[1] & 0x04) == 0) // netFn even
+            if((g_i2c_Req.Data[1] & 0x04) == 0) // netFn even---Request: as slave,received a cmd
             {
+                g_i2c_Req.Param = IPMI_REQUEST;
                 err = xQueueSendFromISR(RecvDatMsg_Queue, (char*)&g_i2c_Req, &xHigherPriorityTaskWoken);
             }
-            else  // odd
+            else  // netFn odd---Response: as master, The response received after an active message is sent
             {
-                err = xQueueSendFromISR(RecvForwardI2CDatMsg_Queue, (char*)&g_i2c_Req, &xHigherPriorityTaskWoken);
+                if(0){
+                    g_i2c_Req.Param = IPMI_REQUEST;
+                    err = xQueueSendFromISR(RecvForwardI2CDatMsg_Queue, (char*)&g_i2c_Req, &xHigherPriorityTaskWoken);
+                }else{
+                    g_i2c_Req.Param = FORWARD_IPMB_RESPONSE;
+                    err = xQueueSendFromISR(RecvDatMsg_Queue, (char*)&g_i2c_Req, &xHigherPriorityTaskWoken);
+                }
             }
 
             portYIELD_FROM_ISR(xHigherPriorityTaskWoken);

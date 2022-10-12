@@ -49,6 +49,8 @@ static void ActivateBasicMode (IPMIMsgHdr_T* pIPMIReqHdr,
                                IPMIMsgHdr_T* pIPMIResHdr,int BMCInst);
 
 
+extern xQueueHandle RecvForwardI2CDatMsg_Queue;
+extern xQueueHandle ResponseDatMsg_Queue;
 /**
  * @brief Process the authenticates the serial request and activates the basic mode
  * @param pReq pointer to the request MsgPkt
@@ -60,25 +62,18 @@ INT16U
 ProcessSerialMessage (MsgPkt_T* pReq, MsgPkt_T* pRes,int BMCInst)
 {                                                 
 	IPMIMsgHdr_T *pIPMIReqHdr = (IPMIMsgHdr_T *)pReq->Data;
-    if (pIPMIReqHdr->ResAddr == I2C_SLAVE_ADDRESS7) {
-        // msghandlr and master msg send to ipmitool
-        return ProcessIPMIReq(pReq, pRes); //get&hand map
+    if (pIPMIReqHdr->ResAddr == I2C_SLAVE_ADDRESS7) { // slef msg
+        //from seial, Check checksum and handler msg
+        //pRes->Param = SERIAL_REQUEST; // if you want: serial in /serial out,not serial in /I2C out
+        pRes->Param = IPMI_REQUEST;
+        return ProcessIPMIReq(pReq, pRes); //get&hand map  
     } else {
-        //Forwarded message   
-//		IPMIMsgHdr_T *pIPMIResHdr = (IPMIMsgHdr_T *)pRes->Data;  
-//        pIPMIReqHdr->ResAddr = I2C_SLAVE_ADDRESS7;
-//        SwapIPMIMsgHdr((const IPMIMsgHdr_T *)pIPMIReqHdr, pIPMIResHdr); //get&hand map
-//        pRes->Size = pReq->Size ;
-//		
-//		pIPMIResHdr->ChkSum = CalculateCheckSum((INT8U*)pIPMIResHdr, 2); 
-//		pRes->Data[pRes->Size - 1] = CalculateCheckSum2(pRes->Data, pRes->Size - 1);
-//        
-//		ipmb_set_dualaddr(pIPMIResHdr->ReqAddr);
-//        ipmb_write(pRes->Data, pRes->Size);
-										   
+        //not slef msg, so Forwarded it   
 		ipmb_set_dualaddr(pIPMIReqHdr->ReqAddr);
-		ipmb_write(pReq->Data, pReq->Size);
-        return 0;
+        pRes->Param = FORWARD_IPMB_REQUEST;
+        pRes->Size = pReq->Size;
+        _fmemcpy(pRes->Data, pReq->Data, pReq->Size);
+        return pRes->Size;
     }
 }
 

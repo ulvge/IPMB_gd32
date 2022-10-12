@@ -339,6 +339,9 @@ extern const CmdHndlrMap_T g_APP_CmdHndlr [];
 #define LAN_REQUEST	                0x15
 #define FTCPU_RESPONSE	            0x16
 
+#define FORWARD_IPMB_REQUEST		0x18
+#define FORWARD_IPMB_RESPONSE		0x19
+
 /*----------------------------------------------------
  * Receive Message Queue Names
  *----------------------------------------------------*/
@@ -374,8 +377,7 @@ extern int GetUTC_Offset(void);
 
 extern void *MsgCoreHndlr(void *pArg);
 
-extern INT32U
-ProcessIPMIReq(MsgPkt_T *pReq, MsgPkt_T *pRes);
+extern INT32U ProcessIPMIReq(MsgPkt_T *pReq, MsgPkt_T *pRes);  
 
 
 #ifdef __cplusplus

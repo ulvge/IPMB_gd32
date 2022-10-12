@@ -603,6 +603,9 @@ void shellListCommand(Shell *shell)
     shellWriteString(shell, shellText[SHELL_TEXT_CMD_LIST]);
     for (short i = 0; i < shell->commandList.count; i++)
     {
+		if (i % 6 == 5) {			
+			vTaskDelay(20);
+		}
         if (base[i].attr.attrs.type <= SHELL_TYPE_CMD_FUNC
             && shellCheckPermission(shell, &base[i]) == 0)
         {
