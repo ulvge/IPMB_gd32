@@ -67,6 +67,12 @@ static void GetFirmwareVersion(unsigned int* Major,unsigned int* Minor,unsigned 
     return;
 }
 
+int APPReserved (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst)
+{
+    SendMsgRes_T* pSendMsgRes = (SendMsgRes_T*)pRes;
+    pSendMsgRes->CompletionCode = CC_NORMAL;
+    return  sizeof (*pRes);
+}
 /*---------------------------------------
  * GetDevID
  *---------------------------------------*/

@@ -43,6 +43,7 @@
 NetFnCmds_T g_coreApp [] = 
 {
     /* IPM Device Commands */
+    {CMD_APP_RESERVED                                                 , ENABLED, NONE},
     {CMD_GET_DEV_ID                                                 , ENABLED, NONE},
     {CMD_BROADCAST_GET_DEV_ID                             ,DISABLED, NONE},
     {CMD_COLD_RESET                                                 ,ENABLED, NONE},

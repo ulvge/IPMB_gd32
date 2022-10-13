@@ -117,6 +117,7 @@ extern int UnImplementedFuncAMI (INT8U* pReq, INT32U ReqLen, INT8U* pRes, int BM
  *---------------------------------------------------------------------------*/
 
 /*----------------- IPMI Device "Global" Commands ---------------------------*/
+#define APP_RESERVED			APPReserved				/*UNIMPLEMENTED*/
 #define GET_DEV_ID				GetDevID				/*UNIMPLEMENTED*/
 #define BROADCAST_GET_DEV_ID  /*BroadCastGetDevID*/		  UNIMPLEMENTED
 #define COLD_RESET				ColdReset				/*UNIMPLEMENTED*/

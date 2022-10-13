@@ -31,6 +31,7 @@ const CmdHndlrMap_T g_App_CmdHndlr [] =
 {
 #if 1//IPM_DEVICE == 1
     /*------------------------- IPM Device Commands -------------------------*/
+    { CMD_APP_RESERVED,               PRIV_USER,      APP_RESERVED,             0x00,                           0xAAAA , 0xFFFF},
     { CMD_GET_DEV_ID,               PRIV_USER,      GET_DEV_ID,             0x00,                           0xAAAA , 0xFFFF},
 //    { CMD_BROADCAST_GET_DEV_ID,     PRIV_LOCAL,     BROADCAST_GET_DEV_ID,   0x00,                           0xAAAA ,0xFFFF},
     { CMD_COLD_RESET,               PRIV_ADMIN,     COLD_RESET,             0x00,                           0xAAAA ,0xFFFF},

@@ -624,18 +624,29 @@ void I2C0_EV_IRQHandler(void)
     {
         /* clear the STPDET bit */
         i2c_enable(I2C0);
-        g_i2c_Req.Param = IPMI_REQUEST;
+        if (g_i2c_Req.Size <= 1){
+            g_i2c_Req.Size = 0; //too short, Not a complete package
+            return;
+        }
         if(RecvForwardI2CDatMsg_Queue != NULL && RecvDatMsg_Queue != NULL)
         {
-            if((g_i2c_Req.Data[1] & 0x04) == 0) // netFn even xQueueReceive(RecvDatMsg_Queue
+            if((g_i2c_Req.Data[1] & 0x04) == 0) // netFn even---Request: as slave,received a cmd
             {
+                g_i2c_Req.Param = IPMI_REQUEST;
                 err = xQueueSendFromISR(RecvDatMsg_Queue, (char*)&g_i2c_Req, &xHigherPriorityTaskWoken);
             }
-            else  // odd xQueueReceive(RecvForwardI2CDatMsg_Queu
+            else  // netFn odd---Response: as master, The response received after an active message is sent
             {
-                err = xQueueSendFromISR(RecvForwardI2CDatMsg_Queue, (char*)&g_i2c_Req, &xHigherPriorityTaskWoken);
+                if(0){
+                    g_i2c_Req.Param = IPMI_REQUEST;
+                    err = xQueueSendFromISR(RecvForwardI2CDatMsg_Queue, (char*)&g_i2c_Req, &xHigherPriorityTaskWoken);
+                }else{
+                    g_i2c_Req.Param = FORWARD_IPMB_RESPONSE;
+                    err = xQueueSendFromISR(RecvDatMsg_Queue, (char*)&g_i2c_Req, &xHigherPriorityTaskWoken);
+                }
             }
-
+			
+			g_i2c_Req.Size = 0; // over, clear recv count
             portYIELD_FROM_ISR(xHigherPriorityTaskWoken);
             if (err == pdFAIL)
             {
@@ -753,7 +764,7 @@ void I2C1_EV_IRQHandler(void)
     {
         /* clear the ADDSEND bit */
         i2c_interrupt_flag_clear(I2C1, I2C_INT_FLAG_ADDSEND);
-        g_i2c_Req.Size = 0;; // start, clear recv count
+        g_i2c_Req.Size = 0; // start, clear recv count
         g_i2c_Req.Data[g_i2c_Req.Size++] = GetDevAddr();
     }
     else if (i2c_interrupt_flag_get(I2C1, I2C_INT_FLAG_RBNE))
@@ -766,6 +777,10 @@ void I2C1_EV_IRQHandler(void)
         /* clear the STPDET bit */
         //i2c_interrupt_flag_clear(I2C1, I2C_INT_FLAG_STPDET);
         i2c_enable(I2C1);
+        if (g_i2c_Req.Size <= 1){
+            g_i2c_Req.Size = 0; //too short, Not a complete package
+            return;
+        }
         if(RecvForwardI2CDatMsg_Queue != NULL && RecvDatMsg_Queue != NULL)
         {
             if((g_i2c_Req.Data[1] & 0x04) == 0) // netFn even---Request: as slave,received a cmd
@@ -783,7 +798,8 @@ void I2C1_EV_IRQHandler(void)
                     err = xQueueSendFromISR(RecvDatMsg_Queue, (char*)&g_i2c_Req, &xHigherPriorityTaskWoken);
                 }
             }
-
+			
+			g_i2c_Req.Size = 0; // over, clear recv count
             portYIELD_FROM_ISR(xHigherPriorityTaskWoken);
             if (err == pdFAIL)
             {
@@ -979,17 +995,28 @@ void I2C2_EV_IRQHandler(void)
     {
         /* clear the STPDET bit */
         i2c_enable(I2C2);
-        g_i2c_Req.Param = IPMI_REQUEST;
+        if (g_i2c_Req.Size <= 1){
+            g_i2c_Req.Size = 0; //too short, Not a complete package
+            return;
+        }
         if(RecvForwardI2CDatMsg_Queue != NULL && RecvDatMsg_Queue != NULL)
         {
-            if((g_i2c_Req.Data[1] & 0x04) == 0) // netFn even
+            if((g_i2c_Req.Data[1] & 0x04) == 0) // netFn even---Request: as slave,received a cmd
             {
+                g_i2c_Req.Param = IPMI_REQUEST;
                 err = xQueueSendFromISR(RecvDatMsg_Queue, (char*)&g_i2c_Req, &xHigherPriorityTaskWoken);
             }
-            else  // odd
+            else  // netFn odd---Response: as master, The response received after an active message is sent
             {
-                err = xQueueSendFromISR(RecvForwardI2CDatMsg_Queue, (char*)&g_i2c_Req, &xHigherPriorityTaskWoken);
+                if(0){
+                    g_i2c_Req.Param = IPMI_REQUEST;
+                    err = xQueueSendFromISR(RecvForwardI2CDatMsg_Queue, (char*)&g_i2c_Req, &xHigherPriorityTaskWoken);
+                }else{
+                    g_i2c_Req.Param = FORWARD_IPMB_RESPONSE;
+                    err = xQueueSendFromISR(RecvDatMsg_Queue, (char*)&g_i2c_Req, &xHigherPriorityTaskWoken);
+                }
             }
+			g_i2c_Req.Size = 0; // over, clear recv count
 
             portYIELD_FROM_ISR(xHigherPriorityTaskWoken);
             if (err == pdFAIL)

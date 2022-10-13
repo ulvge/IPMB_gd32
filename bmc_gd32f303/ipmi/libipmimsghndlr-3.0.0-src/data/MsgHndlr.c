@@ -178,7 +178,6 @@ static void vTaskResponseDatWrite(void *pvParameters)
         {
         case IPMI_REQUEST:
         case FORWARD_IPMB_REQUEST:
-            LOG_RAW("\nNORMAL_RESPONSE\r\n");
         case NORMAL_RESPONSE:
             ipmb_write(ResMsg->Data, ResMsg->Size);
             break;
@@ -194,7 +193,7 @@ static void vTaskResponseDatWrite(void *pvParameters)
             break;
         }
 
-       LOG_RAW("\r\nsend ack msg of hex for view\r\n");
+		LOG_RAW("\r\nsend ack msg of hex for view para:%#x\r\n", ResMsg->Param);
        for(int i=0; i<ResMsg->Size; i++)
        {
             LOG_RAW("%02x ", ResMsg->Data[i]);
@@ -242,12 +241,13 @@ void *MsgCoreHndlr(void *pArg)
             LOG_E("xQueueReceive get msg ERR!");
             continue;
         }
+		
         switch(Req->Param)
         {
         case IPMI_REQUEST:
 			if (Req->Size == 0){
 				continue;
-			}
+			}             
 			Res.Param = NORMAL_RESPONSE;
             if (ProcessIPMIReq(Req, &Res) == 0){
 				continue;
@@ -348,7 +348,10 @@ INT32U ProcessIPMIReq(MsgPkt_T *pReq, MsgPkt_T *pRes)
     //    IPMI_DBG_PRINT("Processing IPMI Packet.\n");
 
     SwapIPMIMsgHdr(pIPMIReqHdr, pIPMIResHdr);
-
+	
+	if (pReq->Size > 8){
+		LOG_E("ProcessIPMIReq debug!");
+	}
     if (0 != GetMsgHndlrMap(NET_FN(pIPMIReqHdr->NetFnLUN), &pCmdHndlrMap)) // get netfn handlr
     {
         pRes->Data[HdrOffset] = CC_INV_CMD;

@@ -59,6 +59,7 @@
  * IPMI IPM Device Command Handlers. Invoked by the message handler
  * @{
  **/
+extern int APPReserved(INT8U *pReq, INT8U ReqLen, INT8U *pRes, int BMCInst);
 extern int GetDevID             (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst);
 extern int ColdReset            (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst);
 extern int WarmReset            (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst);

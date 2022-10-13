@@ -21,6 +21,7 @@
 #define IPMI_APP_H
 
 /*** Application Commands ***/
+#define CMD_APP_RESERVED            0x00
 #define CMD_GET_DEV_ID              0x01
 #define CMD_BROADCAST_GET_DEV_ID    0x01
 #define CMD_COLD_RESET              0x02
