@@ -30,46 +30,54 @@
 #include "queue.h"
 #include "event_groups.h"
 
+typedef struct 
+{
+    uint8_t fannum;
+    const PwmChannleConfig *config;
+    PidObject PID;
+    int32_t rpmSet;
+    int32_t rpmCalculate;
+} FanConfig;
 
-uint32_t s_max_rotate_rpm[4] = {0};
-uint32_t s_max_duty_value[4] = {0};
-
-PidObject g_fan_pid[4];
-int32_t  g_fan_rpm_set[4] = {0};
-int32_t  g_fan_rpm_calculate[4] = {0};
+static const PwmChannleConfig g_pwmChannleConfig[] = {
+    {TIMER2,   TIMER_CH_0,  6800},
+    {TIMER3,   TIMER_CH_2,  6800},
+};
+#define SIZE_PWM_CONFIG     sizeof(g_pwmChannleConfig)/sizeof(g_pwmChannleConfig[0])
+FanConfig g_FanConfig[SIZE_PWM_CONFIG];
 
 extern CapPreiodCapInfo_T g_timer_cap_info[4];
 
 static TimerHandle_t xTimersFanWatchdog = NULL;
 
-static bool      fan_set_para_max_rpm           (int channel, uint32_t rpm);
 static void 	 vTimerFanWatchdogCallback      (xTimerHandle pxTimer);
 
+FanConfig *fan_getConfig(int channel)
+{
+    if (channel >= SIZE_PWM_CONFIG){
+        return NULL;
+    }
+    return &g_FanConfig[channel];
+}
 void fan_init(void)
 {
 	int i = 0;
 	
     capture_init();
     pwm_init();
-    fan_set_para_max_rpm(1, 6800);
-    fan_set_para_max_rpm(2, 6800);
 
-    for(i=0; i<sizeof(g_fan_pid)/sizeof(PidObject); i++)
+    for(i = 0; i < SIZE_PWM_CONFIG; i++)
     {
-        pidInit(&g_fan_pid[i], 0, PID_UPDATE_DT);
-        g_fan_rpm_calculate[i] = 0;
-        g_fan_rpm_set[i] = 0;
+        FanConfig *pFanconfig = fan_getConfig(i);
+        pFanconfig->fannum = i;
+        pFanconfig->config = &g_pwmChannleConfig[i];
+        pFanconfig->rpmSet = 0;
+        pFanconfig->rpmCalculate = 0;
+
+        pidInit(&pFanconfig->PID, 0, PID_UPDATE_DT);
+        fan_set_duty_percent(i, 100);
     }
-}
 
-void fan_ctrl_loop(void)
-{
-    uint16_t curent_rpm = 0;
-    int32_t pid_out = 0;
-    int i;
-
-	UNUSED(curent_rpm);
-	UNUSED(pid_out);
     xTimersFanWatchdog = xTimerCreate("Timer", 1000/portTICK_RATE_MS, pdTRUE, (void*)1, vTimerFanWatchdogCallback); 
     xTimerStart(xTimersFanWatchdog, portMAX_DELAY);	
 
@@ -78,7 +86,37 @@ void fan_ctrl_loop(void)
         fan_set_duty_percent(i, 100);
         vTaskDelay(10);
     }
+}
 
+void fan_ctrl_loop(void)
+{
+    uint16_t curent_rpm = 0;
+    int32_t pid_out = 0; 
+    int i;
+
+    for(uint32_t i = 0; i < SIZE_PWM_CONFIG; i++) {
+        FanConfig *pFan = fan_getConfig(i);
+        if(pFan == NULL)
+        {
+            continue;
+        }
+        if(fan_get_rotate_rpm(i, &curent_rpm) == false){
+            continue;
+        }
+        pid_out = pidUpdate(&pFan->PID, pFan->rpmSet - curent_rpm);
+        pFan->rpmCalculate = pidOutLimit(pFan->rpmCalculate + pid_out, 0, FAN_PWM_MAX_DUTY_VALUE);
+        fan_set_rotate_rpm(i, pid_out);
+    }
+}
+
+void fan_ctrl_loop_task(void)
+{
+    uint16_t curent_rpm = 0;
+    int32_t pid_out = 0;
+    int i;
+
+	UNUSED(curent_rpm);
+	UNUSED(pid_out);
     while(1)
     {
         // for(i=0; i<sizeof(g_fan_rpm_set)/sizeof(uint32_t); i++)
@@ -93,7 +131,6 @@ void fan_ctrl_loop(void)
         // vTaskDelay(PID_UPDATE_DT);
     }
 }
-
 bool fan_get_rotate_rpm(unsigned char channel, uint16_t *fan_rpm)
 {
     uint32_t cap_value;
@@ -114,39 +151,41 @@ bool fan_get_rotate_rpm(unsigned char channel, uint16_t *fan_rpm)
     return true;
 }
 
-static bool fan_set_para_max_rpm(int channel, uint32_t rpm)
-{
-    if (channel > sizeof(s_max_rotate_rpm) / sizeof(s_max_rotate_rpm[0]))
-    {
-        return false;
-    }
-    s_max_rotate_rpm[channel] = rpm;
-    return true;
-}
-
 void fan_set_rotate_rpm(int channel, uint32_t rpm)
 {
-    if(channel >=0 && channel < sizeof(g_fan_rpm_set)/sizeof(int32_t))
+    FanConfig *pFan = fan_getConfig(channel);
+    if(pFan == NULL)
     {
-        g_fan_rpm_set[channel] = rpm;
+        return;
     }
+    pFan->rpmSet = rpm;
 }
 
 /* convert to rpm */
 void fan_set_duty(int channel, unsigned char duty)
 {
-    if(channel >=0 && channel < sizeof(g_fan_rpm_set)/sizeof(int32_t))
+    FanConfig *pFan = fan_getConfig(channel);
+    if(pFan == NULL)
     {
-        g_fan_rpm_set[channel] = duty*s_max_rotate_rpm[channel]/100;
-    }	
+        return;
+    }
+    pFan->rpmSet = duty * (pFan->config->maxRotateRpm) /100;
 }
 
 /* pwm raw duty percent */
 void fan_set_duty_percent(int channel, unsigned char duty)
 {
-    pwm_set_duty_percent(channel, duty);
-}
+    uint32_t duty_value = 0;
 
+    duty_value = duty * FAN_PWM_MAX_DUTY_VALUE/100;
+  
+    FanConfig *pFanconfig = fan_getConfig(channel);
+    if(pFanconfig == NULL)
+    {
+        return;
+    }
+    timer_channel_output_pulse_value_config(pFanconfig->config->timerPeriph, pFanconfig->config->timerCh, duty_value);
+}
 
 static void vTimerFanWatchdogCallback(xTimerHandle pxTimer)
 {

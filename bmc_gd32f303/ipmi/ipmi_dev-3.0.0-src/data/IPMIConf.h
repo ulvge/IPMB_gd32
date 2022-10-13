@@ -519,8 +519,8 @@ typedef struct
     SensorSharedMem_T SensorSharedMem;
 //    SocketTbl_T  *pSocketTbl;
 //    SocketTbl_T  *pUDSocketTbl;
-    PEF_T PefConfig;
-    SEL_T SELConfig;
+    //PEF_T PefConfig;
+    //SEL_T SELConfig;
     SDR_T SDRConfig;
     IPMB_T IPMBConfig;
     ///SOL_T SOLConfig;

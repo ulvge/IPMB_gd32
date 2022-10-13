@@ -7,8 +7,13 @@
 
 #define FAN_PWM_MAX_DUTY_VALUE        4800   // PWM max 4800
 
+typedef struct 
+{
+    uint32_t timerPeriph;   //TIMER1
+    uint8_t timerCh;        //TIMER_CH_1
+    uint16_t maxRotateRpm;
+} PwmChannleConfig;
+
 void pwm_init (void);
-void pwm_set_duty_percent(unsigned char fannum, unsigned char percent);
-void pwm_set_duty_raw(unsigned char fannum, uint32_t value);
 
 #endif

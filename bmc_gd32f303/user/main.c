@@ -129,7 +129,7 @@ void start_task(void *pvParameters)
 {
     uint32_t errCreateTask = 0;
     i2c_int();
-    // fan_init();
+    fan_init();
     sample_init();  // voltage 
 
 #ifdef FATFS_ENABLE
@@ -188,7 +188,7 @@ void misc_task(void *pvParameters)
         led1_set(0);
         //printf("abcde\r\n");
         adc_sample_all();
-
+        fan_task(NULL);
         if (xQueueReceive(g_chassisCtrl_Queue, &msg, 20) == pdPASS){
             ChassisCtrl(&msg);
         }

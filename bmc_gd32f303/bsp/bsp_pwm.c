@@ -2,6 +2,7 @@
 #include <stdbool.h>
 #include "main.h"
 
+
 static void pwm_timer0_gpio_config(void);
 static void pwm_timer0_config(void);
 static void pwm_timer7_gpio_config(void);
@@ -239,45 +240,4 @@ static void pwm_timer8_config(void)
     timer_auto_reload_shadow_enable(TIMER8);
     /* auto-reload preload enable */
     timer_enable(TIMER8);
-}
-
-void pwm_set_duty_raw(unsigned char fannum, uint32_t value)
-{
-	switch(fannum)
-	{
-		case 0:
-			timer_channel_output_pulse_value_config(TIMER0, 0, value);
-			break;
-		case 1:
-			timer_channel_output_pulse_value_config(TIMER0, 1, value);
-			break;
-		case 2:
-			timer_channel_output_pulse_value_config(TIMER0, 2, value);
-			break;
-		case 3:
-			timer_channel_output_pulse_value_config(TIMER0, 3, value);
-			break;
-    // case 4:
-		// 	timer_channel_output_pulse_value_config(TIMER7, TIMER_CH_1, value);
-		// 	break;
-		// case 5:
-		// 	timer_channel_output_pulse_value_config(TIMER7, TIMER_CH_2, value);
-		// 	break;
-		// case 6:
-		// 	timer_channel_output_pulse_value_config(TIMER8, TIMER_CH_0, value);
-		// 	break;
-		// case 7:
-		// 	timer_channel_output_pulse_value_config(TIMER8, TIMER_CH_1, value);
-		// 	break;
-		default:
-			break;
-	}
-}
-
-void pwm_set_duty_percent(unsigned char fannum, unsigned char percent)
-{
-  uint32_t duty_value = 0;
-
-  duty_value = percent*FAN_PWM_MAX_DUTY_VALUE/100;
-  pwm_set_duty_raw(fannum, duty_value);
 }
