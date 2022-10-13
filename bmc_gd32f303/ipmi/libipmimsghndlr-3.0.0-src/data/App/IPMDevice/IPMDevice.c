@@ -57,7 +57,7 @@ static void GetFirmwareVersion(unsigned int* Major,unsigned int* Minor,unsigned 
 {
     char aline[82];
     int AuxVer;
-    int i = 0, count = 0;
+    int count = 0;
     
     if(count == 3)
         sscanf(aline,"FW_VERSION=%d.%d.%d.%d",Major,Minor,&AuxVer,Rev);

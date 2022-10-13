@@ -140,7 +140,6 @@ GetChassisCaps (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst)
 {
     GetChassisCapabilitiesRes_T*    pGetChassisCapsRes = 
         (GetChassisCapabilitiesRes_T*) pRes;
-    BMCInfo_t *pBMCInfo = &g_BMCInfo;
     
     IPMI_DBG_PRINT ("\nGET Chassis CAPABILITIES\n");
 
@@ -160,7 +159,6 @@ GetChassisStatus (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst)
     INT8U                   PSGood=0;
     GetChassisStatusRes_T*  pGetChassisStatusRes =
         (GetChassisStatusRes_T*) pRes;
-    BMCInfo_t *pBMCInfo = &g_BMCInfo;
 
 
     pGetChassisStatusRes->CompletionCode = CC_NORMAL;

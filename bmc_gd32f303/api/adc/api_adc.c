@@ -49,8 +49,6 @@ uint8_t adc_getChannelNum(void)
 float get_temprate_convers_value(uint16_t channel)
 {
     ADCChannlesRes res;
-    uint16_t adcx;
-    float temperate;
     if (adc_getValByChannel(channel, &res) == false){
         return 0;
     }

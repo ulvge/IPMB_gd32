@@ -315,7 +315,6 @@ DecodeSerialPkt(INT8U *Pkt, INT16U Len)
 
 uint16_t GetBmcFirmwareVersion(char* str)
 {
-	char *p[5];
 	char buff[20] = {0};
 	uint16_t version = 0xffff;
 

@@ -71,7 +71,6 @@ BOOLEAN FIFO_Empty(FIFO *fifo)
  
 BOOLEAN FIFO_Read(FIFO *fifo, INT8U *data)
 {
-    int ret;
     if (fifo->occupy == 0) {
 		return false;
 	}
