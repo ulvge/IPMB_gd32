@@ -71,8 +71,8 @@
 //#define MAX_SENSOR_NUMBERS	    		(20 + (20 * VALID_LUN)) /* Multi-LUN support total number of sensors is 1024 */
 //#define MAX_ME_SENSOR_NUMBERS       20  // 256 /* for the sensors ownerID = ME */
 
-#define MAX_SENSOR_NUMBERS	    		(10 + (20 * VALID_LUN)) /* Multi-LUN support total number of sensors is 1024 */
-#define MAX_ME_SENSOR_NUMBERS       10  // 256 /* for the sensors ownerID = ME */
+#define MAX_SENSOR_NUMBERS	    		(8 + (20 * VALID_LUN)) /* Multi-LUN support total number of sensors is 1024 */
+#define MAX_ME_SENSOR_NUMBERS       3  // 256 /* for the sensors ownerID = ME */
 
 /*---------------------------------------------------
  * Parameters passed to the sensor monitor handler Q.

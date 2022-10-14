@@ -12,6 +12,7 @@
 ".\output\hwd1668.o"
 ".\output\api_cpu.o"
 ".\output\api_fan.o"
+".\output\api_sensor.o"
 ".\output\ipmi_common.o"
 ".\output\ipmbmsghndlr.o"
 ".\output\serialifc.o"

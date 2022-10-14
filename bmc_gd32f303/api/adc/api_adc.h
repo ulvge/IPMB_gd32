@@ -26,19 +26,6 @@
 #define     TWO_PARTIAL_PRESSURE_CONFF        2
 #define     ONE_PARTIAL_PRESSURE_CONFF1       1
 
-typedef enum 
-{ 
-    ADC_CHANNEL_P1V8 = ADC_CHANNEL_0,
-    ADC_CHANNEL_TEMP_X100 = ADC_CHANNEL_8,
-    ADC_CHANNEL_P12V = ADC_CHANNEL_10,
-    ADC_CHANNEL_PTEST1 = ADC_CHANNEL_1,
-    ADC_CHANNEL_PTEST2 = ADC_CHANNEL_2,
-    ADC_CHANNEL_PTEST3 = ADC_CHANNEL_3,
-    ADC_CHANNEL_TEMP1 = ADC_CHANNEL_4,
-    ADC_CHANNEL_TEMP2 = ADC_CHANNEL_5,
-    ADC_CHANNEL_TEMP3 = ADC_CHANNEL_6,
-}ADC_CHANNEL_ENUM;
-
 
 void sample_init(void);
 ADCChannlesConfig *adc_getConfig(void);   
@@ -53,10 +40,7 @@ float get_voltage_convers_value(uint16_t channel);
 
 /* get vref voltage value*/
 float get_vref_voltage_convers_value(uint16_t channel);
-
-/*get ADC channel raw value of conversion*/
-BOOLEAN adc_getValByChannel(uint8_t channel, ADCChannlesRes *val);
-
+BOOLEAN adc_getVal(uint8_t channel, uint16_t *humanVal);
 void adc_sample_all(void);
 #ifdef __cplusplus
 }

@@ -4,18 +4,14 @@
 static void rcu_config(const ADCChannlesConfig *cfg);
 static void adc_config(uint32_t adc_periph);
 
-void adc_init(const ADCChannlesConfig  *adcChannlConfig, UINT8 num)
+void adc_init(const ADCChannlesConfig  *chanCfg)
 {
-	const ADCChannlesConfig  *chanCfg;
-	for (UINT8 i=0; i< num;i++){
-		chanCfg = &adcChannlConfig[i];
-		/*configure system clocks*/	
-		rcu_config(chanCfg);
-        /* config the GPIO as analog mode */
-        gpio_init(chanCfg->gpioPort, GPIO_MODE_AIN, GPIO_OSPEED_50MHZ, chanCfg->Pin); 
-        /* ADC configuration */
-        adc_config(chanCfg->adcPeriph);
-	}
+    /*configure system clocks*/	
+    rcu_config(chanCfg);
+    /* config the GPIO as analog mode */
+    gpio_init(chanCfg->gpioPort, GPIO_MODE_AIN, GPIO_OSPEED_50MHZ, chanCfg->Pin); 
+    /* ADC configuration */
+    adc_config(chanCfg->adcPeriph);
 }
 
 

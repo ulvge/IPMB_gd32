@@ -9,11 +9,19 @@
 
 typedef struct 
 {
+    uint8_t fanSensorNum;
+    uint16_t maxRotateRpm;
+    rcu_periph_enum      	timerRcu;
     uint32_t timerPeriph;   //TIMER1
     uint8_t timerCh;        //TIMER_CH_1
-    uint16_t maxRotateRpm;
+
+    rcu_periph_enum      	gpioRcu;
+    uint32_t gpioPort;       
+    uint32_t pin;
+    uint32_t remap;
 } PwmChannleConfig;
 
-void pwm_init (void);
+void pwm_timer_gpio_config(const PwmChannleConfig *config);
+void pwm_timer_config(const PwmChannleConfig *config);
 
 #endif

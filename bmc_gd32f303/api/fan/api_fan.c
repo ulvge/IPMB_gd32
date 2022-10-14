@@ -28,23 +28,24 @@
 #include "task.h"
 #include "semphr.h"
 #include "queue.h"
-#include "event_groups.h"
+#include "event_groups.h" 
+#include "sensor/api_sensor.h"
 
 typedef struct 
 {
-    uint8_t fannum;
+    uint8_t fanIdx;
     const PwmChannleConfig *config;
     PidObject PID;
     int32_t rpmSet;
     int32_t rpmCalculate;
-} FanConfig;
+} FanStruct;
 
 static const PwmChannleConfig g_pwmChannleConfig[] = {
-    {TIMER2,   TIMER_CH_0,  6800},
-    {TIMER3,   TIMER_CH_2,  6800},
+    {FAN_CHANNEL_1, 6800, RCU_TIMER2, TIMER2,   TIMER_CH_0,  RCU_GPIOC, GPIOC, GPIO_PIN_6, GPIO_TIMER1_FULL_REMAP},
+    {FAN_CHANNEL_2, 6800, RCU_TIMER3, TIMER3,   TIMER_CH_2,  RCU_GPIOD, GPIOD, GPIO_PIN_14, GPIO_TIMER3_REMAP},
 };
 #define SIZE_PWM_CONFIG     sizeof(g_pwmChannleConfig)/sizeof(g_pwmChannleConfig[0])
-FanConfig g_FanConfig[SIZE_PWM_CONFIG];
+FanStruct g_Fan[SIZE_PWM_CONFIG];
 
 extern CapPreiodCapInfo_T g_timer_cap_info[4];
 
@@ -52,40 +53,37 @@ static TimerHandle_t xTimersFanWatchdog = NULL;
 
 static void 	 vTimerFanWatchdogCallback      (xTimerHandle pxTimer);
 
-FanConfig *fan_getConfig(int channel)
+FanStruct *fan_getConfig(int channel)
 {
-    if (channel >= SIZE_PWM_CONFIG){
-        return NULL;
+    for(int32_t i = 0; i < SIZE_PWM_CONFIG; i++)
+    {
+        FanStruct *pFan = &g_Fan[i];
+        if (pFan->fanIdx == channel){
+            return pFan;
+        }
     }
-    return &g_FanConfig[channel];
+    return NULL;
 }
 void fan_init(void)
 {
-	int i = 0;
-	
-    capture_init();
-    pwm_init();
+    //capture_init();
 
-    for(i = 0; i < SIZE_PWM_CONFIG; i++)
+    for(int32_t i = 0; i < SIZE_PWM_CONFIG; i++)
     {
-        FanConfig *pFanconfig = fan_getConfig(i);
-        pFanconfig->fannum = i;
-        pFanconfig->config = &g_pwmChannleConfig[i];
-        pFanconfig->rpmSet = 0;
-        pFanconfig->rpmCalculate = 0;
+        FanStruct *pFan = &g_Fan[i];
+        pFan->fanIdx = i;
+        pFan->config = &g_pwmChannleConfig[i];
+        pFan->rpmSet = 0;
+        pFan->rpmCalculate = 0;
 
-        pidInit(&pFanconfig->PID, 0, PID_UPDATE_DT);
-        fan_set_duty_percent(i, 100);
+        pwm_timer_gpio_config(pFan->config);
+        pwm_timer_config(pFan->config);
+        pidInit(&pFan->PID, 0, PID_UPDATE_DT);
+        fan_set_duty_percent(i, 30);
     }
 
     xTimersFanWatchdog = xTimerCreate("Timer", 1000/portTICK_RATE_MS, pdTRUE, (void*)1, vTimerFanWatchdogCallback); 
     xTimerStart(xTimersFanWatchdog, portMAX_DELAY);	
-
-    for(i=0; i<sizeof(g_timer_cap_info)/sizeof(g_timer_cap_info[0]); i++)
-    {
-        fan_set_duty_percent(i, 100);
-        vTaskDelay(10);
-    }
 }
 
 void fan_ctrl_loop(void)
@@ -95,7 +93,7 @@ void fan_ctrl_loop(void)
     int i;
 
     for(uint32_t i = 0; i < SIZE_PWM_CONFIG; i++) {
-        FanConfig *pFan = fan_getConfig(i);
+        FanStruct *pFan = fan_getConfig(i);
         if(pFan == NULL)
         {
             continue;
@@ -153,7 +151,7 @@ bool fan_get_rotate_rpm(unsigned char channel, uint16_t *fan_rpm)
 
 void fan_set_rotate_rpm(int channel, uint32_t rpm)
 {
-    FanConfig *pFan = fan_getConfig(channel);
+    FanStruct *pFan = fan_getConfig(channel);
     if(pFan == NULL)
     {
         return;
@@ -164,7 +162,7 @@ void fan_set_rotate_rpm(int channel, uint32_t rpm)
 /* convert to rpm */
 void fan_set_duty(int channel, unsigned char duty)
 {
-    FanConfig *pFan = fan_getConfig(channel);
+    FanStruct *pFan = fan_getConfig(channel);
     if(pFan == NULL)
     {
         return;
@@ -179,12 +177,12 @@ void fan_set_duty_percent(int channel, unsigned char duty)
 
     duty_value = duty * FAN_PWM_MAX_DUTY_VALUE/100;
   
-    FanConfig *pFanconfig = fan_getConfig(channel);
-    if(pFanconfig == NULL)
+    FanStruct *pFan = fan_getConfig(channel);
+    if(pFan == NULL)
     {
         return;
     }
-    timer_channel_output_pulse_value_config(pFanconfig->config->timerPeriph, pFanconfig->config->timerCh, duty_value);
+    timer_channel_output_pulse_value_config(pFan->config->timerPeriph, pFan->config->timerCh, duty_value);
 }
 
 static void vTimerFanWatchdogCallback(xTimerHandle pxTimer)

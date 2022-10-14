@@ -370,7 +370,7 @@ int sensor(int argc, char *argv[])
 	const ADCChannlesConfig *chanCfg = NULL;
     uint16_t adcVal;
     for (int i = 0; i < sensorNum; i++)
-    {                          
+    {
 		if (adc_getValByIndex(i, &chanCfg, &adcVal) == false){
 			LOG_I("sensor :idx = %d error \r\n", i);
 			continue;

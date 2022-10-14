@@ -30,7 +30,7 @@
 //#include "PDKAccess.h"
 //#include "SharedMem.h"
 #include "IPMI_Storage.h"
-#include "adc/api_adc.h"
+#include "sensor/api_sensor.h"
 #include "libipmi.h"
 //#include "PDKCmdsAccess.h"
 //#include "featuredef.h"
@@ -192,60 +192,59 @@ FullSensorRec_T g_sensor_sdr[] =
         0xC0 + sizeof "10GNet_Tmp",
         "10GNet_Tmp"
     },
-       
-   {        /* SDR Record header */
-        0x0003, //Recoder ID
+
+    #endif 
+           
+   {        /* SDR Record header SYS0_FAN */
+        0x0004, //Recoder ID
         0x51,   //SDR Version
         0x01,   //Record Type
         64,     //Record Length = full sensor: 64
-
-        /* Record Key Bytes */
-        0x20, //Sensor Owner ID   
-        0x00, //Sensor Owner LUN
-        0x03, //Sensor number  
-
-        /* Record Body Bytes */
-        0x07,           //Entity ID
-        0x03,           //Entity Instance
-        0x7F,           //Sensor Initialization
-        0x68,           //Sensor Capabilities
-        0x02,           //Sensor Type
-        0x01,           //Event/Read Type
-        0x7A95,         //Lower Threshold Reading Mask
-        0x7A95,         //Upper Threshold Reading Mask
-        0x3F3F,         //Settable/Readable Threshold Mask
-        0x20,           //0x00,                 //Sensor Units 1
-        IPMI_UNIT_DEGREES_C,  //Sensor Units 2 -Base Unit
-        0x00,           //Sensor Units 3 -Modifier Unit
-        0x00,           //Linearization
-        16,             //0x14,            //M
-        0x00,           //M,Tolerance
-        0x00 & 0xff,    //B
-        0x3E & 0xFF,    //B,Accuracy
-        0x34,           //Accuracy,Accuracy exponent
-        (14 << 4) + 13, //R exponent,B exponent
-        0x00,           //Analog Characteristics Flags
-        0x00,           //Nominal Reading
-        0x00,           //Normal Maximum
-        0x00,           //Normal Minimum
-        0xFF,           //Sensor Maximum Reading
-        0x00,           //Sensor Minimum Reading
-        0xA3,           //Upper Non-Recoverable Threshold
-        0x95,           //Upper Critical Threshold
-        0x87,           //Upper Non-Critical Threshold
-        0x00,           //Lower Non-Recoverable Threshold
-        0x00,           //Lower Critical Threshold
-        0x00,           //Lower Non-Critical Threshold
-        0x00,           //Positive-threshold Hysteresis calue
-        0x00,           //Negative-threshold Hysteresis calue
-        0x00,           //Reserved
-        0x00,           //Reserved
-        0x00,           //OEM
-        0xC0 + sizeof "1GNet_Tmp",
-        "1GNet_Tmp"
+        /* Record Key Bytes*/
+        0x20,                   /* Sensor Owner ID                  */
+        0x0,                      /* Sensor Owner LUN                 */
+        FAN_CHANNEL_1,               /* Sensor Number                    */
+        /* Record Body Bytes*/
+        0x1d,                   /* Entity ID                        */
+        0x1,                 /* Entity Instance                  */
+        0x7f,                 /* Sensor Initialization            */
+        0x68,                 /* Sensor Capabilities              */
+        0x04,                        /* Sensor Type                      */
+        0x01,                        /* Event / Reading Type             */
+        0x285,               /* Lower Threshold Reading Mask     */
+        0x285,               /* Upper Threshold Reading Mask     */
+        0x3f3f,               /* Settable/Readable Threshold Mask */
+        (0x0   << 6) + (0x0 << 3) + (0x0 << 1) + 0x0,/* Sensor Units 1  */
+        IPMI_UNIT_RPM,        /* Sensor Units 2 - Base Unit       */
+        0,                   /* Sensor Units 3 - Modifier Unit   */
+        0x0,                   /* Linearization                    */
+        0x50 & 0xFF,         /* M                                */ 
+        ((0x50 >> 2) & 0xC0) + (0x0 & 0x3F),   /* M, Tolerance        */
+        0x0 & 0xFF,         /* B                                */
+        ((0x0 >> 2) & 0xC0) + (0x0  & 0x3F),   /* B, Accuracy  */
+        ((0x0 >> 2) & 0xF0) + (0x0 & 0x0C) + 0x0,    /* Accuracy, Accuracy exponent      */
+        (0x0 << 4) + (0x0 & 0x0F),          /*R exponent, B exponent           */
+        0x0,                      /* Analog Characteristics Flags     */
+        0x97,          /* Nominal Reading                  */
+        0xff,              /* Normal Maximum                   */
+        0x0 ,             /* Normal Minimum                   */
+        0xff ,                 /* Sensor Maximum Reading           */
+        0x0 ,                 /* Sensor Minimum Reading           */
+        0xff ,   /* Upper Non-Recoverable Threshold  */
+        0xc8,           /* Upper Critical Threshold         */
+        0x7d ,      /* Upper Non-Critical Threshold     */
+        0x0 ,   /* Lower Non-Recoverable Threshold  */
+        0x0,           /* Lower Critical Threshold         */
+        0x0,       /* Lower Non-Critical Threshold     */
+        0x0,     /* Positive - threshold Hysteresis value*/
+        0x0,     /* Negative - threshold Hysteresis value*/
+        0x0 ,                        /* Reserved                         */
+        0x0,                         /* Reserved                         */
+        0x0,                      /* OEM                              */
+        0xc0 + sizeof "SYS0_FAN",   /* ID String Type / Length Code     */
+        "SYS0_FAN" 
     },
-    #endif 
-    
+   
     {        /* SDR Record header */
         0x0001, //Recoder ID
         0x51,   //SDR Version
@@ -402,7 +401,8 @@ FullSensorRec_T g_sensor_sdr[] =
         0xC0 + sizeof "P12V",
         "P12V"
     },
-    #if 0
+    
+     #if 0
     {        /* SDR Record header */
         0x0007, //Recoder ID
         0x51,   //SDR Version
@@ -1327,7 +1327,7 @@ ReadSensorRecByID(INT8U id, int BMCInst)
  * ReadSensorRecByID
  *-------------------------------------------------*/
 FullSensorRec_T *
-ReadSensorRecByName(INT8U sensorName, int BMCInst)
+ReadSensorRecBySensorNum(INT8U sensorName, int BMCInst)
 {
     FullSensorRec_T *pSdr;
     for(int i=0; i < GetSDRRepositoryNum(); i++)

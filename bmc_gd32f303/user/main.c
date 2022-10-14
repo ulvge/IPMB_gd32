@@ -70,7 +70,8 @@ TaskHandle_t ComTask_Handler;
 void com_task(void *pvParameters);
 void misc_task(void *pvParameters);
 
-static void watch_dog_init(void);
+static void watch_dog_init(void);  
+static void debug_config(void);
 
 __IO uint32_t g_localtime = 0; /* for creating a time reference incremented by 10ms */
 __IO uint64_t g_utc_time_bmc_firmware_build = 0;
@@ -119,6 +120,7 @@ int main(void)
     xTaskCreate(start_task, "start", configMINIMAL_STACK_SIZE * 2, NULL, 1, NULL);
     xTaskCreate(misc_task, "led", configMINIMAL_STACK_SIZE, NULL, 26, NULL);
     watch_dog_init();
+	debug_config();
     vTaskStartScheduler();      //prvIdleTask
     while (1)
     {
@@ -250,6 +252,13 @@ __attribute__((unused)) static void watch_dog_init()
     fwdgt_config(2 * 500, FWDGT_PSC_DIV64);
     /* after 1.6 seconds to generate a reset */
     fwdgt_enable();
+}
+static void debug_config(void)
+{
     /* disable wdg when the mcu is in debug mode */
-    dbg_periph_enable(DBG_FWDGT_HOLD);
+    dbg_periph_enable(DBG_FWDGT_HOLD);   
+	
+    dbg_periph_enable(DBG_TIMER2_HOLD);
+	
+    dbg_periph_enable(DBG_TIMER3_HOLD);
 }

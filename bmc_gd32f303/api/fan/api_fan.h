@@ -13,7 +13,6 @@
 #include "bsp_capture.h"
 #include "pid/pid.h"
 
-
 void fan_init(void);
 bool fan_get_rotate_rpm(unsigned char channel, uint16_t *fan_rpm);
 void fan_set_rotate_rpm(int channel, uint32_t rpm);
