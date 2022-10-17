@@ -5,11 +5,10 @@
 void pwm_timer_gpio_config(const PwmChannleConfig *config)
 {
     rcu_periph_clock_enable(config->gpioRcu);
-    rcu_periph_clock_enable(RCU_AF);
-
 	gpio_init(config->gpioPort, GPIO_MODE_AF_PP, GPIO_OSPEED_50MHZ, config->pin);
-	
+
     if (config->remap != NULL) {
+        rcu_periph_clock_enable(RCU_AF);
 	    gpio_pin_remap_config(config->remap, ENABLE);
     }
 }
@@ -27,7 +26,7 @@ void pwm_timer_config(const PwmChannleConfig *config)
     timer_initpara.prescaler         = 0; // 120MHz
     timer_initpara.alignedmode       = TIMER_COUNTER_EDGE;
     timer_initpara.counterdirection  = TIMER_COUNTER_UP;
-    timer_initpara.period            = FAN_PWM_MAX_DUTY_VALUE; // 40ms = 25Khz
+    timer_initpara.period            = FAN_PWM_MAX_DUTY_VALUE;
     timer_initpara.clockdivision     = TIMER_CKDIV_DIV1;
     timer_initpara.repetitioncounter = 0;
     timer_init(config->timerPeriph, &timer_initpara);

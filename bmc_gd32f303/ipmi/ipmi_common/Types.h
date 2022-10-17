@@ -88,6 +88,9 @@ typedef bool   BOOL ;
 #define u16 INT16U
 #define u32 INT32U
 
+#define _1M 10000000U
+
+
 //#define PACKED __attribute__ ((packed))
 #define PACKED
 

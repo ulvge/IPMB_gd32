@@ -9,7 +9,6 @@
  
 #define TIMER_NUM 2
 
-
 uint32_t g_time_run= 0;
 static void timer_config(uint32_t timerx, rcu_periph_enum rcu_timer);
 static void nvic_config(uint32_t irqN);
@@ -19,7 +18,7 @@ void timer_config_init(void)
 	timer_config(CONSTR(TIMER, TIMER_NUM), CONSTR(RCU_TIMER, TIMER_NUM));
 	nvic_config(CONSTRABC(TIMER, TIMER_NUM, _IRQn));//  TIMER4_IRQn
 }
-						 
+
 
 /**
     \brief      configure the TIMER peripheral interrupt: 1/1s

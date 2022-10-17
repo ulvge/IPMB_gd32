@@ -1,22 +1,9 @@
 /*
  ****************************************************************
  **                                                            **
- **    (C)Copyright 2020-2020,Inc.        **
- **                                                            **
- **            All Rights Reserved.                            **
- **                                                            **
- **                   **
- **                                                            **
- **               **
+ **    api_fan.c
  **                                                            **
  ****************************************************************
- */
-
-/******************************************************************
-*
-*
-*
-*
 ******************************************************************/
 
 #include "fan/api_fan.h"
@@ -47,13 +34,11 @@ static const PwmChannleConfig g_pwmChannleConfig[] = {
 #define SIZE_PWM_CONFIG     sizeof(g_pwmChannleConfig)/sizeof(g_pwmChannleConfig[0])
 FanStruct g_Fan[SIZE_PWM_CONFIG];
 
-extern CapPreiodCapInfo_T g_timer_cap_info[4];
-
 static TimerHandle_t xTimersFanWatchdog = NULL;
 
 static void 	 vTimerFanWatchdogCallback      (xTimerHandle pxTimer);
 
-FanStruct *fan_getConfig(int channel)
+static FanStruct *fan_getHandler(int channel)
 {
     for(int32_t i = 0; i < SIZE_PWM_CONFIG; i++)
     {
@@ -66,7 +51,7 @@ FanStruct *fan_getConfig(int channel)
 }
 void fan_init(void)
 {
-    //capture_init();
+    capture_init();
 
     for(int32_t i = 0; i < SIZE_PWM_CONFIG; i++)
     {
@@ -93,7 +78,7 @@ void fan_ctrl_loop(void)
     int i;
 
     for(uint32_t i = 0; i < SIZE_PWM_CONFIG; i++) {
-        FanStruct *pFan = fan_getConfig(i);
+        FanStruct *pFan = fan_getHandler(i);
         if(pFan == NULL)
         {
             continue;
@@ -133,7 +118,7 @@ bool fan_get_rotate_rpm(unsigned char channel, uint16_t *fan_rpm)
 {
     uint32_t cap_value;
 	
-    if(g_timer_cap_info[channel].is_valid == false)
+    if(capture_getIsValid(channel) == false)
     {
         *fan_rpm = 0;
         return false;
@@ -149,62 +134,74 @@ bool fan_get_rotate_rpm(unsigned char channel, uint16_t *fan_rpm)
     return true;
 }
 
-void fan_set_rotate_rpm(int channel, uint32_t rpm)
+bool fan_set_rotate_rpm(int channel, uint32_t rpm)
 {
-    FanStruct *pFan = fan_getConfig(channel);
+    FanStruct *pFan = fan_getHandler(channel);
     if(pFan == NULL)
     {
-        return;
+        return false;
+    }
+    if (rpm > pFan->config->maxRotateRpm)
+    {
+        return false;
     }
     pFan->rpmSet = rpm;
+    return true;
 }
 
 /* convert to rpm */
-void fan_set_duty(int channel, unsigned char duty)
+bool fan_set_duty(int channel, unsigned char duty)
 {
-    FanStruct *pFan = fan_getConfig(channel);
+    FanStruct *pFan = fan_getHandler(channel);
     if(pFan == NULL)
     {
-        return;
+        return false;
     }
     pFan->rpmSet = duty * (pFan->config->maxRotateRpm) /100;
+    return true;
 }
 
 /* pwm raw duty percent */
-void fan_set_duty_percent(int channel, unsigned char duty)
+bool fan_set_duty_percent(int channel, unsigned char duty)
 {
     uint32_t duty_value = 0;
 
     duty_value = duty * FAN_PWM_MAX_DUTY_VALUE/100;
   
-    FanStruct *pFan = fan_getConfig(channel);
+    FanStruct *pFan = fan_getHandler(channel);
     if(pFan == NULL)
     {
-        return;
+        return false;
     }
     timer_channel_output_pulse_value_config(pFan->config->timerPeriph, pFan->config->timerCh, duty_value);
+    return true;
 }
 
 static void vTimerFanWatchdogCallback(xTimerHandle pxTimer)
 {
-    int i;
     uint32_t ulTimerID;	
 	ulTimerID = (uint32_t) pvTimerGetTimerID( pxTimer );         
 	
 	switch ( ulTimerID )
 	{
     case 1: // software timer1
-        for(i=0; i<sizeof(g_timer_cap_info)/sizeof(CapPreiodCapInfo_T); i++)
+        for(uint32_t i = 0; i < capture_getTotalNum(); i++)
         {
-            g_timer_cap_info[i].cap_no_update_cnt++;  
-            if(g_timer_cap_info[i].cap_no_update_cnt >= 2) // 2s  fan cap err
+            CaptureStruct *pCap = capture_getHandler(i);
+            
+            if (pCap == NULL)
             {
-                g_timer_cap_info[i].is_valid = false;
-            }  
-        }                                   
+                continue;
+            }
+
+            if(pCap->cap_no_update_cnt++ > 2) // 2s  fan cap err
+            {
+                pCap->is_valid = false;
+            }
+        }
         break;
     default:
-      break;			
+      break;
 	}	
     
 }

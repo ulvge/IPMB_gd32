@@ -115,7 +115,7 @@ int main(void)
     g_utc_time_bmc_firmware_build = currentSecsSinceEpoch(__DATE__, __TIME__);
     g_bmc_firmware_version = GetBmcFirmwareVersion(BMC_VERSION);
 
-    timer_config_init();
+    //timer_config_init();
     led_init();
     xTaskCreate(start_task, "start", configMINIMAL_STACK_SIZE * 2, NULL, 1, NULL);
     xTaskCreate(misc_task, "led", configMINIMAL_STACK_SIZE, NULL, 26, NULL);
