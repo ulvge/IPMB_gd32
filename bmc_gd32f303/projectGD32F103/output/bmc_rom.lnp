@@ -2,6 +2,7 @@
 ".\output\main.o"
 ".\output\systick.o"
 ".\output\gd32f10x_it.o"
+".\output\gd32f10x_platform.o"
 ".\output\api_adc.o"
 ".\output\pid.o"
 ".\output\api_tmp.o"

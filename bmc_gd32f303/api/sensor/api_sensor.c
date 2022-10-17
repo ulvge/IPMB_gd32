@@ -1,3 +1,9 @@
+/*!
+    \file    api_sensor.c
+    \brief   api sensor
+
+    \version 
+*/
 
 #include "libipmi.h"
 #include "OSPort.h"

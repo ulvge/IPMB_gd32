@@ -381,9 +381,6 @@
       </TargetOption>
       <Groups>
         <Group>
-          <GroupName>platform</GroupName>
-        </Group>
-        <Group>
           <GroupName>app</GroupName>
           <Files>
             <File>
@@ -400,6 +397,11 @@
               <FileName>gd32f10x_it.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\firmware\GD32F10x\GD32F10x_standard_peripheral\Source\gd32f10x_it.c</FilePath>
+            </File>
+            <File>
+              <FileName>gd32f10x_platform.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\firmware\GD32F10x\gd32f10x_platform.c</FilePath>
             </File>
           </Files>
         </Group>

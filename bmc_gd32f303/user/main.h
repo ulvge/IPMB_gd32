@@ -114,9 +114,6 @@ extern unsigned char  GW_ADDR1;
 extern unsigned char  GW_ADDR2;
 extern unsigned char  GW_ADDR3; 
 
-#define MSG_I2C_BIT   0x00000001
-#define MSG_UART_BIT  0x00000010
-
 typedef enum 
 { 
     MSG_SRC_I2C = 0,
@@ -126,6 +123,7 @@ typedef enum
 /* function declarations */
 /* updates the system local time */
 void time_update(void);
+void Delay_NoSchedue(uint32_t clk);
 
 #ifdef __cplusplus
 }

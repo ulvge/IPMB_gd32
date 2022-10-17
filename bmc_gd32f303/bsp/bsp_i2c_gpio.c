@@ -13,6 +13,7 @@
 
 
 #include "bsp_i2c_gpio.h"
+#include "main.h"
 
 
 /*
@@ -47,9 +48,7 @@ static void      i2c2_NAck           (void);
 */
 static void i2c_Delay(void)
 {
-	uint8_t i;
-
-	for (i = 0; i < 15; i++);
+    Delay_NoSchedue(15);
 }
 
 /*

@@ -31,6 +31,7 @@ static const UART_CONFIG_STRUCT g_uart0Config= {
 
     .rcuUart = COM1_CLK,
     .rcuGPIO = COM1_GPIO_CLK,
+    .remap = GPIO_USART1_REMAP,
 };
 static UART_PARA_STRUCT g_UARTPara = {
     .usart_periph = COM1,  

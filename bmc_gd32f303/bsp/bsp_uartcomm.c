@@ -155,12 +155,9 @@ void COM_init(UART_PARA_STRUCT *uartPara)
     /* connect port to USARTx_Rx */
     gpio_init(uartPara->config->rxPort, uartPara->config->rxPinMode, uartPara->config->rxPinSpeed, uartPara->config->rxPin);
 
-#ifdef UART0_REMAP
-    gpio_pin_remap_config(GPIO_USART0_REMAP, ENABLE);
-#endif
-#ifdef UART1_REMAP
-    gpio_pin_remap_config(GPIO_USART1_REMAP, ENABLE);
-#endif
+    if (uartPara->config->remap != NULL) {
+        gpio_pin_remap_config(uartPara->config->remap, ENABLE);
+    }
     /* USART configure */
     usart_deinit(uartPara->usart_periph);
     usart_baudrate_set(uartPara->usart_periph, uartPara->config->baud);

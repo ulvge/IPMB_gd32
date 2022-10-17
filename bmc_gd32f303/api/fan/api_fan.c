@@ -41,7 +41,7 @@ typedef struct
 } FanStruct;
 
 static const PwmChannleConfig g_pwmChannleConfig[] = {
-    {FAN_CHANNEL_1, 6800, RCU_TIMER2, TIMER2,   TIMER_CH_0,  RCU_GPIOC, GPIOC, GPIO_PIN_6, GPIO_TIMER1_FULL_REMAP},
+    {FAN_CHANNEL_1, 6800, RCU_TIMER2, TIMER2,   TIMER_CH_0,  RCU_GPIOC, GPIOC, GPIO_PIN_6, GPIO_TIMER2_FULL_REMAP},
     {FAN_CHANNEL_2, 6800, RCU_TIMER3, TIMER3,   TIMER_CH_2,  RCU_GPIOD, GPIOD, GPIO_PIN_14, GPIO_TIMER3_REMAP},
 };
 #define SIZE_PWM_CONFIG     sizeof(g_pwmChannleConfig)/sizeof(g_pwmChannleConfig[0])

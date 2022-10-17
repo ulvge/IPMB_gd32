@@ -262,3 +262,10 @@ static void debug_config(void)
 	
     dbg_periph_enable(DBG_TIMER3_HOLD);
 }
+
+void Delay_NoSchedue(uint32_t clk)
+{
+	for (uint32_t i = 0; i < clk; i++) {
+        ;
+    }
+}

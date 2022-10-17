@@ -24,6 +24,7 @@ typedef struct {
     uint8_t     rxPinSpeed;
     rcu_periph_enum    rcuUart;
     rcu_periph_enum    rcuGPIO;
+    uint32_t    remap;
 }UART_CONFIG_STRUCT;
 
 typedef struct {

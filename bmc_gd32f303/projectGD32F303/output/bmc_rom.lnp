@@ -13,6 +13,7 @@
 ".\output\hwd1668.o"
 ".\output\fifo.o"
 ".\output\filo.o"
+".\output\api_sensor.o"
 ".\output\ipmi_common.o"
 ".\output\ipmbmsghndlr.o"
 ".\output\serialifc.o"

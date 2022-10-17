@@ -401,7 +401,7 @@
             <File>
               <FileName>gd32f30x_platform.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\firmware\GD32F30x\GD32F30x_standard_peripheral\Source\gd32f30x_platform.c</FilePath>
+              <FilePath>..\firmware\GD32F30x\gd32f30x_platform.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -457,6 +457,11 @@
               <FileName>FILO.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\api\tools\FILO.c</FilePath>
+            </File>
+            <File>
+              <FileName>api_sensor.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\api\sensor\api_sensor.c</FilePath>
             </File>
           </Files>
         </Group>
