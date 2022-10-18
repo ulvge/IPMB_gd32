@@ -6,13 +6,14 @@
 #include "api_sensor.h"
 
 
-#define FAN_PWM_FREQUENCY           (20 * 1000)
-#define FAN_PWM_MAX_DUTY_VALUE       (SystemCoreClock / FAN_PWM_FREQUENCY) // 4800
+#define FAN_PWM_FREQUENCY           (25 * 1000)  //25k
+#define FAN_PWM_MAX_DUTY_VALUE       (SystemCoreClock / FAN_PWM_FREQUENCY) // 3800
 
 typedef struct
 {
     SENSOR_ENUM fanSensorNum;
-    uint16_t maxRotateRpm;
+    uint16_t    maxRotateRpm;
+    uint8_t     polesNum;
     rcu_periph_enum      	timerRcu;
     uint32_t timerPeriph;   //TIMER1
     uint8_t timerCh;        //TIMER_CH_1

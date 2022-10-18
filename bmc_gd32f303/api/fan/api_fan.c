@@ -28,8 +28,8 @@ typedef struct
 } FanStruct;
 
 static const PwmChannleConfig g_pwmChannleConfig[] = {
-    {FAN_CHANNEL_1, 6800, RCU_TIMER2, TIMER2,   TIMER_CH_0,  RCU_GPIOC, GPIOC, GPIO_PIN_6, GPIO_TIMER2_FULL_REMAP},
-    {FAN_CHANNEL_2, 6800, RCU_TIMER3, TIMER3,   TIMER_CH_2,  RCU_GPIOD, GPIOD, GPIO_PIN_14, GPIO_TIMER3_REMAP},
+    {FAN_CHANNEL_1, 30000, 2, RCU_TIMER2, TIMER2,   TIMER_CH_0,  RCU_GPIOC, GPIOC, GPIO_PIN_6, GPIO_TIMER2_FULL_REMAP},
+    {FAN_CHANNEL_2, 30000, 2, RCU_TIMER3, TIMER3,   TIMER_CH_2,  RCU_GPIOD, GPIOD, GPIO_PIN_14, GPIO_TIMER3_REMAP},
 };
 #define SIZE_PWM_CONFIG     sizeof(g_pwmChannleConfig)/sizeof(g_pwmChannleConfig[0])
 FanStruct g_Fan[SIZE_PWM_CONFIG];
@@ -38,12 +38,12 @@ static TimerHandle_t xTimersFanWatchdog = NULL;
 
 static void 	 vTimerFanWatchdogCallback      (xTimerHandle pxTimer);
 
-static FanStruct *fan_getHandler(int channel)
+static FanStruct *fan_getHandler(int sensorNum)
 {
     for(int32_t i = 0; i < SIZE_PWM_CONFIG; i++)
     {
         FanStruct *pFan = &g_Fan[i];
-        if (pFan->fanIdx == channel){
+        if (pFan->config->fanSensorNum == sensorNum){
             return pFan;
         }
     }
@@ -64,7 +64,7 @@ void fan_init(void)
         pwm_timer_gpio_config(pFan->config);
         pwm_timer_config(pFan->config);
         pidInit(&pFan->PID, 0, PID_UPDATE_DT);
-        fan_set_duty_percent(i, 30);
+        fan_set_duty_percent(pFan->config->fanSensorNum, 30);
     }
 
     xTimersFanWatchdog = xTimerCreate("Timer", 1000/portTICK_RATE_MS, pdTRUE, (void*)1, vTimerFanWatchdogCallback); 
@@ -78,12 +78,8 @@ void fan_ctrl_loop(void)
     int i;
 
     for(uint32_t i = 0; i < SIZE_PWM_CONFIG; i++) {
-        FanStruct *pFan = fan_getHandler(i);
-        if(pFan == NULL)
-        {
-            continue;
-        }
-        if(fan_get_rotate_rpm(i, &curent_rpm) == false){
+        FanStruct *pFan = &g_Fan[i];
+        if(fan_get_rotate_rpm(pFan->config->fanSensorNum, &curent_rpm) == false){
             continue;
         }
         pid_out = pidUpdate(&pFan->PID, pFan->rpmSet - curent_rpm);
@@ -91,52 +87,35 @@ void fan_ctrl_loop(void)
         fan_set_rotate_rpm(i, pid_out);
     }
 }
-
-void fan_ctrl_loop_task(void)
+bool fan_get_rotate_rpm(unsigned char sensorNum, uint16_t *fan_rpm)
 {
-    uint16_t curent_rpm = 0;
-    int32_t pid_out = 0;
-    int i;
-
-	UNUSED(curent_rpm);
-	UNUSED(pid_out);
-    while(1)
-    {
-        // for(i=0; i<sizeof(g_fan_rpm_set)/sizeof(uint32_t); i++)
-        // {
-        //     fan_get_rotate_rpm(i, &curent_rpm);
-        //     pid_out = pidUpdate(&g_fan_pid[i], g_fan_rpm_set[i] - curent_rpm);
-        //     g_fan_rpm_calculate[i] = pidOutLimit(g_fan_rpm_calculate[i]+pid_out, 0, FAN_PWM_MAX_DUTY_VALUE);
-        //     fan_set_rotate_rpm(i, pid_out);
-        // }
-        vTaskDelay(1000);
-
-        // vTaskDelay(PID_UPDATE_DT);
-    }
-}
-bool fan_get_rotate_rpm(unsigned char channel, uint16_t *fan_rpm)
-{
-    uint32_t cap_value;
+    uint32_t capCount;
+	uint16_t rpm;
 	
-    if(capture_getIsValid(channel) == false)
+    if(capture_getIsValid(sensorNum) == false)
     {
         *fan_rpm = 0;
         return false;
     }
-
-    capture_get_value(channel, &cap_value);
-    *fan_rpm = (uint32_t)1000000 * 30 / cap_value;
-    if (*fan_rpm > 10000 || *fan_rpm < 100)
+    FanStruct *pFan = fan_getHandler(sensorNum);
+    if(pFan == NULL)
     {
         return false;
     }
-
+    capture_get_value(sensorNum, &capCount);
+	//n =  f * 60/ p
+    rpm = ((uint32_t)CAPTURE_TIMER_FREQUENCY / capCount) * CAPTURE_1MIN_XSEC / pFan->config->polesNum;
+    if (rpm > pFan->config->maxRotateRpm || rpm < 100)
+    {
+        return false;
+    }
+	*fan_rpm = rpm;
     return true;
 }
 
-bool fan_set_rotate_rpm(int channel, uint32_t rpm)
+bool fan_set_rotate_rpm(int sensorNum, uint32_t rpm)
 {
-    FanStruct *pFan = fan_getHandler(channel);
+    FanStruct *pFan = fan_getHandler(sensorNum);
     if(pFan == NULL)
     {
         return false;
@@ -150,9 +129,9 @@ bool fan_set_rotate_rpm(int channel, uint32_t rpm)
 }
 
 /* convert to rpm */
-bool fan_set_duty(int channel, unsigned char duty)
+bool fan_set_duty(int sensorNum, unsigned char duty)
 {
-    FanStruct *pFan = fan_getHandler(channel);
+    FanStruct *pFan = fan_getHandler(sensorNum);
     if(pFan == NULL)
     {
         return false;
@@ -162,13 +141,13 @@ bool fan_set_duty(int channel, unsigned char duty)
 }
 
 /* pwm raw duty percent */
-bool fan_set_duty_percent(int channel, unsigned char duty)
+bool fan_set_duty_percent(int sensorNum, unsigned char duty)
 {
     uint32_t duty_value = 0;
 
     duty_value = duty * FAN_PWM_MAX_DUTY_VALUE/100;
   
-    FanStruct *pFan = fan_getHandler(channel);
+    FanStruct *pFan = fan_getHandler(sensorNum);
     if(pFan == NULL)
     {
         return false;

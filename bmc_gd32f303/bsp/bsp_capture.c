@@ -14,14 +14,13 @@ static const CaptureConfig g_captureConfig[] = {
     {FAN_CHANNEL_1, RCU_TIMER0, TIMER0,   TIMER_CH_1,  TIMER_INT_CH1, RCU_GPIOE, GPIOE, GPIO_PIN_11, GPIO_TIMER0_FULL_REMAP},
     {FAN_CHANNEL_2, RCU_TIMER0, TIMER0,   TIMER_CH_2,  TIMER_INT_CH2, RCU_GPIOE, GPIOE, GPIO_PIN_13, GPIO_TIMER0_FULL_REMAP},
 };
-
-#define SIZE_CAPTURE_CONFIG     sizeof(g_captureConfig)/sizeof(g_captureConfig[0])
-CaptureStruct g_Cap[SIZE_CAPTURE_CONFIG];
+#define CAPTURE_CONFIG_SIZE     sizeof(g_captureConfig)/sizeof(g_captureConfig[0])
+CaptureStruct g_Cap[CAPTURE_CONFIG_SIZE];
 
 static void capture_gpio_config(const CaptureConfig *config)
 {
     rcu_periph_clock_enable(config->gpioRcu);
-	gpio_init(config->gpioPort, GPIO_MODE_AF_PP, GPIO_OSPEED_50MHZ, config->pin);
+	gpio_init(config->gpioPort, GPIO_MODE_IPD, GPIO_OSPEED_50MHZ, config->pin);
 
     if (config->remap != NULL) {
         rcu_periph_clock_enable(RCU_AF);
@@ -50,10 +49,10 @@ static void capture_timer_config(const CaptureConfig *config)
     //timer_deinit(config->timerPeriph);
 
     /* TIMERx configuration */
-    timer_initpara.prescaler         = (SystemCoreClock / _1M) - 1;  //
+    timer_initpara.prescaler         = (SystemCoreClock / CAPTURE_TIMER_FREQUENCY) - 1;  //
     timer_initpara.alignedmode       = TIMER_COUNTER_EDGE;
     timer_initpara.counterdirection  = TIMER_COUNTER_UP;
-    timer_initpara.period            = UINT16_MAX;
+    timer_initpara.period            = CAPTURE_TIMER_PERIOD; // 
     timer_initpara.clockdivision     = TIMER_CKDIV_DIV1;
     timer_initpara.repetitioncounter = 0;
     timer_init(config->timerPeriph, &timer_initpara);
@@ -72,7 +71,7 @@ static void capture_timer_config(const CaptureConfig *config)
     /* clear channel 0-3 interrupt bit */
 	//timer_interrupt_flag_clear(config->timerPeriph, config->timerIntCh | TIMER_INT_CH3);
 	/* channel 0-3 interrupt enable */
-    timer_interrupt_enable(config->timerPeriph, config->timerIntCh);
+    timer_interrupt_enable(config->timerPeriph, TIMER_INT_UP | config->timerIntCh);
 
     /* TIMER0 counter enable */
     timer_enable(config->timerPeriph);
@@ -89,13 +88,13 @@ static void capture_nvic_configuration(uint32_t periph, uint8_t nvic_irq_pre_pri
     switch (periph)
     {
     case TIMER0:
-        nvic_irq_enable(TIMER0_Channel_IRQn, nvic_irq_pre_priority, nvic_irq_pre_priority);
-        nvic_irq_enable(TIMER0_UP_IRQn, nvic_irq_pre_priority, nvic_irq_pre_priority);
+        nvic_irq_enable(TIMER0_Channel_IRQn, nvic_irq_pre_priority, nvic_irq_sub_priority);
+        nvic_irq_enable(TIMER0_UP_IRQn, nvic_irq_pre_priority, nvic_irq_sub_priority);
         break;  
     case TIMER1:   
-        nvic_irq_enable(TIMER1_IRQn, nvic_irq_pre_priority, nvic_irq_pre_priority);
+        nvic_irq_enable(TIMER1_IRQn, nvic_irq_pre_priority, nvic_irq_sub_priority);
     case TIMER2:   
-        nvic_irq_enable(TIMER2_IRQn, nvic_irq_pre_priority, nvic_irq_pre_priority);
+        nvic_irq_enable(TIMER2_IRQn, nvic_irq_pre_priority, nvic_irq_sub_priority);
         break;  
     default:
         break;
@@ -104,7 +103,7 @@ static void capture_nvic_configuration(uint32_t periph, uint8_t nvic_irq_pre_pri
 
 static CaptureStruct *capture_getHandlerByName(int num)
 {
-    for(int32_t i = 0; i < SIZE_CAPTURE_CONFIG; i++)
+    for(int32_t i = 0; i < CAPTURE_CONFIG_SIZE; i++)
     {
         CaptureStruct *pCap = &g_Cap[i]; 
         if (pCap->config->fanSensorNum == num){
@@ -116,7 +115,7 @@ static CaptureStruct *capture_getHandlerByName(int num)
 
 CaptureStruct *capture_getHandler(int idx)
 {
-    for(int32_t i = 0; i < SIZE_CAPTURE_CONFIG; i++)
+    for(int32_t i = 0; i < CAPTURE_CONFIG_SIZE; i++)
     {
         CaptureStruct *pCap = &g_Cap[i]; 
         if (pCap->idx == idx){
@@ -127,11 +126,13 @@ CaptureStruct *capture_getHandler(int idx)
 }
 int32_t capture_getTotalNum(void)
 {
-    return SIZE_CAPTURE_CONFIG;
+    return CAPTURE_CONFIG_SIZE;
 }
 void capture_init(void)
-{
-    for(int32_t i = 0; i < SIZE_CAPTURE_CONFIG; i++)
+{                                                    
+    //timer_deinit(TIMER0);
+	//timer_interrupt_flag_clear(TIMER0, TIMER_INT_UP | TIMER_INT_CH0 | TIMER_INT_CH1 | TIMER_INT_CH2 | TIMER_INT_CH3);
+    for(int32_t i = 0; i < CAPTURE_CONFIG_SIZE; i++)
     {
         CaptureStruct *pCap = &g_Cap[i]; 
 
@@ -156,7 +157,7 @@ void TIMER0_UP_IRQHandler(void)
 	{
 		timer_interrupt_flag_clear(timerX, TIMER_INT_UP);
         
-        for(int32_t i = 0; i < SIZE_CAPTURE_CONFIG; i++)
+        for(int32_t i = 0; i < CAPTURE_CONFIG_SIZE; i++)
         {
             CaptureStruct *pCap = &g_Cap[i];
             if (pCap->config->timerPeriph == timerX) {
@@ -169,7 +170,7 @@ void TIMER0_UP_IRQHandler(void)
 void TIMER0_Channel_IRQHandler(void)
 {
     const static int32_t timerX = TIMER0;
-    for(int32_t i = 0; i < SIZE_CAPTURE_CONFIG; i++)
+    for(int32_t i = 0; i < CAPTURE_CONFIG_SIZE; i++)
     {
         CaptureStruct *pCap = &g_Cap[i];
 		if(SET == timer_interrupt_flag_get(timerX, pCap->config->timerIntCh)) {
@@ -184,7 +185,8 @@ void TIMER0_Channel_IRQHandler(void)
                 pCap->cap_value_second = timer_channel_capture_value_register_read(timerX, pCap->config->timerCh);
                 pCap->is_start = false;
                 pCap->cap_no_update_cnt = 0;
-                pCap->is_valid = true;
+                pCap->is_valid = true;              
+				pCap->total_value = CAPTURE_TIMER_PERIOD * pCap->period_cnt + pCap->cap_value_second - pCap->cap_value_first;
 			}
         }
     }

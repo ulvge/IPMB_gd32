@@ -6,6 +6,11 @@
 #include <stdbool.h>
 #include "api_sensor.h"
 
+#define CAPTURE_TIMER_FREQUENCY  1000000U   
+#define CAPTURE_1MIN_XSEC  	60
+#define CAPTURE_TIMER_PERIOD    UINT16_MAX //在定时器被配置为输入捕获模式时，该寄存器需要被配置成一个大于用户期望值的非 0 值(例如 0xFFFF)
+
+
 typedef struct
 {
     SENSOR_ENUM             fanSensorNum;
