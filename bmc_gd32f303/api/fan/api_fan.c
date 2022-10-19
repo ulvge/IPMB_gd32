@@ -31,8 +31,8 @@ static const PwmChannleConfig g_pwmChannleConfig[] = {
     {FAN_CHANNEL_1, 30000, 2, RCU_TIMER2, TIMER2,   TIMER_CH_0,  RCU_GPIOC, GPIOC, GPIO_PIN_6, GPIO_TIMER2_FULL_REMAP},
     {FAN_CHANNEL_2, 30000, 2, RCU_TIMER3, TIMER3,   TIMER_CH_2,  RCU_GPIOD, GPIOD, GPIO_PIN_14, GPIO_TIMER3_REMAP},
 };
-#define SIZE_PWM_CONFIG     sizeof(g_pwmChannleConfig)/sizeof(g_pwmChannleConfig[0])
-FanStruct g_Fan[SIZE_PWM_CONFIG];
+#define SIZE_FAN_CONFIG     sizeof(g_pwmChannleConfig)/sizeof(g_pwmChannleConfig[0])
+FanStruct g_Fan[SIZE_FAN_CONFIG];
 
 static TimerHandle_t xTimersFanWatchdog = NULL;
 
@@ -40,7 +40,7 @@ static void 	 vTimerFanWatchdogCallback      (xTimerHandle pxTimer);
 
 static FanStruct *fan_getHandler(int sensorNum)
 {
-    for(int32_t i = 0; i < SIZE_PWM_CONFIG; i++)
+    for(uint32_t i = 0; i < SIZE_FAN_CONFIG; i++)
     {
         FanStruct *pFan = &g_Fan[i];
         if (pFan->config->fanSensorNum == sensorNum){
@@ -49,11 +49,27 @@ static FanStruct *fan_getHandler(int sensorNum)
     }
     return NULL;
 }
+bool fan_getFanSensorNum(int idx, uint32_t *sensorNum)
+{
+    for(uint32_t i = 0; i < SIZE_FAN_CONFIG; i++)
+    {
+        FanStruct *pFan = &g_Fan[i];
+        if (pFan->fanIdx == idx){
+            *sensorNum = pFan->config->fanSensorNum;
+            return true;
+        }
+    }
+    return false;
+}
+int32_t fan_getFanNum(void)
+{
+    return SIZE_FAN_CONFIG;
+}
 void fan_init(void)
 {
     capture_init();
 
-    for(int32_t i = 0; i < SIZE_PWM_CONFIG; i++)
+    for(int32_t i = 0; i < SIZE_FAN_CONFIG; i++)
     {
         FanStruct *pFan = &g_Fan[i];
         pFan->fanIdx = i;
@@ -77,7 +93,7 @@ void fan_ctrl_loop(void)
     int32_t pid_out = 0; 
     int i;
 
-    for(uint32_t i = 0; i < SIZE_PWM_CONFIG; i++) {
+    for(uint32_t i = 0; i < SIZE_FAN_CONFIG; i++) {
         FanStruct *pFan = &g_Fan[i];
         if(fan_get_rotate_rpm(pFan->config->fanSensorNum, &curent_rpm) == false){
             continue;

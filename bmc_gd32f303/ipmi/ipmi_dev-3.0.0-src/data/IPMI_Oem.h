@@ -15,17 +15,19 @@
 #include "Types.h"
 
 /*** Application Commands ***/
-#define       CMD_SET_FAN           0x01  
-#define       CMD_UPDATE_FIRMWARE   0x02
-#define       CMD_MCU_RESET         0x03
-#define       CMD_CPU_INFO          0x10
+#define         CMD_GET_BLADE_ID    0x01
+#define         CMD_UPDATE_FIRMWARE   0x02
+#define         CMD_GET_FAN_RPM     0x03
+#define         CMD_SET_FAN_PWM     0x04
+#define       CMD_MCU_RESET         0x05
+#define       CMD_CPU_INFO          0x10    //get_board_addr
 #define       CMD_BMC_INFO          0x11
 
 #pragma pack( 1 )
 /* SetSensorReq_T */
 typedef struct
 {
-    INT8U   FanNum;
+    INT8U   FanIndex;
     INT8U   PwmDuty;
 
 } SetSensorReq_T;

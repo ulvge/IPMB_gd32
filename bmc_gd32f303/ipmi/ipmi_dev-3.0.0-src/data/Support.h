@@ -331,7 +331,9 @@ extern int UnImplementedFuncAMI (INT8U* pReq, INT32U ReqLen, INT8U* pRes, int BM
 
 /*---------------- OEM Commands for Bridge NetFn ---------------------------*/
 //#define OEM										/* OemCmdHandler */						UNIMPLEMENTED
-#define SET_FAN                      SetFan             /*UNIMPLEMENTED*/
+#define GET_BLADE_ID                     GetBladId             /*UNIMPLEMENTED*/
+#define GET_FAN_RPM                     GetFan             /*UNIMPLEMENTED*/
+#define SET_FAN_RPM                     SetFan             /*UNIMPLEMENTED*/
 #define UPDATE_FIRMWARE              UpdateFirmware     /*UNIMPLEMENTED*/
 #define CPU_INFO                     GetCPUInfo
 #define BMC_INFO                     GetBMCInfo

@@ -104,13 +104,9 @@ void USART1_IRQHandler(void)
 		}
 	}
 
-	if (RESET != usart_interrupt_flag_get(COM1, USART_INT_FLAG_TBE))
-    {
-        /* send data continue */
-		UART_sendFinally(COM1, &g_UARTPara.fifo);
-    }
     if (RESET != usart_interrupt_flag_get(COM1, USART_INT_FLAG_TC))
     {
+        usart_interrupt_flag_clear(COM1, USART_INT_FLAG_TC);
         /* send data continue */
 		UART_sendFinally(COM1, &g_UARTPara.fifo);
     }

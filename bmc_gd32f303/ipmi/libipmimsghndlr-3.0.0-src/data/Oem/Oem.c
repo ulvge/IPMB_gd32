@@ -28,7 +28,9 @@ const CmdHndlrMap_T g_Oem_CmdHndlr[] =
 {
 /*--------------------- OEM Device Commands ---------------------------------*/
 #if OEM_DEVICE == 1
-        { CMD_SET_FAN,           PRIV_OEM,      SET_FAN,             0x00,   0xAAAA ,0xFFFF},
+        { CMD_GET_BLADE_ID,           PRIV_OEM,      GET_BLADE_ID,             0x00,   0xAAAA ,0xFFFF},
+        { CMD_GET_FAN_RPM,           PRIV_OEM,      GET_FAN_RPM,             0x00,   0xAAAA ,0xFFFF},
+        { CMD_SET_FAN_PWM,           PRIV_OEM,      SET_FAN_RPM,             0x00,   0xAAAA ,0xFFFF},
         // { CMD_UPDATE_FIRMWARE,   PRIV_OEM,      UPDATE_FIRMWARE,     0x00,   0xAAAA ,0xFFFF},
         {CMD_CPU_INFO, PRIV_OEM, CPU_INFO, 0x00, 0xAAAA, 0xFFFF},
         {CMD_BMC_INFO, PRIV_OEM, BMC_INFO, 0x00, 0xAAAA, 0xFFFF},
@@ -38,24 +40,29 @@ const CmdHndlrMap_T g_Oem_CmdHndlr[] =
         {0x00, 0x00, 0x00, 0x00, 0x0000, 0x0000}
 };
 
-
-int GetFan(INT8U *pReq, INT8U ReqLen, INT8U *pRes, int BMCInst)
+/// @brief get fan's RPM by sensor index,not sensor not sensor not sensor
+/// @param pReq 
+/// @param ReqLen 
+/// @param pRes 
+/// @param BMCInst 
+/// @return 
+static int GetFan(INT8U *pReq, INT8U ReqLen, INT8U *pRes, int BMCInst)
 {
-	
 	FANPWM_T* pGetFanPWMRes = (FANPWM_T*) pRes;
-	pGetFanPWMRes->channel = *pReq;
+	pGetFanPWMRes->index = *pReq;
 	INT16U fanRpm = 0;
 	if ( ReqLen < 0x1 ) 
 	{
 		*pRes =CC_REQ_INV_LEN;
 		return 1;
 	}
-	if( pGetFanPWMRes->channel > SENSOR_FAN_NUM)
+	INT32U fanSensorNum = 0;
+	if(!fan_getFanSensorNum(pGetFanPWMRes->index, &fanSensorNum))
 	{
 		*pRes = CC_INV_DATA_FIELD;
 		return 1;
 	}
-   fan_get_rotate_rpm(pGetFanPWMRes->channel, &fanRpm);
+   fan_get_rotate_rpm(fanSensorNum, &fanRpm);
    pGetFanPWMRes->CompletionCode = CC_NORMAL;
    pGetFanPWMRes->rpm = fanRpm;
 
@@ -63,6 +70,11 @@ int GetFan(INT8U *pReq, INT8U ReqLen, INT8U *pRes, int BMCInst)
 }
 int SetFan(INT8U *pReq, INT8U ReqLen, INT8U *pRes, int BMCInst)
 {
+	if ( ReqLen < sizeof(SetSensorReq_T) ) 
+	{
+		*pRes =CC_REQ_INV_LEN;
+		return 1;
+	}
 	const SetSensorReq_T *pOemReq = (const SetSensorReq_T *)pReq;
 	GetSensorReadingRes_T* sensor_reading_res = (GetSensorReadingRes_T*)pRes;
 	int i = 0;
@@ -73,22 +85,47 @@ int SetFan(INT8U *pReq, INT8U ReqLen, INT8U *pRes, int BMCInst)
 	sensor_reading_res->ComparisonStatus= 0x00;
 	sensor_reading_res->OptionalStatus  = 0x00;
 	
-	if(pOemReq->FanNum == 0xFF)   // set all of fan
+	INT32U fanSensorNum = 0;
+    if(pOemReq->FanIndex == 0xFF)   // set all of fan
 	{
-		for(i=0; i<SENSOR_FAN_NUM; i++)
+		for(i = 0; i<fan_getFanNum(); i++)
 		{
-			fan_set_duty_percent(i, pOemReq->PwmDuty);
+            if(!fan_getFanSensorNum(i, &fanSensorNum)) {
+                continue;
+            }
+			fan_set_duty_percent(fanSensorNum, pOemReq->PwmDuty);
 		}
 	}
 	else
 	{
-		fan_set_duty_percent(pOemReq->FanNum-1, pOemReq->PwmDuty);
+        if(!fan_getFanSensorNum(pOemReq->FanIndex, &fanSensorNum))
+        {
+            *pRes = CC_INV_DATA_FIELD;
+            return 1;
+        }
+		fan_set_duty_percent(fanSensorNum, pOemReq->PwmDuty);
 	}
-	
-	
 	return sizeof(GetSensorReadingRes_T);
 }
 
+typedef struct
+{
+    INT8U               CompletionCode;
+    INT8U               bladeID;
+    INT8U               rackID;
+} PACKED BladeSlotIDRes_T;
+int GetBladId(INT8U *pReq, INT8U ReqLen, INT8U *pRes, int BMCInst)
+{
+    UNUSED(pReq);
+    UNUSED(ReqLen);
+    BladeSlotIDRes_T *pbladeSlotIDRes_T = (BladeSlotIDRes_T *)pRes;
+    pbladeSlotIDRes_T->CompletionCode = CC_NORMAL;
+    INT8U ID = get_board_addr();
+    pbladeSlotIDRes_T->bladeID = get_board_addr();
+    pbladeSlotIDRes_T->rackID = 0;
+    //printf("CmdGetBladeID bladeID=%#x, rackID=%#x, line=%d \n", pbladeSlotIDRes_T->bladeID,  pAMIBladeSlotIDRes_T->rackID, __LINE__);
+    return (sizeof(BladeSlotIDRes_T));
+}
 int UpdateFirmware(INT8U *pReq, INT8U ReqLen, INT8U *pRes, int BMCInst)
 {
 

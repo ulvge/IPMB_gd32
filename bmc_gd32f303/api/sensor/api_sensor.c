@@ -30,7 +30,7 @@ BOOLEAN api_sensorGetValBySensorNum(UINT16 sensorNum, UINT16 *val)
     uint8_t *unitType;
     if (api_sensorGetUnitType(sensorNum, unitType) == false){
         return false;
-    }                   
+    }
 	uint16_t *fanRpm;
 	
 	switch (*unitType)

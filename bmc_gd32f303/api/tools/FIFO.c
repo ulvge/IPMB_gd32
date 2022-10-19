@@ -60,7 +60,7 @@ BOOLEAN FIFO_Writes(FIFO *fifo, INT8U *data, INT16U dataSize)
     return TRUE;
 }
 
-BOOLEAN FIFO_Empty(FIFO *fifo)
+__INLINE  BOOLEAN FIFO_Empty(FIFO *fifo)
 {
     if (fifo->occupy == 0){
 		return true;

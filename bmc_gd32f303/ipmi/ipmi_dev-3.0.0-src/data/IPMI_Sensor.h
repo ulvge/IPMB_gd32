@@ -282,7 +282,7 @@ typedef struct
 
 typedef struct{
     INT8U   CompletionCode;
-    INT8U   channel;
+    INT8U   index;
     INT16U   rpm;
 }PACKED FANPWM_T;
 

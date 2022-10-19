@@ -120,23 +120,23 @@ void UART_sendDataBlock(uint32_t usart_periph, const uint8_t *str, uint16_t len)
 INT8U UART_sendFinally(uint32_t usart_periph, FIFO_Buf_STRUCT *fifoUart)
 {
     INT8U data;
-    if(FIFO_Empty(&(fifoUart->sfifo)))
-	{				
-		fifoUart->status &= ~UART_SENDING;                            
-		usart_interrupt_disable(usart_periph, USART_INT_TBE); 
-		usart_interrupt_disable(usart_periph, USART_INT_TC); 
-		return false ;	
-	} else {  
-		if(fifoUart->status != UART_SENDING) {	                            
-			usart_interrupt_enable(usart_periph, USART_INT_TBE);  
-			usart_interrupt_enable(usart_periph, USART_INT_TC);   
-			fifoUart->status |= UART_SENDING;                      
-		}
-		if(FIFO_Read(&(fifoUart->sfifo), &data) == true) {	//sending data   
-		    usart_data_transmit(usart_periph, data);
+    if (FIFO_Empty(&(fifoUart->sfifo)))
+    {
+        fifoUart->status &= ~UART_SENDING;
+        return false;
+    }
+    else
+    {
+        if (fifoUart->status != UART_SENDING)
+        {
+            fifoUart->status |= UART_SENDING;
         }
-		return true;
-	}
+        if (FIFO_Read(&(fifoUart->sfifo), &data) == true)
+        { // sending data
+            usart_data_transmit(usart_periph, data);
+        }
+        return true;
+    }
 }
 
 void COM_init(UART_PARA_STRUCT *uartPara)
@@ -174,7 +174,6 @@ void COM_init(UART_PARA_STRUCT *uartPara)
     nvic_irq_enable(uartPara->config->irqN, uartPara->config->prePriority, uartPara->config->subPriority);
     /* enable USART TBE interrupt */
     usart_interrupt_enable(uartPara->usart_periph, USART_INT_RBNE);
-    usart_interrupt_enable(uartPara->usart_periph, USART_INT_TBE);
     usart_interrupt_enable(uartPara->usart_periph, USART_INT_TC);
 }
 
