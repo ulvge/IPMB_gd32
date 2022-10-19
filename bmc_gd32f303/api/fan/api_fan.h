@@ -14,6 +14,7 @@
 #include "pid/pid.h"
 
 void fan_init(void);
+
 bool fan_get_rotate_rpm(unsigned char channel, uint16_t *fan_rpm);
 bool fan_set_rotate_rpm(int channel, uint32_t rpm);
 bool fan_set_duty_percent(int channel, unsigned char duty);  // duty percent
@@ -21,7 +22,6 @@ bool fan_set_duty(int channel, unsigned char duty);     // convert to rpm
 bool fan_getFanSensorNum(int idx, uint32_t *sensorNum);
 int32_t fan_getFanNum(void);
 
-void fan_ctrl_loop(void);
 	 
 #ifdef __cplusplus
 }

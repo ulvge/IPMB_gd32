@@ -350,7 +350,7 @@ INT32U ProcessIPMIReq(MsgPkt_T *pReq, MsgPkt_T *pRes)
     SwapIPMIMsgHdr(pIPMIReqHdr, pIPMIResHdr);
 	
 	if (pReq->Size > 8){
-		LOG_E("ProcessIPMIReq debug!");
+		//LOG_E("ProcessIPMIReq debug!");
 	}
     if (0 != GetMsgHndlrMap(NET_FN(pIPMIReqHdr->NetFnLUN), &pCmdHndlrMap)) // get netfn handlr
     {

@@ -14,6 +14,8 @@ typedef struct
     SENSOR_ENUM fanSensorNum;
     uint16_t    maxRotateRpm;
     uint8_t     polesNum;
+    bool        isOutputPolarityHigh;
+    
     rcu_periph_enum      	timerRcu;
     uint32_t timerPeriph;   //TIMER1
     uint8_t timerCh;        //TIMER_CH_1

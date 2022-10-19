@@ -32,7 +32,7 @@ void pwm_timer_config(const PwmChannleConfig *config)
     timer_init(config->timerPeriph, &timer_initpara);
 
     /* CH1,CH2 and CH3 configuration in PWM mode1 */
-    timer_ocintpara.ocpolarity   = TIMER_OC_POLARITY_HIGH;
+    timer_ocintpara.ocpolarity   = config->isOutputPolarityHigh ? TIMER_OC_POLARITY_HIGH : TIMER_OC_POLARITY_LOW;
     timer_ocintpara.outputstate  = TIMER_CCX_ENABLE;
     timer_ocintpara.ocnpolarity  = TIMER_OCN_POLARITY_HIGH;
     timer_ocintpara.outputnstate = TIMER_CCXN_DISABLE;

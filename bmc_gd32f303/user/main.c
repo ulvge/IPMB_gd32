@@ -173,11 +173,6 @@ void start_task(void *pvParameters)
     taskEXIT_CRITICAL();
 }
 
-void fan_task(void *pvParameters)
-{
-    fan_ctrl_loop();
-}
-
 xQueueHandle g_chassisCtrl_Queue = NULL;
 void misc_task(void *pvParameters)
 {                                 
@@ -190,7 +185,6 @@ void misc_task(void *pvParameters)
         led1_set(0);
         //printf("abcde\r\n");
         adc_sample_all();
-        fan_task(NULL);
         if (xQueueReceive(g_chassisCtrl_Queue, &msg, 20) == pdPASS){
             ChassisCtrl(&msg);
         }

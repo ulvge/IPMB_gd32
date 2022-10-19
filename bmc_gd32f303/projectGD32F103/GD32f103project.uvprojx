@@ -414,11 +414,6 @@
               <FilePath>..\api\adc\api_adc.c</FilePath>
             </File>
             <File>
-              <FileName>pid.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\api\pid\pid.c</FilePath>
-            </File>
-            <File>
               <FileName>api_tmp.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\api\tmp\api_tmp.c</FilePath>

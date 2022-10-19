@@ -18,18 +18,19 @@
 #include "event_groups.h" 
 #include "sensor/api_sensor.h"
 
+#define FAN_TIMER_ID_TASK   1
+#define FAN_TIMER_ID_WDT    2
 typedef struct 
 {
     uint8_t fanIdx;
     const PwmChannleConfig *config;
-    PidObject PID;
     int32_t rpmSet;
     int32_t rpmCalculate;
 } FanStruct;
 
 static const PwmChannleConfig g_pwmChannleConfig[] = {
-    {FAN_CHANNEL_1, 30000, 2, RCU_TIMER2, TIMER2,   TIMER_CH_0,  RCU_GPIOC, GPIOC, GPIO_PIN_6, GPIO_TIMER2_FULL_REMAP},
-    {FAN_CHANNEL_2, 30000, 2, RCU_TIMER3, TIMER3,   TIMER_CH_2,  RCU_GPIOD, GPIOD, GPIO_PIN_14, GPIO_TIMER3_REMAP},
+    {FAN_CHANNEL_1, 30000, 2, false, RCU_TIMER2, TIMER2,   TIMER_CH_0,  RCU_GPIOC, GPIOC, GPIO_PIN_6, GPIO_TIMER2_FULL_REMAP},
+    {FAN_CHANNEL_2, 30000, 2, false, RCU_TIMER3, TIMER3,   TIMER_CH_2,  RCU_GPIOD, GPIOD, GPIO_PIN_14, GPIO_TIMER3_REMAP},
 };
 #define SIZE_FAN_CONFIG     sizeof(g_pwmChannleConfig)/sizeof(g_pwmChannleConfig[0])
 FanStruct g_Fan[SIZE_FAN_CONFIG];
@@ -79,29 +80,33 @@ void fan_init(void)
 
         pwm_timer_gpio_config(pFan->config);
         pwm_timer_config(pFan->config);
-        pidInit(&pFan->PID, 0, PID_UPDATE_DT);
         fan_set_duty_percent(pFan->config->fanSensorNum, 30);
     }
 
-    xTimersFanWatchdog = xTimerCreate("Timer", 1000/portTICK_RATE_MS, pdTRUE, (void*)1, vTimerFanWatchdogCallback); 
-    xTimerStart(xTimersFanWatchdog, portMAX_DELAY);	
+    TimerHandle_t xTimersFanTask = xTimerCreate("Timer", 500/portTICK_RATE_MS, pdTRUE, (void*)FAN_TIMER_ID_TASK, vTimerFanWatchdogCallback); 
+    xTimerStart(xTimersFanTask, portMAX_DELAY);
+
+    TimerHandle_t xTimersFanWatchdog = xTimerCreate("Timer", 1000/portTICK_RATE_MS, pdTRUE, (void*)FAN_TIMER_ID_WDT, vTimerFanWatchdogCallback); 
+    xTimerStart(xTimersFanWatchdog, portMAX_DELAY);
 }
 
-void fan_ctrl_loop(void)
+static void fan_ctrl_task(void)
 {
     uint16_t curent_rpm = 0;
     int32_t pid_out = 0; 
-    int i;
+    bool isAlreadyPrint = false;
 
     for(uint32_t i = 0; i < SIZE_FAN_CONFIG; i++) {
         FanStruct *pFan = &g_Fan[i];
         if(fan_get_rotate_rpm(pFan->config->fanSensorNum, &curent_rpm) == false){
             continue;
         }
-        pid_out = pidUpdate(&pFan->PID, pFan->rpmSet - curent_rpm);
-        pFan->rpmCalculate = pidOutLimit(pFan->rpmCalculate + pid_out, 0, FAN_PWM_MAX_DUTY_VALUE);
-        fan_set_rotate_rpm(i, pid_out);
-    }
+		isAlreadyPrint = true;
+		//printf("fan id = %d, curent_rpm = %d\n", i, curent_rpm);
+    } 
+	if (isAlreadyPrint) {
+		//printf("\n");
+	}
 }
 bool fan_get_rotate_rpm(unsigned char sensorNum, uint16_t *fan_rpm)
 {
@@ -171,7 +176,6 @@ bool fan_set_duty_percent(int sensorNum, unsigned char duty)
     timer_channel_output_pulse_value_config(pFan->config->timerPeriph, pFan->config->timerCh, duty_value);
     return true;
 }
-
 static void vTimerFanWatchdogCallback(xTimerHandle pxTimer)
 {
     uint32_t ulTimerID;	
@@ -179,7 +183,10 @@ static void vTimerFanWatchdogCallback(xTimerHandle pxTimer)
 	
 	switch ( ulTimerID )
 	{
-    case 1: // software timer1
+    case FAN_TIMER_ID_TASK: // software timer1
+        fan_ctrl_task();
+        break;
+    case FAN_TIMER_ID_WDT: // software timer1
         for(uint32_t i = 0; i < capture_getTotalNum(); i++)
         {
             CaptureStruct *pCap = capture_getHandler(i);
