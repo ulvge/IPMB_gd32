@@ -89,7 +89,11 @@ static void capture_nvic_configuration(uint32_t periph, uint8_t nvic_irq_pre_pri
     {
     case TIMER0:
         nvic_irq_enable(TIMER0_Channel_IRQn, nvic_irq_pre_priority, nvic_irq_sub_priority);
-        nvic_irq_enable(TIMER0_UP_IRQn, nvic_irq_pre_priority, nvic_irq_sub_priority);
+		#ifdef GD32F10x        
+        nvic_irq_enable(TIMER0_UP_IRQn, nvic_irq_pre_priority, nvic_irq_sub_priority);  // TIMER0_UP_IRQHandler
+		#elif  defined(GD32F30x)                                           
+        nvic_irq_enable(TIMER0_UP_TIMER9_IRQn, nvic_irq_pre_priority, nvic_irq_sub_priority); // TIMER0_UP_TIMER9_IRQHandler
+		#endif
         break;  
     case TIMER1:   
         nvic_irq_enable(TIMER1_IRQn, nvic_irq_pre_priority, nvic_irq_sub_priority);
@@ -149,8 +153,11 @@ void capture_init(void)
         capture_nvic_configuration(pCap->config->timerPeriph, 6, 0);
     }
 }
-
+ #ifdef GD32F1x 
 void TIMER0_UP_IRQHandler(void)
+#elif  defined(GD32F3x)      
+void TIMER0_UP_TIMER9_IRQHandler(void)
+#endif
 {
     const static int32_t timerX = TIMER0;
     if(timer_interrupt_flag_get(timerX, TIMER_INT_UP))

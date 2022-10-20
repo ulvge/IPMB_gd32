@@ -58,6 +58,7 @@ OF SUCH DAMAGE.
 #include "update/update.h"
 #include "bsp_timer.h"
 #include "ChassisCtrl.h"
+#include "api_subdevices.h"
 
 #define FAN_TASK_PRIO 22
 #define TEST_TASK_PRIO 9
@@ -130,6 +131,7 @@ int main(void)
 void start_task(void *pvParameters)
 {
     uint32_t errCreateTask = 0;
+    SubDevice_Init();
     i2c_int();
     fan_init();
     sample_init();  // voltage 

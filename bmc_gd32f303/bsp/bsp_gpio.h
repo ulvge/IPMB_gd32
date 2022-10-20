@@ -51,6 +51,10 @@ typedef enum
     GPIO_IN_GAP3,
     GPIO_IN_GAP4,
     GPIO_IN_GAP5,
+    
+    GPIO_IN_SLAVE_ADDRESS0,
+    GPIO_IN_SLAVE_ADDRESS1,
+    GPIO_IN_SLAVE_ADDRESS2,
     GPIO_PIN_MAX
 }BMC_GPIO_enum;
 
@@ -66,6 +70,8 @@ typedef struct {
   
 void      GPIO_bspInit     (void);
 uint8_t   get_board_addr     (void);
+uint8_t   get_board_slave_addr     (void);
+
 
 FlagStatus GPIO_getPinStatus(BMC_GPIO_enum alias);    
 bool GPIO_setPinStatus(BMC_GPIO_enum alias, ControlStatus isActive);

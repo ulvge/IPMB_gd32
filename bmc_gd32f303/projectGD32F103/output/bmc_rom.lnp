@@ -13,6 +13,7 @@
 ".\output\api_cpu.o"
 ".\output\api_fan.o"
 ".\output\api_sensor.o"
+".\output\api_subdevices.o"
 ".\output\ipmi_common.o"
 ".\output\ipmbmsghndlr.o"
 ".\output\serialifc.o"

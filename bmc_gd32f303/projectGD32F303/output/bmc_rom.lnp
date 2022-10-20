@@ -14,6 +14,7 @@
 ".\output\fifo.o"
 ".\output\filo.o"
 ".\output\api_sensor.o"
+".\output\api_subdevices.o"
 ".\output\ipmi_common.o"
 ".\output\ipmbmsghndlr.o"
 ".\output\serialifc.o"
