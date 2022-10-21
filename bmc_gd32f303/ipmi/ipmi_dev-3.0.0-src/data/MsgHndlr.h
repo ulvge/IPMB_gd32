@@ -376,6 +376,7 @@ extern void RespondSendMessage ( MsgPkt_T* pReq, INT8U Status, int BMCInst);
 extern int GetUTC_Offset(void);
 
 extern void *MsgCoreHndlr(void *pArg);
+extern void ipmb_set_dualaddr(INT32U i2c_periph, INT32U dualaddr);
 
 extern INT32U ProcessIPMIReq(MsgPkt_T *pReq, MsgPkt_T *pRes);  
 

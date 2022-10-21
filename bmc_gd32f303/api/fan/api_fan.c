@@ -68,7 +68,6 @@ int32_t fan_getFanNum(void)
 }
 void fan_init(void)
 {
-    capture_init();
 
     for(int32_t i = 0; i < SIZE_FAN_CONFIG; i++)
     {
@@ -88,6 +87,8 @@ void fan_init(void)
 
     TimerHandle_t xTimersFanWatchdog = xTimerCreate("Timer", 1000/portTICK_RATE_MS, pdTRUE, (void*)FAN_TIMER_ID_WDT, vTimerFanWatchdogCallback); 
     xTimerStart(xTimersFanWatchdog, portMAX_DELAY);
+
+    capture_init();
 }
 
 static void fan_ctrl_task(void)

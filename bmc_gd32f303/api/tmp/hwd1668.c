@@ -50,7 +50,7 @@ bool hwd1668_get_tmp_value(uint8_t channel, int8_t* tmp)
 		LOG_E("temp channel %d out of range! max up to 4...", channel);
 		return false;
 	}
-	res = tmp_i2c_read(HWD1668_ADDR, channel, &tmp_value, &read_len);
+	//res = tmp_i2c_read(HWD1668_ADDR, channel, &tmp_value, &read_len);
 	*tmp = (int8_t)tmp_value;
 
 	return res;
@@ -61,7 +61,7 @@ static uint8_t hwd1668_get_device_id()
 	uint8_t id; 
 	uint32_t read_len;
 
-	tmp_i2c_read(HWD1668_ADDR, HWD1668_DEVICE_ID_REG, &id, &read_len);
+	//tmp_i2c_read(HWD1668_ADDR, HWD1668_DEVICE_ID_REG, &id, &read_len);
 
 	return id;
 }

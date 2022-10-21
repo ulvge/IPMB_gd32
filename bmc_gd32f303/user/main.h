@@ -52,8 +52,6 @@ OF SUCH DAMAGE.
 	
 	#define USE_UART1_AS_IPMI  1 
 
-	//#define USE_I2C0_AS_IPMB 0
-	#define USE_I2C1_AS_IPMB 1
 	// #define FATFS_ENABLE    
 
 	#define  ft_uart_write(x, len)    UART_sendData(USART1, x, len)

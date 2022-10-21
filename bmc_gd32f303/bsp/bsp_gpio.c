@@ -107,7 +107,7 @@ uint8_t get_board_addr()
 	addr |= GPIO_getPinStatus(GPIO_IN_GAP3) << 3;
 	addr |= GPIO_getPinStatus(GPIO_IN_GAP4) << 4;
 
-    return I2C2_SLAVE_ADDRESS7;
+    return addr;
 }
 
 uint8_t get_board_slave_addr()
@@ -118,7 +118,7 @@ uint8_t get_board_slave_addr()
 	subDeviceSwitch |= GPIO_getPinStatus(GPIO_IN_SLAVE_ADDRESS1) << 1;
 	subDeviceSwitch |= GPIO_getPinStatus(GPIO_IN_SLAVE_ADDRESS2) << 2;
 
-    return subDeviceSwitch;
+    return 0x03;
 }
 
 

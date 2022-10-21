@@ -14,7 +14,11 @@
 #include "MsgHndlr.h"
 #include "IPMDevice.h"
 #include "systick.h"
+#include "IPMIConf.h"        
+#include "api_subdevices.h"
 
+#define USE_I2C0_AS_IPMB 1
+#define USE_I2C1_AS_IPMB 1
 #define I2C0_INTERRUPT_ENALBE
 #define I2C1_INTERRUPT_ENALBE
 #define I2C_CLOCK_100K  100000U
@@ -45,11 +49,6 @@ static void i2c2_rcu_config(void);
 
 static bool i2c_bytes_write(uint32_t i2cx, uint8_t device_addr, const uint8_t *p_buffer, uint16_t len, int time_out);
 static bool i2c_bytes_read(uint32_t i2cx, uint8_t device_addr, uint8_t read_addr, uint8_t *p_buffer, uint16_t len, int time_out);
-static void i2c_set_as_slave_device_addr(uint32_t i2c_periph, uint8_t device_addr);
-		
-uint8_t g_device0_addr=0;
-uint8_t g_device1_addr=0;
-uint8_t g_device2_addr=0;
 
 void i2c_dualaddr_set(uint32_t i2c_periph, uint8_t dualaddr)
 {
@@ -69,6 +68,10 @@ uint8_t i2c_dualaddr_get(uint32_t i2c_periph)
 
 void i2c_int(void)
 {
+    SubDevice_Init();
+	uint8_t addr8 = SubDevice_GetMySlaveAddress(NM_PRIMARY_IPMB_BUS);
+    SetDevAddr(addr8);
+
     i2c_channel_init(I2C0);
     i2c_channel_init(I2C1);
 #ifdef I2C2
@@ -185,12 +188,7 @@ static void i2c0_config(void)
     // **************************** I2C0 *********************************************
     /* I2C clock configure */
     i2c_clock_config(I2C0, I2C_CLOCK_400K, I2C_DTCY_2);
-    /* I2C address configure */
-    i2c_mode_addr_config(I2C0, I2C_I2CMODE_ENABLE, I2C_ADDFORMAT_7BITS, I2C0_SLAVE_ADDRESS7);
-    /* enable I2C0 */
-    i2c_enable(I2C0);
-    /* enable acknowledge */
-    i2c_ack_config(I2C0, I2C_ACK_ENABLE);
+    i2c_set_slave_addr(I2C0, SubDevice_GetMySlaveAddress(I2C0));
 
 #ifdef  I2C0_INTERRUPT_ENALBE
     /* enable the I2C0 interrupt */
@@ -210,12 +208,7 @@ static void i2c1_config(void)
 {
     // **************************** I2C1 *********************************************
     i2c_clock_config(I2C1, I2C_CLOCK_100K, I2C_DTCY_2);
-    /* I2C address configure */
-    i2c_mode_addr_config(I2C1, I2C_I2CMODE_ENABLE, I2C_ADDFORMAT_7BITS, I2C1_SLAVE_ADDRESS7);
-    /* enable I2C1 */
-    i2c_enable(I2C1);
-    /* enable acknowledge */
-    i2c_ack_config(I2C1, I2C_ACK_ENABLE);
+    i2c_set_slave_addr(I2C1, SubDevice_GetMySlaveAddress(I2C1));
 
 #ifdef  I2C1_INTERRUPT_ENALBE
     /* enable the I2C0 interrupt */
@@ -259,7 +252,7 @@ static void i2c1_nvic_config(void)
   * @arg len:
   * @retval  ?
   */
-static bool i2c_bytes_write(uint32_t i2cx, uint8_t device_addr, const uint8_t *p_buffer, uint16_t len, int time_out)
+bool i2c_bytes_write(uint32_t i2cx, uint8_t device_addr, const uint8_t *p_buffer, uint16_t len, int time_out)
 {
     int i = 0;
     int timeout = time_out;
@@ -570,27 +563,6 @@ __exit:
     return false;
 }
 
-
-bool i2c0_bytes_write(const uint8_t *p_buffer, uint16_t len)
-{
-    return i2c_bytes_write(I2C0, p_buffer[0], &p_buffer[1], len-1, 20000);
-}
-
-bool i2c1_bytes_write(const uint8_t *p_buffer, uint16_t len)
-{
-    return i2c_bytes_write(I2C1, p_buffer[0], &p_buffer[1], len-1, 20000);
-}
-
-bool i2c0_bytes_read(const uint8_t device_addr, const uint8_t read_addr, uint8_t* p_buffer, uint16_t len)
-{
-    return i2c_bytes_read(I2C0, device_addr, read_addr, p_buffer, len, 1000);
-}
-
-bool i2c1_bytes_read(const uint8_t device_addr, const uint8_t read_addr, uint8_t* p_buffer, uint16_t len)
-{
-    return i2c_bytes_read(I2C1, device_addr, read_addr, p_buffer, len, 10000);
-}
-
 extern xQueueHandle RecvDatMsg_Queue;
 extern xQueueHandle RecvForwardI2CDatMsg_Queue;
 static MsgPkt_T    g_i2c_Req;
@@ -612,7 +584,8 @@ void I2C0_EV_IRQHandler(void)
     {
         /* clear the ADDSEND bit */
         i2c_interrupt_flag_clear(I2C0, I2C_INT_FLAG_ADDSEND);
-        g_i2c_Req.Size = 0;; // start, clear recv count
+        g_i2c_Req.Channel = NM_PRIMARY_IPMB_BUS;
+        g_i2c_Req.Size = 0; // start, clear recv count
         g_i2c_Req.Data[g_i2c_Req.Size++] = GetDevAddr();
     }
     else if (i2c_interrupt_flag_get(I2C0, I2C_INT_FLAG_RBNE))
@@ -734,20 +707,6 @@ void I2C0_ER_IRQHandler(void)
     i2c_channel_init(I2C0);
 }
 
-bool i2c0_get_slave_device_data(uint8_t *p_buffer, uint32_t *len)
-{
-    // if (!g_i2c0_recv_is_updated)
-    // {
-    //     return false;
-    // }
-    // memcpy(p_buffer, g_i2c0_buff_rx, g_i2c0_rx_count);
-    // *len = g_i2c0_rx_count;
-    // g_i2c0_recv_is_updated = false; // has read
-
-    return false;
-}
-
-
 /*!
     \brief      handle I2C1 event interrupt request
     \param[in]  none
@@ -763,7 +722,8 @@ void I2C1_EV_IRQHandler(void)
     if (i2c_interrupt_flag_get(I2C1, I2C_INT_FLAG_ADDSEND))
     {
         /* clear the ADDSEND bit */
-        i2c_interrupt_flag_clear(I2C1, I2C_INT_FLAG_ADDSEND);
+        i2c_interrupt_flag_clear(I2C1, I2C_INT_FLAG_ADDSEND); 
+        g_i2c_Req.Channel = NM_SECONDARY_IPMB_BUS;
         g_i2c_Req.Size = 0; // start, clear recv count
         g_i2c_Req.Data[g_i2c_Req.Size++] = GetDevAddr();
     }
@@ -886,18 +846,6 @@ void I2C1_ER_IRQHandler(void)
     i2c_deinit(I2C1);
     i2c_channel_init(I2C1);
 }
-bool i2c1_get_slave_device_data(uint8_t *p_buffer, uint32_t *len)
-{
-    // if (!g_i2c1_recv_is_updated)
-    // {
-    //     return false;
-    // }
-    // memcpy(p_buffer, g_i2c1_buff_rx, g_i2c1_rx_count);
-    // *len = g_i2c1_rx_count;
-    // g_i2c1_recv_is_updated = false; // has read
-
-    return false;
-}
 
 #ifdef I2C2
  
@@ -933,10 +881,6 @@ static void i2c2_gpio_config(void)
     gpio_pin_remap1_config(GPIO_PCF5, GPIO_PCF5_I2C2_REMAP0, ENABLE);
 #endif
 }
-bool i2c2_bytes_write(const uint8_t *p_buffer, uint16_t len)
-{
-    return i2c_bytes_write(I2C2, p_buffer[0], &p_buffer[1], len-1, 20000);
-}
 
 /*!
     \brief      cofigure the I2C0 and I2C1 interfaces..
@@ -948,22 +892,12 @@ static void i2c2_config(void)
 {
     // **************************** I2C2 *********************************************
     i2c_clock_config(I2C2, I2C_CLOCK_400K, I2C_DTCY_2);
-    /* I2C address configure */
-    i2c_mode_addr_config(I2C2, I2C_I2CMODE_ENABLE, I2C_ADDFORMAT_7BITS, I2C2_SLAVE_ADDRESS7);
-    /* enable I2C1 */
-    i2c_enable(I2C2);
-    /* enable acknowledge */
-    i2c_ack_config(I2C2, I2C_ACK_ENABLE);
+    i2c_set_slave_addr(I2C2, SubDevice_GetMySlaveAddress(I2C2));
 
         /* enable the I2C0 interrupt */
     i2c_interrupt_enable(I2C2, I2C_INT_ERR);
     i2c_interrupt_enable(I2C2, I2C_INT_EV);
     i2c_interrupt_enable(I2C2, I2C_INT_BUF);
-}
-
-bool i2c2_bytes_read(const uint8_t device_addr, const uint8_t read_addr, uint8_t* p_buffer, uint16_t len)
-{
-    return i2c_bytes_read(I2C2, device_addr, read_addr, p_buffer, len, 10000);
 }
 
 /*!
@@ -982,6 +916,7 @@ void I2C2_EV_IRQHandler(void)
     {
         /* clear the ADDSEND bit */
         i2c_interrupt_flag_clear(I2C2, I2C_INT_FLAG_ADDSEND);
+        g_i2c_Req.Channel = NM_THIRD_IPMB_BUS;
         g_i2c_Req.Size = 0;; // start, clear recv count
         g_i2c_Req.Data[g_i2c_Req.Size++] = GetDevAddr();
     }
@@ -1103,25 +1038,6 @@ void I2C2_ER_IRQHandler(void)
     i2c_channel_init(I2C2);
 }
 
-bool i2c2_get_slave_device_data(uint8_t *p_buffer, uint32_t *len)
-{
-    // if (!g_i2c2_recv_is_updated)
-    // {
-    //     return false;
-    // }
-    // memcpy(p_buffer, g_i2c2_buff_rx, g_i2c2_rx_count);
-    // *len = g_i2c2_rx_count;
-    // g_i2c2_recv_is_updated = false; // has read
-
-    return false;
-}
-   
-void i2c2_set_as_slave_device_addr(uint8_t device_addr)
-{
-      g_device2_addr = device_addr;
-    i2c_set_as_slave_device_addr(I2C2, device_addr);
-}
-
 /*!
     \brief      cofigure the NVIC peripheral
     \param[in]  none
@@ -1144,37 +1060,46 @@ static void i2c_set_as_slave_device_addr(uint32_t i2c_periph, uint8_t device_add
     i2c_ack_config(i2c_periph, I2C_ACK_ENABLE);
 }
 
-
-void i2c0_set_as_slave_device_addr(uint8_t device_addr)
+bool i2c_write(uint32_t bus, const uint8_t *p_buffer, uint16_t len)
 {
-    g_device0_addr = device_addr;
-    i2c_set_as_slave_device_addr(I2C0, device_addr);
+    switch (bus)
+    {
+        case 0:
+        case I2C0:
+            return i2c_bytes_write(I2C0, p_buffer[0], &p_buffer[1], len-1, 20000);
+        case 1:
+        case I2C1:
+            return i2c_bytes_write(I2C1, p_buffer[0], &p_buffer[1], len-1, 20000);
+        
+    #ifdef I2C2
+        case 2:
+        case I2C2:
+            return i2c_bytes_write(I2C2, p_buffer[0], &p_buffer[1], len-1, 20000);
+    #endif   
+        default:
+			return false;
+    }
 }
-
-void i2c1_set_as_slave_device_addr(uint8_t device_addr)
+void i2c_set_slave_addr(uint32_t bus, uint8_t device_addr)
 {
-	g_device1_addr = device_addr;
-    i2c_set_as_slave_device_addr(I2C1, device_addr);
+    switch (bus)
+    {
+        case 0:
+        case I2C0:
+            i2c_set_as_slave_device_addr(I2C0, device_addr);
+            break;
+        case 1:
+        case I2C1:
+            i2c_set_as_slave_device_addr(I2C1, device_addr);
+            break;
+    #ifdef I2C2
+        case 2:
+        case I2C2:
+            i2c_set_as_slave_device_addr(I2C2, device_addr);
+            break;
+    #endif   
+        default:
+			return;
+    }
 }
-
-
-
-uint8_t get_device_addr(uint8_t bus) 
-{
-   if(0 == bus)
-   {
-        return  g_device0_addr;
-   }else if(1 == bus)
-   {
-        return  g_device1_addr;
-   }else if(2 == bus)
-   {
-       return  g_device2_addr;
-   }else
-   {
-       return  0;
-   }
-   
-}
-
 

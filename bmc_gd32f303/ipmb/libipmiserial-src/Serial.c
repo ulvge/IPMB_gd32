@@ -39,6 +39,7 @@
 #include "MsgHndlr.h"   
 #include "bsp_i2c.h"
 #include "ipmi_common.h"
+#include "api_subdevices.h"
 
 #define AUTH_CAP2BMC_SWITCH_ENABLE  BIT4
 
@@ -60,20 +61,24 @@ extern xQueueHandle ResponseDatMsg_Queue;
  **/
 INT16U
 ProcessSerialMessage (MsgPkt_T* pReq, MsgPkt_T* pRes,int BMCInst)
-{                                                 
-	IPMIMsgHdr_T *pIPMIReqHdr = (IPMIMsgHdr_T *)pReq->Data;
-    if (pIPMIReqHdr->ResAddr == I2C_SLAVE_ADDRESS7) { // slef msg
-        //from seial, Check checksum and handler msg
-        //pRes->Param = SERIAL_REQUEST; // if you want: serial in /serial out,not serial in /I2C out
+{
+    IPMIMsgHdr_T *pIPMIReqHdr = (IPMIMsgHdr_T *)pReq->Data;
+    if (pIPMIReqHdr->ResAddr == SubDevice_GetMySlaveAddress(pReq->Channel)) { // slef msg. Process it
+        // pRes->Param = SERIAL_REQUEST; // if you want: serial in /serial out,not serial in /I2C out
         pRes->Param = IPMI_REQUEST;
-        return ProcessIPMIReq(pReq, pRes); //get&hand map  
-    } else {
-        //not slef msg, so Forwarded it   
-		ipmb_set_dualaddr(pIPMIReqHdr->ReqAddr);
+        return ProcessIPMIReq(pReq, pRes); // get&hand map
+    }
+    else if (SubDevice_IsSlefMaster())
+    { // self is master ,help to Forwarded it
+        ipmb_set_dualaddr(pReq->Channel, pIPMIReqHdr->ReqAddr);
         pRes->Param = FORWARD_IPMB_REQUEST;
         pRes->Size = pReq->Size;
         _fmemcpy(pRes->Data, pReq->Data, pReq->Size);
         return pRes->Size;
+    }
+    else
+    {
+        return 0;
     }
 }
 

@@ -244,22 +244,8 @@ static int do_scan(uint8_t bus)
     for (k = 0x00; k <= 0x7F; k += 1)
     {
         write_buffer[0] = k<<1;
-        switch (bus)
-        {
-			case 0:
-				retval = (int)i2c0_bytes_write(write_buffer, 1);
-				break;
-			case 1:
-				retval = (int)i2c1_bytes_write(write_buffer, 1);
-				break;
-				#ifdef I2C2
-			case 2:
-				retval = (int)i2c2_bytes_write(write_buffer, 1);
-				break;
-				#endif
-			default:
-				return false;
-        }      
+        retval = (int)i2c_write(bus, write_buffer, 1);
+
         if ((k % 16) == 0) {
             printf("\n 0x%d0\t", k / 16);
             vTaskDelay(20);
@@ -294,30 +280,8 @@ static int do_scan(uint8_t bus)
 
 static int do_set_host(uint8_t bus)
 {
-    switch (bus)
-    {          
-#if USE_I2C0_AS_IPMB
-    case 0:
-        i2c0_set_as_slave_device_addr(host_addr);
-        LOG_RAW("I2C%d:         SLAVE_ADDRESS: %02x\n\r", bus, host_addr);
-        break;  
-#endif
-	
-#if USE_I2C1_AS_IPMB
-    case 1:
-        i2c1_set_as_slave_device_addr(host_addr);
-        LOG_RAW("I2C%d:       SLAVE_ADDRESS: %02x\n\r", bus, I2C1_SLAVE_ADDRESS7);
-        break;  
-#endif
-#ifdef  USE_I2C2_AS_IPMB
-    case 2:
-        i2c2_set_as_slave_device_addr(host_addr);
-        LOG_RAW("I2C%d:        SLAVE_ADDRESS: %02x\n\r", bus, host_addr);
-        break;
-#endif
-    default:
-        break;
-    }
+    i2c_set_slave_addr(bus, host_addr);
+    LOG_RAW("I2C%d:         SLAVE_ADDRESS: %02x\n\r", bus, host_addr);
     return 0;
 }
 

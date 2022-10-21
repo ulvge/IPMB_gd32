@@ -162,6 +162,18 @@ void MsgHndlrInit()
     memcpy(pBMCInfo->MsgHndlrTbl, m_MsgHndlrTbl, sizeof(m_MsgHndlrTbl));
 }
 
+void ipmb_set_dualaddr(INT32U i2c_periph, INT32U dualaddr)
+{
+    i2c_dualaddr_set(i2c_periph, dualaddr);
+}
+static uint8_t ipmb_get_dualaddr(INT32U i2c_periph)
+{
+    return i2c_dualaddr_get(i2c_periph);
+}
+static bool ipmb_write(INT8U channel, const uint8_t *p_buffer, uint16_t len)
+{
+    return i2c_write(channel, p_buffer, len);
+}
 static void vTaskResponseDatWrite(void *pvParameters)
 {
     char buff[sizeof(MsgPkt_T)];
@@ -179,7 +191,7 @@ static void vTaskResponseDatWrite(void *pvParameters)
         case IPMI_REQUEST:
         case FORWARD_IPMB_REQUEST:
         case NORMAL_RESPONSE:
-            ipmb_write(ResMsg->Data, ResMsg->Size);
+            ipmb_write(ResMsg->Channel, ResMsg->Data, ResMsg->Size);
             break;
         case SERIAL_REQUEST:
             LOG_RAW("send ack msg of original\r\n");
@@ -216,7 +228,6 @@ void *MsgCoreHndlr(void *pArg)
     __attribute__((unused)) int i;
 
     MsgHndlrInit();
-    device_addr_set(I2C_SLAVE_ADDRESS7);
 
     if (errCOULD_NOT_ALLOCATE_REQUIRED_MEMORY ==                                             
 		xTaskCreate(vTaskResponseDatWrite, "Task ResponseDatWrite", 256, NULL, 24, &xHandleTaskResponseDatWrite)) {
@@ -296,7 +307,7 @@ static BOOLEAN ProcessIPMBForardResponse(MsgPkt_T *pReq, MsgPkt_T *pRes)
 	
     IPMIMsgHdr_T *pIPMIReqHdr = (IPMIMsgHdr_T *)pReq->Data;
 
-	pIPMIReqHdr->ResAddr = ipmb_get_dualaddr(); //restore the request address
+	pIPMIReqHdr->ResAddr = ipmb_get_dualaddr(pReq->Channel); //restore the request address
 	pIPMIReqHdr->ChkSum = CalculateCheckSum(pReq->Data, 2); // recalc the chksum
     if (!CheckMsgValidation(pReq->Data, pReq->Size))
     {
@@ -339,6 +350,7 @@ INT32U ProcessIPMIReq(MsgPkt_T *pReq, MsgPkt_T *pRes)
 
     // LOG_I("Process");
     // /* Set the Cmd and Net function in response packet */
+    pRes->Channel		= pReq->Channel;
     // pRes->Cmd		= pReq->Cmd;
     // pRes->NetFnLUN	= pReq->NetFnLUN | 0x04;
 
@@ -614,11 +626,3 @@ int GetIfcSupport(INT16U IfcSupt, INT8U *IfcSupport, int BMCInst)
     }
     return 0;
 }
-
-
-static void device_addr_set(uint8_t slaveAddr7)
-{
-    ipmb_set_addr(slaveAddr7);
-    SetDevAddr(slaveAddr7);
-}
-

@@ -58,7 +58,6 @@ OF SUCH DAMAGE.
 #include "update/update.h"
 #include "bsp_timer.h"
 #include "ChassisCtrl.h"
-#include "api_subdevices.h"
 
 #define FAN_TASK_PRIO 22
 #define TEST_TASK_PRIO 9
@@ -131,7 +130,6 @@ int main(void)
 void start_task(void *pvParameters)
 {
     uint32_t errCreateTask = 0;
-    SubDevice_Init();
     i2c_int();
     fan_init();
     sample_init();  // voltage 
@@ -141,10 +139,6 @@ void start_task(void *pvParameters)
 #endif
 
     taskENTER_CRITICAL();
-
-    LOG_I("start create task.\r\n");
-
-    // xTaskCreate(fan_task, "fan", configMINIMAL_STACK_SIZE*2, NULL, FAN_TASK_PRIO, NULL);
 
    if (errCOULD_NOT_ALLOCATE_REQUIRED_MEMORY == 
        xTaskCreate(com_task, "com", configMINIMAL_STACK_SIZE * 2, NULL, COM_TASK_PRIO, (TaskHandle_t *)&ComTask_Handler)) {
@@ -167,9 +161,9 @@ void start_task(void *pvParameters)
         errCreateTask |= 8;
     }
 	if (errCreateTask == 0){
-		LOG_I("finished : create task succeed\r\n");
+		LOG_I("create task finished : succeed\r\n");
 	} else {
-		LOG_I("finished : create task error = %d\r\n", errCreateTask);
+		LOG_I("create task finished : error = %d\r\n", errCreateTask);
 	}
     vTaskDelete(NULL);
     taskEXIT_CRITICAL();

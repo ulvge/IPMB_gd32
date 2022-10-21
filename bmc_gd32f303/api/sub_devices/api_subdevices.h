@@ -12,10 +12,10 @@
 #define SUB_DEVICES_BUFF_SIZE  0x05
 //计算 存储 网络 通讯 刀片
 typedef enum {
-    SUB_DEVICE_MODE_MAIN        = 0,
-    SUB_DEVICE_MODE_POWER       = 1,
-    SUB_DEVICE_MODE_NET         = 2,
-    SUB_DEVICE_MODE_SWITCH      = 3,
+    SUB_DEVICE_MODE_POWER       = 0,
+    SUB_DEVICE_MODE_NET         = 1,
+    SUB_DEVICE_MODE_SWITCH      = 2,
+    SUB_DEVICE_MODE_MAIN        = 3,
     SUB_DEVICE_MODE_STORAGE0    = 4,
     SUB_DEVICE_MODE_STORAGE1    = 5,
     SUB_DEVICE_MODE_STORAGE2    = 6,
@@ -40,15 +40,18 @@ typedef struct
     SUB_DEVICE_MODE mode;
     bool isMain;
     bool isRegistered;
-    uint8_t     slaveAddrI2cBus1; //8bit
-    uint8_t     slaveAddrI2cBus2;
+    uint8_t     i2c0SlaveAddr; //8bit
+    uint8_t     i2c1SlaveAddr; //8bit
     const char     *name;
     uint8_t buff[SUB_DEVICES_BUFF_SIZE];
 } SubDeviceMODE_T;
 
 bool SubDevice_Init(void);
-bool SubDevice_IsMain(void);
+bool SubDevice_IsSlefMaster(void);
+bool SubDevice_IsRegistered(void);
+uint8_t SubDevice_GetMySlaveAddress(uint32_t bus);
 bool SubDevice_Management(uint8_t addr);
+
 SubDeviceMODE_T *SubDevice_GetSlef(void);
 
 #ifdef __cplusplus

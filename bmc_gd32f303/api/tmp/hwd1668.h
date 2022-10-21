@@ -24,8 +24,6 @@
 #define HWD1668_DEVICE_ID_REG          0xFF
 
 /* registers definitions */
-//#define  tmp_i2c_read(dev, addr, dat, len)    i2c1_bytes_read(dev, addr, dat, len) 
-#define  tmp_i2c_read(dev, addr, dat, len)    i2c1_get_slave_device_data(dat, len) 
 
 /* funcitons declare */
 bool hwd1668_init(void);
