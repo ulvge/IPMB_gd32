@@ -189,7 +189,7 @@ static void SubDevice_HeartBeatTimerCallBack(xTimerHandle pxTimer)
 
     SamllMsgPkt_T msgPkt;
     //IPMIMsgHdr_T *hdr = &msgPkt.Data;
-    msgPkt.Param = FORWARD_IPMB_RESPONSE;
+    msgPkt.Param = IPMB_SUB_DEVICE_HEARTBEAT_REQUEST;
     msgPkt.Channel = NM_SECONDARY_IPMB_BUS;
     msgPkt.Size = sizeof(IPMIMsgHdr_T) + sizeof(INT8U);
 

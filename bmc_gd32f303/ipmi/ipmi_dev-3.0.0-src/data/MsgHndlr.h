@@ -340,13 +340,10 @@ extern const CmdHndlrMap_T g_APP_CmdHndlr [];
 #define FTCPU_RESPONSE	            0x16
 
 #define FORWARD_IPMB_REQUEST		0x18
-#define FORWARD_IPMB_RESPONSE		0x19
 
 #define IPMB_SUB_DEVICE_HEARTBEAT_REQUEST	0x1a
 #define IPMB_SUB_DEVICE_HEARTBEAT_RESPONSE	0x1b
 
-//#define FORWARD_TYPE_ROUTE	            0
-#define FORWARD_TYPE_WAIT	            1
 /*----------------------------------------------------
  * Receive Message Queue Names
  *----------------------------------------------------*/

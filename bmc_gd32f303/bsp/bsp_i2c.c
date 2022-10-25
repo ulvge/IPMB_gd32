@@ -610,13 +610,8 @@ void I2C0_EV_IRQHandler(void)
             }
             else  // netFn odd---Response: as master, The response received after an active message is sent
             {
-                if(FORWARD_TYPE_WAIT){
-                    g_i2c_Req.Param = IPMI_REQUEST;
-                    err = xQueueSendFromISR(RecvForwardI2CDatMsg_Queue, (char*)&g_i2c_Req, &xHigherPriorityTaskWoken);
-                }else{
-                    g_i2c_Req.Param = FORWARD_IPMB_RESPONSE;
-                    err = xQueueSendFromISR(RecvDatMsg_Queue, (char*)&g_i2c_Req, &xHigherPriorityTaskWoken);
-                }
+				g_i2c_Req.Param = IPMI_REQUEST;
+				err = xQueueSendFromISR(RecvForwardI2CDatMsg_Queue, (char*)&g_i2c_Req, &xHigherPriorityTaskWoken);
             }
 			
 			g_i2c_Req.Size = 0; // over, clear recv count
@@ -750,13 +745,8 @@ void I2C1_EV_IRQHandler(void)
             }
             else  // netFn odd---Response: as master, The response received after an active message is sent
             {
-                if(FORWARD_TYPE_WAIT){
-                    g_i2c_Req.Param = IPMI_REQUEST;
-                    err = xQueueSendFromISR(RecvForwardI2CDatMsg_Queue, (char*)&g_i2c_Req, &xHigherPriorityTaskWoken);
-                }else{
-                    g_i2c_Req.Param = FORWARD_IPMB_RESPONSE;
-                    err = xQueueSendFromISR(RecvDatMsg_Queue, (char*)&g_i2c_Req, &xHigherPriorityTaskWoken);
-                }
+				g_i2c_Req.Param = IPMI_REQUEST;
+				err = xQueueSendFromISR(RecvForwardI2CDatMsg_Queue, (char*)&g_i2c_Req, &xHigherPriorityTaskWoken);
             }
 			
 			g_i2c_Req.Size = 0; // over, clear recv count
@@ -943,13 +933,8 @@ void I2C2_EV_IRQHandler(void)
             }
             else  // netFn odd---Response: as master, The response received after an active message is sent
             {
-                if(0){
-                    g_i2c_Req.Param = IPMI_REQUEST;
-                    err = xQueueSendFromISR(RecvForwardI2CDatMsg_Queue, (char*)&g_i2c_Req, &xHigherPriorityTaskWoken);
-                }else{
-                    g_i2c_Req.Param = FORWARD_IPMB_RESPONSE;
-                    err = xQueueSendFromISR(RecvDatMsg_Queue, (char*)&g_i2c_Req, &xHigherPriorityTaskWoken);
-                }
+				g_i2c_Req.Param = IPMI_REQUEST;
+				err = xQueueSendFromISR(RecvForwardI2CDatMsg_Queue, (char*)&g_i2c_Req, &xHigherPriorityTaskWoken);
             }
 			g_i2c_Req.Size = 0; // over, clear recv count
 

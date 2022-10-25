@@ -269,11 +269,6 @@ void *MsgCoreHndlr(void *pArg)
 				continue;
 			}
             break;
-        case FORWARD_IPMB_RESPONSE:// from forward, encode&packing forward msg
-            if (ProcessIPMBForardResponse(Req, &Res) == false){
-				continue;
-			}
-            break;
         case LAN_REQUEST:
             //ProcessLANReq(Req, &Res);
             break;

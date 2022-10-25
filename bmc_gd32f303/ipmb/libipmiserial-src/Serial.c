@@ -71,32 +71,23 @@ ProcessSerialMessage (MsgPkt_T* pReq, MsgPkt_T* pRes,int BMCInst)
     }
     else if (SubDevice_IsSelfMaster())
     { // self is master ,help to Forwarded it 
+		ipmb_set_dualaddr(pReq->Channel, pIPMIReqHdr->ReqAddr);
+		pReq->Param = FORWARD_IPMB_REQUEST;
+		BaseType_t err = xQueueSend(ResponseDatMsg_Queue, (char*)pReq, 50);
+		if(err == pdFALSE) {
+			return 0;
+		}
 
-        if (FORWARD_TYPE_WAIT) {      
-			ipmb_set_dualaddr(pReq->Channel, pIPMIReqHdr->ReqAddr);
-			pReq->Param = FORWARD_IPMB_REQUEST;
-            BaseType_t err = xQueueSend(ResponseDatMsg_Queue, (char*)pReq, 50);
-            if(err == pdFALSE) {
-                return 0;
-            }
-
-            char buff[sizeof(MsgPkt_T)];
-            MsgPkt_T* recvReq = (MsgPkt_T*)buff;
-            err = xQueueReceive(RecvForwardI2CDatMsg_Queue, buff, 500);
-            if(err == pdFALSE){
-                return 0;
-            }
-            if (ProcessIPMBForardResponse(recvReq, pRes) == false){
-                return 0;
-			}
-            return pRes->Size;
-        } else {                      
-			ipmb_set_dualaddr(pReq->Channel, pIPMIReqHdr->ReqAddr);
-			pRes->Param = FORWARD_IPMB_REQUEST;
-			pRes->Size = pReq->Size;         
-            _fmemcpy(pRes->Data, pReq->Data, pReq->Size);
-            return pReq->Size;  //  @
-        }
+		char buff[sizeof(MsgPkt_T)];
+		MsgPkt_T* recvReq = (MsgPkt_T*)buff;
+		err = xQueueReceive(RecvForwardI2CDatMsg_Queue, buff, 500);
+		if(err == pdFALSE){
+			return 0;
+		}
+		if (ProcessIPMBForardResponse(recvReq, pRes) == false){
+			return 0;
+		}
+		return pRes->Size;
     }
     else
     {
