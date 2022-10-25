@@ -39,7 +39,7 @@ static void ChassisCtrlTimerCallBack(xTimerHandle pxTimer)
 	CHASSIS_CMD_CTRL cmd = (CHASSIS_CMD_CTRL)((uint32_t)pvTimerGetTimerID(pxTimer));
 
     switch (cmd)
-    {   
+    {
         case CHASSIS_SOFT_OFF :
         case CHASSIS_POWER_OFF :
             GPIO_setPinStatus(GPIO_OUT_CPU_POWER_OFF, DISABLE);    

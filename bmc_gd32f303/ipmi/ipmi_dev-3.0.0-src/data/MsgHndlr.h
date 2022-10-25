@@ -342,6 +342,11 @@ extern const CmdHndlrMap_T g_APP_CmdHndlr [];
 #define FORWARD_IPMB_REQUEST		0x18
 #define FORWARD_IPMB_RESPONSE		0x19
 
+#define IPMB_SUB_DEVICE_HEARTBEAT_REQUEST	0x1a
+#define IPMB_SUB_DEVICE_HEARTBEAT_RESPONSE	0x1b
+
+//#define FORWARD_TYPE_ROUTE	            0
+#define FORWARD_TYPE_WAIT	            1
 /*----------------------------------------------------
  * Receive Message Queue Names
  *----------------------------------------------------*/
@@ -378,8 +383,8 @@ extern int GetUTC_Offset(void);
 extern void *MsgCoreHndlr(void *pArg);
 extern void ipmb_set_dualaddr(INT32U i2c_periph, INT32U dualaddr);
 
-extern INT32U ProcessIPMIReq(MsgPkt_T *pReq, MsgPkt_T *pRes);  
-
+extern INT32U ProcessIPMIReq(MsgPkt_T *pReq, MsgPkt_T *pRes);
+extern bool ProcessIPMBForardResponse(MsgPkt_T *pReq, MsgPkt_T *pRes);
 
 #ifdef __cplusplus
 }

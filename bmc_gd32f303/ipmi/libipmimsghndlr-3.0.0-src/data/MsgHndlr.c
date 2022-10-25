@@ -93,7 +93,6 @@ xQueueHandle RecvForwardI2CDatMsg_Queue = NULL;
 * Function Prototypes
 *-----------------------------------------------------------------------------*/
 static void device_addr_set(uint8_t slaveAddr7); 
-static BOOLEAN ProcessIPMBForardResponse(MsgPkt_T *pReq, MsgPkt_T *pRes);
 
 /*--------------------------------------------------------------------
 * Module Variables
@@ -178,16 +177,16 @@ static void vTaskResponseDatWrite(void *pvParameters)
 {
     char buff[sizeof(MsgPkt_T)];
     MsgPkt_T *ResMsg = (MsgPkt_T *)buff;
-    ResponseDatMsg_Queue = xQueueCreate(3, sizeof(MsgPkt_T));
+    ResponseDatMsg_Queue = xQueueCreate(5, sizeof(MsgPkt_T));
     RecvForwardI2CDatMsg_Queue = xQueueCreate(3, sizeof(MsgPkt_T));
 
     while (1)
     {
-        memset(buff, 0, sizeof(buff));
         xQueueReceive(ResponseDatMsg_Queue, buff, portMAX_DELAY);
 
         switch(ResMsg->Param)
         {
+        case IPMB_SUB_DEVICE_HEARTBEAT_REQUEST:
         case IPMI_REQUEST:
         case FORWARD_IPMB_REQUEST:
         case NORMAL_RESPONSE:
@@ -256,6 +255,7 @@ void *MsgCoreHndlr(void *pArg)
         switch(Req->Param)
         {
         case IPMI_REQUEST:
+        case IPMB_SUB_DEVICE_HEARTBEAT_RESPONSE:
 			if (Req->Size == 0){
 				continue;
 			}             
@@ -296,7 +296,7 @@ void *MsgCoreHndlr(void *pArg)
     }
 }
 
-static BOOLEAN ProcessIPMBForardResponse(MsgPkt_T *pReq, MsgPkt_T *pRes)
+bool ProcessIPMBForardResponse(MsgPkt_T *pReq, MsgPkt_T *pRes)
 {           
     INT8U EnRes [MAX_SERIAL_PKT_SIZE];
     // check ori msg is valid

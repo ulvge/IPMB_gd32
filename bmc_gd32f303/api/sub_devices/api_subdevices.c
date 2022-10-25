@@ -6,7 +6,9 @@
 #include "bsp_i2c.h"
 #include "IPMIConf.h"
 #include "IPMDevice.h"
+#include "OSPort.h"
 
+static void SubDevice_HeartBeatTimerCallBack(xTimerHandle pxTimer);
 static const SubDeviceName_T g_SubDeviceName[] = {
     {SUB_DEVICE_MODE_MAIN,      "main"},
     {SUB_DEVICE_MODE_POWER,     "power"},
@@ -39,7 +41,7 @@ static void SubDevice_InitAllMode(void)
     {
         SubDeviceMODE_T *obj = &g_AllModes[i];
         obj->isMain = false;
-        obj->isRegistered = false;
+        obj->isOnLine = false;
         obj->mode = SUB_DEVICE_MODE_MAX;
         obj->name = g_SubDeviceName[i].name;
         obj->i2c0SlaveAddr = obj->i2c1SlaveAddr = SUB_DEVICES_ADDR_DEFAULT;
@@ -52,7 +54,7 @@ static void SubDevice_InsertMode(SubDeviceMODE_T *obj, SUB_DEVICE_MODE mode)
     } else {
         obj->isMain = false;
     }
-    obj->isRegistered = true;
+    obj->isOnLine = true;
     obj->mode = mode;
     obj->name = g_SubDeviceName[mode].name;
     obj->i2c0SlaveAddr = obj->i2c1SlaveAddr = SUB_DEVICES_ADDR_PRIFIXED | mode << 1;
@@ -78,22 +80,35 @@ bool SubDevice_Init(void)
 
     SubDevice_InsertMode(&g_AllModes[mode], mode);
     pSubDeviceSelf = &g_AllModes[mode];
+
+    if (SubDevice_IsSelfMaster()) {
+        TimerHandle_t xTimersIpmiReset = xTimerCreate("SubDeviceHeartBeat", 500/portTICK_RATE_MS, pdTRUE, 
+                                        0, SubDevice_HeartBeatTimerCallBack);
+        return xTimerStart(xTimersIpmiReset, portMAX_DELAY);
+    }
 	return true;
 }
 
-bool SubDevice_IsSlefMaster(void)
+bool SubDevice_IsSelfMaster(void)
 {
     if (pSubDeviceSelf == NULL) {
         return false;
     }
     return pSubDeviceSelf->isMain;
 }
-bool SubDevice_IsRegistered(void)
+SUB_DEVICE_MODE SubDevice_GetMyMode(void)
+{
+    if (pSubDeviceSelf == NULL) {
+        return SUB_DEVICE_MODE_MAX;
+    }
+    return pSubDeviceSelf->mode;
+}
+bool SubDevice_IsOnLine(void)
 {
     if (pSubDeviceSelf == NULL) {
         return false;
     }
-    return pSubDeviceSelf->isRegistered;
+    return pSubDeviceSelf->isOnLine;
 }
 uint8_t SubDevice_GetMySlaveAddress(uint32_t bus)
 {
@@ -112,11 +127,22 @@ uint8_t SubDevice_GetMySlaveAddress(uint32_t bus)
             return 0;
     }
 }
-SubDeviceMODE_T *SubDevice_GetSlef(void)
+SubDeviceMODE_T *SubDevice_GetSelf(void)
 {
     return pSubDeviceSelf;
 }
 // master called only
+static void SubDevice_SetOnLine(SUB_DEVICE_MODE mode, bool isOnline)
+{
+    for (uint8_t i = 0; i < SUB_DEVICE_MODE_MAX; i++)
+    {
+        if (g_AllModes[i].mode == mode) {
+            pSubDeviceSelf->isOnLine = isOnline;
+            return;
+        }
+    }
+}
+    
 static bool SubDevice_QueryModeByAddr(uint8_t addrBit8, SUB_DEVICE_MODE *mode)
 {
     uint8_t addrHi = addrBit8 & 0xF0;
@@ -151,4 +177,31 @@ bool SubDevice_Management(uint8_t addr)
     }
     return false; // full
 }
+static uint32_t g_busUsed = NM_SECONDARY_IPMB_BUS;
+uint32_t SubDevice_GetBus(void)
+{
+    return g_busUsed;
+}
+extern xQueueHandle ResponseDatMsg_Queue;
+static void SubDevice_HeartBeatTimerCallBack(xTimerHandle pxTimer)
+{
+	//uint32_t cmd = (CHASSIS_CMD_CTRL)((uint32_t)pvTimerGetTimerID(pxTimer));
 
+    SamllMsgPkt_T msgPkt;
+    //IPMIMsgHdr_T *hdr = &msgPkt.Data;
+    msgPkt.Param = FORWARD_IPMB_RESPONSE;
+    msgPkt.Channel = NM_SECONDARY_IPMB_BUS;
+    msgPkt.Size = sizeof(IPMIMsgHdr_T) + sizeof(INT8U);
+
+    for (uint8_t i = 0; i < SUB_DEVICE_MODE_MAX; i++)
+    {
+        if (g_AllModes[i].mode == pSubDeviceSelf->mode) { // master self
+            continue;
+        }
+//        if (g_AllModes[i].mode == SUB_DEVICE_MODE_MAX) {// get a new buff
+//            SubDevice_InsertMode(&g_AllModes[i], newMode);
+//            return true;
+//        }
+//        SendMessage
+    }
+}

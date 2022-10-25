@@ -610,7 +610,7 @@ void I2C0_EV_IRQHandler(void)
             }
             else  // netFn odd---Response: as master, The response received after an active message is sent
             {
-                if(0){
+                if(FORWARD_TYPE_WAIT){
                     g_i2c_Req.Param = IPMI_REQUEST;
                     err = xQueueSendFromISR(RecvForwardI2CDatMsg_Queue, (char*)&g_i2c_Req, &xHigherPriorityTaskWoken);
                 }else{
@@ -750,7 +750,7 @@ void I2C1_EV_IRQHandler(void)
             }
             else  // netFn odd---Response: as master, The response received after an active message is sent
             {
-                if(0){
+                if(FORWARD_TYPE_WAIT){
                     g_i2c_Req.Param = IPMI_REQUEST;
                     err = xQueueSendFromISR(RecvForwardI2CDatMsg_Queue, (char*)&g_i2c_Req, &xHigherPriorityTaskWoken);
                 }else{

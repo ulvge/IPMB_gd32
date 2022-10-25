@@ -39,7 +39,7 @@ typedef struct
 {
     SUB_DEVICE_MODE mode;
     bool isMain;
-    bool isRegistered;
+    bool isOnLine;
     uint8_t     i2c0SlaveAddr; //8bit
     uint8_t     i2c1SlaveAddr; //8bit
     const char     *name;
@@ -47,12 +47,13 @@ typedef struct
 } SubDeviceMODE_T;
 
 bool SubDevice_Init(void);
-bool SubDevice_IsSlefMaster(void);
-bool SubDevice_IsRegistered(void);
+bool SubDevice_IsSelfMaster(void);
+bool SubDevice_IsOnLine(void);
 uint8_t SubDevice_GetMySlaveAddress(uint32_t bus);
 bool SubDevice_Management(uint8_t addr);
+uint32_t SubDevice_GetBus(void);
 
-SubDeviceMODE_T *SubDevice_GetSlef(void);
+SubDeviceMODE_T *SubDevice_GetSelf(void);
 
 #ifdef __cplusplus
 }

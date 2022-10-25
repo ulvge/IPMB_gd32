@@ -62,19 +62,41 @@ extern xQueueHandle ResponseDatMsg_Queue;
 INT16U
 ProcessSerialMessage (MsgPkt_T* pReq, MsgPkt_T* pRes,int BMCInst)
 {
-    IPMIMsgHdr_T *pIPMIReqHdr = (IPMIMsgHdr_T *)pReq->Data;
-    if (pIPMIReqHdr->ResAddr == SubDevice_GetMySlaveAddress(pReq->Channel)) { // slef msg. Process it
+    IPMIMsgHdr_T *pIPMIReqHdr = (IPMIMsgHdr_T *)pReq->Data;  
+	pRes->Channel = pReq->Channel = SubDevice_GetBus();
+    if (pIPMIReqHdr->ResAddr == SubDevice_GetMySlaveAddress(pReq->Channel)) { // self msg. Process it
         // pRes->Param = SERIAL_REQUEST; // if you want: serial in /serial out,not serial in /I2C out
         pRes->Param = IPMI_REQUEST;
         return ProcessIPMIReq(pReq, pRes); // get&hand map
     }
-    else if (SubDevice_IsSlefMaster())
-    { // self is master ,help to Forwarded it
-        ipmb_set_dualaddr(pReq->Channel, pIPMIReqHdr->ReqAddr);
-        pRes->Param = FORWARD_IPMB_REQUEST;
-        pRes->Size = pReq->Size;
-        _fmemcpy(pRes->Data, pReq->Data, pReq->Size);
-        return pRes->Size;
+    else if (SubDevice_IsSelfMaster())
+    { // self is master ,help to Forwarded it 
+
+        if (FORWARD_TYPE_WAIT) {      
+			ipmb_set_dualaddr(pReq->Channel, pIPMIReqHdr->ReqAddr);
+			pReq->Param = FORWARD_IPMB_REQUEST;
+            BaseType_t err = xQueueSend(ResponseDatMsg_Queue, (char*)pReq, 50);
+            if(err == pdFALSE) {
+                return 0;
+            }
+
+            char buff[sizeof(MsgPkt_T)];
+            MsgPkt_T* recvReq = (MsgPkt_T*)buff;
+            err = xQueueReceive(RecvForwardI2CDatMsg_Queue, buff, 500);
+            if(err == pdFALSE){
+                return 0;
+            }
+            if (ProcessIPMBForardResponse(recvReq, pRes) == false){
+                return 0;
+			}
+            return pRes->Size;
+        } else {                      
+			ipmb_set_dualaddr(pReq->Channel, pIPMIReqHdr->ReqAddr);
+			pRes->Param = FORWARD_IPMB_REQUEST;
+			pRes->Size = pReq->Size;         
+            _fmemcpy(pRes->Data, pReq->Data, pReq->Size);
+            return pReq->Size;  //  @
+        }
     }
     else
     {
