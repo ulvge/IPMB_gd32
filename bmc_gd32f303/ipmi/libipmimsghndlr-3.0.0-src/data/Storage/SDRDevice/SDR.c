@@ -1239,6 +1239,25 @@ INT16U SDR_GetNextSDRId(FullSensorRec_T *pCurrentSdr, int BMCInst)
     return 0xFFFF; // The last record , next id set to  0xFFFF
 }
 
+/*----------------------------------------------------------*
+ * SDR_GetNextSDRId
+ *----------------------------------------------------------*/
+void SDR_GetAllRecSensorNum(INT8U mode, uint8_t *buff, uint8_t maxCount)
+{
+    FullSensorRec_T *pSDR;
+    uint8_t writeCount = 0;
+    for (INT16U i = 1; i < GetSDRRepositoryNum(); i++)
+    {
+        pSDR = &g_sensor_sdr[i];
+        if (pSDR->OEMField == mode) {
+            buff[writeCount++] = pSDR->SensorNum;
+            if (writeCount >= maxCount) {
+                return;
+            }
+        }
+    }
+}
+
 /*--------------------------------------------------
  * SDR_GetFirstSDRRec
  *--------------------------------------------------*/

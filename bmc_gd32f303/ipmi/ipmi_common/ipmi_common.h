@@ -31,7 +31,6 @@
 *@param Len Size of data for checksum calculation
 *@return Returns the checksum value
 */
-extern bool CalculateCheckSum1(INT8U *Pkt);
 extern INT32U CalculateCheckSum2(INT8U *Pkt, INT32U Len);
 extern INT8U CalculateCheckSum(const INT8U *Pkt, INT32U Len);
 

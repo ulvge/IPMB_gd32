@@ -157,18 +157,18 @@
         <Bp>
           <Number>0</Number>
           <Type>0</Type>
-          <LineNumber>1926</LineNumber>
+          <LineNumber>231</LineNumber>
           <EnabledFlag>1</EnabledFlag>
-          <Address>134227668</Address>
+          <Address>134239104</Address>
           <ByteObject>0</ByteObject>
           <HtxType>0</HtxType>
           <ManyObjects>0</ManyObjects>
           <SizeOfObject>0</SizeOfObject>
           <BreakByAccess>0</BreakByAccess>
           <BreakIfRCount>1</BreakIfRCount>
-          <Filename>&lt;1&gt;..\ipmi\libipmimsghndlr-3.0.0-src\data\SensorEvent\SensorDevice\Sensor.c</Filename>
+          <Filename>&lt;1&gt;..\api\sub_devices\api_subdevices.c</Filename>
           <ExecCommand></ExecCommand>
-          <Expression>\\bmc_rom\../ipmi/libipmimsghndlr-3.0.0-src/data/SensorEvent/SensorDevice/Sensor.c\1926</Expression>
+          <Expression>\\bmc_rom\../api/sub_devices/api_subdevices.c\231</Expression>
         </Bp>
       </Breakpoint>
       <WatchWindow1>
@@ -218,6 +218,16 @@
           <count>3</count>
           <WinNumber>2</WinNumber>
           <ItemText>*unitType</ItemText>
+        </Ww>
+        <Ww>
+          <count>4</count>
+          <WinNumber>2</WinNumber>
+          <ItemText>g_ADC</ItemText>
+        </Ww>
+        <Ww>
+          <count>5</count>
+          <WinNumber>2</WinNumber>
+          <ItemText>g_subDeviceHandler.slaveSensorNum</ItemText>
         </Ww>
       </WatchWindow2>
       <MemoryWindow1>

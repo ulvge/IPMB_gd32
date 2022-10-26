@@ -92,6 +92,8 @@ extern INT16U SDR_GetNextSDRId(FullSensorRec_T *pCurrentSdr, int BMCInst);
 extern SDRRecHdr_T*   ReadSDRRepository (SDRRecHdr_T* pSDRRec,int BMCInst);
 extern FullSensorRec_T *ReadSensorRecByID(INT8U id, int BMCInst);
 extern FullSensorRec_T *ReadSensorRecBySensorNum(INT8U destMode, INT8U sensorName, int BMCInst);
+extern void SDR_GetAllRecSensorNum(INT8U mode, uint8_t *buff, uint8_t maxCount);
+
 /**
  * @brief Write into SDR Repository.
  * @param pSDRRec - Record to be written.

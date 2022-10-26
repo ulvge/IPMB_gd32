@@ -7,6 +7,18 @@
 #include "IPMIConf.h"
 #include "IPMDevice.h"
 #include "OSPort.h"
+#include "IPMI_SensorEvent.h"
+#include "ipmi_common.h"
+#include "sdr.h"
+#include "IPMI_Sensor.h"
+
+typedef struct
+{
+    uint32_t  busUsed;
+    uint8_t   slaveSensorNum[2];
+} SubDeviceHandler_T;
+
+static SubDeviceHandler_T g_subDeviceHandler;
 
 static void SubDevice_HeartBeatTimerCallBack(xTimerHandle pxTimer);
 static const SubDeviceName_T g_SubDeviceName[] = {
@@ -47,17 +59,20 @@ static void SubDevice_InitAllMode(void)
         obj->i2c0SlaveAddr = obj->i2c1SlaveAddr = SUB_DEVICES_ADDR_DEFAULT;
     }
 }
+
+static uint8_t SubDevice_modeConvertSlaveAddr(SUB_DEVICE_MODE mode)
+{
+    return SUB_DEVICES_ADDR_PRIFIXED | (mode << 1);
+}
 static void SubDevice_InsertMode(SubDeviceMODE_T *obj, SUB_DEVICE_MODE mode)
 {
     if (mode == SUB_DEVICE_MODE_MAIN) {
         obj->isMain = true;
-    } else {
-        obj->isMain = false;
     }
     obj->isOnLine = true;
     obj->mode = mode;
     obj->name = g_SubDeviceName[mode].name;
-    obj->i2c0SlaveAddr = obj->i2c1SlaveAddr = SUB_DEVICES_ADDR_PRIFIXED | mode << 1;
+    obj->i2c0SlaveAddr = obj->i2c1SlaveAddr = SubDevice_modeConvertSlaveAddr(mode);
 }
 static SubDeviceMODE_T *pSubDeviceSelf = NULL;
 /// @brief read my slave address from GPIO switch,then init all buff if I'm a main(master)
@@ -81,6 +96,8 @@ bool SubDevice_Init(void)
     SubDevice_InsertMode(&g_AllModes[mode], mode);
     pSubDeviceSelf = &g_AllModes[mode];
 
+    g_subDeviceHandler.busUsed = NM_SECONDARY_IPMB_BUS;          
+    SDR_GetAllRecSensorNum((INT8U)SUB_DEVICE_MODE_POWER, g_subDeviceHandler.slaveSensorNum, sizeof(g_subDeviceHandler.slaveSensorNum));
     if (SubDevice_IsSelfMaster()) {
         TimerHandle_t xTimersIpmiReset = xTimerCreate("SubDeviceHeartBeat", 500/portTICK_RATE_MS, pdTRUE, 
                                         0, SubDevice_HeartBeatTimerCallBack);
@@ -110,6 +127,9 @@ bool SubDevice_IsOnLine(void)
     }
     return pSubDeviceSelf->isOnLine;
 }
+/// @brief master and slave i2c init will be called
+/// @param bus 
+/// @return 
 uint8_t SubDevice_GetMySlaveAddress(uint32_t bus)
 {
     if (pSubDeviceSelf == NULL) {
@@ -177,10 +197,9 @@ bool SubDevice_Management(uint8_t addr)
     }
     return false; // full
 }
-static uint32_t g_busUsed = NM_SECONDARY_IPMB_BUS;
 uint32_t SubDevice_GetBus(void)
 {
-    return g_busUsed;
+    return g_subDeviceHandler.busUsed;
 }
 extern xQueueHandle ResponseDatMsg_Queue;
 static void SubDevice_HeartBeatTimerCallBack(xTimerHandle pxTimer)
@@ -191,37 +210,43 @@ static void SubDevice_HeartBeatTimerCallBack(xTimerHandle pxTimer)
     IPMIMsgHdr_T *hdr = (IPMIMsgHdr_T *)&(requestPkt.Data);
     requestPkt.Param = IPMB_SUB_DEVICE_HEARTBEAT_REQUEST;
     requestPkt.Channel = SubDevice_GetBus();
-    requestPkt.Size = sizeof(IPMIMsgHdr_T) + sizeof(INT8U);
     int len;
 
-    for (uint8_t i = 0; i < SUB_DEVICE_MODE_MAX; i++)
+    for (SUB_DEVICE_MODE i = SUB_DEVICE_MODE_NET; i < SUB_DEVICE_MODE_MAX; i++)
     {
         if (g_AllModes[i].mode == pSubDeviceSelf->mode) { // master self
             continue;
         }
         
+        hdr->ResAddr = SubDevice_modeConvertSlaveAddr(i);
+        hdr->NetFnLUN = NETFN_SENSOR << 2; // RAW
+        hdr->ChkSum = CalculateCheckSum((INT8U*)hdr, 2);
+        
         hdr->ReqAddr = SubDevice_GetMySlaveAddress(requestPkt.Channel);
-        hdr->NetFnLUN = NETFN_OEM << 2; // RAW
-        hdr->ChkSum = CalculateCheckSum2((INT8U*)hdr, 2);
         hdr->RqSeqLUN = 0x01;
-        hdr->Cmd = 0x02; // update firmware
-        len = sizeof(IPMIMsgHdr_T);
+        hdr->Cmd = CMD_GET_SENSOR_READING;
 
-        //requestPkt.Data[len++] = 0;
-        //requestPkt.Data[len++] = 0;
+        for (uint8_t numIdex = 0; numIdex < sizeof(g_subDeviceHandler.slaveSensorNum); numIdex++)
+        {
+            len = sizeof(IPMIMsgHdr_T);
+            requestPkt.Data[len++] = g_subDeviceHandler.slaveSensorNum[numIdex];
+            requestPkt.Data[len++] = i; // OEMFiled
 
-        requestPkt.Data[len] = CalculateCheckSum2(requestPkt.Data, len);
-        requestPkt.Size = len + 1;
+            requestPkt.Data[len++] = CalculateCheckSum(requestPkt.Data, len);
+            requestPkt.Size = len;
 
-        // if (SendMsgAndWait(&requestPkt, &recvReq, 500) == pdFALSE)
-        // {
-        //     return;
-        // }
-
-//        if (g_AllModes[i].mode == SUB_DEVICE_MODE_MAX) {// get a new buff
-//            SubDevice_InsertMode(&g_AllModes[i], newMode);
-//            return true;
-//        }
-//        SendMessage
+            if (SendMsgAndWait(&requestPkt, &recvReq, 500) == pdFALSE)
+            {
+                continue;
+            }
+            if (recvReq.Size - sizeof(IPMIMsgHdr_T) == sizeof(GetSensorReadingRes_T)) {
+                GetSensorReadingRes_T *pSensorReading = (GetSensorReadingRes_T *)&recvReq.Data[sizeof(IPMIMsgHdr_T)];
+                if (pSensorReading->CompletionCode == CC_NORMAL) {
+                    g_AllModes[i].deviceCache[0] = pSensorReading->SensorReading;
+                    // float humanReading;
+                    // ipmi_convert_reading( sdr_buffer, g_AllModes[i].deviceCache[0], &humanReading );
+                }
+            }
+        }
     }
 }

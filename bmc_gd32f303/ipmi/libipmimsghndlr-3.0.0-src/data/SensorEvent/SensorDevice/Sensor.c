@@ -1919,9 +1919,9 @@ int GetSensorReading(INT8U *pReq, INT8U ReqLen, INT8U *pRes, int BMCInst)
     
 	const ADCChannlesConfig *chanCfg = NULL;
     uint16_t adcVal;
-    SUB_DEVICE_MODE destMode = SUB_DEVICE_MODE_MAIN;
-    if (ReqLen == 1) {
-        destMode = SubDevice_GetMyMode();
+    SUB_DEVICE_MODE destMode = SubDevice_GetMyMode();
+    if (ReqLen == 2) {
+        destMode = (SUB_DEVICE_MODE)(pReq[1]);
     }
 	get_res = api_sensorGetValBySensorNum(destMode, pSensorReadReq->SensorNum, &adcVal);
 

@@ -43,7 +43,7 @@ typedef struct
     uint8_t     i2c0SlaveAddr; //8bit
     uint8_t     i2c1SlaveAddr; //8bit
     const char     *name;
-    uint8_t buff[SUB_DEVICES_BUFF_SIZE];
+    uint8_t deviceCache[SUB_DEVICES_BUFF_SIZE];
 } SubDeviceMODE_T;
 
 bool SubDevice_Init(void);
