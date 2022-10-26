@@ -187,17 +187,37 @@ static void SubDevice_HeartBeatTimerCallBack(xTimerHandle pxTimer)
 {
 	//uint32_t cmd = (CHASSIS_CMD_CTRL)((uint32_t)pvTimerGetTimerID(pxTimer));
 
-    SamllMsgPkt_T msgPkt;
-    //IPMIMsgHdr_T *hdr = &msgPkt.Data;
-    msgPkt.Param = IPMB_SUB_DEVICE_HEARTBEAT_REQUEST;
-    msgPkt.Channel = NM_SECONDARY_IPMB_BUS;
-    msgPkt.Size = sizeof(IPMIMsgHdr_T) + sizeof(INT8U);
+    MsgPkt_T requestPkt, recvReq;
+    IPMIMsgHdr_T *hdr = (IPMIMsgHdr_T *)&(requestPkt.Data);
+    requestPkt.Param = IPMB_SUB_DEVICE_HEARTBEAT_REQUEST;
+    requestPkt.Channel = SubDevice_GetBus();
+    requestPkt.Size = sizeof(IPMIMsgHdr_T) + sizeof(INT8U);
+    int len;
 
     for (uint8_t i = 0; i < SUB_DEVICE_MODE_MAX; i++)
     {
         if (g_AllModes[i].mode == pSubDeviceSelf->mode) { // master self
             continue;
         }
+        
+        hdr->ReqAddr = SubDevice_GetMySlaveAddress(requestPkt.Channel);
+        hdr->NetFnLUN = NETFN_OEM << 2; // RAW
+        hdr->ChkSum = CalculateCheckSum2((INT8U*)hdr, 2);
+        hdr->RqSeqLUN = 0x01;
+        hdr->Cmd = 0x02; // update firmware
+        len = sizeof(IPMIMsgHdr_T);
+
+        //requestPkt.Data[len++] = 0;
+        //requestPkt.Data[len++] = 0;
+
+        requestPkt.Data[len] = CalculateCheckSum2(requestPkt.Data, len);
+        requestPkt.Size = len + 1;
+
+        // if (SendMsgAndWait(&requestPkt, &recvReq, 500) == pdFALSE)
+        // {
+        //     return;
+        // }
+
 //        if (g_AllModes[i].mode == SUB_DEVICE_MODE_MAX) {// get a new buff
 //            SubDevice_InsertMode(&g_AllModes[i], newMode);
 //            return true;

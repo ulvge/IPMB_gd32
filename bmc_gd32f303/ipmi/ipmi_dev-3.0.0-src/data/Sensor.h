@@ -28,11 +28,6 @@
 #include "SensorMonitor.h"
 
 
-#define SENSOR_FAN_NUM 4  // no use
-#define SENSOR_TEMP_NUM 4
-#define SENSOR_VOLTAGE_NUM 4
-#define SENSOR_NUM (SENSOR_TEMP_NUM + SENSOR_VOLTAGE_NUM)
-
 /**
  * @brief Sensor Types
  */

@@ -480,21 +480,13 @@ void SR_GetDevSDRInfo(GetSDRInfoRes_T *GetSDRInfoRes, int BMCInst)
 }
 
 /*---------------------------------------
- * GetDevSDRInfo
+ * GetDevSDRInfo Number
  *---------------------------------------*/
 int GetDevSDRInfo(INT8U *pReq, INT8U ReqLen, INT8U *pRes, int BMCInst)
 {
-	SDRRecHdr_T *SDRRec;
-	BMCInfo_t *pBMCInfo = &g_BMCInfo;
-	GetSDRInfoReq_T *pGetDevSDRInfoReq = (GetSDRInfoReq_T *)pReq;
 	GetSDRInfoRes_T *pGetDevSDRInfoRes = (GetSDRInfoRes_T *)pRes;
-	CompactSensorRec_T *pCompactSDRRec = NULL;
-	FullSensorRec_T *pFullSDRRec = NULL;
-	INT8U NumSDRs = 0;
 	INT8U NumSensors = 0;
-	INT16U OwnerLUN = 0;
 	INT8U SensorLun = 0;
-	INT8U NumSharedSensors = 0;
 
 	if (ReqLen > 1)
 	{
@@ -502,113 +494,26 @@ int GetDevSDRInfo(INT8U *pReq, INT8U ReqLen, INT8U *pRes, int BMCInst)
 		return sizeof(INT8U);
 	}
 
-#if 1
-    INT8U senNum = GetSDRRepositoryNum();//SENSOR_NUM
+    NumSensors = GetSDRRepositoryNum();
     pGetDevSDRInfoRes->CompletionCode = CC_NORMAL;
-	if (ReqLen == 0)
-	{ // no reqest paremeter
-		pGetDevSDRInfoRes->NumSensor = senNum;
-	}
-	else if ((pGetDevSDRInfoReq->Operation & 0x01) == 0)
-	{ // get sdr count
-		pGetDevSDRInfoRes->NumSensor = senNum;
-	}
-	else
-	{ // get sensor count
-		pGetDevSDRInfoRes->NumSensor = senNum;
-	}
-	return sizeof(GetSDRInfoRes_T); 
-#else
-	/* Check for proper operation flag before proceeding with task */
-	if ((pGetDevSDRInfoReq->Operation != SDR_INFO_SDR_COUNT) &&
-		(pGetDevSDRInfoReq->Operation != SDR_INFO_SENSOR_COUNT) && (ReqLen == 1))
-	{
-		pGetDevSDRInfoRes->CompletionCode = CC_INV_DATA_FIELD;
-		return sizeof(INT8U);
-	}
-
-	// If multiple LUNs are supported, then we parse the OwnerLUN from the TLS
-	// We need to fetch the sensor count for the requester's LUN
-	//	if(g_corefeatures.more_than_256_sensors == ENABLED)
-	//	{
-	//		OS_THREAD_TLS_GET(g_tls.NetFnLUN,OwnerLUN);
-
-	//		if (OwnerLUN != 0xFF)
-	//		SensorLun = (OwnerLUN & VALID_LUN);
-	//		else
-	//		SensorLun = 0;
-	//	}
-	//	else
-	//	{
-	//		SensorLun = 0;
-	//	}
-
-	OS_THREAD_MUTEX_ACQUIRE(&pBMCInfo->SDRConfig.SDRMutex, WAIT_INFINITE);
-
-	/* Count number of full and compact sensors */
-	SDRRec = SDR_GetFirstSDRRec(BMCInst);
-	while (0 != SDRRec)
-	{
-		/* Found a SDR. Increment the number of SDRs counter */
-		NumSDRs++;
-
-		/* Parse by the type of SDR found */
-		switch (SDRRec->Type)
-		{
-		/* For Full SDR Record, if the SDR LUN matches with the requester's LUN */
-		/* Then, increment the number of Sensors counter */
-		case FULL_SDR_REC:
-		{
-			pFullSDRRec = (FullSensorRec_T *)(SDRRec);
-
-			if (pFullSDRRec->OwnerLUN == SensorLun)
-				NumSensors++;
-
-			break;
-		}
-
-		/* For Compact SDR Record, if the SDR LUN matches with the requester's LUN */
-		/* Then, increment the number of sensors counter */
-		case COMPACT_SDR_REC:
-		{
-			pCompactSDRRec = (CompactSensorRec_T *)(SDRRec);
-
-			if (pCompactSDRRec->OwnerLUN == SensorLun)
-			{
-				NumSensors++;
-
-				NumSharedSensors = ipmitoh_u16(pCompactSDRRec->RecordSharing) & SHARED_RECD_COUNT;
-				if (NumSharedSensors > 1)
-				{
-					NumSensors += (NumSharedSensors - 1);
-				}
-			}
-
-			break;
-		}
-		}
-
-		/* Get the next record */
-		SDRRec = SDR_GetNextSDRRec(SDRRec, BMCInst);
-	}
-
-	/* Fill in response data */
-	pGetDevSDRInfoRes->CompletionCode = CC_NORMAL;
-
-	if (pGetDevSDRInfoReq->Operation == SDR_INFO_SDR_COUNT)
-		pGetDevSDRInfoRes->NumSensor = NumSDRs;
-	else
-		pGetDevSDRInfoRes->NumSensor = NumSensors;
-
+	pGetDevSDRInfoRes->NumSensor = NumSensors;
 	pGetDevSDRInfoRes->Flags = (0x01 << SensorLun); /* BIT7 = 0 (static sensors), BIT0 = 1 (on LUN 0) */
-	pGetDevSDRInfoRes->TimeStamp = 0;
-
-	OS_THREAD_MUTEX_RELEASE(&pBMCInfo->SDRConfig.SDRMutex);
-
-	return sizeof(GetSDRInfoRes_T);  
-#endif
+	return sizeof(GetSDRInfoRes_T); 
 }
 
+// /*---------------------------------------
+// * GetSubDevSensorInfo
+// *---------------------------------------*/
+// int GetSubDevSensorInfo(INT8U *pReq, INT8U ReqLen, INT8U *pRes, int BMCInst)
+// {
+// 	GetSubDevicesSDRInfoRes_T *pGetDevSDRInfoRes = (GetSubDevicesSDRInfoRes_T *)pRes;
+// 	INT8U SensorLun = 0;
+// 	INT8U NumSharedSensors = 0;
+
+//     pGetDevSDRInfoRes->CompletionCode = CC_NORMAL;
+// 	pGetDevSDRInfoRes->SensorCount = GetSDRRepositoryNum();
+// 	return sizeof(GetSDRInfoRes_T); 
+// }
 /*---------------------------------------
  * GetDevSDR
  *---------------------------------------*/

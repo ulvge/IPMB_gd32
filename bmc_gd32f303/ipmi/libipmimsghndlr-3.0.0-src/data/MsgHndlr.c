@@ -290,7 +290,20 @@ void *MsgCoreHndlr(void *pArg)
         // LOG_RAW("\n");
     }
 }
+BaseType_t SendMsgAndWait(MsgPkt_T* pReq, MsgPkt_T* pRes, INT32U timeout)
+{
+    BaseType_t err = xQueueSend(ResponseDatMsg_Queue, (char*)pReq, 50);
+    if(err == pdFALSE) {
+        return pdFAIL;
+    }
 
+    err = xQueueReceive(RecvForwardI2CDatMsg_Queue, pRes, timeout);
+    if(err == pdFALSE){
+        return pdFAIL;
+    }
+	
+    return pdPASS;
+}
 bool ProcessIPMBForardResponse(MsgPkt_T *pReq, MsgPkt_T *pRes)
 {           
     INT8U EnRes [MAX_SERIAL_PKT_SIZE];

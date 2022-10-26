@@ -75,7 +75,40 @@ typedef struct
     INT8U   Operation;
 }  GetSDRInfoReq_T;
 
-/* GetSDRInfoRes_T */
+// part sensor describe for transter subdevice msg
+//typedef struct{
+//    INT8U   sensorNumber;
+//    INT8U   sensorUnits2;
+//    INT8U   sensorMTolerance;
+//    INT8U   sensorB;
+//    INT8U   sensorBAccuracy;
+//    INT8U   sensorAAccuracy;
+//    INT8U   sensorRBexponent;
+
+//    INT8U   sensorThresholdState;
+
+//    INT8U   UpperNonRecoverable;
+//    INT8U   UpperCritical;
+//    INT8U   UpperNonCritical;
+//    
+//    INT8U   LowerNonRecoverable;
+//    INT8U   LowerCritical;
+//    INT8U   LowerNonCritical;
+
+//    GetSensorReadingFactorRes_T aa; //GetSensorReadingFactorReq_T
+//    GetSensorThresholdRes_T bb; // GetSensorThresholdReq_T
+//    GetSensorTypeRes_T dd;      //GetSensorTypeReq_T
+//    GetSensorReadingRes_T cc; //GetSensorReadingReq_T
+//} PartSensorRec_T;
+
+///* GetSDRInfoRes_T */
+//typedef struct
+//{
+//    INT8U   CompletionCode;
+//    INT8U   SensorCount;
+//    PartSensorRec_T sensorRec[2];
+//}  GetSubDevicesSDRInfoRes_T;
+
 typedef struct
 {
     INT8U   CompletionCode;
@@ -84,7 +117,6 @@ typedef struct
     INT32U  TimeStamp;
 
 }  GetSDRInfoRes_T;
-
 
 /* GetDevSDRReq_T */
 typedef struct

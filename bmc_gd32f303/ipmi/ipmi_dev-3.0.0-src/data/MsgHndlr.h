@@ -32,6 +32,7 @@
 #include "Types.h"
 #include "Message.h"
 #include "IPMIDefs.h"
+#include "OSPort.h"
 
 #define BMC_LUN_00                      0
 #define BMC_LUN_01                      1
@@ -382,6 +383,7 @@ extern void ipmb_set_dualaddr(INT32U i2c_periph, INT32U dualaddr);
 
 extern INT32U ProcessIPMIReq(MsgPkt_T *pReq, MsgPkt_T *pRes);
 extern bool ProcessIPMBForardResponse(MsgPkt_T *pReq, MsgPkt_T *pRes);
+extern BaseType_t SendMsgAndWait(MsgPkt_T *pReq, MsgPkt_T *pRes, INT32U timeout);
 
 #ifdef __cplusplus
 }
