@@ -14,10 +14,10 @@
 #include "adc/api_adc.h"
 #include "fan/api_fan.h"
 
-bool api_sensorGetUnitType(UINT32 sensorNum, uint8_t *unitType)
+bool api_sensorGetUnitType(INT8U destMode, UINT32 sensorNum, uint8_t *unitType)
 {
 	int BMCInst = 0;
-    FullSensorRec_T *pSdr = ReadSensorRecBySensorNum(sensorNum, BMCInst);   
+    FullSensorRec_T *pSdr = ReadSensorRecBySensorNum(destMode, sensorNum, BMCInst);   
 	if (pSdr == NULL){
 		return false;
 	}
@@ -25,15 +25,15 @@ bool api_sensorGetUnitType(UINT32 sensorNum, uint8_t *unitType)
     return true;
 }
 
-BOOLEAN api_sensorGetValBySensorNum(UINT16 sensorNum, UINT16 *val)
+BOOLEAN api_sensorGetValBySensorNum(INT8U destMode, UINT16 sensorNum, UINT16 *val)
 {
-    uint8_t *unitType;
-    if (api_sensorGetUnitType(sensorNum, unitType) == false){
+    uint8_t unitType;
+    if (api_sensorGetUnitType(destMode, sensorNum, &unitType) == false){
         return false;
     }
 	uint16_t *fanRpm;
 	
-	switch (*unitType)
+	switch (unitType)
 	{
         case IPMI_UNIT_RPM:     
             if (fan_get_rotate_rpm(sensorNum, val)) {

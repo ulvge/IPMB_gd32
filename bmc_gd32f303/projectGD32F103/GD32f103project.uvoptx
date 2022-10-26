@@ -153,7 +153,24 @@
           <Name>UL2CM3(-S0 -C0 -P0 )  -FN1 -FC1000 -FD20000000 -FF0GD32F10x_MD -FL020000 -FS08000000 -FP0($$Device:GD32F103VB$Flash\GD32F10x_MD.FLM)</Name>
         </SetRegEntry>
       </TargetDriverDllRegistry>
-      <Breakpoint/>
+      <Breakpoint>
+        <Bp>
+          <Number>0</Number>
+          <Type>0</Type>
+          <LineNumber>1926</LineNumber>
+          <EnabledFlag>1</EnabledFlag>
+          <Address>134227668</Address>
+          <ByteObject>0</ByteObject>
+          <HtxType>0</HtxType>
+          <ManyObjects>0</ManyObjects>
+          <SizeOfObject>0</SizeOfObject>
+          <BreakByAccess>0</BreakByAccess>
+          <BreakIfRCount>1</BreakIfRCount>
+          <Filename>&lt;1&gt;..\ipmi\libipmimsghndlr-3.0.0-src\data\SensorEvent\SensorDevice\Sensor.c</Filename>
+          <ExecCommand></ExecCommand>
+          <Expression>\\bmc_rom\../ipmi/libipmimsghndlr-3.0.0-src/data/SensorEvent/SensorDevice/Sensor.c\1926</Expression>
+        </Bp>
+      </Breakpoint>
       <WatchWindow1>
         <Ww>
           <count>0</count>
@@ -185,42 +202,22 @@
         <Ww>
           <count>0</count>
           <WinNumber>2</WinNumber>
-          <ItemText>SUB_DEVICE_MODE_MAX</ItemText>
+          <ItemText>g_sensor_sdr</ItemText>
         </Ww>
         <Ww>
           <count>1</count>
           <WinNumber>2</WinNumber>
-          <ItemText>mode</ItemText>
+          <ItemText>pCurrentSdr</ItemText>
         </Ww>
         <Ww>
           <count>2</count>
           <WinNumber>2</WinNumber>
-          <ItemText>SUB_DEVICE_MODE_STORAGE2</ItemText>
+          <ItemText>pSDRRecNext</ItemText>
         </Ww>
         <Ww>
           <count>3</count>
           <WinNumber>2</WinNumber>
-          <ItemText>SUB_DEVICE_MODE_MAX</ItemText>
-        </Ww>
-        <Ww>
-          <count>4</count>
-          <WinNumber>2</WinNumber>
-          <ItemText>pRes</ItemText>
-        </Ww>
-        <Ww>
-          <count>5</count>
-          <WinNumber>2</WinNumber>
-          <ItemText>ResMsg</ItemText>
-        </Ww>
-        <Ww>
-          <count>6</count>
-          <WinNumber>2</WinNumber>
-          <ItemText>ResMsg-&gt;Param</ItemText>
-        </Ww>
-        <Ww>
-          <count>7</count>
-          <WinNumber>2</WinNumber>
-          <ItemText>pSubDeviceSelf</ItemText>
+          <ItemText>*unitType</ItemText>
         </Ww>
       </WatchWindow2>
       <MemoryWindow1>

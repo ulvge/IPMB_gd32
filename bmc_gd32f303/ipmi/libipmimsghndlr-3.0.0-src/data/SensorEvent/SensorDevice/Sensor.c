@@ -45,6 +45,7 @@
 #include "adc/api_adc.h"
 #include "tmp/api_tmp.h"
 #include "sensor/api_sensor.h"
+#include "api_subdevices.h"
 
 /* Reserved bit macro definitions */
 #define RESERVED_BITS_SETSENSORTYPE 0X80				//(BIT7)
@@ -1082,7 +1083,11 @@ int GetSensorThresholds(INT8U *pReq, INT8U ReqLen, INT8U *pRes, int BMCInst)
 	INT16U OwnerLUN = 0;
 
 	GetSensorThresholdRes_T *thresholds_res = (GetSensorThresholdRes_T *)pRes;
-	FullSensorRec_T *pSdr = ReadSensorRecBySensorNum(pSensorThreshReq->SensorNum, BMCInst);   
+    SUB_DEVICE_MODE destMode = SUB_DEVICE_MODE_MAIN;
+    if (ReqLen == 1) {
+        destMode = SubDevice_GetMyMode();
+    }
+	FullSensorRec_T *pSdr = ReadSensorRecBySensorNum(destMode, pSensorThreshReq->SensorNum, BMCInst);   
 	if (pSdr == NULL){
 		thresholds_res->CompletionCode = CC_SDR_REC_NOT_PRESENT; // code
 		return sizeof(INT8U);
@@ -1914,13 +1919,17 @@ int GetSensorReading(INT8U *pReq, INT8U ReqLen, INT8U *pRes, int BMCInst)
     
 	const ADCChannlesConfig *chanCfg = NULL;
     uint16_t adcVal;
-	get_res = api_sensorGetValBySensorNum(pSensorReadReq->SensorNum, &adcVal);
-    
+    SUB_DEVICE_MODE destMode = SUB_DEVICE_MODE_MAIN;
+    if (ReqLen == 1) {
+        destMode = SubDevice_GetMyMode();
+    }
+	get_res = api_sensorGetValBySensorNum(destMode, pSensorReadReq->SensorNum, &adcVal);
+
 	if(!get_res){
 		pSensorReadRes->CompletionCode = CC_SDR_REC_NOT_PRESENT;
 		return sizeof(*pRes);
 	}
-	FullSensorRec_T *pSdr = ReadSensorRecBySensorNum(pSensorReadReq->SensorNum, BMCInst);   
+	FullSensorRec_T *pSdr = ReadSensorRecBySensorNum(destMode, pSensorReadReq->SensorNum, BMCInst);   
 	if (pSdr == NULL){
 		pSensorReadRes->CompletionCode = CC_SDR_REC_NOT_PRESENT;
 		return sizeof(*pRes);

@@ -339,7 +339,7 @@ int sensor(int argc, char *argv[])
 			LOG_I("sensor :idx = %d error \r\n", i);
 			continue;
 		}
-        LOG_I("sensor :idx = %d, name = %s, channel = %d, val = %d\r\n", i, chanCfg->alias, chanCfg->adcChannl, adcVal);
+        LOG_I("sensor :idx = %d, name = %s, channel = %d, val = %d\r\n", i, chanCfg->adcAlias, chanCfg->adcChannl, adcVal);
         //LOG_I("sensor :channel = %d, val = %d\r\n", i, g_temperature_raw[i]);
     }
     return 0;

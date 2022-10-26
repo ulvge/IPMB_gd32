@@ -114,17 +114,11 @@ typedef struct
     INT8U           NegativeHysterisis;
     INT8U           Reserved1;
     INT8U           Reserved2;
-    INT8U           OEMField;
+    INT8U           OEMField;   //slave address (SUB_DEVICE_MODE)
     INT8U           IDStrTypeLen;
     INT8S           IDStr [MAX_ID_STR_LEN];
 
 } PACKED  FullSensorRec_T;
-
-typedef union 
-{
-    FullSensorRec_T full_sensor_rec;
-    INT8U buff[sizeof(FullSensorRec_T)];
-} FullSensorRec_U;
 
 /**
  * @struct CompactSensorRec_T

@@ -3,6 +3,9 @@
 
 
 
+        if(SubDevice_GetMyMode() != g_sensor_sdr[i].OEMField) {
+            continue;
+        }
 
 
 
@@ -20,7 +23,10 @@
 5、真实值的转换关系
 但不同的ADC raw，需要用不同的sensor配置表，即MR，进行转换
 convert(slave address, ADC channle, adc raw)
-
+6、可以利用本地的配置表，利用 ipmi_convert_reading，获取6个阈值 
+	--后期再添加
+	利用ipmi_convert_reading 计算真实值
+	--只计算，获取最重要的 真实值
 
 ***********************************************************************************************
 

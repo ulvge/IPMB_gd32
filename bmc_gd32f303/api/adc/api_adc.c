@@ -3,6 +3,7 @@
 #include "OSPort.h"
 #include "math.h"
 #include "sensor/api_sensor.h"
+#include "api_subdevices.h"
 
 /// @brief need to sync with g_sensor_sdr
 //  GetSensorReading() call adc_getVal. master to calc the real val by M&R.
@@ -243,9 +244,9 @@ BOOLEAN adc_getVal(uint8_t channel, uint16_t *humanVal)
         return false;
     }
     uint8_t unitType;
-    if (api_sensorGetUnitType(channel, &unitType) == false){
+    if (api_sensorGetUnitType(SubDevice_GetMyMode(), channel, &unitType) == false){
         return false;
-    }                 
+    }
     *humanVal = adc_convertVal(unitType, adc->adcVal);
     return true;
 }

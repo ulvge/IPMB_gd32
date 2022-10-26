@@ -118,7 +118,7 @@ uint8_t get_board_slave_addr()
 	subDeviceSwitch |= GPIO_getPinStatus(GPIO_IN_SLAVE_ADDRESS1) << 1;
 	subDeviceSwitch |= GPIO_getPinStatus(GPIO_IN_SLAVE_ADDRESS2) << 2;
 
-    return 0x03;
+    return 0x00;
 }
 
 

@@ -32,6 +32,7 @@
 #include "IPMI_Storage.h"
 #include "sensor/api_sensor.h"
 #include "libipmi.h"
+#include "api_subdevices.h"
 //#include "PDKCmdsAccess.h"
 //#include "featuredef.h"
 //#include "cmdselect.h"
@@ -86,117 +87,9 @@
 
 //Recoder ID:must++
 FullSensorRec_T g_sensor_sdr[] =
-{
-    #if 0
-    {        /* SDR Record header */
-        0x0001, //Recoder ID
-        0x51,   //SDR Version
-        0x01,   //Record Type
-        64,     //Record Length = full sensor: 64
-
-        /* Record Key Bytes */
-        0x20, //Sensor Owner ID   
-        0x00, //Sensor Owner LUN
-        0x01, //Sensor number  
-
-        /* Record Body Bytes */
-        0x07,           //Entity ID
-        0x03,           //Entity Instance
-        0x7F,           //Sensor Initialization
-        0x68,           //Sensor Capabilities
-        0x02,           //Sensor Type
-        0x01,           //Event/Read Type
-        0x7A95,         //Lower Threshold Reading Mask
-        0x7A95,         //Upper Threshold Reading Mask
-        0x3F3F,         //Settable/Readable Threshold Mask
-        0x20,           //0x00,                 //Sensor Units 1
-        IPMI_UNIT_DEGREES_C,  //Sensor Units 2 -Base Unit
-        0x00,           //Sensor Units 3 -Modifier Unit
-        0x00,           //Linearization
-        16,             //0x14,            //M
-        0x00,           //M,Tolerance
-        0x00 & 0xff,    //B
-        0x3E & 0xFF,    //B,Accuracy
-        0x34,           //Accuracy,Accuracy exponent
-        (14 << 4) + 13, //R exponent,B exponent
-        0x00,           //Analog Characteristics Flags
-        0x00,           //Nominal Reading
-        0x00,           //Normal Maximum
-        0x00,           //Normal Minimum
-        0xFF,           //Sensor Maximum Reading
-        0x00,           //Sensor Minimum Reading
-        0xA3,           //Upper Non-Recoverable Threshold
-        0x95,           //Upper Critical Threshold
-        0x87,           //Upper Non-Critical Threshold
-        0x00,           //Lower Non-Recoverable Threshold
-        0x00,           //Lower Critical Threshold
-        0x00,           //Lower Non-Critical Threshold
-        0x00,           //Positive-threshold Hysteresis calue
-        0x00,           //Negative-threshold Hysteresis calue
-        0x00,           //Reserved
-        0x00,           //Reserved
-        0x00,           //OEM
-        0xC0 + sizeof "Light_Tmp",
-        "Light_Tmp"
-    },
-    
-        
-    {        /* SDR Record header */
-        0x0002, //Recoder ID
-        0x51,   //SDR Version
-        0x01,   //Record Type
-        64,     //Record Length = full sensor: 64
-
-        /* Record Key Bytes */
-        0x20, //Sensor Owner ID   
-        0x00, //Sensor Owner LUN
-        0x02, //Sensor number  
-
-        /* Record Body Bytes */
-        0x07,           //Entity ID
-        0x03,           //Entity Instance
-        0x7F,           //Sensor Initialization
-        0x68,           //Sensor Capabilities
-        0x02,           //Sensor Type
-        0x01,           //Event/Read Type
-        0x7A95,         //Lower Threshold Reading Mask
-        0x7A95,         //Upper Threshold Reading Mask
-        0x3F3F,         //Settable/Readable Threshold Mask
-        0x20,           //0x00,                 //Sensor Units 1
-        IPMI_UNIT_DEGREES_C,  //Sensor Units 2 -Base Unit
-        0x00,           //Sensor Units 3 -Modifier Unit
-        0x00,           //Linearization
-        16,             //0x14,            //M
-        0x00,           //M,Tolerance
-        0x00 & 0xff,    //B
-        0x3E & 0xFF,    //B,Accuracy
-        0x34,           //Accuracy,Accuracy exponent
-        (14 << 4) + 13, //R exponent,B exponent
-        0x00,           //Analog Characteristics Flags
-        0x00,           //Nominal Reading
-        0x00,           //Normal Maximum
-        0x00,           //Normal Minimum
-        0xFF,           //Sensor Maximum Reading
-        0x00,           //Sensor Minimum Reading
-        0xA3,           //Upper Non-Recoverable Threshold
-        0x95,           //Upper Critical Threshold
-        0x87,           //Upper Non-Critical Threshold
-        0x00,           //Lower Non-Recoverable Threshold
-        0x00,           //Lower Critical Threshold
-        0x00,           //Lower Non-Critical Threshold
-        0x00,           //Positive-threshold Hysteresis calue
-        0x00,           //Negative-threshold Hysteresis calue
-        0x00,           //Reserved
-        0x00,           //Reserved
-        0x00,           //OEM
-        0xC0 + sizeof "10GNet_Tmp",
-        "10GNet_Tmp"
-    },
-
-    #endif 
-           
+{    
    {        /* SDR Record header SYS0_FAN */
-        0x0004, //Recoder ID
+        0x0001, //Recoder ID
         0x51,   //SDR Version
         0x01,   //Record Type
         64,     //Record Length = full sensor: 64
@@ -245,8 +138,8 @@ FullSensorRec_T g_sensor_sdr[] =
         "SYS0_FAN" 
     },
    
-    {        /* SDR Record header */
-        0x0001, //Recoder ID
+    {        /* SDR Record header P1V8 VCC*/
+        0x0002, //Recoder ID
         0x51,   //SDR Version
         0x01,   //Record Type
         64,     //Record Length = full sensor: 64
@@ -297,8 +190,8 @@ FullSensorRec_T g_sensor_sdr[] =
         "P1V8 VCC"
     },
     
-    {        /* SDR Record header */
-        0x0002, //Recoder ID
+    {        /* SDR Record header X100_Tmp */
+        0x0003, //Recoder ID
         0x51,   //SDR Version
         0x01,   //Record Type
         64,     //Record Length = full sensor: 64
@@ -349,9 +242,8 @@ FullSensorRec_T g_sensor_sdr[] =
         "X100_Tmp"
     },
     
-
-    {        /* SDR Record header */
-        0x00003, //Recoder ID
+    {        /* SDR Record header P12V*/
+        0x00004, //Recoder ID
         0x51,   //SDR Version
         0x01,   //Record Type
         64,     //Record Length = full sensor: 64
@@ -398,6 +290,110 @@ FullSensorRec_T g_sensor_sdr[] =
         0x00,           //Reserved
         0x00,           //Reserved
         0x00,           //OEM
+        0xC0 + sizeof "P12V",
+        "P12V"
+    },
+    
+    {        /* SDR Record header SUB_DEVICE_MODE_POWER X100_Tmp */
+        0x0005, //Recoder ID
+        0x51,   //SDR Version
+        0x01,   //Record Type
+        64,     //Record Length = full sensor: 64
+
+        /* Record Key Bytes */
+        0x20, //Sensor Owner ID   
+        0x00, //Sensor Owner LUN
+        ADC_CHANNEL_TEMP_X100, //Sensor number  
+
+        /* Record Body Bytes */
+        0x07,           //Entity ID
+        0x03,           //Entity Instance
+        0x7F,           //Sensor Initialization
+        0x68,           //Sensor Capabilities
+        0x02,           //Sensor Type
+        0x01,           //Event/Read Type
+        0x7A95,         //Lower Threshold Reading Mask
+        0x7A95,         //Upper Threshold Reading Mask
+        0x3F3F,         //Settable/Readable Threshold Mask
+        0x20,           //0x00,                 //Sensor Units 1
+        IPMI_UNIT_DEGREES_C,  //Sensor Units 2 -Base Unit
+        0x00,           //Sensor Units 3 -Modifier Unit
+        0x00,           //Linearization
+        5,             //0x14,            //M
+        0x01,           //M,Tolerance
+        0x00 & 0xff,    //B
+        0x3E & 0xFF,    //B,Accuracy
+        0x34,           //Accuracy,Accuracy exponent
+        (0x0F << 4) + 0, //R exponent,B exponent
+        0x00,           //Analog Characteristics Flags
+        0x00,           //Nominal Reading
+        0x00,           //Normal Maximum
+        0x00,           //Normal Minimum
+        0xFF,           //Sensor Maximum Reading
+        0x00,           //Sensor Minimum Reading
+        0xC8,           //Upper Non-Recoverable Threshold
+        0xAA,           //Upper Critical Threshold
+        0x96,           //Upper Non-Critical Threshold
+        0x00,           //Lower Non-Recoverable Threshold
+        0x00,           //Lower Critical Threshold
+        0x00,           //Lower Non-Critical Threshold
+        0x00,           //Positive-threshold Hysteresis calue
+        0x00,           //Negative-threshold Hysteresis calue
+        0x00,           //Reserved
+        0x00,           //Reserved
+        SUB_DEVICE_MODE_POWER,           //OEM
+        0xC0 + sizeof "X100_Tmp",
+        "X100_Tmp"
+    },
+    
+    {        /* SDR Record header SUB_DEVICE_MODE_POWER P12V*/
+        0x00006, //Recoder ID
+        0x51,   //SDR Version
+        0x01,   //Record Type
+        64,     //Record Length = full sensor: 64
+
+        /* Record Key Bytes */
+        0x20, //Sensor Owner ID   
+        0x00, //Sensor Owner LUN
+        ADC_CHANNEL_P12V, //Sensor number  
+
+        /* Record Body Bytes */
+        0x07,           //Entity ID
+        0x03,           //Entity Instance
+        0x7F,           //Sensor Initialization
+        0x68,           //Sensor Capabilities
+        0x02,           //Sensor Type
+        0x01,           //Event/Read Type
+        0x7A95,         //Lower Threshold Reading Mask
+        0x7A95,         //Upper Threshold Reading Mask
+        0x3F3F,         //Settable/Readable Threshold Mask
+        0x20,           //0x00,                 //Sensor Units 1
+        IPMI_UNIT_VOLTS,  //Sensor Units 2 -Base Unit
+        0x00,           //Sensor Units 3 -Modifier Unit
+        0x00,           //Linearization
+        0x8e,             //0x14,            //M
+        0x00,           //M,Tolerance
+        0x00 & 0xff,    //B
+        0x3E & 0xFF,    //B,Accuracy
+        0x34,           //Accuracy,Accuracy exponent   
+        (0x0d << 4) + (0x0 & 0x0F), //R exponent,B exponent 
+        0x00,           //Analog Characteristics Flags
+        0x00,           //Nominal Reading
+        0x00,           //Normal Maximum
+        0x00,           //Normal Minimum
+        0xFF,           //Sensor Maximum Reading
+        0x00,           //Sensor Minimum Reading
+        0x6e,           //Upper Non-Recoverable Threshold
+        0x65,           //Upper Critical Threshold
+        0x5d,           //Upper Non-Critical Threshold
+        0x3b,           //Lower Non-Recoverable Threshold
+        0x44,           //Lower Critical Threshold
+        0x4c,           //Lower Non-Critical Threshold
+        0x00,           //Positive-threshold Hysteresis calue
+        0x00,           //Negative-threshold Hysteresis calue
+        0x00,           //Reserved
+        0x00,           //Reserved
+        SUB_DEVICE_MODE_POWER,           //OEM
         0xC0 + sizeof "P12V",
         "P12V"
     },
@@ -596,20 +592,13 @@ int GetSDR(INT8U *pReq, INT8U ReqLen, INT8U *pRes, int BMCInst)
     }
     else if (pGetSDRReq->RecID == 0)
     { // when rq record id = 0, get first record header
-        FullSensorRec_U *full_sdr = (FullSensorRec_U *)&g_sensor_sdr[0];
+        FullSensorRec_T *pFullSdr = &g_sensor_sdr[0];
 		pGetSDRReq->RecID = g_sensor_sdr[0].hdr.ID;
         //  MgmtCtrlrDevLocator_T* dev_locator = (MgmtCtrlrDevLocator_T*)&device_locator;
         pGetSDRRes->CompletionCode = CC_NORMAL;
-        if (RECODER_MAX_NUM > 1)
-        {
-            pGetSDRRes->NextRecID = g_sensor_sdr[1].hdr.ID;
-        }
-        else
-        {
-            pGetSDRRes->NextRecID = 0xFFFF;
-        }
-        g_sensor_sdr[0].hdr.Len = sizeof(FullSensorRec_U) - pGetSDRReq->Offset;
-        memcpy(&pRes[sizeof(GetSDRRes_T)], &full_sdr->buff[pGetSDRReq->Offset], pGetSDRReq->Size);
+        g_sensor_sdr[0].hdr.Len = sizeof(FullSensorRec_T) - pGetSDRReq->Offset;
+        pGetSDRRes->NextRecID = SDR_GetNextSDRId(pFullSdr, BMCInst);
+        memcpy(&pRes[sizeof(GetSDRRes_T)], ((INT8U *)pFullSdr) + pGetSDRReq->Offset, pGetSDRReq->Size);
         return  sizeof(GetSDRRes_T) + pGetSDRReq->Size;
     }
     else
@@ -620,16 +609,11 @@ int GetSDR(INT8U *pReq, INT8U ReqLen, INT8U *pRes, int BMCInst)
             pGetSDRRes->CompletionCode = CC_SDR_REC_NOT_PRESENT; // code
             return sizeof(INT8U);
         }
-        pCurrentSdr->hdr.Len = sizeof(FullSensorRec_U) - pGetSDRReq->Offset;
-        
-        pGetSDRRes->NextRecID = (pCurrentSdr + 1)->hdr.ID;
-        if ( ((UINT32)(pCurrentSdr + 1)) >= ((UINT32)&g_sensor_sdr + sizeof(g_sensor_sdr)))
-        {
-            pGetSDRRes->NextRecID = 0xFFFF; // The last record , next id set to  0xFFFF
-        }
+        pCurrentSdr->hdr.Len = sizeof(FullSensorRec_T) - pGetSDRReq->Offset;
 
+        pGetSDRRes->NextRecID = SDR_GetNextSDRId(pCurrentSdr, BMCInst);
         pGetSDRRes->CompletionCode = CC_NORMAL;
-        memcpy(&pRes[sizeof(GetSDRRes_T)], &(((FullSensorRec_U *)pCurrentSdr)->buff[pGetSDRReq->Offset]), pGetSDRReq->Size);
+        memcpy(&pRes[sizeof(GetSDRRes_T)], ((INT8U *)pCurrentSdr)+ pGetSDRReq->Offset, pGetSDRReq->Size);
         return sizeof(GetSDRRes_T) + pGetSDRReq->Size;
     }
 //    return 0;
@@ -1238,28 +1222,21 @@ int InitSDR(int BMCInst)
 /*----------------------------------------------------------*
  * SDR_GetNextSDRId
  *----------------------------------------------------------*/
-INT16U
-SDR_GetNextSDRId(INT16U RecID, int BMCInst)
+INT16U SDR_GetNextSDRId(FullSensorRec_T *pCurrentSdr, int BMCInst)
 {
-    SDRRecHdr_T *pSDRRec;
-
-    pSDRRec = GetSDRRec(RecID, BMCInst);
-    if (0 == pSDRRec)
+    FullSensorRec_T *pSDRRecNext;
+    for (INT16U i = 1; i < GetSDRRepositoryNum(); i++)
     {
-        return INVALID_RECORD_ID;
+        pSDRRecNext = pCurrentSdr + i;
+        if (pSDRRecNext->OEMField == SubDevice_GetMyMode()){
+            if ( ((UINT32)pSDRRecNext) >= ((UINT32)&g_sensor_sdr + sizeof(g_sensor_sdr)))
+            {
+                return 0xFFFF; // The last record , next id set to  0xFFFF
+            }
+            return pSDRRecNext->hdr.ID;
+        }
     }
-
-    pSDRRec = SDR_GetNextSDRRec(pSDRRec, BMCInst);
-    if (0 == pSDRRec)
-    {
-        /* return last record ID (0xFFFF) */
-        //        IPMI_DBG_PRINT (" No Records\n");
-        return 0xFFFF;
-    }
-    else
-    {
-        return pSDRRec->ID;
-    }
+    return 0xFFFF; // The last record , next id set to  0xFFFF
 }
 
 /*--------------------------------------------------
@@ -1327,11 +1304,14 @@ ReadSensorRecByID(INT8U id, int BMCInst)
  * ReadSensorRecByID
  *-------------------------------------------------*/
 FullSensorRec_T *
-ReadSensorRecBySensorNum(INT8U sensorName, int BMCInst)
+ReadSensorRecBySensorNum(INT8U destMode, INT8U sensorName, int BMCInst)
 {
     FullSensorRec_T *pSdr;
     for(int i=0; i < GetSDRRepositoryNum(); i++)
     {
+        if(destMode != g_sensor_sdr[i].OEMField) {
+            continue;
+        }
         if(sensorName == g_sensor_sdr[i].SensorNum)
         {
             return  &g_sensor_sdr[i];

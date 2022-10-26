@@ -12,10 +12,10 @@
 #define SUB_DEVICES_BUFF_SIZE  0x05
 //计算 存储 网络 通讯 刀片
 typedef enum {
-    SUB_DEVICE_MODE_POWER       = 0,
+    SUB_DEVICE_MODE_MAIN        = 0,
     SUB_DEVICE_MODE_NET         = 1,
     SUB_DEVICE_MODE_SWITCH      = 2,
-    SUB_DEVICE_MODE_MAIN        = 3,
+    SUB_DEVICE_MODE_POWER       = 3,
     SUB_DEVICE_MODE_STORAGE0    = 4,
     SUB_DEVICE_MODE_STORAGE1    = 5,
     SUB_DEVICE_MODE_STORAGE2    = 6,
@@ -52,6 +52,7 @@ bool SubDevice_IsOnLine(void);
 uint8_t SubDevice_GetMySlaveAddress(uint32_t bus);
 bool SubDevice_Management(uint8_t addr);
 uint32_t SubDevice_GetBus(void);
+SUB_DEVICE_MODE SubDevice_GetMyMode(void);
 
 SubDeviceMODE_T *SubDevice_GetSelf(void);
 

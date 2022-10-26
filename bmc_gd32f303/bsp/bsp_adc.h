@@ -40,7 +40,7 @@ typedef struct {
     INT32U      			gpioPort;
     rcu_periph_enum      	gpioClk;
     INT32U      			Pin;
-    char *      			alias;
+    char *      			adcAlias;
 } ADCChannlesConfig;
 
 void adc_init(const ADCChannlesConfig  *chanCfg);

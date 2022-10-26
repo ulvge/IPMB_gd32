@@ -29,8 +29,8 @@ typedef enum
     FAN_CHANNEL_MAX,
 }SENSOR_ENUM;
 
-bool api_sensorGetUnitType(UINT32 sensorNum, UINT8 *unitType);
-BOOLEAN api_sensorGetValBySensorNum(UINT16 sensorNum, UINT16 *val);
+bool api_sensorGetUnitType(INT8U destMode, UINT32 sensorNum, UINT8 *unitType);
+BOOLEAN api_sensorGetValBySensorNum(INT8U destMode, UINT16 sensorNum, UINT16 *val);
 
 #ifdef __cplusplus
 }
