@@ -82,10 +82,10 @@ void fan_init(void)
         fan_set_duty_percent(pFan->config->fanSensorNum, 30);
     }
 
-    TimerHandle_t xTimersFanTask = xTimerCreate("Timer", 500/portTICK_RATE_MS, pdTRUE, (void*)FAN_TIMER_ID_TASK, vTimerFanWatchdogCallback); 
+    TimerHandle_t xTimersFanTask = xTimerCreate("fanTimer", 500/portTICK_RATE_MS, pdTRUE, (void*)FAN_TIMER_ID_TASK, vTimerFanWatchdogCallback); 
     xTimerStart(xTimersFanTask, portMAX_DELAY);
 
-    TimerHandle_t xTimersFanWatchdog = xTimerCreate("Timer", 1000/portTICK_RATE_MS, pdTRUE, (void*)FAN_TIMER_ID_WDT, vTimerFanWatchdogCallback); 
+    TimerHandle_t xTimersFanWatchdog = xTimerCreate("fanTimer", 1000/portTICK_RATE_MS, pdTRUE, (void*)FAN_TIMER_ID_WDT, vTimerFanWatchdogCallback); 
     xTimerStart(xTimersFanWatchdog, portMAX_DELAY);
 
     capture_init();

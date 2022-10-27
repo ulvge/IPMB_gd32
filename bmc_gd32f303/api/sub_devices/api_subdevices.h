@@ -9,7 +9,7 @@
 #include <stdint.h>
 
 
-#define SUB_DEVICES_BUFF_SIZE  0x05
+#define SUB_DEVICES_HAVE_SENSOR_COUNT 2
 //计算 存储 网络 通讯 刀片
 typedef enum {
     SUB_DEVICE_MODE_MAIN        = 0,
@@ -37,13 +37,20 @@ typedef struct
 
 typedef struct
 {
+    uint8_t raw;
+    uint8_t errCnt;
+    float   human;
+} SubDevice_Reading_T;
+
+typedef struct
+{
     SUB_DEVICE_MODE mode;
     bool isMain;
     bool isOnLine;
     uint8_t     i2c0SlaveAddr; //8bit
     uint8_t     i2c1SlaveAddr; //8bit
     const char     *name;
-    uint8_t deviceCache[SUB_DEVICES_BUFF_SIZE];
+    SubDevice_Reading_T reading[SUB_DEVICES_HAVE_SENSOR_COUNT];
 } SubDeviceMODE_T;
 
 bool SubDevice_Init(void);

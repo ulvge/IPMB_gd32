@@ -35,7 +35,7 @@ void cpuGetInfoTask(void *arg)
 
 	xTaskCreate(vTaskFTUartWrite, "FTuartwrite", 256, NULL, 16, NULL);
 	xTaskCreate(vTaskFTUartRead, "FTuartRead", 256, NULL, 15, NULL);
-	xTimerCPUTick = xTimerCreate("Timer", 5000 / portTICK_RATE_MS, pdTRUE, 0, vTimerCallback); // 5S
+	xTimerCPUTick = xTimerCreate("cpuTimer", 5000 / portTICK_RATE_MS, pdTRUE, 0, vTimerCallback); // 5S
 	xTimerStart(xTimerCPUTick, portMAX_DELAY);
 
 	while (1)

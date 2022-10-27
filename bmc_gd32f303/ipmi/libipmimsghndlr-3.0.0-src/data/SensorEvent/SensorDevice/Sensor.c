@@ -1919,17 +1919,17 @@ int GetSensorReading(INT8U *pReq, INT8U ReqLen, INT8U *pRes, int BMCInst)
     
 	const ADCChannlesConfig *chanCfg = NULL;
     uint16_t adcVal;
-    SUB_DEVICE_MODE destMode = SubDevice_GetMyMode();
+    SUB_DEVICE_MODE myMode = SubDevice_GetMyMode();
     if (ReqLen == 2) {
-        destMode = (SUB_DEVICE_MODE)(pReq[1]);
+        myMode = (SUB_DEVICE_MODE)(pReq[1]);
     }
-	get_res = api_sensorGetValBySensorNum(destMode, pSensorReadReq->SensorNum, &adcVal);
+	get_res = api_sensorGetValBySensorNum(myMode, pSensorReadReq->SensorNum, &adcVal);
 
 	if(!get_res){
 		pSensorReadRes->CompletionCode = CC_SDR_REC_NOT_PRESENT;
 		return sizeof(*pRes);
 	}
-	FullSensorRec_T *pSdr = ReadSensorRecBySensorNum(destMode, pSensorReadReq->SensorNum, BMCInst);   
+	FullSensorRec_T *pSdr = ReadSensorRecBySensorNum(myMode, pSensorReadReq->SensorNum, BMCInst);
 	if (pSdr == NULL){
 		pSensorReadRes->CompletionCode = CC_SDR_REC_NOT_PRESENT;
 		return sizeof(*pRes);
@@ -2072,9 +2072,15 @@ int GetSensorReading(INT8U *pReq, INT8U ReqLen, INT8U *pRes, int BMCInst)
 		}
 
 		//pSensorReadRes->ComparisonStatus &= ((pSenSharedMem->SensorInfo[LUNSensorNum].SettableThreshMask) & 0xFF);
-		pSensorReadRes->OptionalStatus = 0;
-		// For Threshold sensor, [7:6] - reserved. Returned as 1b. Ignore on read.
-		pSensorReadRes->ComparisonStatus |= 0xC0;
+        
+        // For Threshold sensor, [7:6] - reserved. Returned as 1b. Ignore on read.
+        pSensorReadRes->ComparisonStatus |= 0xC0;
+
+        if (SubDevice_IsSelfMaster()) {
+		    pSensorReadRes->OptionalStatus = 0;
+        } else {
+            pSensorReadRes->OptionalStatus = pSensorReadReq->SensorNum;
+        }
 	}
 
 	/* Release mutex for Sensor shared memory */

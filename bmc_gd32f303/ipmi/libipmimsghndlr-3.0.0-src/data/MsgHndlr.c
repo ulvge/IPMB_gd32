@@ -221,10 +221,8 @@ static void vTaskResponseDatWrite(void *pvParameters)
 void *MsgCoreHndlr(void *pArg)
 {
     MsgPkt_T Res;
-    char buff[sizeof(MsgPkt_T)];
-    MsgPkt_T* Req = (MsgPkt_T*)buff;
+    MsgPkt_T recvPkt;
     BaseType_t err = pdFALSE;
-    __attribute__((unused)) int i;
 
     MsgHndlrInit();
 
@@ -244,33 +242,33 @@ void *MsgCoreHndlr(void *pArg)
             vTaskDelay(1000);
             continue;
         }
-        memset(buff, 0, sizeof(buff));
-        err = xQueueReceive(RecvDatMsg_Queue, buff, portMAX_DELAY);
+        memset(&recvPkt, 0, sizeof(recvPkt));
+        err = xQueueReceive(RecvDatMsg_Queue, &recvPkt, portMAX_DELAY);
         if (err == pdFALSE)
         {
             LOG_E("xQueueReceive get msg ERR!");
             continue;
         }
 		
-        switch(Req->Param)
+        switch(recvPkt.Param)
         {
         case IPMI_REQUEST:
         case IPMB_SUB_DEVICE_HEARTBEAT_RESPONSE:
-			if (Req->Size == 0){
+			if (recvPkt.Size == 0){
 				continue;
 			}             
 			Res.Param = NORMAL_RESPONSE;
-            if (ProcessIPMIReq(Req, &Res) == 0){
+            if (ProcessIPMIReq(&recvPkt, &Res) == 0){
 				continue;
 			}
             break;
         case SERIAL_REQUEST:
-            if (ProcessSerialReq(Req, &Res) == false){
+            if (ProcessSerialReq(&recvPkt, &Res) == false){
 				continue;
 			}
             break;
         case LAN_REQUEST:
-            //ProcessLANReq(Req, &Res);
+            //ProcessLANReq(&recvPkt, &Res);
             break;
         default :
             break;
@@ -282,10 +280,10 @@ void *MsgCoreHndlr(void *pArg)
             LOG_E("xQueueSend send msg ERR!");
         }
 
-        // LOG_RAW("len:%d\n",Req.Size);
-        // for (i = 0; i < Req.Size; i++)
+        // LOG_RAW("len:%d\n",recvPkt.Size);
+        // for (int i = 0; i < recvPkt.Size; i++)
         // {
-        //     LOG_RAW("%02x ", Req.Data[i]);
+        //     LOG_RAW("%02x ", recvPkt.Data[i]);
         // }
         // LOG_RAW("\n");
     }

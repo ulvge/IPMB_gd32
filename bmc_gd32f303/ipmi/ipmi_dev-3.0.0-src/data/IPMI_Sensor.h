@@ -308,7 +308,7 @@ typedef struct
     INT8U   SensorReading;
     INT8U   Flags;          //EventFlags
     INT8U   ComparisonStatus;
-    INT8U   OptionalStatus;
+    INT8U   OptionalStatus; // = pSensorReadReq->SensorNum;
 
 }  GetSensorReadingRes_T;
 
@@ -340,6 +340,7 @@ typedef struct
 typedef struct
 {
     INT8U   SensorNum;
+    //INT8U  myMode OEMField
 
 }  GetSensorTypeReq_T;
 
