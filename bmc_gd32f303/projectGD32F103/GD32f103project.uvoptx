@@ -153,7 +153,40 @@
           <Name>UL2CM3(-S0 -C0 -P0 )  -FN1 -FC1000 -FD20000000 -FF0GD32F10x_MD -FL020000 -FS08000000 -FP0($$Device:GD32F103VB$Flash\GD32F10x_MD.FLM)</Name>
         </SetRegEntry>
       </TargetDriverDllRegistry>
-      <Breakpoint/>
+      <Breakpoint>
+        <Bp>
+          <Number>0</Number>
+          <Type>0</Type>
+          <LineNumber>295</LineNumber>
+          <EnabledFlag>1</EnabledFlag>
+          <Address>134239192</Address>
+          <ByteObject>0</ByteObject>
+          <HtxType>0</HtxType>
+          <ManyObjects>0</ManyObjects>
+          <SizeOfObject>0</SizeOfObject>
+          <BreakByAccess>0</BreakByAccess>
+          <BreakIfRCount>1</BreakIfRCount>
+          <Filename>&lt;1&gt;..\api\sub_devices\api_subdevices.c</Filename>
+          <ExecCommand></ExecCommand>
+          <Expression>\\bmc_rom\../api/sub_devices/api_subdevices.c\295</Expression>
+        </Bp>
+        <Bp>
+          <Number>1</Number>
+          <Type>0</Type>
+          <LineNumber>288</LineNumber>
+          <EnabledFlag>1</EnabledFlag>
+          <Address>134239146</Address>
+          <ByteObject>0</ByteObject>
+          <HtxType>0</HtxType>
+          <ManyObjects>0</ManyObjects>
+          <SizeOfObject>0</SizeOfObject>
+          <BreakByAccess>0</BreakByAccess>
+          <BreakIfRCount>1</BreakIfRCount>
+          <Filename>&lt;1&gt;..\api\sub_devices\api_subdevices.c</Filename>
+          <ExecCommand></ExecCommand>
+          <Expression>\\bmc_rom\../api/sub_devices/api_subdevices.c\288</Expression>
+        </Bp>
+      </Breakpoint>
       <WatchWindow1>
         <Ww>
           <count>0</count>
@@ -162,6 +195,11 @@
         </Ww>
         <Ww>
           <count>1</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>pSensorReadRes</ItemText>
+        </Ww>
+        <Ww>
+          <count>2</count>
           <WinNumber>1</WinNumber>
           <ItemText>pSensorReading</ItemText>
         </Ww>
@@ -175,12 +213,17 @@
         <Ww>
           <count>1</count>
           <WinNumber>2</WinNumber>
-          <ItemText>requestPkt</ItemText>
+          <ItemText>recvReq.Data</ItemText>
         </Ww>
         <Ww>
           <count>2</count>
           <WinNumber>2</WinNumber>
-          <ItemText>SUB_DEVICES_TIMER_PERIOD_XMS/portTICK_RATE_MS</ItemText>
+          <ItemText>pDeviceReading</ItemText>
+        </Ww>
+        <Ww>
+          <count>3</count>
+          <WinNumber>2</WinNumber>
+          <ItemText>g_AllModes</ItemText>
         </Ww>
       </WatchWindow2>
       <MemoryWindow1>

@@ -12,6 +12,7 @@
 #include "sdr.h"
 #include "IPMI_Sensor.h"
 #include "sensor_helpers.h"
+#include "sensor.h"
 
 #define SUB_DEVICES_ADDR_DEFAULT 0xFF
 #define SUB_DEVICES_ADDR_PRIFIXED 0x80
@@ -228,16 +229,21 @@ static bool SubDevice_readingSensorForeach(SUB_DEVICE_MODE dev, uint8_t sensorNu
     requestPkt->Data[len++] = CalculateCheckSum(requestPkt->Data, len);
     requestPkt->Size = len;
 
-    if (SendMsgAndWait(requestPkt, &recvReq, SUB_DEVICES_SENDMSG_WAIT_TIMEOUT_XMS) == pdFALSE)
-    {
-        return false;
-    }
     GetSensorReadingRes_T *pSensorReading = (GetSensorReadingRes_T *)(&recvReq.Data[sizeof(IPMIMsgHdr_T)]);
-
-    IPMIMsgHdr_T *recHdr = (IPMIMsgHdr_T *)&recvReq.Data;
-    // pSensorReadRes->OptionalStatus = pSensorReadReq->SensorNum;
-    if ((recHdr->ReqAddr != hdr->ResAddr) || (pSensorReading->OptionalStatus != sensorNum)) {
+    if (dev == SUB_DEVICE_MODE_MAIN) { // skip master self
+        requestPkt->Data[0] = sensorNum;
+        requestPkt->Data[1] = dev;
+        GetSensorReading(requestPkt->Data, 2, (INT8U *)&recvReq.Data[sizeof(IPMIMsgHdr_T)], 0);
+    }else {
+        if (SendMsgAndWait(requestPkt, &recvReq, SUB_DEVICES_SENDMSG_WAIT_TIMEOUT_XMS) == pdFALSE)
+        {
             return false;
+        }
+        IPMIMsgHdr_T *recHdr = (IPMIMsgHdr_T *)&recvReq.Data;
+        // pSensorReadRes->OptionalStatus = pSensorReadReq->SensorNum;
+        if ((recHdr->ReqAddr != hdr->ResAddr) || (pSensorReading->OptionalStatus != sensorNum)) {
+                return false;
+        }
     }
 
     if (pSensorReading->CompletionCode == CC_NORMAL) {
@@ -263,12 +269,8 @@ static void SubDevice_HeartBeatTimerCallBack(xTimerHandle pxTimer)
     requestPkt.Channel = SubDevice_GetBus();
 	uint8_t sensorNum;
 
-    for (SUB_DEVICE_MODE dev = SUB_DEVICE_MODE_NET; dev < SUB_DEVICE_MODE_MAX; dev++)
+    for (SUB_DEVICE_MODE dev = (SUB_DEVICE_MODE)0; dev < SUB_DEVICE_MODE_MAX; dev++)
     {
-        if (g_AllModes[dev].mode == pSubDeviceSelf->mode) { // skip master self
-            continue;
-        }
-
         //hdr->ResAddr = 0x20;      //  main ipmb
         hdr->ResAddr = SubDevice_modeConvertSlaveAddr(dev);
         hdr->NetFnLUN = NETFN_SENSOR << 2; // RAW
@@ -284,10 +286,11 @@ static void SubDevice_HeartBeatTimerCallBack(xTimerHandle pxTimer)
             //sensorNum = 0x23;     // P1V8 standby
             sensorNum = g_subDeviceHandler.slaveSensorNum[numIdex];
             if (SubDevice_readingSensorForeach(dev, sensorNum, &requestPkt, &pDeviceReading->raw)) {
+                pDeviceReading->errCnt = 0;
                 FullSensorRec_T *pSdr = ReadSensorRecBySensorNum(dev, sensorNum, 0);   
                 if (pSdr != NULL){
                     ipmi_convert_reading((uint8_t *)pSdr, pDeviceReading->raw, &pDeviceReading->human);
-                    continue;
+                    continue; //success
                 }
             }
             if (pDeviceReading->errCnt++ > SUB_DEVICES_FAILED_MAX_COUNT) {

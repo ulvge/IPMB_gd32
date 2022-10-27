@@ -1925,7 +1925,7 @@ int GetSensorReading(INT8U *pReq, INT8U ReqLen, INT8U *pRes, int BMCInst)
     }
 	get_res = api_sensorGetValBySensorNum(myMode, pSensorReadReq->SensorNum, &adcVal);
 
-	if(!get_res){
+	if(get_res == false){
 		pSensorReadRes->CompletionCode = CC_SDR_REC_NOT_PRESENT;
 		return sizeof(*pRes);
 	}
