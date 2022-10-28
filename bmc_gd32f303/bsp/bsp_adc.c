@@ -4,7 +4,7 @@
 static void rcu_config(const ADCChannlesConfig *cfg);
 static void adc_config(uint32_t adc_periph);
 
-void adc_init(const ADCChannlesConfig  *chanCfg)
+void adc_init_channle(const ADCChannlesConfig  *chanCfg)
 {
     /*configure system clocks*/	
     rcu_config(chanCfg);

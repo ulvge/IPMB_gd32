@@ -29,7 +29,7 @@ const static GPIOConfig_Handler *g_gpioAllDevices[] = {
 };
 
 
-void GPIO_InitGPIO(const GPIOConfig *config, UINT8 size)
+static void GPIO_InitGPIOs(const GPIOConfig *config, UINT8 size)
 {
     const GPIOConfig *p_gpioCfg;
     for (UINT8 i = 0; i < size; i++)
@@ -44,7 +44,7 @@ void GPIO_InitGPIO(const GPIOConfig *config, UINT8 size)
 }
 void GPIO_bspInit(void)
 {
-    GPIO_InitGPIO(&g_gpioConfigComm[0], ARRARY_SIZE(g_gpioConfigComm));
+    GPIO_InitGPIOs(&g_gpioConfigComm[0], ARRARY_SIZE(g_gpioConfigComm));
 
     if (!SubDevice_CheckAndPrintMode())
     {
@@ -59,7 +59,7 @@ void GPIO_bspInit(void)
         if ((*phandler)->mode == myMode)
         {
             g_pGpioConfig_Handler = *phandler;
-            GPIO_InitGPIO(g_pGpioConfig_Handler->dev, g_pGpioConfig_Handler->configSize);
+            GPIO_InitGPIOs(g_pGpioConfig_Handler->cfg, g_pGpioConfig_Handler->cfgSize);
             return;
         }
     }
@@ -72,11 +72,11 @@ static const GPIOConfig *GPIO_findGpio(BMC_GPIO_enum alias)
     {
         return NULL;
     }
-    UINT8 num = g_pGpioConfig_Handler->configSize;
+    UINT8 num = g_pGpioConfig_Handler->cfgSize;
     const GPIOConfig *p_gpioCfg;
     for (UINT8 i = 0; i < num; i++)
     {
-        p_gpioCfg = (g_pGpioConfig_Handler->dev) + i;
+        p_gpioCfg = (g_pGpioConfig_Handler->cfg) + i;
         if (p_gpioCfg->alias == alias)
         {
             return p_gpioCfg;

@@ -13,7 +13,8 @@
 #include "IPMI_Sensor.h"
 #include "sensor_helpers.h"
 #include "sensor.h"          
-#include "api_sensor.h"
+#include "api_sensor.h"    
+#include "dev_main_sdr.h"
 
 static const GPIOConfig g_gpioConfig_main[] = {
     {GPIO_OUT_LED_RED,                  GPIOD, GPIO_PIN_8,  RCU_GPIOD, GPIO_MODE_OUT_PP, GPIO_OSPEED_10MHZ, 1},
@@ -51,7 +52,11 @@ static SubDevice_Reading_T g_adcVal_main[ARRARY_SIZE(g_adcChannlConfig_main)];
 
 const ADCChannlesConfig_Handler g_adcChannlHandler_main = {
     .mode = SUB_DEVICE_MODE_MAIN,
-    GPIOCONFIG_CREATE_HANDLER(g_adcChannlConfig_main),
     .val = g_adcVal_main,
+    .cfgSize = ARRARY_SIZE(g_adcChannlConfig_main),  
+    .cfg = g_adcChannlConfig_main, 
+    
+	.sdrSize = ARRARY_SIZE(g_sensor_sdr_main),
+    .sdr = g_sensor_sdr_main, 
 };
-//#define ADC_CHANNLE_CONFIG_NUM (sizeof(g_adcChannlConfig) / sizeof(g_adcChannlConfig[0]))
+

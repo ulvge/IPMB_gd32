@@ -8,6 +8,7 @@
 #include "main.h" 
 #include "Types.h"
 #include "api_subdevices.h"
+#include "IPMI_SDRRecord.h"
 
 
 #ifdef DEBUG
@@ -46,12 +47,20 @@ typedef struct {
 
 typedef struct {          
 	SUB_DEVICE_MODE mode;
-    uint8_t configSize;
-    const ADCChannlesConfig *dev;
     SubDevice_Reading_T *val;
+
+    uint8_t cfgSize;
+    const ADCChannlesConfig *cfg;
+    
+    uint8_t sdrSize;
+    const FullSensorRec_T *sdr;
 } ADCChannlesConfig_Handler;
 
-void adc_init(const ADCChannlesConfig  *chanCfg);
+
+extern const ADCChannlesConfig_Handler g_adcChannlHandler_main;
+
+
+void adc_init_channle(const ADCChannlesConfig  *chanCfg);
 /*get ADC channel value of average conversion*/
 uint16_t adc_get_value(const ADCChannlesConfig *chanCfg);
 

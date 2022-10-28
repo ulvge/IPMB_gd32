@@ -79,11 +79,11 @@ typedef struct {
   
 typedef struct {          
 	SUB_DEVICE_MODE mode;
-    const GPIOConfig *dev;
-    uint8_t configSize;
+    uint8_t cfgSize;
+    const GPIOConfig *cfg;
 } GPIOConfig_Handler;
 
-#define GPIOCONFIG_CREATE_HANDLER(config)   .configSize = ARRARY_SIZE(config),  .dev = config 
+#define GPIOCONFIG_CREATE_HANDLER(config)   .cfgSize = ARRARY_SIZE(config),  .cfg = config 
 
 extern const GPIOConfig_Handler g_gpioConfigHandler_main;
 extern const GPIOConfig_Handler g_gpioConfigHandler_net; 

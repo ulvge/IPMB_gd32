@@ -87,7 +87,7 @@
 
 //Recoder ID:must++
 FullSensorRec_T g_sensor_sdr[] =
-{    
+{
    {        /* SDR Record header SYS0_FAN */
         0x0001, //Recoder ID
         0x51,   //SDR Version
@@ -137,7 +137,7 @@ FullSensorRec_T g_sensor_sdr[] =
         0xc0 + sizeof "SYS0_FAN",   /* ID String Type / Length Code     */
         "SYS0_FAN" 
     },
-   
+
     {        /* SDR Record header P1V8 VCC*/
         0x0002, //Recoder ID
         0x51,   //SDR Version

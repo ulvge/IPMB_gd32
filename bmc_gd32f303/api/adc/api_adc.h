@@ -27,7 +27,7 @@
 #define     ONE_PARTIAL_PRESSURE_CONFF1       1
 
 
-void sample_init(void);
+void adc_init(void);
 ADCChannlesConfig *adc_getConfig(void);   
 uint8_t adc_getChannelNum(void); 
 BOOLEAN adc_getValByIndex(uint8_t idx, const ADCChannlesConfig **channlCfg, uint16_t *adcVal);

@@ -8,77 +8,66 @@
 /// @brief need to sync with g_sensor_sdr
 //  GetSensorReading() call adc_getVal. master to calc the real val by M&R.
 // so, salve cant't calc the real val by self
-const static ADCChannlesConfig g_adcChannlConfig[] = {
-#ifdef GD32F3x
-    {ADC_CHANNEL_P1V8, ADC0, RCU_ADC0, GPIOA, RCU_GPIOA, GPIO_PIN_0, "P0V9 VCC"},
-    {ADC_CHANNEL_P1V8, ADC0, RCU_ADC0, GPIOA, RCU_GPIOA, GPIO_PIN_1, "P2V5"},
-    {ADC_CHANNEL_P1V8, ADC0, RCU_ADC0, GPIOA, RCU_GPIOA, GPIO_PIN_2, "VBat"},
-    {ADC_CHANNEL_P1V8, ADC0, RCU_ADC0, GPIOA, RCU_GPIOA, GPIO_PIN_5, "workTemp"},
-    {ADC_CHANNEL_P1V8, ADC0, RCU_ADC0, GPIOA, RCU_GPIOA, GPIO_PIN_6, "P12V"},
-    {ADC_CHANNEL_P1V8, ADC0, RCU_ADC0, GPIOA, RCU_GPIOA, GPIO_PIN_7, "P3V3"},
-	
-    {ADC_CHANNEL_P1V8, ADC0, RCU_ADC0, GPIOB, RCU_GPIOB, GPIO_PIN_1,  "P1V8"},  
-	
-    {ADC_CHANNEL_P1V8, ADC0, RCU_ADC0, GPIOC, RCU_GPIOC, GPIO_PIN_0, "P0V75 Vcore"},
-    {ADC_CHANNEL_P1V8, ADC0, RCU_ADC0, GPIOC, RCU_GPIOC, GPIO_PIN_1, "VTT"},
-    {ADC_CHANNEL_P1V8, ADC0, RCU_ADC0, GPIOC, RCU_GPIOC, GPIO_PIN_3, "P1V2 VDDQ"},
-    {ADC_CHANNEL_P1V8, ADC0, RCU_ADC0, GPIOC, RCU_GPIOC, GPIO_PIN_4, "CPUTemp"}
-#else
-    {ADC_CHANNEL_TEMP_X100, ADC0, RCU_ADC0, GPIOB, RCU_GPIOB, GPIO_PIN_0, "X100 temp"},
-    {ADC_CHANNEL_P1V8,      ADC0, RCU_ADC0, GPIOA, RCU_GPIOA, GPIO_PIN_0, "P1V8 VCC"},
-    {ADC_CHANNEL_P12V,      ADC0, RCU_ADC0, GPIOC, RCU_GPIOC, GPIO_PIN_0, "P12V standby"},
-#endif
-};      
 
-#define ADC_CHANNLE_CONFIG_NUM (sizeof(g_adcChannlConfig) / sizeof(g_adcChannlConfig[0]))
-
-typedef struct 
-{
-    uint16_t adcVal;
-    const ADCChannlesConfig *config;
-} ADCStruct;
-static ADCStruct g_ADC[ADC_CHANNLE_CONFIG_NUM] = {0};
+const static ADCChannlesConfig_Handler *g_pADCConfig_Handler = NULL;
+const static ADCChannlesConfig_Handler *g_ADCAllDevices[] = {
+    &g_adcChannlHandler_main,
+};
 
 static void adc_test(void);
 static float adc_sampleVal2Temp2(uint16 adcValue);
 
-void sample_init(void)
+static void adc_InitADCs(const ADCChannlesConfig_Handler *config)
 {
-    for(int32_t i = 0; i < ADC_CHANNLE_CONFIG_NUM; i++)
+    const ADCChannlesConfig *p_gpioCfg;
+    for (UINT8 i = 0; i < config->cfgSize; i++)
     {
-        ADCStruct *pADC = &g_ADC[i];
-        pADC->adcVal = 0;
-        pADC->config = &g_adcChannlConfig[i];
-        adc_init(pADC->config);
+        p_gpioCfg = &config->cfg[i];
+        adc_init_channle(p_gpioCfg);
+        config->val[i].raw = 0;
+        config->val[i].errCnt = 0;
+        config->val[i].human = 0;
+    }
+}
+void adc_init(void)
+{
+    SUB_DEVICE_MODE myMode = SubDevice_GetMyMode();
+
+    for (size_t i = 0; i < ARRARY_SIZE(g_ADCAllDevices); i++)
+    {
+        const ADCChannlesConfig_Handler **phandler = (g_ADCAllDevices + i);
+        if ((*phandler)->mode == myMode)
+        {
+            g_pADCConfig_Handler = *phandler;
+            adc_InitADCs(g_pADCConfig_Handler);
+            return;
+        }
     }
 }
 uint8_t adc_getChannelNum(void)
 {
-    return ADC_CHANNLE_CONFIG_NUM;
+    if (g_pADCConfig_Handler == NULL) {
+        return 0;
+    }
+    return g_pADCConfig_Handler->cfgSize;
 }
 
 /// @brief 
 /// @param channel sensorNum
 /// @return 
-ADCStruct *adc_getADCStructBySensorNum(uint16_t channel)
+static const ADCChannlesConfig *adc_getADCConfigBySensorNum(uint16_t channel)
 {
-    for (UINT32 i = 0; i < ADC_CHANNLE_CONFIG_NUM; i++)
+    uint8_t channleSize = adc_getChannelNum();
+    for (UINT32 i = 0; i < channleSize; i++)
     {
-        if (g_ADC[i].config->adcChannl == channel)
+        if (g_pADCConfig_Handler->cfg[i].adcChannl == channel)
         {
-            return &g_ADC[i];
+            return &g_pADCConfig_Handler->cfg[i];
         }
     }
     return NULL;
 }
-ADCStruct *adc_getADCStructByIdx(uint16_t idx)
-{
-    if (idx < ADC_CHANNLE_CONFIG_NUM)
-    {
-        return &g_ADC[idx];
-    }
-    return NULL;
-}
+
 /*get temprate value */
 float get_temprate_convers_value(uint16_t channel)
 {
@@ -137,51 +126,41 @@ float get_voltage_convers_value(uint16_t channel)
 void adc_sample_all(void)
 {
     const ADCChannlesConfig *chanCfg;
-    uint16_t temp_vals[ADC_SAMPLE_TIMES][ADC_CHANNLE_CONFIG_NUM] = {0};
+	int sensorNum = adc_getChannelNum(); 
+    if ((g_pADCConfig_Handler == NULL) || (sensorNum == 0)) {
+        return;
+    }
+    uint16_t temp_vals[ADC_SAMPLE_TIMES][10] = {0};
 
     // sample
     for (UINT32 i = 0; i < ADC_SAMPLE_TIMES; i++)
     {
-        for (UINT32 j = 0; j < ADC_CHANNLE_CONFIG_NUM; j++)
+        for (UINT32 j = 0; j < sensorNum; j++)
         {
-            ADCStruct * adc = adc_getADCStructBySensorNum(g_ADC[j].config->adcChannl);
-            if (adc == NULL) {
-                continue;
-            }
-            chanCfg = adc->config;
-            temp_vals[i][j] = adc_get_value(chanCfg);
+            temp_vals[i][j] = adc_get_value(&g_pADCConfig_Handler->cfg[j]);
         }
         delay_ms(ADC_SAMPLE_DEALYTIMES);
     }
     // average
-    for (UINT32 j = 0; j < ADC_CHANNLE_CONFIG_NUM; j++)
+    for (UINT32 j = 0; j < sensorNum; j++)
     {
-        ADCStruct * adc = adc_getADCStructBySensorNum(g_ADC[j].config->adcChannl);
-        if (adc == NULL) {
-            continue;
-        }
         uint16_t sum = 0;
         for (UINT32 i = 0; i < ADC_SAMPLE_TIMES; i++)
         {
             sum += temp_vals[i][j];
         }
-        adc->adcVal = sum / ADC_SAMPLE_TIMES;
+        g_pADCConfig_Handler->val[j].rawAdc = sum / ADC_SAMPLE_TIMES;
     }
     adc_test();
 }            
 
 BOOLEAN adc_getValByIndex(uint8_t idx, const ADCChannlesConfig **channlCfg, uint16_t *adcVal)
 {
-	if (idx > ADC_CHANNLE_CONFIG_NUM)
+	if (idx > adc_getChannelNum())
 	{
 		return false;
 	}
-	*channlCfg = &g_adcChannlConfig[idx];
-    ADCStruct * adc = adc_getADCStructByIdx(idx);
-    if (adc == NULL) {
-        return false;
-    }
-	*adcVal = adc->adcVal;
+    *adcVal = g_pADCConfig_Handler->val[idx].rawAdc;
     return true;
 }
 /// @brief convert methods 1 利用公式
@@ -219,33 +198,39 @@ static float adc_sampleVal2Temp2(uint16 adcValue)
 
     return temperate;
 }
-static float adc_convertVal(uint8_t unitType, uint16 raw)
+static float adc_convertVal(uint8_t unitType, uint16 rawAdc)
 {
     float res;
     switch (unitType)
     {
         case IPMI_UNIT_DEGREES_C:
-            res = adc_sampleVal2Temp1(raw);
+            res = adc_sampleVal2Temp1(rawAdc);
             break;
         case IPMI_UNIT_VOLTS:
         default:
-            res = (float)raw;
+            res = (float)rawAdc;
             break;
     }
 	return res;
 }
 BOOLEAN adc_getVal(uint8_t channel, float *humanVal)
 {
-    ADCStruct * adc = adc_getADCStructBySensorNum(channel);
-    if (adc == NULL) {
-        return false;
-    }
     uint8_t unitType;
-    if (api_sensorGetUnitType(SubDevice_GetMyMode(), channel, &unitType) == false){
+    if (api_sensorGetUnitType(SubDevice_GetMyMode(), channel, &unitType) == false)
+    {
         return false;
     }
-    *humanVal = adc_convertVal(unitType, adc->adcVal);
-    return true;
+    uint8_t channleSize = adc_getChannelNum();
+    for (UINT32 i = 0; i < channleSize; i++)
+    {
+        if (g_pADCConfig_Handler->cfg[i].adcChannl == channel)
+        {
+            *humanVal = adc_convertVal(unitType, g_pADCConfig_Handler->val[i].rawAdc);
+            return true;
+        }
+    }
+
+    return false;
 }
 static void adc_test(void)
 {

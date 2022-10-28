@@ -36,6 +36,7 @@ typedef struct
 
 typedef struct
 {
+    uint16_t rawAdc;
     uint8_t raw;
     uint8_t errCnt;
     float   human;
