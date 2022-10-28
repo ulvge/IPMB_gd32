@@ -31,7 +31,7 @@ static TimerHandle_t xTimersIpmiReset = NULL;
 static SubDeviceHandler_T g_subDeviceHandler;
 
 static void SubDevice_HeartBeatTimerCallBack(xTimerHandle pxTimer);
-static const SubDeviceName_T g_SubDeviceName[] = {
+static const SubDeviceName_T g_SubDeviceConfigName[] = {
     {SUB_DEVICE_MODE_MAIN,      "main"},
     {SUB_DEVICE_MODE_POWER,     "power"},
     {SUB_DEVICE_MODE_NET,       "net"},
@@ -46,8 +46,8 @@ static char* SubDevice_GetModeName(SUB_DEVICE_MODE mode)
     if (mode < SUB_DEVICE_MODE_MAX) {
         for (uint8_t i = 0; i < SUB_DEVICE_MODE_MAX; i++)
         {
-			if (mode == g_SubDeviceName[i].mode) {
-				return g_SubDeviceName[i].name;
+			if (mode == g_SubDeviceConfigName[i].mode) {
+				return g_SubDeviceConfigName[i].name;
 			}
 		}
     }
@@ -63,7 +63,7 @@ static void SubDevice_InitAllMode(void)
         obj->isMain = false;
         obj->isOnLine = false;
         obj->mode = SUB_DEVICE_MODE_MAX;
-        obj->name = g_SubDeviceName[i].name;
+        obj->name = g_SubDeviceConfigName[i].name;
         obj->i2c0SlaveAddr = obj->i2c1SlaveAddr = SUB_DEVICES_ADDR_DEFAULT;
     }
 }
@@ -79,20 +79,17 @@ static void SubDevice_InsertMode(SubDeviceMODE_T *obj, SUB_DEVICE_MODE mode)
     }
     obj->isOnLine = true;
     obj->mode = mode;
-    obj->name = g_SubDeviceName[mode].name;
+    obj->name = g_SubDeviceConfigName[mode].name;
     obj->i2c0SlaveAddr = obj->i2c1SlaveAddr = SubDevice_modeConvertSlaveAddr(mode);
-}
+}           
 static SubDeviceMODE_T *pSubDeviceSelf = NULL;
-/// @brief read my slave address from GPIO switch,then init all buff if I'm a main(master)
-/// @param  
-/// @return 
-bool SubDevice_Init(void)
+bool SubDevice_CheckAndPrintMode(void)
 {
     SUB_DEVICE_MODE mode = (SUB_DEVICE_MODE)get_board_slave_addr();
     if (mode >= SUB_DEVICE_MODE_MAX) {
         printf("This borad ID is not support, id=%d\n", mode);
         printf("\tBelow are supported\n");
-        for (uint32_t i = 0; i < (sizeof(g_SubDeviceName) / sizeof(g_SubDeviceName[0])); i++)
+        for (uint32_t i = 0; i < ARRARY_SIZE(g_SubDeviceConfigName); i++)
         {
             printf("\t\tid %d----- [%s]\n", i, SubDevice_GetModeName((SUB_DEVICE_MODE)i));
         }
@@ -103,7 +100,13 @@ bool SubDevice_Init(void)
 
     SubDevice_InsertMode(&g_AllModes[mode], mode);
     pSubDeviceSelf = &g_AllModes[mode];
-
+    return true;
+}
+/// @brief read my slave address from GPIO switch,then init all buff if I'm a main(master)
+/// @param  
+/// @return 
+bool SubDevice_Init(void)
+{
     g_subDeviceHandler.busUsed = NM_SECONDARY_IPMB_BUS;          
     SDR_GetAllRecSensorNum((INT8U)SUB_DEVICE_MODE_POWER, g_subDeviceHandler.slaveSensorNum, sizeof(g_subDeviceHandler.slaveSensorNum));
     if (SubDevice_IsSelfMaster()) {

@@ -4,7 +4,8 @@
 
 #include "project_select.h"
 #include <stdbool.h>
-#include "main.h"
+#include "main.h"     
+#include "api_subdevices.h"
 
 
 #define GA0_PIN                         GPIO_PIN_0
@@ -68,6 +69,14 @@ typedef struct {
     uint8_t             activeMode; // hi or low active
 } GPIOConfig;
   
+typedef struct {          
+	SUB_DEVICE_MODE mode;
+    const GPIOConfig *dev;
+    uint8_t configSize;
+} GPIOConfig_Handler;
+
+#define GPIOCONFIG_CREATE_HANDLER(mode, config)   {mode, config, ARRARY_SIZE(config)}
+
 void      GPIO_bspInit     (void);
 uint8_t   get_board_addr     (void);
 uint8_t   get_board_slave_addr     (void);
@@ -75,5 +84,6 @@ uint8_t   get_board_slave_addr     (void);
 
 FlagStatus GPIO_getPinStatus(BMC_GPIO_enum alias);    
 bool GPIO_setPinStatus(BMC_GPIO_enum alias, ControlStatus isActive);
+
 
 #endif /* __BSP_GPIO_H_ */

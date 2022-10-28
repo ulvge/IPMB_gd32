@@ -8,7 +8,6 @@
 #include <stdbool.h>
 #include <stdint.h>
 
-
 #define SUB_DEVICES_HAVE_SENSOR_COUNT 2
 //计算 存储 网络 通讯 刀片
 typedef enum {
@@ -54,6 +53,7 @@ typedef struct
 } SubDeviceMODE_T;
 
 bool SubDevice_Init(void);
+bool SubDevice_CheckAndPrintMode(void);
 bool SubDevice_IsSelfMaster(void);
 bool SubDevice_IsOnLine(void);
 uint8_t SubDevice_GetMySlaveAddress(uint32_t bus);

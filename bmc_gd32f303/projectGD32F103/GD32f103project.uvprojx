@@ -339,7 +339,7 @@
               <MiscControls>--diag_suppress=177</MiscControls>
               <Define>ARM_MATH_CM3,__CC_ARM,GD32F1x</Define>
               <Undefine></Undefine>
-              <IncludePath>..\firmware;..\firmware\GD32F10x\GD32F10x_standard_peripheral\Include;..\firmware\GD32F10x\CMSIS\GD\GD32F10x\Include;..\firmware\GD32F10x\CMSIS;..\user;..\bsp;..\ipmi;..\ipmi\data;..\ipmi\ipmi_dev-3.0.0-src;..\ipmi\ipmi_dev-3.0.0-src\data;..\ipmi\ipmi_common;..\ipmi\libipmi-3.1.0-src\data\include;..\ipmi\libipmi-3.1.0-src\data;..\ipmb;..\api;..\api\adc;..\api\flash;..\api\shell;..\api\tools;..\api\cpu;..\api\sensor;..\api\sub_devices;..\freertos\include;..\freertos\portable;..\freertos\portable\RVDS\ARM_CM3;..\ff10</IncludePath>
+              <IncludePath>..\firmware;..\firmware\GD32F10x\GD32F10x_standard_peripheral\Include;..\firmware\GD32F10x\CMSIS\GD\GD32F10x\Include;..\firmware\GD32F10x\CMSIS;..\user;..\bsp;..\ipmi;..\ipmi\data;..\ipmi\ipmi_dev-3.0.0-src;..\ipmi\ipmi_dev-3.0.0-src\data;..\ipmi\ipmi_common;..\ipmi\libipmi-3.1.0-src\data\include;..\ipmi\libipmi-3.1.0-src\data;..\ipmb;..\api;..\api\adc;..\api\flash;..\api\shell;..\api\tools;..\api\cpu;..\api\sensor;..\sub_devices;..\freertos\include;..\freertos\portable;..\freertos\portable\RVDS\ARM_CM3;..\ff10</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -406,6 +406,26 @@
           </Files>
         </Group>
         <Group>
+          <GroupName>sub_decives</GroupName>
+          <Files>
+            <File>
+              <FileName>api_subdevices.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\sub_devices\api_subdevices.c</FilePath>
+            </File>
+            <File>
+              <FileName>dev_main.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\sub_devices\dev_main.c</FilePath>
+            </File>
+            <File>
+              <FileName>dev_net.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\sub_devices\dev_net.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
           <GroupName>api</GroupName>
           <Files>
             <File>
@@ -457,11 +477,6 @@
               <FileName>api_sensor.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\api\sensor\api_sensor.c</FilePath>
-            </File>
-            <File>
-              <FileName>api_subdevices.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\api\sub_devices\api_subdevices.c</FilePath>
             </File>
           </Files>
         </Group>
