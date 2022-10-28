@@ -15,11 +15,14 @@
 #include "sensor.h"
 
 
-const static GPIOConfig g_gpioConfig_net[] = {
+const static GPIOConfig g_gpioConfig_switch[] = {
     {GPIO_IN_GAP0,            GPIOG, GPIO_PIN_9, RCU_GPIOG, GPIO_MODE_IPD, GPIO_OSPEED_10MHZ, 0},
 };
 
-const GPIOConfig_Handler g_gpioConfigHandler_net = {
-    .mode = SUB_DEVICE_MODE_NET,
-    GPIOCONFIG_CREATE_HANDLER(g_gpioConfig_net),
+const GPIOConfig_Handler g_gpioConfigHandler_switch = {
+    .mode = SUB_DEVICE_MODE_SWITCH,
+    GPIOCONFIG_CREATE_HANDLER(g_gpioConfig_switch),
 };
+
+
+

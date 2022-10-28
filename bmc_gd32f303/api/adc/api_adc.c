@@ -34,7 +34,6 @@ const static ADCChannlesConfig g_adcChannlConfig[] = {
 
 typedef struct 
 {
-    uint8_t adcIdx;
     uint16_t adcVal;
     const ADCChannlesConfig *config;
 } ADCStruct;
@@ -48,7 +47,6 @@ void sample_init(void)
     for(int32_t i = 0; i < ADC_CHANNLE_CONFIG_NUM; i++)
     {
         ADCStruct *pADC = &g_ADC[i];
-        pADC->adcIdx = i;
         pADC->adcVal = 0;
         pADC->config = &g_adcChannlConfig[i];
         adc_init(pADC->config);
@@ -84,7 +82,7 @@ ADCStruct *adc_getADCStructByIdx(uint16_t idx)
 /*get temprate value */
 float get_temprate_convers_value(uint16_t channel)
 {
-    uint16_t adcVal;
+    float adcVal;
     if (adc_getVal(channel, &adcVal) == false){
         return 0;
     }
@@ -95,13 +93,12 @@ float get_temprate_convers_value(uint16_t channel)
 /* get vref voltage value*/
 float get_vref_voltage_convers_value(uint16_t channel)
 {
-    float convers_value;
-    uint16_t adcVal;
+    float adcVal;
     if (adc_getVal(channel, &adcVal) == false){
         return 0;
     }
 
-    convers_value = (float)adcVal * (VREFVOL / ADC_BIT);
+    float convers_value = (float)adcVal * (VREFVOL / ADC_BIT);
     return convers_value;
 }
 
@@ -110,11 +107,11 @@ float get_voltage_convers_value(uint16_t channel)
 {
     float voltage, dc_voltage;
 
-    uint16_t adcVal;
+    float adcVal;
     if (adc_getVal(channel, &adcVal) == false){
         return 0;
     }
-    voltage = (float)adcVal * (VREFVOL / ADC_BIT);
+    voltage = adcVal * (VREFVOL / ADC_BIT);
 
     if (channel == VOL_3_3V)
     {
@@ -190,7 +187,7 @@ BOOLEAN adc_getValByIndex(uint8_t idx, const ADCChannlesConfig **channlCfg, uint
 /// @brief convert methods 1 利用公式
 /// @param adcValue 
 /// @return 
-static uint16_t adc_sampleVal2Temp1(uint16 adcValue)
+static float adc_sampleVal2Temp1(uint16 adcValue)
 {
     static const float resistanceInSeries = 10000.0; //ntc串联的分压电阻
     static const float ntcBvalue = 3500.0;  //B 值
@@ -222,9 +219,9 @@ static float adc_sampleVal2Temp2(uint16 adcValue)
 
     return temperate;
 }
-static uint16_t adc_convertVal(uint8_t unitType, uint16 raw)
+static float adc_convertVal(uint8_t unitType, uint16 raw)
 {
-    uint16_t res;
+    float res;
     switch (unitType)
     {
         case IPMI_UNIT_DEGREES_C:
@@ -232,12 +229,12 @@ static uint16_t adc_convertVal(uint8_t unitType, uint16 raw)
             break;
         case IPMI_UNIT_VOLTS:
         default:
-            res = raw;
+            res = (float)raw;
             break;
     }
 	return res;
 }
-BOOLEAN adc_getVal(uint8_t channel, uint16_t *humanVal)
+BOOLEAN adc_getVal(uint8_t channel, float *humanVal)
 {
     ADCStruct * adc = adc_getADCStructBySensorNum(channel);
     if (adc == NULL) {

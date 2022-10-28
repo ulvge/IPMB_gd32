@@ -30,7 +30,7 @@ typedef enum
 }SENSOR_ENUM;
 
 bool api_sensorGetUnitType(INT8U destMode, UINT32 sensorNum, UINT8 *unitType);
-BOOLEAN api_sensorGetValBySensorNum(INT8U destMode, UINT16 sensorNum, UINT16 *val);
+BOOLEAN api_sensorGetValBySensorNum(INT8U destMode, UINT16 sensorNum, float *val);
 
 #ifdef __cplusplus
 }

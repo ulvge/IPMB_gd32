@@ -7,6 +7,7 @@
 #include "stdint.h"
 #include "main.h" 
 #include "Types.h"
+#include "api_subdevices.h"
 
 
 #ifdef DEBUG
@@ -42,6 +43,13 @@ typedef struct {
     INT32U      			Pin;
     char *      			adcAlias;
 } ADCChannlesConfig;
+
+typedef struct {          
+	SUB_DEVICE_MODE mode;
+    uint8_t configSize;
+    const ADCChannlesConfig *dev;
+    SubDevice_Reading_T *val;
+} ADCChannlesConfig_Handler;
 
 void adc_init(const ADCChannlesConfig  *chanCfg);
 /*get ADC channel value of average conversion*/

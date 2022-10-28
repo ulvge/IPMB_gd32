@@ -39,7 +39,21 @@
 
 typedef enum 
 { 
-    GPIO_OUT_LED_RED = 0,
+    GPIO_CPLD_MCU_1 = 0,
+    GPIO_CPLD_MCU_2,
+    GPIO_CPLD_MCU_3,
+    GPIO_CPLD_MCU_4,
+    GPIO_CPLD_MCU_5,
+    GPIO_CPLD_MCU_6,
+    GPIO_CPLD_MCU_7,
+    GPIO_CPLD_MCU_8,
+    GPIO_CPLD_MCU_9,
+    GPIO_CPLD_MCU_10,
+    GPIO_CPLD_MCU_11,
+    GPIO_CPLD_MCU_12,
+    GPIO_CPLD_MCU_13,
+
+    GPIO_OUT_LED_RED,
     GPIO_OUT_LED_GREEN,
     GPIO_OUT_CPU_POWER_ON,
     GPIO_OUT_CPU_POWER_OFF,
@@ -49,13 +63,7 @@ typedef enum
     GPIO_IN_GAP0,
     GPIO_IN_GAP1,
     GPIO_IN_GAP2,
-    GPIO_IN_GAP3,
-    GPIO_IN_GAP4,
-    GPIO_IN_GAP5,
     
-    GPIO_IN_SLAVE_ADDRESS0,
-    GPIO_IN_SLAVE_ADDRESS1,
-    GPIO_IN_SLAVE_ADDRESS2,
     GPIO_PIN_MAX
 }BMC_GPIO_enum;
 
@@ -66,7 +74,7 @@ typedef struct {
     rcu_periph_enum     gpioClk;
     uint8_t             pinMode;
     uint8_t             pinSpeed;
-    uint8_t             activeMode; // hi or low active
+    uint8_t             activeMode; // if output, hi or low active
 } GPIOConfig;
   
 typedef struct {          
@@ -75,11 +83,16 @@ typedef struct {
     uint8_t configSize;
 } GPIOConfig_Handler;
 
-#define GPIOCONFIG_CREATE_HANDLER(mode, config)   {mode, config, ARRARY_SIZE(config)}
+#define GPIOCONFIG_CREATE_HANDLER(config)   .configSize = ARRARY_SIZE(config),  .dev = config 
+
+extern const GPIOConfig_Handler g_gpioConfigHandler_main;
+extern const GPIOConfig_Handler g_gpioConfigHandler_net; 
+extern const GPIOConfig_Handler g_gpioConfigHandler_switch; 
+extern const GPIOConfig_Handler g_gpioConfigHandler_power; 
+extern const GPIOConfig_Handler g_gpioConfigHandler_storage0; 
 
 void      GPIO_bspInit     (void);
 uint8_t   get_board_addr     (void);
-uint8_t   get_board_slave_addr     (void);
 
 
 FlagStatus GPIO_getPinStatus(BMC_GPIO_enum alias);    

@@ -423,6 +423,21 @@
               <FileType>1</FileType>
               <FilePath>..\sub_devices\dev_net.c</FilePath>
             </File>
+            <File>
+              <FileName>dev_power.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\sub_devices\dev_power.c</FilePath>
+            </File>
+            <File>
+              <FileName>dev_storage0.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\sub_devices\dev_storage0.c</FilePath>
+            </File>
+            <File>
+              <FileName>dev_switch.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\sub_devices\dev_switch.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -432,11 +447,6 @@
               <FileName>api_adc.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\api\adc\api_adc.c</FilePath>
-            </File>
-            <File>
-              <FileName>api_tmp.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\api\tmp\api_tmp.c</FilePath>
             </File>
             <File>
               <FileName>api_utc.c</FileName>

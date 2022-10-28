@@ -40,7 +40,7 @@ float get_voltage_convers_value(uint16_t channel);
 
 /* get vref voltage value*/
 float get_vref_voltage_convers_value(uint16_t channel);
-BOOLEAN adc_getVal(uint8_t channel, uint16_t *humanVal);
+BOOLEAN adc_getVal(uint8_t channel, float *humanVal);
 void adc_sample_all(void);
 #ifdef __cplusplus
 }

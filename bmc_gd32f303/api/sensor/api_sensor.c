@@ -25,18 +25,19 @@ bool api_sensorGetUnitType(INT8U destMode, UINT32 sensorNum, uint8_t *unitType)
     return true;
 }
 
-BOOLEAN api_sensorGetValBySensorNum(INT8U destMode, UINT16 sensorNum, UINT16 *val)
+BOOLEAN api_sensorGetValBySensorNum(INT8U destMode, UINT16 sensorNum, float *val)
 {
     uint8_t unitType;
     if (api_sensorGetUnitType(destMode, sensorNum, &unitType) == false){
         return false;
     }
-	uint16_t *fanRpm;
-	
+				   
+	uint16_t fanRpm;   
 	switch (unitType)
 	{
-        case IPMI_UNIT_RPM:     
-            if (fan_get_rotate_rpm(sensorNum, val)) {
+        case IPMI_UNIT_RPM:  
+            if (fan_get_rotate_rpm(sensorNum, &fanRpm)) {
+				*val = (float)fanRpm;
                 return true;
             }
             break;

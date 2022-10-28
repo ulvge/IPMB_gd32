@@ -1,40 +1,41 @@
 /**
-  ******************************************************************************
-  * @author  
-  * @version 
-  * @date   
-  * @brief   
-  ******************************************************************************
-  ******************************************************************************
-  */
-  
-#include "bsp_gpio.h"   
-#include "bsp_i2c.h" 
-#include "Types.h"   
-#include "api_subdevices.h"   
+ ******************************************************************************
+ * @author
+ * @version
+ * @date
+ * @brief
+ ******************************************************************************
+ ******************************************************************************
+ */
 
-extern const GPIOConfig_Handler g_gpioConfigHandler_main;
-extern const GPIOConfig_Handler g_gpioConfigHandler_net; 
+#include "bsp_gpio.h"
+#include "bsp_i2c.h"
+#include "Types.h"
+#include "api_subdevices.h"
 
 const static GPIOConfig g_gpioConfigComm[] = {
-    {GPIO_IN_SLAVE_ADDRESS0,            GPIOG, GPIO_PIN_9, RCU_GPIOG, GPIO_MODE_IPD, GPIO_OSPEED_10MHZ, 0},
-    {GPIO_IN_SLAVE_ADDRESS1,            GPIOG, GPIO_PIN_10, RCU_GPIOG, GPIO_MODE_IPD, GPIO_OSPEED_10MHZ, 0},
-    {GPIO_IN_SLAVE_ADDRESS2,            GPIOG, GPIO_PIN_11, RCU_GPIOG, GPIO_MODE_IPD, GPIO_OSPEED_10MHZ, 0},
-};
-
-const static GPIOConfig_Handler* g_gpioAllDevices[] = {
-    &g_gpioConfigHandler_main,
-    &g_gpioConfigHandler_net,
+    {GPIO_IN_GAP0, GPIOE, GPIO_PIN_10, RCU_GPIOE, GPIO_MODE_IPU, GPIO_OSPEED_10MHZ, 0},
+    {GPIO_IN_GAP1, GPIOE, GPIO_PIN_11, RCU_GPIOE, GPIO_MODE_IPU, GPIO_OSPEED_10MHZ, 0},
+    {GPIO_IN_GAP2, GPIOE, GPIO_PIN_12, RCU_GPIOE, GPIO_MODE_IPU, GPIO_OSPEED_10MHZ, 0},
 };
 
 const static GPIOConfig_Handler *g_pGpioConfig_Handler = NULL;
+const static GPIOConfig_Handler *g_gpioAllDevices[] = {
+    &g_gpioConfigHandler_main,
+    &g_gpioConfigHandler_net,
+    &g_gpioConfigHandler_switch,
+    &g_gpioConfigHandler_power,
+    &g_gpioConfigHandler_storage0,
+};
 
-void GPIO_InitGPIO(const GPIOConfig  *config, UINT8 size)
-{        
-    const GPIOConfig  *p_gpioCfg;
-    for (UINT8 i=0; i< size;i++){
-		p_gpioCfg = &config[i];
-        
+
+void GPIO_InitGPIO(const GPIOConfig *config, UINT8 size)
+{
+    const GPIOConfig *p_gpioCfg;
+    for (UINT8 i = 0; i < size; i++)
+    {
+        p_gpioCfg = &config[i];
+
         /* enable the clock */
         rcu_periph_clock_enable(p_gpioCfg->gpioClk);
         gpio_init(p_gpioCfg->gpioPort, p_gpioCfg->pinMode, p_gpioCfg->pinSpeed, p_gpioCfg->pin);
@@ -43,33 +44,41 @@ void GPIO_InitGPIO(const GPIOConfig  *config, UINT8 size)
 }
 void GPIO_bspInit(void)
 {
-	GPIO_InitGPIO(&g_gpioConfigComm[0], ARRARY_SIZE(g_gpioConfigComm));
-	
-    if(!SubDevice_CheckAndPrintMode()){
+    GPIO_InitGPIO(&g_gpioConfigComm[0], ARRARY_SIZE(g_gpioConfigComm));
+
+    if (!SubDevice_CheckAndPrintMode())
+    {
         printf("Check mode failed, system will reset line=%d", __LINE__);
         return;
     }
-	SUB_DEVICE_MODE myMode = SubDevice_GetMyMode();
+    SUB_DEVICE_MODE myMode = SubDevice_GetMyMode();
 
     for (size_t i = 0; i < ARRARY_SIZE(g_gpioAllDevices); i++)
     {
-        const GPIOConfig_Handler** phandler = (g_gpioAllDevices + i);
-		if ((*phandler)->mode == myMode) {
-            g_pGpioConfig_Handler = *phandler;  
-			GPIO_InitGPIO(g_pGpioConfig_Handler->dev, g_pGpioConfig_Handler->configSize);
+        const GPIOConfig_Handler **phandler = (g_gpioAllDevices + i);
+        if ((*phandler)->mode == myMode)
+        {
+            g_pGpioConfig_Handler = *phandler;
+            GPIO_InitGPIO(g_pGpioConfig_Handler->dev, g_pGpioConfig_Handler->configSize);
             return;
         }
     }
-    
-    printf("not find gpio config mode, system will reset line=%d", __LINE__);
+
+    // printf("not find gpio config mode, system will reset line=%d", __LINE__);
 }
-static const GPIOConfig  *GPIO_findGpio(BMC_GPIO_enum alias)
+static const GPIOConfig *GPIO_findGpio(BMC_GPIO_enum alias)
 {
+    if (g_pGpioConfig_Handler == NULL)
+    {
+        return NULL;
+    }
     UINT8 num = g_pGpioConfig_Handler->configSize;
-	const GPIOConfig  *p_gpioCfg;
-    for (UINT8 i=0; i< num;i++){
+    const GPIOConfig *p_gpioCfg;
+    for (UINT8 i = 0; i < num; i++)
+    {
         p_gpioCfg = (g_pGpioConfig_Handler->dev) + i;
-        if (p_gpioCfg->alias == alias) {
+        if (p_gpioCfg->alias == alias)
+        {
             return p_gpioCfg;
         }
     }
@@ -77,9 +86,10 @@ static const GPIOConfig  *GPIO_findGpio(BMC_GPIO_enum alias)
 }
 FlagStatus GPIO_getPinStatus(BMC_GPIO_enum alias)
 {
-	const GPIOConfig  *p_gpioCfg = GPIO_findGpio(alias);
-    
-    if (p_gpioCfg == NULL) {
+    const GPIOConfig *p_gpioCfg = GPIO_findGpio(alias);
+
+    if (p_gpioCfg == NULL)
+    {
         return RESET;
     }
     return gpio_input_bit_get(p_gpioCfg->gpioPort, p_gpioCfg->pin);
@@ -87,27 +97,38 @@ FlagStatus GPIO_getPinStatus(BMC_GPIO_enum alias)
 
 bool GPIO_setPinStatus(BMC_GPIO_enum alias, ControlStatus isActive)
 {
-	const GPIOConfig  *p_gpioCfg = GPIO_findGpio(alias);
-    
-    if (p_gpioCfg == NULL) {
+    const GPIOConfig *p_gpioCfg = GPIO_findGpio(alias);
+
+    if (p_gpioCfg == NULL)
+    {
         return false;
     }
 
-    if(!((p_gpioCfg->pinMode == GPIO_MODE_OUT_OD) || (p_gpioCfg->pinMode == GPIO_MODE_OUT_PP) || 
-        (p_gpioCfg->pinMode == GPIO_MODE_AF_OD) || (p_gpioCfg->pinMode == GPIO_MODE_AF_PP))) {
+    if (!((p_gpioCfg->pinMode == GPIO_MODE_OUT_OD) || (p_gpioCfg->pinMode == GPIO_MODE_OUT_PP) ||
+          (p_gpioCfg->pinMode == GPIO_MODE_AF_OD) || (p_gpioCfg->pinMode == GPIO_MODE_AF_PP)))
+    {
         return false;
     }
 
-    if(p_gpioCfg->activeMode){
-        if(isActive){
+    if (p_gpioCfg->activeMode)
+    {
+        if (isActive)
+        {
             GPIO_BOP(p_gpioCfg->gpioPort) = p_gpioCfg->pin;
-        }else{
+        }
+        else
+        {
             GPIO_BC(p_gpioCfg->gpioPort) = p_gpioCfg->pin;
         }
-    } else {
-        if(isActive){
+    }
+    else
+    {
+        if (isActive)
+        {
             GPIO_BC(p_gpioCfg->gpioPort) = p_gpioCfg->pin;
-        }else{
+        }
+        else
+        {
             GPIO_BOP(p_gpioCfg->gpioPort) = p_gpioCfg->pin;
         }
     }
@@ -116,24 +137,11 @@ bool GPIO_setPinStatus(BMC_GPIO_enum alias, ControlStatus isActive)
 
 uint8_t get_board_addr()
 {
-	uint8_t addr = 0;
+    uint8_t addr = 0;
 
-	addr |= GPIO_getPinStatus(GPIO_IN_GAP0) << 0;
-	addr |= GPIO_getPinStatus(GPIO_IN_GAP1) << 1;
-	addr |= GPIO_getPinStatus(GPIO_IN_GAP2) << 2;
-	addr |= GPIO_getPinStatus(GPIO_IN_GAP3) << 3;
-	addr |= GPIO_getPinStatus(GPIO_IN_GAP4) << 4;
-
-    return addr;
-}
-
-uint8_t get_board_slave_addr()
-{
-	uint8_t subDeviceSwitch = 0;
-
-	subDeviceSwitch |= GPIO_getPinStatus(GPIO_IN_SLAVE_ADDRESS0) << 0;
-	subDeviceSwitch |= GPIO_getPinStatus(GPIO_IN_SLAVE_ADDRESS1) << 1;
-	subDeviceSwitch |= GPIO_getPinStatus(GPIO_IN_SLAVE_ADDRESS2) << 2;
+    addr |= GPIO_getPinStatus(GPIO_IN_GAP0) << 0;
+    addr |= GPIO_getPinStatus(GPIO_IN_GAP1) << 1;
+    addr |= GPIO_getPinStatus(GPIO_IN_GAP2) << 2;
 
     return 0x00;
 }

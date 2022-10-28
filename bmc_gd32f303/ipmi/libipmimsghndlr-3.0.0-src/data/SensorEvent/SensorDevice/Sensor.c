@@ -164,7 +164,7 @@ static const INT8U sensor_presence[][2] = {
 
 /*** Prototype Declaration ***/
 static void FindNumSensors(int BMCInst);
-static INT8U IpmiReadingDatConvert2Raw(INT8U sensor_type, INT16U value);
+static INT8U IpmiReadingDatConvert2Raw(INT8U sensor_type, float value);
 
 /*---------------------------------------
  * InitSensor
@@ -1918,7 +1918,7 @@ int GetSensorReading(INT8U *pReq, INT8U ReqLen, INT8U *pRes, int BMCInst)
 	printf("pSensorReadReq->SensorNum = %d", pSensorReadReq->SensorNum);
     
 	const ADCChannlesConfig *chanCfg = NULL;
-    uint16_t adcVal;
+    float adcVal;
     SUB_DEVICE_MODE myMode = SubDevice_GetMyMode();
     if (ReqLen == 2) {
         myMode = (SUB_DEVICE_MODE)(pReq[1]);
@@ -2592,7 +2592,7 @@ int GetDCMITempReading(INT8U EntityID, INT8U SensorType, INT8U EntityInstance,
 }
 #endif /* SENSOR_DEVICE */
 
-INT8U IpmiReadingDatConvert2Raw(INT8U sensor_type, INT16U value)
+INT8U IpmiReadingDatConvert2Raw(INT8U sensor_type, float value)
 {
 	INT8U res;
 
@@ -2606,7 +2606,7 @@ INT8U IpmiReadingDatConvert2Raw(INT8U sensor_type, INT16U value)
 		res = (INT8U)(value / 32);
 		break;
 	case IPMI_UNIT_VOLTS:
-		res = value>>4;
+		res = (INT8U)(((INT16U)value)>>4);
 		break;
 	case IPMI_UNIT_AMPS:  
 		res = value;

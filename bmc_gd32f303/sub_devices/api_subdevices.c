@@ -85,7 +85,7 @@ static void SubDevice_InsertMode(SubDeviceMODE_T *obj, SUB_DEVICE_MODE mode)
 static SubDeviceMODE_T *pSubDeviceSelf = NULL;
 bool SubDevice_CheckAndPrintMode(void)
 {
-    SUB_DEVICE_MODE mode = (SUB_DEVICE_MODE)get_board_slave_addr();
+    SUB_DEVICE_MODE mode = (SUB_DEVICE_MODE)get_board_addr();
     if (mode >= SUB_DEVICE_MODE_MAX) {
         printf("This borad ID is not support, id=%d\n", mode);
         printf("\tBelow are supported\n");
