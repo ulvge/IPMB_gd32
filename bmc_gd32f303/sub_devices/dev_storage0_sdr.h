@@ -3,9 +3,9 @@
 #include "IPMIConf.h"     
 #include "ipmi_common.h"  
 #include "sensor.h"   
-#include "api_sensor.h"       
+#include "api_sensor.h"  
 
-const FullSensorRec_T   g_sensor_sdr_main[] =
+const FullSensorRec_T   g_sensor_sdr_storage0[] =
 {
     {        /* SDR Record header P12V*/
         0x00004, //Recoder ID
@@ -59,6 +59,5 @@ const FullSensorRec_T   g_sensor_sdr_main[] =
         "P12V"
     },
 };
-
 
 

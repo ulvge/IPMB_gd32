@@ -1,19 +1,7 @@
 #include <string.h>  
 #include <stdlib.h>
-#include "debug_print.h"
-#include "api_subdevices.h"
 #include "bsp_gpio.h"
-#include "bsp_i2c.h"
-#include "IPMIConf.h"
-#include "IPMDevice.h"
-#include "OSPort.h"
-#include "IPMI_SensorEvent.h"
-#include "ipmi_common.h"
-#include "sdr.h"
-#include "IPMI_Sensor.h"
-#include "sensor_helpers.h"
-#include "sensor.h"          
-#include "api_sensor.h"    
+#include "sensor.h"      
 #include "dev_main_sdr.h"
 
 static const GPIOConfig g_gpioConfig_main[] = {

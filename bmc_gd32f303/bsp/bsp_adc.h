@@ -58,7 +58,10 @@ typedef struct {
 
 
 extern const ADCChannlesConfig_Handler g_adcChannlHandler_main;
-
+extern const ADCChannlesConfig_Handler g_adcChannlHandler_net;
+extern const ADCChannlesConfig_Handler g_adcChannlHandler_switch;
+extern const ADCChannlesConfig_Handler g_adcChannlHandler_power;
+extern const ADCChannlesConfig_Handler g_adcChannlHandler_storage0;
 
 void adc_init_channle(const ADCChannlesConfig  *chanCfg);
 /*get ADC channel value of average conversion*/

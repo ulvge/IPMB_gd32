@@ -419,11 +419,6 @@
               <FilePath>..\sub_devices\dev_main.c</FilePath>
             </File>
             <File>
-              <FileName>dev_main_sdr.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\sub_devices\dev_main_sdr.c</FilePath>
-            </File>
-            <File>
               <FileName>dev_net.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\sub_devices\dev_net.c</FilePath>

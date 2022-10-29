@@ -12,23 +12,16 @@
 const static ADCChannlesConfig_Handler *g_pADCConfig_Handler = NULL;
 const static ADCChannlesConfig_Handler *g_ADCAllDevices[] = {
     &g_adcChannlHandler_main,
+    &g_adcChannlHandler_net,
+    &g_adcChannlHandler_switch,
+    &g_adcChannlHandler_power,
+    &g_adcChannlHandler_storage0,
 };
 
 static void adc_test(void);
 static float adc_sampleVal2Temp2(uint16 adcValue);
+static void adc_InitADCs(const ADCChannlesConfig_Handler *config);
 
-static void adc_InitADCs(const ADCChannlesConfig_Handler *config)
-{
-    const ADCChannlesConfig *p_gpioCfg;
-    for (UINT8 i = 0; i < config->cfgSize; i++)
-    {
-        p_gpioCfg = &config->cfg[i];
-        adc_init_channle(p_gpioCfg);
-        config->val[i].raw = 0;
-        config->val[i].errCnt = 0;
-        config->val[i].human = 0;
-    }
-}
 void adc_init(void)
 {
     SUB_DEVICE_MODE myMode = SubDevice_GetMyMode();
@@ -44,7 +37,19 @@ void adc_init(void)
         }
     }
 }
-uint8_t adc_getChannelNum(void)
+static void adc_InitADCs(const ADCChannlesConfig_Handler *config)
+{
+    const ADCChannlesConfig *p_gpioCfg;
+    for (UINT8 i = 0; i < config->cfgSize; i++)
+    {
+        p_gpioCfg = &config->cfg[i];
+        adc_init_channle(p_gpioCfg);
+        config->val[i].raw = 0;
+        config->val[i].errCnt = 0;
+        config->val[i].human = 0;
+    }
+}
+uint8_t adc_getChannelSize(void)
 {
     if (g_pADCConfig_Handler == NULL) {
         return 0;
@@ -57,7 +62,7 @@ uint8_t adc_getChannelNum(void)
 /// @return 
 static const ADCChannlesConfig *adc_getADCConfigBySensorNum(uint16_t channel)
 {
-    uint8_t channleSize = adc_getChannelNum();
+    uint8_t channleSize = adc_getChannelSize();
     for (UINT32 i = 0; i < channleSize; i++)
     {
         if (g_pADCConfig_Handler->cfg[i].adcChannl == channel)
@@ -126,8 +131,8 @@ float get_voltage_convers_value(uint16_t channel)
 void adc_sample_all(void)
 {
     const ADCChannlesConfig *chanCfg;
-	int sensorNum = adc_getChannelNum(); 
-    if ((g_pADCConfig_Handler == NULL) || (sensorNum == 0)) {
+	int channleSize = adc_getChannelSize();
+    if (channleSize == 0) {
         return;
     }
     uint16_t temp_vals[ADC_SAMPLE_TIMES][10] = {0};
@@ -135,14 +140,14 @@ void adc_sample_all(void)
     // sample
     for (UINT32 i = 0; i < ADC_SAMPLE_TIMES; i++)
     {
-        for (UINT32 j = 0; j < sensorNum; j++)
+        for (UINT32 j = 0; j < channleSize; j++)
         {
             temp_vals[i][j] = adc_get_value(&g_pADCConfig_Handler->cfg[j]);
         }
         delay_ms(ADC_SAMPLE_DEALYTIMES);
     }
     // average
-    for (UINT32 j = 0; j < sensorNum; j++)
+    for (UINT32 j = 0; j < channleSize; j++)
     {
         uint16_t sum = 0;
         for (UINT32 i = 0; i < ADC_SAMPLE_TIMES; i++)
@@ -156,7 +161,7 @@ void adc_sample_all(void)
 
 BOOLEAN adc_getValByIndex(uint8_t idx, const ADCChannlesConfig **channlCfg, uint16_t *adcVal)
 {
-	if (idx > adc_getChannelNum())
+	if (idx > adc_getChannelSize())
 	{
 		return false;
 	}
@@ -220,8 +225,8 @@ BOOLEAN adc_getVal(uint8_t channel, float *humanVal)
     {
         return false;
     }
-    uint8_t channleSize = adc_getChannelNum();
-    for (UINT32 i = 0; i < channleSize; i++)
+    uint8_t channleSize = adc_getChannelSize();
+    for (uint8_t i = 0; i < channleSize; i++)
     {
         if (g_pADCConfig_Handler->cfg[i].adcChannl == channel)
         {

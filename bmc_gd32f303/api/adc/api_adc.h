@@ -29,7 +29,7 @@
 
 void adc_init(void);
 ADCChannlesConfig *adc_getConfig(void);   
-uint8_t adc_getChannelNum(void); 
+uint8_t adc_getChannelSize(void); 
 BOOLEAN adc_getValByIndex(uint8_t idx, const ADCChannlesConfig **channlCfg, uint16_t *adcVal);
 
 /*get temprate value */

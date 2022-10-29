@@ -330,10 +330,10 @@ SHELL_EXPORT_CMD(SHELL_CMD_PERMISSION(0) | SHELL_CMD_TYPE(SHELL_TYPE_CMD_MAIN) |
 // tool 4********list all sensors info **********************************************
 int sensor(int argc, char *argv[])
 {
-	int sensorNum = adc_getChannelNum(); 
+	int channleSize = adc_getChannelSize();
 	const ADCChannlesConfig *chanCfg = NULL;
     uint16_t adcVal;
-    for (int i = 0; i < sensorNum; i++)
+    for (int i = 0; i < channleSize; i++)
     {
 		if (adc_getValByIndex(i, &chanCfg, &adcVal) == false){
 			LOG_I("sensor :idx = %d error \r\n", i);

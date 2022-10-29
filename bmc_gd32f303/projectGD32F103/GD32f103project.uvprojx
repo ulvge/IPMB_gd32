@@ -429,14 +429,14 @@
               <FilePath>..\sub_devices\dev_power.c</FilePath>
             </File>
             <File>
-              <FileName>dev_storage0.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\sub_devices\dev_storage0.c</FilePath>
-            </File>
-            <File>
               <FileName>dev_switch.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\sub_devices\dev_switch.c</FilePath>
+            </File>
+            <File>
+              <FileName>dev_storage0.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\sub_devices\dev_storage0.c</FilePath>
             </File>
           </Files>
         </Group>
