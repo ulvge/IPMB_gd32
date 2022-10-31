@@ -42,6 +42,7 @@ typedef struct {
     INT32U      			gpioPort;
     rcu_periph_enum      	gpioClk;
     INT32U      			Pin;
+    SUB_DEVICE_SDR_IDX      sdrIdx;
     char *      			adcAlias;
 } ADCChannlesConfig;
 

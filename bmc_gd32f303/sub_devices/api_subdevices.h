@@ -21,6 +21,14 @@ typedef enum {
     SUB_DEVICE_MODE_MAX,
 }SUB_DEVICE_MODE ;
 
+typedef enum {
+    SUB_DEVICE_SDR_NO_PARTIAL  = 1, // No resistance partial voltage
+    SUB_DEVICE_SDR_P2V5        = 2,
+    SUB_DEVICE_SDR_P3V3        = 3,
+    SUB_DEVICE_SDR_P12V        = 4,
+    SUB_DEVICE_SDR_TEMP        = 5,
+}SUB_DEVICE_SDR_IDX ;
+
 
 typedef enum {
     SUB_DEVICE_REG_ERR_EXIST  = -10,
