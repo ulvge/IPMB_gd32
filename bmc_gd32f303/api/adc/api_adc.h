@@ -30,7 +30,9 @@
 void adc_init(void);
 ADCChannlesConfig *adc_getConfig(void);   
 uint8_t adc_getChannelSize(void); 
-BOOLEAN adc_getValByIndex(uint8_t idx, const ADCChannlesConfig **channlCfg, uint16_t *adcVal);
+BOOLEAN adc_getValByIndex(uint8_t idx, const ADCChannlesConfig **channlCfg, uint16_t *adcVal);  
+const ADCChannlesConfig_Handler *adc_getADCConfigHandler(SUB_DEVICE_MODE destMode);
+uint8_t adc_getSensorNumByIdex(uint8_t idx);
 
 /*get temprate value */
 float get_temprate_convers_value(uint16_t channel);

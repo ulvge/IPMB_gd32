@@ -31,11 +31,11 @@ BOOLEAN api_sensorGetValBySensorNum(INT8U destMode, UINT16 sensorNum, float *val
     if (api_sensorGetUnitType(destMode, sensorNum, &unitType) == false){
         return false;
     }
-				   
-	uint16_t fanRpm;   
+	uint16_t fanRpm;
+	
 	switch (unitType)
 	{
-        case IPMI_UNIT_RPM:  
+        case IPMI_UNIT_RPM:
             if (fan_get_rotate_rpm(sensorNum, &fanRpm)) {
 				*val = (float)fanRpm;
                 return true;

@@ -387,6 +387,7 @@ INT32U ProcessIPMIReq(MsgPkt_T *pReq, MsgPkt_T *pRes)
         }
         else
         {
+			IPMI_WARNING("do work Cmd %#x\n", (UINT32 )CmdHndlr);
             ResDatSize = CmdHndlr(&pReq->Data[HdrOffset], pReq->Size - HdrOffset - 1, &pRes->Data[HdrOffset], 0);
             pRes->Size = ResDatSize + HdrOffset + 1; // IPMI Header + Response data field + Second Checksum
         }

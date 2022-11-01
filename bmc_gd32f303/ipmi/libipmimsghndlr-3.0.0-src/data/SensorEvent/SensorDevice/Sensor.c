@@ -1911,11 +1911,12 @@ int GetSensorReading(INT8U *pReq, INT8U ReqLen, INT8U *pRes, int BMCInst)
 	INT16U voltage_value = 0;
 	bool get_res = false;    
 
+	UNUSED(LUNSensorNum);
 	pSensorReadRes->Flags = 0xC0;
 	//pSensorReadRes->ComparisonStatus = 0x00;
 	//pSensorReadRes->OptionalStatus = 0x00;
 
-	printf("pSensorReadReq->SensorNum = %d", pSensorReadReq->SensorNum);
+	// printf("pSensorReadReq->SensorNum = %d", pSensorReadReq->SensorNum);
     
 	const ADCChannlesConfig *chanCfg = NULL;
     float adcVal;
@@ -1953,8 +1954,7 @@ int GetSensorReading(INT8U *pReq, INT8U ReqLen, INT8U *pRes, int BMCInst)
 	//		LUNSensorNum = pSensorReadReq->SensorNum;
 	//	}
 	LUNSensorNum = pSensorReadReq->SensorNum;
-
-	IPMI_DBG_PRINT_2("GetSensorReading : OwnerLUN = %x LUNSensorNum = 0x%2x \n", OwnerLUN, LUNSensorNum);
+	//IPMI_DBG_PRINT_2("GetSensorReading : OwnerLUN = %x LUNSensorNum = 0x%2x \n", OwnerLUN, LUNSensorNum);
 
 	//	if( pBMCInfo->IpmiConfig.OPMASupport == 1)
 	//	{

@@ -327,9 +327,9 @@ int ipmi_convert_reading( u8 *sdr_buffer, u8 raw_reading, float *converted_readi
     switch( record->Units1 >> 6 )
     {
         case SDR_READING_UNSIGNED:
-            TDBG( "Sensor reading number format is unsigned\n" );
-            TDBG( "Sensor min: %d\n", sensor_min );
-            TDBG( "Sensor max: %d\n", sensor_max );
+            //TDBG( "Sensor reading number format is unsigned\n" );
+            //TDBG( "Sensor min: %d\n", sensor_min );
+            //TDBG( "Sensor max: %d\n", sensor_max );
             break;
 
         case SDR_READING_1SCOMP:
@@ -343,9 +343,9 @@ int ipmi_convert_reading( u8 *sdr_buffer, u8 raw_reading, float *converted_readi
             if( sensor_max & (u8)0x80 )
                 sensor_max = -( ~sensor_max & 0xff );
 
-            TDBG( "Sensor reading number format is 1's complement: %d\n", raw_number );
-            TDBG( "Sensor min: %d\n", sensor_min );
-            TDBG( "Sensor max: %d\n", sensor_max );
+            //TDBG( "Sensor reading number format is 1's complement: %d\n", raw_number );
+            //TDBG( "Sensor min: %d\n", sensor_min );
+            //TDBG( "Sensor max: %d\n", sensor_max );
             break;
 
         case SDR_READING_2SCOMP:
@@ -359,9 +359,9 @@ int ipmi_convert_reading( u8 *sdr_buffer, u8 raw_reading, float *converted_readi
             if( sensor_max & (u8)0x80 )
                 sensor_max = -( ( ~sensor_max & 0xff ) + 1 );
 
-            TDBG( "Sensor reading number format is 2's complement: %d\n", raw_number );
-            TDBG( "Sensor min: %d\n", sensor_min );
-            TDBG( "Sensor max: %d\n", sensor_max );
+            //TDBG( "Sensor reading number format is 2's complement: %d\n", raw_number );
+            //TDBG( "Sensor min: %d\n", sensor_min );
+            //TDBG( "Sensor max: %d\n", sensor_max );
             break;
 
         case SDR_READING_NONANALOG:

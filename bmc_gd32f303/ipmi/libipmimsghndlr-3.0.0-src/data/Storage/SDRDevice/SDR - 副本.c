@@ -432,12 +432,12 @@ FullSensorRec_T   g_sensor_sdr[] =
 		.MaxReading           = 0xFF,
 		.MinReading           = 0x00,
 
-		.UpperNonRecoverable  = 0x80,
-		.UpperCritical        = 0x76,
-		.UpperNonCritical     = 0x6c,
-		.LowerNonRecoverable  = 0x45,
-		.LowerCritical        = 0x4f,
-		.LowerNonCritical     = 0x59,
+		.UpperNonRecoverable  = 0x23,
+		.UpperCritical        = 0x20,
+		.UpperNonCritical     = 0x1e,
+		.LowerNonRecoverable  = 0x13,
+		.LowerCritical        = 0x16,
+		.LowerNonCritical     = 0x18,
 		.PositiveHysterisis   = 0x00,
 		.NegativeHysterisis   = 0x00,
 		.Reserved1            = 0x00,
@@ -548,57 +548,6 @@ FullSensorRec_T   g_sensor_sdr[] =
 		.IDStrTypeLen         = 0xC0 + sizeof("CPU_TEMP"),
 		.IDStr                = "CPU_TEMP",
 	},
-	{	 /* SDR Record    0x0a   "P12V"   SUB_DEVICE_SDR_P12V_10_1 */
-		.hdr.ID               = 0x000a,
-		.hdr.Version          = 0x51,
-		.hdr.Type             = 0x01,
-		.hdr.Len              = 0x40,
-
-		.OwnerID              = 0x20,
-		.OwnerLUN             = 0x00,
-		.SensorNum            = 0x0a,
-
-		.EntityID             = 0x07,
-		.EntityIns            = 0x03,
-		.SensorInit           = 0x7F,
-		.SensorCaps           = 0x68,
-		.SensorType           = 0x02,
-		.EventTypeCode        = 0x01,
-		.AssertionEventMask   = 0x7A95,
-		.DeAssertionEventMask = 0x7A95,
-		.DiscreteReadingMask  = 0x3F3F,
-		.Units1               = 0x20,
-		.Units2               = IPMI_UNIT_VOLTS,
-		.Units3               = 0x00,
-		.Linearization        = 0x00,
-		.M                    = 0x8e,
-		.M_Tolerance          = 0x00,
-		.B                    = 0x00 & 0xff,
-		.B_Accuracy           = 0x3E & 0xFF,
-		.Accuracy             = 0x34,
-		.R_B_Exp              = 0xD0,
-		.Flags                = 0x00,
-		.NominalReading       = 0x00,
-		.NormalMax            = 0x00,
-		.NormalMin            = 0x00,
-		.MaxReading           = 0xFF,
-		.MinReading           = 0x00,
-
-		.UpperNonRecoverable  = 0x6e,
-		.UpperCritical        = 0x65,
-		.UpperNonCritical     = 0x5d,
-		.LowerNonRecoverable  = 0x3b,
-		.LowerCritical        = 0x44,
-		.LowerNonCritical     = 0x4c,
-		.PositiveHysterisis   = 0x00,
-		.NegativeHysterisis   = 0x00,
-		.Reserved1            = 0x00,
-		.Reserved2            = 0x00,
-		.OEMField             = SUB_DEVICE_SDR_P12V_10_1,
-		.IDStrTypeLen         = 0xC0 + sizeof("P12V"),
-		.IDStr                = "P12V",
-	},
-
 
 };
 
@@ -614,7 +563,6 @@ static void SDRInitAgent(int BMCInst);
 
 static INT8U ValidateSDRSize(INT8U SDRType, INT8U Size);     
 static INT16U SDR_GetNextSDRIdNew(uint16_t CurrentSdr, int BMCInst);
-
 
 const INT8U SDRSize[][2] = {
     //      { SDR Type,                 Maximum Length },
@@ -726,6 +674,7 @@ int ReserveSDRRepository(INT8U *pReq, INT8U ReqLen, INT8U *pRes, int BMCInst)
  *---------------------------------------*/
 int GetSDR(INT8U *pReq, INT8U ReqLen, INT8U *pRes, int BMCInst)
 {
+    //#define debugSDROLD
     SDRRecHdr_T *pSDRRec;
     GetSDRReq_T *pGetSDRReq = (GetSDRReq_T *)pReq;
     GetSDRRes_T *pGetSDRRes = (GetSDRRes_T *)pRes;
@@ -744,24 +693,69 @@ int GetSDR(INT8U *pReq, INT8U ReqLen, INT8U *pRes, int BMCInst)
         pGetSDRRes->CompletionCode = CC_CANNOT_RETURN_REQ_BYTES; // code
         return sizeof(INT8U);
     }
-    INT16U getRecID = pGetSDRReq->RecID;
-    if (getRecID >= GetSDRRepositoryNum()){
-        // support max RECODER_MAX_NUM records
-        pGetSDRRes->CompletionCode = CC_SDR_REC_NOT_PRESENT; // code
-        return sizeof(INT8U);
-    }
-    INT8U sensorNum = adc_getSensorNumByIdex(getRecID);
-    FullSensorRec_T *pCurrentSdr = ReadSensorRecBySensorNum((INT8U)SubDevice_GetMyMode(), sensorNum, BMCInst);
-    if (pCurrentSdr == NULL){
-        // support max RECODER_MAX_NUM records
-        pGetSDRRes->CompletionCode = CC_SDR_REC_NOT_PRESENT; // not find SDRIdx
-        return sizeof(INT8U);
-    }
-    pGetSDRRes->CompletionCode = CC_NORMAL;
-    pGetSDRRes->NextRecID = SDR_GetNextSDRIdNew(getRecID, BMCInst);
+    else if (pGetSDRReq->RecID == 0)
+    { // when rq record id = 0, get first record header
+        #ifdef debugSDROLD
+        FullSensorRec_T *pFullSdr = &g_sensor_sdr[0];
+		pGetSDRReq->RecID = g_sensor_sdr[0].hdr.ID;
+        //  MgmtCtrlrDevLocator_T* dev_locator = (MgmtCtrlrDevLocator_T*)&device_locator;
+        pGetSDRRes->CompletionCode = CC_NORMAL;
+        g_sensor_sdr[0].hdr.Len = sizeof(FullSensorRec_T) - pGetSDRReq->Offset;
+        pGetSDRRes->NextRecID = SDR_GetNextSDRId(pFullSdr, BMCInst);
+        memcpy(&pRes[sizeof(GetSDRRes_T)], ((INT8U *)pFullSdr) + pGetSDRReq->Offset, pGetSDRReq->Size);
+        return  sizeof(GetSDRRes_T) + pGetSDRReq->Size;
+        #else
+        INT16U  getRecID = SDR_GetFirstSDRId(BMCInst);
+        FullSensorRec_T *pCurrentSdr = ReadSensorRecBySensorNum((INT8U)SubDevice_GetMyMode(), getRecID, BMCInst);
+        if (pCurrentSdr == NULL){
+            // support max RECODER_MAX_NUM records
+            pGetSDRRes->CompletionCode = CC_SDR_REC_NOT_PRESENT; // code
+            return sizeof(INT8U);
+        }
 
-    memcpy(&pRes[sizeof(GetSDRRes_T)], ((INT8U *)pCurrentSdr)+ pGetSDRReq->Offset, pGetSDRReq->Size);
-    return sizeof(GetSDRRes_T) + pGetSDRReq->Size;
+        pGetSDRRes->CompletionCode = CC_NORMAL;
+        pGetSDRRes->NextRecID = SDR_GetNextSDRIdNew(getRecID, BMCInst);
+
+        memcpy(&pRes[sizeof(GetSDRRes_T)], ((INT8U *)pCurrentSdr) + pGetSDRReq->Offset, pGetSDRReq->Size);
+        return  sizeof(GetSDRRes_T) + pGetSDRReq->Size;
+        #endif
+    }
+    else
+    { // according id to send diff sdr type dat, depend on slavle device support which one
+    
+        #ifdef debugSDROLD
+        FullSensorRec_T *pCurrentSdr = ReadSensorRecBySensorNum((INT8U)SubDevice_GetMyMode(), pGetSDRReq->RecID, BMCInst);
+        if (pCurrentSdr == NULL){
+            // support max RECODER_MAX_NUM records
+            pGetSDRRes->CompletionCode = CC_SDR_REC_NOT_PRESENT; // code
+            return sizeof(INT8U);
+        }
+        pCurrentSdr->hdr.Len = sizeof(FullSensorRec_T) - pGetSDRReq->Offset;
+
+        pGetSDRRes->NextRecID = SDR_GetNextSDRId(pCurrentSdr, BMCInst);
+        pGetSDRRes->CompletionCode = CC_NORMAL;
+        memcpy(&pRes[sizeof(GetSDRRes_T)], ((INT8U *)pCurrentSdr)+ pGetSDRReq->Offset, pGetSDRReq->Size);
+        return sizeof(GetSDRRes_T) + pGetSDRReq->Size;
+        #else
+        if (pGetSDRReq->RecID >= GetSDRRepositoryNum()){
+            // support max RECODER_MAX_NUM records
+            pGetSDRRes->CompletionCode = CC_SDR_REC_NOT_PRESENT; // code
+            return sizeof(INT8U);
+        }
+        FullSensorRec_T *pCurrentSdr = ReadSensorRecBySensorNum((INT8U)SubDevice_GetMyMode(), pGetSDRReq->RecID, BMCInst);
+        if (pCurrentSdr == NULL){
+            // support max RECODER_MAX_NUM records
+            pGetSDRRes->CompletionCode = CC_SDR_REC_NOT_PRESENT; // not find SDRIdx
+            return sizeof(INT8U);
+        }
+        pGetSDRRes->CompletionCode = CC_NORMAL;
+        pGetSDRRes->NextRecID = SDR_GetNextSDRIdNew(pGetSDRReq->RecID, BMCInst);
+
+        memcpy(&pRes[sizeof(GetSDRRes_T)], ((INT8U *)pCurrentSdr)+ pGetSDRReq->Offset, pGetSDRReq->Size);
+        return sizeof(GetSDRRes_T) + pGetSDRReq->Size;
+        #endif
+
+    }
 //    return 0;
 
 //    //******************************************************************************
@@ -1366,6 +1360,20 @@ int InitSDR(int BMCInst)
 }
 
 /*----------------------------------------------------------*
+ * ADC channel idx
+ *----------------------------------------------------------*/
+INT16U SDR_GetFirstSDRId(int BMCInst)
+{
+    const ADCChannlesConfig_Handler *pHandler = adc_getADCConfigHandler(SubDevice_GetMyMode());
+    if (pHandler == NULL){    
+        return 0xFFFF; // The last record , next id set to  0xFFFF
+    }
+   if (GetSDRRepositoryNum() == 0){   
+       return 0xFFFF; // The last record , next id set to  0xFFFF
+   }
+    return 0;
+}
+/*----------------------------------------------------------*
  * SDR_GetNextSDRId
  *----------------------------------------------------------*/
 static INT16U SDR_GetNextSDRIdNew(uint16_t CurrentSdr, int BMCInst)
@@ -1414,9 +1422,9 @@ ReadSDRRepository(SDRRecHdr_T *pSDRRec, int BMCInst)
     }
 // convert from id to sensorNum
     uint8_t idx = (pSDRRec == NULL) ? 0 : pSDRRec->ID;
-    INT8U sensorNum = adc_getSensorNumByIdex(idx);
+    INT8U sensorName = adc_getSensorNumByIdex(idx);
 
-    return (SDRRecHdr_T *)ReadSensorRecBySensorNum(SubDevice_GetMyMode(), sensorNum, BMCInst);
+    return (SDRRecHdr_T *)ReadSensorRecBySensorNum(SubDevice_GetMyMode(), sensorName, BMCInst);
 }
 
 /*--------------------------------------------------
@@ -1438,7 +1446,7 @@ ReadSensorRecByID(INT8U id, int BMCInst)
 /// @param sensorName  dev 中,ID是ADC idex, 就是他的sensorNum 就是(ADC)的 channel。 根据 adc channel 获取其 sdr.OEMField (SUB_DEVICE_SDR_IDX)，然后再在总表中查找
 /// @param BMCInst 
 /// @return 
-FullSensorRec_T * ReadSensorRecBySensorNum(INT8U destMode, INT8U sensorNum, int BMCInst)
+FullSensorRec_T * ReadSensorRecBySensorNum(INT8U destMode, INT8U sensorName, int BMCInst)
 {
     FullSensorRec_T *pSdr;
     UINT16 id;
@@ -1450,7 +1458,7 @@ FullSensorRec_T * ReadSensorRecBySensorNum(INT8U destMode, INT8U sensorNum, int 
     for (id = 0; id < pHandler->cfgSize; id++)
     {
         p_gpioCfg = &pHandler->cfg[id];
-        if ((p_gpioCfg->adcChannl) == sensorNum) {
+        if ((p_gpioCfg->adcChannl) == sensorName) {
             sdrIdx = p_gpioCfg->sdrIdx;
             break;
         }
@@ -1464,8 +1472,7 @@ FullSensorRec_T * ReadSensorRecBySensorNum(INT8U destMode, INT8U sensorNum, int 
 
 // 找到对象，稍加修改(复制真实的id、 名称、长度)
         memcpy(&g_fullSensorRec_Tmp, &g_sensor_sdr[i], sizeof(FullSensorRec_T));
-        g_fullSensorRec_Tmp.hdr.ID = id;                                       
-        g_fullSensorRec_Tmp.SensorNum = sensorNum;
+        g_fullSensorRec_Tmp.hdr.ID = id;
         memcpy(g_fullSensorRec_Tmp.IDStr, p_gpioCfg->adcAlias, strlen(p_gpioCfg->adcAlias) + 1);
         g_fullSensorRec_Tmp.IDStrTypeLen = 0xC0 + strlen(p_gpioCfg->adcAlias) + 1;
         return  &g_fullSensorRec_Tmp;

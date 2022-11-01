@@ -7,7 +7,7 @@
 
 FullSensorRec_T   g_sensor_sdr_main[] =
 {
-    	{	 /* SDR Record    0x01   "P0V9_VCORE"   SUB_DEVICE_SDR_NO_PARTIAL */
+    	{	 /* SDR Record    0x01   "P0V9_VCORE"   SUB_DEVICE_SDR_P0V9 */
 		.hdr.ID               = 0x0001,
 		.hdr.Version          = 0x51,
 		.hdr.Type             = 0x01,
@@ -53,7 +53,7 @@ FullSensorRec_T   g_sensor_sdr_main[] =
 		.NegativeHysterisis   = 0x00,
 		.Reserved1            = 0x00,
 		.Reserved2            = 0x00,
-		.OEMField             = SUB_DEVICE_SDR_NO_PARTIAL,
+		.OEMField             = SUB_DEVICE_SDR_P0V9,
 		.IDStrTypeLen         = 0xC0 + sizeof("P0V9_VCORE"),
 		.IDStr                = "P0V9_VCORE",
 	},
@@ -109,7 +109,7 @@ FullSensorRec_T   g_sensor_sdr_main[] =
 		.IDStr                = "P2V5_VCORE",
 	},
 
-	{	 /* SDR Record    0x03   "P1V2_VCORE"   SUB_DEVICE_SDR_NO_PARTIAL */
+	{	 /* SDR Record    0x03   "P1V2_VCORE"   SUB_DEVICE_SDR_P1V2 */
 		.hdr.ID               = 0x0003,
 		.hdr.Version          = 0x51,
 		.hdr.Type             = 0x01,
@@ -155,12 +155,12 @@ FullSensorRec_T   g_sensor_sdr_main[] =
 		.NegativeHysterisis   = 0x00,
 		.Reserved1            = 0x00,
 		.Reserved2            = 0x00,
-		.OEMField             = SUB_DEVICE_SDR_NO_PARTIAL,
+		.OEMField             = SUB_DEVICE_SDR_P1V2,
 		.IDStrTypeLen         = 0xC0 + sizeof("P1V2_VCORE"),
 		.IDStr                = "P1V2_VCORE",
 	},
 
-	{	 /* SDR Record    0x04   "P1V8_VCORE"   SUB_DEVICE_SDR_NO_PARTIAL */
+	{	 /* SDR Record    0x04   "P1V8_VCORE"   SUB_DEVICE_SDR_P1V8 */
 		.hdr.ID               = 0x0004,
 		.hdr.Version          = 0x51,
 		.hdr.Type             = 0x01,
@@ -206,7 +206,7 @@ FullSensorRec_T   g_sensor_sdr_main[] =
 		.NegativeHysterisis   = 0x00,
 		.Reserved1            = 0x00,
 		.Reserved2            = 0x00,
-		.OEMField             = SUB_DEVICE_SDR_NO_PARTIAL,
+		.OEMField             = SUB_DEVICE_SDR_P1V8,
 		.IDStrTypeLen         = 0xC0 + sizeof("P1V8_VCORE"),
 		.IDStr                = "P1V8_VCORE",
 	},

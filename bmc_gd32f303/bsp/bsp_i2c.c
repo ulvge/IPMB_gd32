@@ -50,22 +50,6 @@ static void i2c2_rcu_config(void);
 static bool i2c_bytes_write(uint32_t i2cx, uint8_t device_addr, const uint8_t *p_buffer, uint16_t len, int time_out);
 static bool i2c_bytes_read(uint32_t i2cx, uint8_t device_addr, uint8_t read_addr, uint8_t *p_buffer, uint16_t len, int time_out);
 
-void i2c_dualaddr_set(uint32_t i2c_periph, uint8_t dualaddr)
-{
-    /* configure address */
-    dualaddr = dualaddr & I2C_SADDR1_ADDRESS2;
-    I2C_SADDR1(i2c_periph) &= ~(I2C_SADDR1_ADDRESS2);
-    I2C_SADDR1(i2c_periph) |= dualaddr;
-
-    i2c_dualaddr_enable(i2c_periph, I2C_DUADEN_ENABLE);
-}
-
-uint8_t i2c_dualaddr_get(uint32_t i2c_periph)
-{
-    uint8_t addr8 = I2C_SADDR1(i2c_periph) &= (I2C_SADDR1_ADDRESS2);
-    return addr8;
-}
-
 void i2c_int(void)
 {
     SubDevice_Init();
@@ -1086,5 +1070,21 @@ void i2c_set_slave_addr(uint32_t bus, uint8_t device_addr)
         default:
 			return;
     }
+}
+
+void i2c_dualaddr_set(uint32_t i2c_periph, uint8_t dualaddr)
+{
+    /* configure address */
+    dualaddr = dualaddr & I2C_SADDR1_ADDRESS2;
+    I2C_SADDR1(i2c_periph) &= ~(I2C_SADDR1_ADDRESS2);
+    I2C_SADDR1(i2c_periph) |= dualaddr;
+
+    i2c_dualaddr_enable(i2c_periph, I2C_DUADEN_ENABLE);
+}
+
+uint8_t i2c_dualaddr_get(uint32_t i2c_periph)
+{
+    uint8_t addr8 = I2C_SADDR1(i2c_periph) &= (I2C_SADDR1_ADDRESS2);
+    return addr8;
 }
 

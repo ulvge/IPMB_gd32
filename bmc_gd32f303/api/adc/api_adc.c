@@ -10,7 +10,7 @@
 // so, salve cant't calc the real val by self
 
 const static ADCChannlesConfig_Handler *g_pADCConfig_Handler = NULL;
-const static ADCChannlesConfig_Handler *g_ADCAllDevices[] = {
+const ADCChannlesConfig_Handler *g_ADCAllDevices[] = {
     &g_adcChannlHandler_main,
     &g_adcChannlHandler_net,
     &g_adcChannlHandler_switch,
@@ -56,6 +56,32 @@ uint8_t adc_getChannelSize(void)
     }
     return g_pADCConfig_Handler->cfgSize;
 }
+const ADCChannlesConfig_Handler *adc_getADCConfigHandler(SUB_DEVICE_MODE destMode)
+{
+    for (size_t i = 0; i < ARRARY_SIZE(g_ADCAllDevices); i++)
+    {
+        const ADCChannlesConfig_Handler *phandler = g_ADCAllDevices[i];
+        if (phandler->mode == destMode)
+        {
+            return phandler;
+        }
+    }
+    return NULL;
+}
+/// @brief dev 中,sensor 的 adcChannl 就是他的sensorNum
+/// @param idx 
+/// @return 
+uint8_t adc_getSensorNumByIdex(uint8_t idx)
+{
+    if (g_pADCConfig_Handler == NULL) {
+        return SENSOR_CHANNEL_MAX;
+    }
+    if (idx >= g_pADCConfig_Handler->cfgSize) {
+        return SENSOR_CHANNEL_MAX;
+    }
+    return g_pADCConfig_Handler->cfg[idx].adcChannl;
+}
+
 
 /// @brief 
 /// @param channel sensorNum
@@ -72,10 +98,9 @@ static const ADCChannlesConfig *adc_getADCConfigBySensorNum(uint16_t channel)
     }
     return NULL;
 }
-
 /*get temprate value */
 float get_temprate_convers_value(uint16_t channel)
-{
+{                    
     float adcVal;
     if (adc_getVal(channel, &adcVal) == false){
         return 0;
@@ -165,6 +190,7 @@ BOOLEAN adc_getValByIndex(uint8_t idx, const ADCChannlesConfig **channlCfg, uint
 	{
 		return false;
 	}
+	*channlCfg = &g_pADCConfig_Handler->cfg[idx];
     *adcVal = g_pADCConfig_Handler->val[idx].rawAdc;
     return true;
 }

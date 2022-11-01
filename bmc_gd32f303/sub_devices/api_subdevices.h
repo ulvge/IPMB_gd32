@@ -8,7 +8,6 @@
 #include <stdbool.h>
 #include <stdint.h>
 
-#define SUB_DEVICES_HAVE_SENSOR_COUNT 2
 //计算 存储 网络 通讯 刀片
 typedef enum {
     SUB_DEVICE_MODE_MAIN        = 0,
@@ -22,11 +21,15 @@ typedef enum {
 }SUB_DEVICE_MODE ;
 
 typedef enum {
-    SUB_DEVICE_SDR_NO_PARTIAL  = 1, // No resistance partial voltage
-    SUB_DEVICE_SDR_P2V5        = 2,
-    SUB_DEVICE_SDR_P3V3        = 3,
-    SUB_DEVICE_SDR_P12V        = 4,
-    SUB_DEVICE_SDR_TEMP        = 5,
+    SUB_DEVICE_SDR_P0V9 = 1,
+    SUB_DEVICE_SDR_P1V2,
+    SUB_DEVICE_SDR_P1V8,
+    SUB_DEVICE_SDR_P2V5,
+    SUB_DEVICE_SDR_P3V3,
+    SUB_DEVICE_SDR_P12V,
+    SUB_DEVICE_SDR_P12V_10_1,
+    SUB_DEVICE_SDR_TEMP,
+    SUB_DEVICE_SDR_MAX ,
 }SUB_DEVICE_SDR_IDX ;
 
 
@@ -44,10 +47,11 @@ typedef struct
 
 typedef struct
 {
-    uint16_t rawAdc;
-    uint8_t raw;
+    uint16_t rawAdc;	// ori adc
+    uint8_t raw;        // ipmi raw uint8_t
+    uint8_t ComparisonStatus;        // ipmi raw uint8_t
     uint8_t errCnt;
-    float   human;
+    float   human;      //human	= covert(raw, M, R)
 } SubDevice_Reading_T;
 
 typedef struct
@@ -58,7 +62,6 @@ typedef struct
     uint8_t     i2c0SlaveAddr; //8bit
     uint8_t     i2c1SlaveAddr; //8bit
     const char     *name;
-    SubDevice_Reading_T reading[SUB_DEVICES_HAVE_SENSOR_COUNT];
 } SubDeviceMODE_T;
 
 bool SubDevice_Init(void);

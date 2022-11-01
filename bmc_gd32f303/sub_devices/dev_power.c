@@ -17,7 +17,7 @@ const GPIOConfig_Handler g_gpioConfigHandler_power = {
 
 
 static const  ADCChannlesConfig g_adcChannlConfig_power[] = {
-    {ADC_CHANNEL_10,        ADC0, RCU_ADC0, GPIOC, RCU_GPIOC, GPIO_PIN_0, SUB_DEVICE_SDR_NO_PARTIAL, "P0V9_VCORE"},
+    {ADC_CHANNEL_10,        ADC0, RCU_ADC0, GPIOC, RCU_GPIOC, GPIO_PIN_0, SUB_DEVICE_SDR_P0V9, "P0V9_VCORE"},
 };
 
 static SubDevice_Reading_T g_adcVal_power[ARRARY_SIZE(g_adcChannlConfig_power)];

@@ -12,7 +12,8 @@
 #include "sdr.h"
 #include "IPMI_Sensor.h"
 #include "sensor_helpers.h"
-#include "sensor.h"
+#include "sensor.h"    
+#include "api_adc.h"
 
 #define SUB_DEVICES_ADDR_DEFAULT 0xFF
 #define SUB_DEVICES_ADDR_PRIFIXED 0x80
@@ -24,7 +25,6 @@
 typedef struct
 {
     uint32_t  busUsed;
-    uint8_t   slaveSensorNum[SUB_DEVICES_HAVE_SENSOR_COUNT];
 } SubDeviceHandler_T;
 
 static TimerHandle_t xTimersIpmiReset = NULL;
@@ -107,9 +107,9 @@ bool SubDevice_CheckAndPrintMode(void)
 /// @return 
 bool SubDevice_Init(void)
 {
-    g_subDeviceHandler.busUsed = NM_SECONDARY_IPMB_BUS;          
-    SDR_GetAllRecSensorNum((INT8U)SUB_DEVICE_MODE_POWER, g_subDeviceHandler.slaveSensorNum, sizeof(g_subDeviceHandler.slaveSensorNum));
-    if (SubDevice_IsSelfMaster()) {
+    g_subDeviceHandler.busUsed = NM_SECONDARY_IPMB_BUS;
+	BaseType_t xReturn = pdPASS; 
+	if (SubDevice_IsSelfMaster()) {
         xTimersIpmiReset = xTimerCreate("SubDeviceHeartBeat", SUB_DEVICES_TIMER_PERIOD_XMS/portTICK_RATE_MS, pdTRUE, 
                                         0, SubDevice_HeartBeatTimerCallBack);
 		if (xTimersIpmiReset == NULL) {
@@ -117,8 +117,8 @@ bool SubDevice_Init(void)
 			return false;
 		}
 		
-        BaseType_t xReturn = xTimerStart(xTimersIpmiReset, portMAX_DELAY);
-		if (xReturn != pdPASS) {
+        // BaseType_t xReturn = xTimerStart(xTimersIpmiReset, portMAX_DELAY);
+		if (pdFAIL != pdPASS) {
 			printf("SubDevice_Init xTimerStart failed %ld\n", xReturn); 
 		}
 	}
@@ -220,7 +220,7 @@ uint32_t SubDevice_GetBus(void)
 {
     return g_subDeviceHandler.busUsed;
 }
-static bool SubDevice_readingSensorForeach(SUB_DEVICE_MODE dev, uint8_t sensorNum, MsgPkt_T *requestPkt, uint8_t *readRaw)
+static bool SubDevice_readingSensorForeach(SUB_DEVICE_MODE dev, uint8_t sensorNum, MsgPkt_T *requestPkt, SubDevice_Reading_T *pDeviceReading)
 {
     MsgPkt_T recvReq;
     IPMIMsgHdr_T *hdr = (IPMIMsgHdr_T *)&(requestPkt->Data);
@@ -250,7 +250,8 @@ static bool SubDevice_readingSensorForeach(SUB_DEVICE_MODE dev, uint8_t sensorNu
     }
 
     if (pSensorReading->CompletionCode == CC_NORMAL) {
-        *readRaw = pSensorReading->SensorReading;
+        pDeviceReading->raw = pSensorReading->SensorReading;
+        pDeviceReading->ComparisonStatus = pSensorReading->ComparisonStatus;
         return true;
     }
     return false;
@@ -270,10 +271,14 @@ static void SubDevice_HeartBeatTimerCallBack(xTimerHandle pxTimer)
     IPMIMsgHdr_T *hdr = (IPMIMsgHdr_T *)&(requestPkt.Data);
     requestPkt.Param = IPMB_SUB_DEVICE_HEARTBEAT_REQUEST;
     requestPkt.Channel = SubDevice_GetBus();
-	uint8_t sensorNum;
-
-    for (SUB_DEVICE_MODE dev = (SUB_DEVICE_MODE)0; dev < SUB_DEVICE_MODE_MAX; dev++)
+	uint8_t sensorNum;                                        
+												 
+    for (SUB_DEVICE_MODE dev = (SUB_DEVICE_MODE)0; dev < SUB_DEVICE_MODE_NET; dev++)
     {
+		const ADCChannlesConfig_Handler *pHandler = adc_getADCConfigHandler((SUB_DEVICE_MODE)dev);
+        if (pHandler == NULL){
+            continue;
+        }
         //hdr->ResAddr = 0x20;      //  main ipmb
         hdr->ResAddr = SubDevice_modeConvertSlaveAddr(dev);
         hdr->NetFnLUN = NETFN_SENSOR << 2; // RAW
@@ -283,12 +288,12 @@ static void SubDevice_HeartBeatTimerCallBack(xTimerHandle pxTimer)
         hdr->RqSeqLUN = 0x01;
         hdr->Cmd = CMD_GET_SENSOR_READING;
 
-        for (uint8_t numIdex = 0; numIdex < SUB_DEVICES_HAVE_SENSOR_COUNT; numIdex++)
+        for (uint8_t numIdex = 0; numIdex < pHandler->cfgSize; numIdex++)
         {
-            SubDevice_Reading_T *pDeviceReading = &g_AllModes[dev].reading[numIdex];
+            SubDevice_Reading_T *pDeviceReading = &pHandler->val[numIdex];
             //sensorNum = 0x23;     // P1V8 standby
-            sensorNum = g_subDeviceHandler.slaveSensorNum[numIdex];
-            if (SubDevice_readingSensorForeach(dev, sensorNum, &requestPkt, &pDeviceReading->raw)) {
+            sensorNum = adc_getSensorNumByIdex(numIdex);
+            if (SubDevice_readingSensorForeach(dev, sensorNum, &requestPkt, pDeviceReading)) {
                 pDeviceReading->errCnt = 0;
                 FullSensorRec_T *pSdr = ReadSensorRecBySensorNum(dev, sensorNum, 0);   
                 if (pSdr != NULL){
