@@ -2,7 +2,6 @@
 #include <stdlib.h>
 #include "bsp_gpio.h"
 #include "sensor.h"      
-#include "dev_main_sdr.h"
 
 static const GPIOConfig g_gpioConfig_main[] = {
     {GPIO_OUT_LED_RED,                  GPIOD, GPIO_PIN_8,  RCU_GPIOD, GPIO_MODE_OUT_PP, GPIO_OSPEED_10MHZ, 1},
@@ -21,7 +20,7 @@ const GPIOConfig_Handler g_gpioConfigHandler_main = {
 static const  ADCChannlesConfig g_adcChannlConfig_main[] = {
 #if 1
     {ADC_CHANNEL_8,         ADC0, RCU_ADC0, GPIOB, RCU_GPIOB, GPIO_PIN_0, SUB_DEVICE_SDR_TEMP, "X100 temp"},
-    {ADC_CHANNEL_P1V8,      ADC0, RCU_ADC0, GPIOA, RCU_GPIOA, GPIO_PIN_0, SUB_DEVICE_SDR_P1V8, "P1V8 VCC"},
+    {ADC_CHANNEL_0,      	ADC0, RCU_ADC0, GPIOA, RCU_GPIOA, GPIO_PIN_0, SUB_DEVICE_SDR_P1V8, "P1V8 VCC"},
     {ADC_CHANNEL_10,        ADC0, RCU_ADC0, GPIOC, RCU_GPIOC, GPIO_PIN_0, SUB_DEVICE_SDR_P12V_10_1, "P12V standby"},
 #else
     {ADC_CHANNEL_10,        ADC0, RCU_ADC0, GPIOC, RCU_GPIOC, GPIO_PIN_0, SUB_DEVICE_SDR_P0V9, "P0V9_VCORE"},
@@ -45,8 +44,5 @@ const ADCChannlesConfig_Handler g_adcChannlHandler_main = {
     .val = g_adcVal_main,
     .cfgSize = ARRARY_SIZE(g_adcChannlConfig_main),  
     .cfg = g_adcChannlConfig_main, 
-    
-	.sdrSize = ARRARY_SIZE(g_sensor_sdr_main),
-    .sdr = g_sensor_sdr_main, 
 };
 

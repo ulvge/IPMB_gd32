@@ -26,6 +26,7 @@
 #include "IPMI_Sensor.h"
 #include "SDRRecord.h"
 #include "SensorMonitor.h"
+#include "bsp_adc.h"
 
 
 /**

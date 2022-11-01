@@ -1,8 +1,7 @@
 #include <string.h>  
 #include <stdlib.h>
 #include "bsp_gpio.h"
-#include "sensor.h"  
-#include "dev_power_sdr.h" 
+#include "sensor.h"
 
 
 const static GPIOConfig g_gpioConfig_power[] = {
@@ -27,8 +26,5 @@ const ADCChannlesConfig_Handler g_adcChannlHandler_power = {
     .val = g_adcVal_power,
     .cfgSize = ARRARY_SIZE(g_adcChannlConfig_power),  
     .cfg = g_adcChannlConfig_power, 
-    
-	.sdrSize = ARRARY_SIZE(g_sensor_sdr_power),
-    .sdr = g_sensor_sdr_power, 
 };
 

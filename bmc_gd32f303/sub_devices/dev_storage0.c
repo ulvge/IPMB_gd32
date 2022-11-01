@@ -2,7 +2,6 @@
 #include <stdlib.h>
 #include "bsp_gpio.h"
 #include "sensor.h"  
-#include "dev_storage0_sdr.h" 
 
 
 const static GPIOConfig g_gpioConfig_storage0[] = {
@@ -26,9 +25,6 @@ const ADCChannlesConfig_Handler g_adcChannlHandler_storage0 = {
     .val = g_adcVal_storage0,
     .cfgSize = ARRARY_SIZE(g_adcChannlConfig_storage0),  
     .cfg = g_adcChannlConfig_storage0, 
-    
-	.sdrSize = ARRARY_SIZE(g_sensor_sdr_storage0),
-    .sdr = g_sensor_sdr_storage0, 
 };
 
 

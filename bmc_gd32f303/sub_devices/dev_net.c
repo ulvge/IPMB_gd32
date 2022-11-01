@@ -2,7 +2,6 @@
 #include <stdlib.h>
 #include "bsp_gpio.h"
 #include "sensor.h"  
-#include "dev_net_sdr.h"
 
 
 const static GPIOConfig g_gpioConfig_net[] = {
@@ -26,8 +25,5 @@ const ADCChannlesConfig_Handler g_adcChannlHandler_net = {
     .val = g_adcVal_net,
     .cfgSize = ARRARY_SIZE(g_adcChannlConfig_net),  
     .cfg = g_adcChannlConfig_net, 
-    
-	.sdrSize = ARRARY_SIZE(g_sensor_sdr_net),
-    .sdr = g_sensor_sdr_net, 
 };
 

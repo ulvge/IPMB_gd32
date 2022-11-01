@@ -2,7 +2,6 @@
 #include <stdlib.h>
 #include "bsp_gpio.h"
 #include "sensor.h"  
-#include "dev_switch_sdr.h" 
 
 
 const static GPIOConfig g_gpioConfig_switch[] = {
@@ -26,8 +25,5 @@ const ADCChannlesConfig_Handler g_adcChannlHandler_switch = {
     .val = g_adcVal_switch,
     .cfgSize = ARRARY_SIZE(g_adcChannlConfig_switch),  
     .cfg = g_adcChannlConfig_switch, 
-    
-	.sdrSize = ARRARY_SIZE(g_sensor_sdr_switch),
-    .sdr = g_sensor_sdr_switch, 
 };
 

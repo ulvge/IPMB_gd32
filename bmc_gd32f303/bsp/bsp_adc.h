@@ -53,8 +53,6 @@ typedef struct {
     uint8_t cfgSize;
     const ADCChannlesConfig *cfg;
     
-    uint8_t sdrSize;
-    const FullSensorRec_T *sdr;
 } ADCChannlesConfig_Handler;
 
 
