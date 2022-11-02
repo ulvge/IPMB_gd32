@@ -21,8 +21,33 @@ typedef enum
     SENSOR_CHANNEL_MAX	= 0xff,
 }SENSOR_ENUM;
 
+
+typedef struct {
+    uint8_t      			sensorNum;
+    SUB_DEVICE_SDR_IDX      sdrIdx;
+    char *      			sensorAlias;
+} SensorConfig;
+
+typedef struct {          
+	SUB_DEVICE_MODE mode;
+    SubDevice_Reading_T *val;
+
+    uint8_t adcCfgSize;
+    const ADCChannlesConfig *adcCfg;
+
+    uint8_t sensorCfgSize;
+    const SensorConfig *sensorCfg;
+
+} Sensor_Handler;
+
 bool api_sensorGetUnitType(INT8U destMode, UINT32 sensorNum, UINT8 *unitType);
-BOOLEAN api_sensorGetValBySensorNum(INT8U destMode, UINT16 sensorNum, float *val);
+void sensor_init(void);
+uint8_t api_sensorGetSensorCount(void);
+uint8_t api_sensorGetSensorNumByIdex(uint8_t idx);
+BOOLEAN api_sensorGetIPMBValBySensorNum(INT8U destMode, UINT16 sensorNum, INT8U *ipmbVal);
+BOOLEAN api_sensorConvert2HumanVal(SUB_DEVICE_MODE dev, uint8_t sensorNum, uint8_t ipmiVal, float *humanVal);
+
+const Sensor_Handler *api_getSensorHandler(SUB_DEVICE_MODE destMode);
 
 #ifdef __cplusplus
 }

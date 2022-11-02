@@ -22,10 +22,10 @@ const static GPIOConfig g_gpioConfigComm[] = {
 const static GPIOConfig_Handler *g_pGpioConfig_Handler = NULL;
 const static GPIOConfig_Handler *g_gpioAllDevices[] = {
     &g_gpioConfigHandler_main,
-    &g_gpioConfigHandler_net,
-    &g_gpioConfigHandler_switch,
-    &g_gpioConfigHandler_power,
-    &g_gpioConfigHandler_storage0,
+    // &g_gpioConfigHandler_net,
+    // &g_gpioConfigHandler_switch,
+    // &g_gpioConfigHandler_power,
+    // &g_gpioConfigHandler_storage0,
 };
 
 
@@ -59,7 +59,7 @@ void GPIO_bspInit(void)
         if ((*phandler)->mode == myMode)
         {
             g_pGpioConfig_Handler = *phandler;
-            GPIO_InitGPIOs(g_pGpioConfig_Handler->cfg, g_pGpioConfig_Handler->cfgSize);
+            GPIO_InitGPIOs(g_pGpioConfig_Handler->gpioCfg, g_pGpioConfig_Handler->gpioCfgSize);
             return;
         }
     }
@@ -72,11 +72,11 @@ static const GPIOConfig *GPIO_findGpio(BMC_GPIO_enum alias)
     {
         return NULL;
     }
-    UINT8 num = g_pGpioConfig_Handler->cfgSize;
+    UINT8 num = g_pGpioConfig_Handler->gpioCfgSize;
     const GPIOConfig *p_gpioCfg;
     for (UINT8 i = 0; i < num; i++)
     {
-        p_gpioCfg = (g_pGpioConfig_Handler->cfg) + i;
+        p_gpioCfg = (g_pGpioConfig_Handler->gpioCfg) + i;
         if (p_gpioCfg->alias == alias)
         {
             return p_gpioCfg;

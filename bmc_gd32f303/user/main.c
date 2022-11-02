@@ -132,7 +132,7 @@ void start_task(void *pvParameters)
     uint32_t errCreateTask = 0;
     i2c_int();
     //fan_init();
-    adc_init();  // voltage 
+    sensor_init();
 
 #ifdef FATFS_ENABLE
     fatfs_init();

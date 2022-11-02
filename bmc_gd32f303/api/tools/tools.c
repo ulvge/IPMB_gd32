@@ -327,21 +327,34 @@ int version(int argc, char *argv[])
 
 SHELL_EXPORT_CMD(SHELL_CMD_PERMISSION(0) | SHELL_CMD_TYPE(SHELL_TYPE_CMD_MAIN) | SHELL_CMD_DISABLE_RETURN, version, version, get firmware version);
 
+// only support ADC ,not others ,eg : I2C 
 // tool 4********list all sensors info **********************************************
 int sensor(int argc, char *argv[])
 {
-	int channleSize = adc_getChannelSize();
-	const ADCChannlesConfig *chanCfg = NULL;
-    uint16_t adcVal;
-    for (int i = 0; i < channleSize; i++)
+    uint8_t sensorNum;
+    float humanVal;
+    INT8U ipmbVal;
+	int sensorSize = api_sensorGetSensorCount();
+	SUB_DEVICE_MODE dev = SubDevice_GetMyMode();
+    BOOLEAN get_res;
+    const Sensor_Handler *pSensor_Handler = api_getSensorHandler(dev);
+
+    for (uint8_t numIdex = 0; numIdex < sensorSize; numIdex++)
     {
-		if (adc_getValByIndex(i, &chanCfg, &adcVal) == false){
-			LOG_I("sensor :idx = %d error \r\n", i);
-			continue;
-		}
-        LOG_I("sensor :idx = %d, name = %s, channel = %d, val = %d\r\n", i, chanCfg->adcAlias, chanCfg->adcChannl, adcVal);
-        //LOG_I("sensor :channel = %d, val = %d\r\n", i, g_temperature_raw[i]);
-    }
+        sensorNum = api_sensorGetSensorNumByIdex(numIdex);
+        get_res = api_sensorGetIPMBValBySensorNum(SubDevice_GetMyMode(), sensorNum, &ipmbVal);
+        char *name = pSensor_Handler->sensorCfg[numIdex].sensorAlias;
+        if (get_res == false)
+        {
+			LOG_I("sensor :idx = %d , name = %s, channel = %d, error \r\n", numIdex, name, sensorNum);
+        }else{
+            if (api_sensorConvert2HumanVal(dev, sensorNum, ipmbVal, &humanVal) == true) {
+                LOG_I("sensor :idx = %d, name = %s, channel = %d, val = %f\r\n", 
+                    numIdex, name, sensorNum, humanVal);
+            }
+        }
+	}
+
     return 0;
 }
 

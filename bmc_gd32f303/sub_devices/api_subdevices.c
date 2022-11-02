@@ -14,6 +14,7 @@
 #include "sensor_helpers.h"
 #include "sensor.h"    
 #include "api_adc.h"
+#include "api_sensor.h"
 
 #define SUB_DEVICES_ADDR_DEFAULT 0xFF
 #define SUB_DEVICES_ADDR_PRIFIXED 0x80
@@ -273,9 +274,9 @@ static void SubDevice_HeartBeatTimerCallBack(xTimerHandle pxTimer)
     requestPkt.Channel = SubDevice_GetBus();
 	uint8_t sensorNum;                                        
 												 
-    for (SUB_DEVICE_MODE dev = (SUB_DEVICE_MODE)0; dev < SUB_DEVICE_MODE_NET; dev++)
+    for (SUB_DEVICE_MODE dev = (SUB_DEVICE_MODE)0; dev < SUB_DEVICE_MODE_MAX; dev++)
     {
-		const ADCChannlesConfig_Handler *pHandler = adc_getADCConfigHandler((SUB_DEVICE_MODE)dev);
+        const Sensor_Handler *pHandler = api_getSensorHandler(SubDevice_GetMyMode());
         if (pHandler == NULL){
             continue;
         }
@@ -288,25 +289,23 @@ static void SubDevice_HeartBeatTimerCallBack(xTimerHandle pxTimer)
         hdr->RqSeqLUN = 0x01;
         hdr->Cmd = CMD_GET_SENSOR_READING;
 
-        for (uint8_t numIdex = 0; numIdex < pHandler->cfgSize; numIdex++)
-        {
-            SubDevice_Reading_T *pDeviceReading = &pHandler->val[numIdex];
-            //sensorNum = 0x23;     // P1V8 standby
-            sensorNum = adc_getSensorNumByIdex(numIdex);
-            if (SubDevice_readingSensorForeach(dev, sensorNum, &requestPkt, pDeviceReading)) {
-                pDeviceReading->errCnt = 0;
-                FullSensorRec_T *pSdr = ReadSensorRecBySensorNum(dev, sensorNum, 0);   
-                if (pSdr != NULL){
-                    ipmi_convert_reading((uint8_t *)pSdr, pDeviceReading->raw, &pDeviceReading->human);
-                    continue; //success
-                }
-            }
-            if (pDeviceReading->errCnt++ > SUB_DEVICES_FAILED_MAX_COUNT) {
-                pDeviceReading->errCnt = 0;
-                pDeviceReading->raw = 0;
-                pDeviceReading->human = 0;
-            }
-        }
+       for (uint8_t numIdex = 0; numIdex < pHandler->sensorCfgSize; numIdex++)
+       {
+           SubDevice_Reading_T *pDeviceReading = &pHandler->val[numIdex];
+           //sensorNum = 0x23;     // P1V8 standby
+           sensorNum = api_sensorGetSensorNumByIdex(numIdex);
+           if (SubDevice_readingSensorForeach(dev, sensorNum, &requestPkt, pDeviceReading)) {
+               if (api_sensorConvert2HumanVal(dev, sensorNum, pDeviceReading->raw, &pDeviceReading->human) == true) {
+                   pDeviceReading->errCnt = 0;
+                   continue; //success
+               }
+           }
+           if (pDeviceReading->errCnt++ > SUB_DEVICES_FAILED_MAX_COUNT) {
+               pDeviceReading->errCnt = 0;
+               pDeviceReading->raw = 0;
+               pDeviceReading->human = 0;
+           }
+       }
     }
 
     xReturn = xTimerStart(xTimersIpmiReset, portMAX_DELAY);

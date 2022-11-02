@@ -10,7 +10,7 @@ const static GPIOConfig g_gpioConfig_storage0[] = {
 
 const GPIOConfig_Handler g_gpioConfigHandler_storage0 = {
     .mode = SUB_DEVICE_MODE_STORAGE0,
-    GPIOCONFIG_CREATE_HANDLER(g_gpioConfig_storage0),
+    CREATE_CONFIG_HANDLER(g_gpioConfig_storage0),
 };
 
 

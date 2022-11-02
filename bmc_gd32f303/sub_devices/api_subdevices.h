@@ -49,6 +49,7 @@ typedef struct
 typedef struct
 {
     uint16_t rawAdc;	// ori adc
+    //uint16_t rawEncode;	// eg : "temp ADC "-> "temp"
     uint8_t raw;        // ipmi raw uint8_t
     uint8_t ComparisonStatus;        // ipmi raw uint8_t
     uint8_t errCnt;

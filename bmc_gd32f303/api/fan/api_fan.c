@@ -113,7 +113,7 @@ bool fan_get_rotate_rpm(unsigned char sensorNum, uint16_t *fan_rpm)
 {
     uint32_t capCount;
 	uint16_t rpm;
-	
+
     if(capture_getIsValid(sensorNum) == false)
     {
         *fan_rpm = 0;

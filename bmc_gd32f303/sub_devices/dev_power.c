@@ -10,7 +10,7 @@ const static GPIOConfig g_gpioConfig_power[] = {
 
 const GPIOConfig_Handler g_gpioConfigHandler_power = {
     .mode = SUB_DEVICE_MODE_POWER,
-    GPIOCONFIG_CREATE_HANDLER(g_gpioConfig_power),
+    CREATE_CONFIG_HANDLER(g_gpioConfig_power),
 };
 
 

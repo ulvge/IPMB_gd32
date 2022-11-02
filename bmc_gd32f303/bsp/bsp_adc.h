@@ -42,25 +42,8 @@ typedef struct {
     INT32U      			gpioPort;
     rcu_periph_enum      	gpioClk;
     INT32U      			Pin;
-    SUB_DEVICE_SDR_IDX      sdrIdx;
-    char *      			adcAlias;
+    char *      			sensorAliasdd;
 } ADCChannlesConfig;
-
-typedef struct {          
-	SUB_DEVICE_MODE mode;
-    SubDevice_Reading_T *val;
-
-    uint8_t cfgSize;
-    const ADCChannlesConfig *cfg;
-    
-} ADCChannlesConfig_Handler;
-
-
-extern const ADCChannlesConfig_Handler g_adcChannlHandler_main;
-extern const ADCChannlesConfig_Handler g_adcChannlHandler_net;
-extern const ADCChannlesConfig_Handler g_adcChannlHandler_switch;
-extern const ADCChannlesConfig_Handler g_adcChannlHandler_power;
-extern const ADCChannlesConfig_Handler g_adcChannlHandler_storage0;
 
 void adc_init_channle(const ADCChannlesConfig  *chanCfg);
 /*get ADC channel value of average conversion*/

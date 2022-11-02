@@ -590,7 +590,7 @@ static INT16U SDR_DeleteSDR(INT16U ReservationID, INT16U RecID, int BMCInst);
 
 INT8U GetSDRRepositoryNum(void)
 {
-    return adc_getChannelSize();
+    return api_sensorGetSensorCount();
 }
 /*---------------------------------------
  * GetSDRRepositoryInfo
@@ -698,7 +698,7 @@ int GetSDR(INT8U *pReq, INT8U ReqLen, INT8U *pRes, int BMCInst)
         pGetSDRRes->CompletionCode = CC_SDR_REC_NOT_PRESENT; // code
         return sizeof(INT8U);
     }
-    INT8U sensorNum = adc_getSensorNumByIdex(getRecID);
+    INT8U sensorNum = api_sensorGetSensorNumByIdex(getRecID);
     FullSensorRec_T *pCurrentSdr = ReadSensorRecBySensorNum((INT8U)SubDevice_GetMyMode(), sensorNum, BMCInst);
     if (pCurrentSdr == NULL){
         // support max RECODER_MAX_NUM records
@@ -1318,7 +1318,7 @@ int InitSDR(int BMCInst)
  *----------------------------------------------------------*/
 static INT16U SDR_GetNextSDRIdNew(uint16_t CurrentSdr, int BMCInst)
 {
-   const ADCChannlesConfig_Handler *pHandler = adc_getADCConfigHandler(SubDevice_GetMyMode());
+    const Sensor_Handler *pHandler = api_getSensorHandler(SubDevice_GetMyMode());
    if (pHandler == NULL){
        return 0xFFFF; // The last record , next id set to  0xFFFF
    }
@@ -1352,17 +1352,17 @@ SDRRecHdr_T *
 ReadSDRRepository(SDRRecHdr_T *pSDRRec, int BMCInst)
 {
     FullSensorRec_T *pSdr;
-    const ADCChannlesConfig_Handler *pHandler = adc_getADCConfigHandler(SubDevice_GetMyMode());
+    const Sensor_Handler *pHandler = api_getSensorHandler(SubDevice_GetMyMode());
 
     if (pHandler == NULL){
         return NULL;
     }
-    if (pHandler->cfgSize == 0) {
+    if (pHandler->sensorCfgSize == 0) {
         return NULL;
     }
 // convert from id to sensorNum
     uint8_t idx = (pSDRRec == NULL) ? 0 : pSDRRec->ID;
-    INT8U sensorNum = adc_getSensorNumByIdex(idx);
+    INT8U sensorNum = api_sensorGetSensorNumByIdex(idx);
 
     return (SDRRecHdr_T *)ReadSensorRecBySensorNum(SubDevice_GetMyMode(), sensorNum, BMCInst);
 }
@@ -1390,16 +1390,16 @@ FullSensorRec_T * ReadSensorRecBySensorNum(INT8U destMode, INT8U sensorNum, int 
 {
     FullSensorRec_T *pSdr;
     UINT16 id;
-    const ADCChannlesConfig_Handler *pHandler = adc_getADCConfigHandler((SUB_DEVICE_MODE)destMode);
+    const Sensor_Handler *pHandler = api_getSensorHandler(SubDevice_GetMyMode());
 
 //根据 sensorName 找到对应的 adcChannl，即可找到解码 sdrIdx
-    const ADCChannlesConfig *p_gpioCfg;
+    const SensorConfig *p_Cfg;
     SUB_DEVICE_SDR_IDX sdrIdx = SUB_DEVICE_SDR_MAX;
-    for (id = 0; id < pHandler->cfgSize; id++)
+    for (id = 0; id < pHandler->sensorCfgSize; id++)
     {
-        p_gpioCfg = &pHandler->cfg[id];
-        if ((p_gpioCfg->adcChannl) == sensorNum) {
-            sdrIdx = p_gpioCfg->sdrIdx;
+        p_Cfg = &pHandler->sensorCfg[id];
+        if ((p_Cfg->sensorNum) == sensorNum) {
+            sdrIdx = p_Cfg->sdrIdx;
             break;
         }
     }
@@ -1414,8 +1414,8 @@ FullSensorRec_T * ReadSensorRecBySensorNum(INT8U destMode, INT8U sensorNum, int 
         memcpy(&g_fullSensorRec_Tmp, &g_sensor_sdr[i], sizeof(FullSensorRec_T));
         g_fullSensorRec_Tmp.hdr.ID = id;                                       
         g_fullSensorRec_Tmp.SensorNum = sensorNum;
-        memcpy(g_fullSensorRec_Tmp.IDStr, p_gpioCfg->adcAlias, strlen(p_gpioCfg->adcAlias) + 1);
-        g_fullSensorRec_Tmp.IDStrTypeLen = 0xC0 + strlen(p_gpioCfg->adcAlias) + 1;
+        memcpy(g_fullSensorRec_Tmp.IDStr, p_Cfg->sensorAlias, strlen(p_Cfg->sensorAlias) + 1);
+        g_fullSensorRec_Tmp.IDStrTypeLen = 0xC0 + strlen(p_Cfg->sensorAlias) + 1;
         return  &g_fullSensorRec_Tmp;
     }
     return NULL;

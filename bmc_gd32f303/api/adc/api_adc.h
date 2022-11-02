@@ -7,6 +7,7 @@
 	 
 #include <stdbool.h>
 #include "bsp_adc.h"
+#include "api_sensor.h"
 
 /* para definitions */
 
@@ -17,20 +18,14 @@
 #define     VREFVOL                           3.3
 #define 		ADC_BIT                           4096    //12 bit adc
 
-
-void adc_init(void);
-ADCChannlesConfig *adc_getConfig(void);   
-uint8_t adc_getChannelSize(void); 
-BOOLEAN adc_getValByIndex(uint8_t idx, const ADCChannlesConfig **channlCfg, uint16_t *adcVal);  
-const ADCChannlesConfig_Handler *adc_getADCConfigHandler(SUB_DEVICE_MODE destMode);
-uint8_t adc_getSensorNumByIdex(uint8_t idx);
-
-/* get voltage value*/
-float get_voltage_convers_value(uint16_t channel);
-
-/* get vref voltage value*/
-BOOLEAN adc_getVal(uint8_t channel, float *humanVal);
+void adc_init(const Sensor_Handler *pSensor_Handler);
 void adc_sample_all(void);
+float adc_sampleVal2Temp1(uint16 adcValue);
+float adc_sampleVal2Temp2(uint16 adcValue);
+
+uint8_t adc_getChannelSize(void); 
+BOOLEAN adc_getValByIndex(uint8_t idx, const ADCChannlesConfig **channlCfg, uint16_t *adcVal);
+BOOLEAN adc_getRawValBySensorNum(uint8_t sensorNum, uint16_t *rawAdc);
 #ifdef __cplusplus
 }
 #endif

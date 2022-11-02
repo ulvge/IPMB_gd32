@@ -10,7 +10,7 @@ const static GPIOConfig g_gpioConfig_net[] = {
 
 const GPIOConfig_Handler g_gpioConfigHandler_net = {
     .mode = SUB_DEVICE_MODE_NET,
-    GPIOCONFIG_CREATE_HANDLER(g_gpioConfig_net),
+    CREATE_CONFIG_HANDLER(g_gpioConfig_net),
 };
 
 static const  ADCChannlesConfig g_adcChannlConfig_net[] = {

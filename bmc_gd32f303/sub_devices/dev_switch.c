@@ -10,7 +10,7 @@ const static GPIOConfig g_gpioConfig_switch[] = {
 
 const GPIOConfig_Handler g_gpioConfigHandler_switch = {
     .mode = SUB_DEVICE_MODE_SWITCH,
-    GPIOCONFIG_CREATE_HANDLER(g_gpioConfig_switch),
+    CREATE_CONFIG_HANDLER(g_gpioConfig_switch),
 };
 
 

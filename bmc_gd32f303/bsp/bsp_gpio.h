@@ -79,17 +79,17 @@ typedef struct {
   
 typedef struct {          
 	SUB_DEVICE_MODE mode;
-    uint8_t cfgSize;
-    const GPIOConfig *cfg;
+    uint8_t gpioCfgSize;
+    const GPIOConfig *gpioCfg;
 } GPIOConfig_Handler;
 
-#define GPIOCONFIG_CREATE_HANDLER(config)   .cfgSize = ARRARY_SIZE(config),  .cfg = config 
+#define CREATE_CONFIG_HANDLER(name, config)   .name##CfgSize = ARRARY_SIZE(config),  .name##Cfg = config 
 
 extern const GPIOConfig_Handler g_gpioConfigHandler_main;
-extern const GPIOConfig_Handler g_gpioConfigHandler_net; 
-extern const GPIOConfig_Handler g_gpioConfigHandler_switch; 
-extern const GPIOConfig_Handler g_gpioConfigHandler_power; 
-extern const GPIOConfig_Handler g_gpioConfigHandler_storage0; 
+// extern const GPIOConfig_Handler g_gpioConfigHandler_net; 
+// extern const GPIOConfig_Handler g_gpioConfigHandler_switch; 
+// extern const GPIOConfig_Handler g_gpioConfigHandler_power; 
+// extern const GPIOConfig_Handler g_gpioConfigHandler_storage0; 
 
 void      GPIO_bspInit     (void);
 uint8_t   get_board_addr     (void);
