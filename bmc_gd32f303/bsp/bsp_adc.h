@@ -42,7 +42,6 @@ typedef struct {
     INT32U      			gpioPort;
     rcu_periph_enum      	gpioClk;
     INT32U      			Pin;
-    char *      			sensorAliasdd;
 } ADCChannlesConfig;
 
 void adc_init_channle(const ADCChannlesConfig  *chanCfg);

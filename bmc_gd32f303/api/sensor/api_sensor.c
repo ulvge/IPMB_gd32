@@ -16,13 +16,19 @@
 #include "sensor_helpers.h"
 
 extern const Sensor_Handler g_sensorHandler_main;
+extern const Sensor_Handler g_sensorHandler_net;
+extern const Sensor_Handler g_sensorHandler_switch;
+extern const Sensor_Handler g_sensorHandler_power;
+extern const Sensor_Handler g_sensorHandler_storage0;
+
+
 const static Sensor_Handler *g_pSensor_Handler = NULL;
 static const Sensor_Handler *g_AllSensorDevices[] = {
     &g_sensorHandler_main,
-    //&g_adcChannlHandler_net,
-    //&g_adcChannlHandler_switch,
-    //&g_adcChannlHandler_power,
-    //&g_adcChannlHandler_storage0,
+    &g_sensorHandler_net,
+    &g_sensorHandler_switch,
+    &g_sensorHandler_power,
+    &g_sensorHandler_storage0,
 };
 
 bool api_sensorGetUnitType(INT8U destMode, UINT32 sensorNum, uint8_t *unitType)
