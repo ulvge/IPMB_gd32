@@ -39,9 +39,7 @@ OF SUCH DAMAGE.
 
 #include "systick.h"
 #include "bsp_led.h"
-#include "bsp_usart0.h"
-#include "bsp_usart1.h"
-#include "bsp_uart3.h"
+#include "bsp_uartcomm.h"
 #include "bsp_i2c.h"
 #include "bsp_gpio.h"
 
@@ -108,7 +106,7 @@ int main(void)
 
     platform_init();
 
-    UART1_init();
+    UART_init();
     GPIO_bspInit();
     GPIO_setPinStatus(GPIO_OUT_LED_GREEN, ENABLE);
     printf("%s", projectInfo); 

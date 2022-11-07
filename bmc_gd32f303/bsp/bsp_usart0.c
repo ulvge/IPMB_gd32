@@ -15,19 +15,19 @@ static const UART_CONFIG_STRUCT g_uart0Config= {
     .prePriority = 10,
     .subPriority = 0,
     
-    .txPort = GPIOD,
-    .txPin = COM0_TX_PIN,
+    .txPort = GPIOA,
+    .txPin = GPIO_PIN_9,
     .txPinMode = GPIO_MODE_AF_PP,
     .txPinSpeed = GPIO_OSPEED_50MHZ,
 
-    .rxPort = GPIOD,
-    .rxPin = COM0_RX_PIN,
+    .rxPort = GPIOA,
+    .rxPin = GPIO_PIN_10,
     .rxPinMode = GPIO_MODE_IN_FLOATING,
     .rxPinSpeed = GPIO_OSPEED_50MHZ,
 
-    .rcuUart = COM0_CLK,
-    .rcuGPIO = COM0_GPIO_CLK,
-    .remap = GPIO_USART0_REMAP,
+    .rcuUart = RCU_USART0,
+    .rcuGPIO = RCU_GPIOA,
+    .remap = NULL,
 };
 static UART_PARA_STRUCT g_UARTPara = {
     .usart_periph = COM0,  
@@ -35,7 +35,7 @@ static UART_PARA_STRUCT g_UARTPara = {
 };
 
 #define UART0_BUFF_SIZE 	(50)
-static INT8U g_buffSend[UART0_BUFF_SIZE];	 
+static INT8U g_buffSend[600];	 
 static INT8U g_buffRec[UART0_BUFF_SIZE];
 
 void UART0_init(void)
@@ -51,18 +51,18 @@ static MsgPkt_T    g_uart_Req;
 
 void USART0_IRQHandler(void)
 {
+#define COM_NUM    COM0
     uint8_t res;
-    static BaseType_t xHigherPriorityTaskWoken;  // must set xHigherPriorityTaskWoken as a static variable, why?
-
-#ifdef USE_UART0_AS_IPMI
-
+	static BaseType_t xHigherPriorityTaskWoken;  // must set xHigherPriorityTaskWoken as a static variable, why?
     BaseType_t err;
     static bool is_start = false;
 
-    if (RESET != usart_interrupt_flag_get(COM0, USART_INT_FLAG_RBNE))
+    if (RESET != usart_interrupt_flag_get(COM_NUM, USART_INT_FLAG_RBNE))
     {
+        res = usart_data_receive(COM_NUM);
+        usart_interrupt_flag_clear(COM_NUM, USART_INT_FLAG_RBNE);
+#if USE_UART0_AS_IPMI
         /* receive data */
-        res = usart_data_receive(COM0);
         if (res == START_BYTE)
         { // start
             is_start = true;
@@ -85,19 +85,29 @@ void USART0_IRQHandler(void)
         }
         else
         {
-            g_uart_Req.Data[g_uart_Req.Size++] = usart_data_receive(COM0);
+            g_uart_Req.Data[g_uart_Req.Size++] = res;
             if (g_uart_Req.Size > sizeof(g_uart_Req.Data) - 3)
             {
                 is_start = false;
                 g_uart_Req.Size = 0;
                 //    LOG_E("uart recv overlap!");
             }
-        }
-    }
-#else
-    if (RESET != usart_interrupt_flag_get(COM0, USART_INT_FLAG_RBNE))
-    {
-        /* receive data */
-    }
+        }  
 #endif
+
+	// use FIFO store all
+		if (is_start == false)
+		{
+			/* receive data */
+            //UART_sendByte(COM_NUM, res);  //loopback
+			FIFO_Write(&g_UARTPara.fifo.rfifo, (INT8U)res); // only save
+		}
+	}
+
+    if (RESET != usart_interrupt_flag_get(COM_NUM, USART_INT_FLAG_TC))
+    {
+        usart_interrupt_flag_clear(COM_NUM, USART_INT_FLAG_TC);
+        /* send data continue */
+		UART_sendFinally(COM_NUM, &g_UARTPara.fifo);
+    }
 }

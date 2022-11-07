@@ -118,7 +118,7 @@ bool SubDevice_Init(void)
 			return false;
 		}
 		
-        BaseType_t xReturn = xTimerStart(xTimersIpmiReset, portMAX_DELAY);
+        //BaseType_t xReturn = xTimerStart(xTimersIpmiReset, portMAX_DELAY);
 		if (pdFAIL != pdPASS) {
 			printf("SubDevice_Init xTimerStart failed %ld\n", xReturn); 
 		}

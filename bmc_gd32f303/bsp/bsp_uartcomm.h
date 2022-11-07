@@ -42,5 +42,6 @@ bool UART_getData(uint32_t usart_periph, uint8_t *p_buffer, uint32_t buffSize, I
 bool UART_sendByte(uint32_t usart_periph, uint8_t dat);
 bool UART_sendData(uint32_t usart_periph, uint8_t *str, uint16_t len);
 INT8U UART_sendFinally(uint32_t usart_periph, FIFO_Buf_STRUCT *fifoUart);
+void UART_init(void);
 
 #endif /* __BSP_UARTCOMM_H */

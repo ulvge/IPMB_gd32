@@ -47,10 +47,11 @@ OF SUCH DAMAGE.
 					  
 #define    BMC_VERSION    "1.0.1"
 
-	#define DEBUG_UART_PERIPH    USART1
+	#define DEBUG_UART_PERIPH    USART0
 	#define IPMI_UART_PERIPH    USART1
 	
-	#define USE_UART1_AS_IPMI  1 
+	#define USE_UART0_AS_IPMI  1 
+	//#define USE_UART1_AS_IPMI  1
 
 	// #define FATFS_ENABLE    
 

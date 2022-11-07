@@ -63,6 +63,8 @@ typedef enum
     GPIO_IN_GAP0,
     GPIO_IN_GAP1,
     GPIO_IN_GAP2,
+	
+    GPIO_IN_DEBUG,
     
     GPIO_PIN_MAX
 }BMC_GPIO_enum;

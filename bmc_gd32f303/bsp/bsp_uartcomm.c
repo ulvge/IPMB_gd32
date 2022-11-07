@@ -6,7 +6,7 @@
 #include "Message.h"
 #include "MsgHndlr.h"
 #include "bsp_uartcomm.h"
-
+#include "bsp_usart0.h"
 																
 #define UART_NUM_TOTAL 3
 
@@ -177,3 +177,8 @@ void COM_init(UART_PARA_STRUCT *uartPara)
     usart_interrupt_enable(uartPara->usart_periph, USART_INT_TC);
 }
 
+void UART_init(void)
+{
+    UART0_init();
+    UART1_init();
+}

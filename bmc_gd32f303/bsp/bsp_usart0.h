@@ -21,8 +21,6 @@
 					 
 void UART0_init(void);
 
-int fgetc(FILE *f);
-
 #ifdef __cplusplus
 }
 #endif

@@ -615,12 +615,12 @@ ARM Macro Assembler    Page 10
               00000000 
               00000000 
 Command Line: --debug --xref --diag_suppress=9931 --cpu=Cortex-M4.fp.sp --apcs=
-interwork --depend=.\output\startup_gd32f30x_cl.d -o.\output\startup_gd32f30x_c
-l.o -Id:\Users\Arm\Packs\GigaDevice\GD32F30x_DFP\2.2.1\Device\Include -Id:\Keil
-_v5\ARM\CMSIS\Include --predefine="__MICROLIB SETA 1" --predefine="__UVISION_VE
-RSION SETA 535" --predefine="GD32F30X_XD SETA 1" --list=.\output\list\startup_g
-d32f30x_cl.lst ..\firmware\GD32F30x\CMSIS\GD\GD32F30x\Source\ARM\startup_gd32f3
-0x_cl.s
+interwork --depend=.\output\temp\startup_gd32f30x_cl.d -o.\output\temp\startup_
+gd32f30x_cl.o -Id:\Users\Arm\Packs\GigaDevice\GD32F30x_DFP\2.2.1\Device\Include
+ -Id:\Keil_v5\ARM\CMSIS\Include --predefine="__MICROLIB SETA 1" --predefine="__
+UVISION_VERSION SETA 535" --predefine="GD32F30X_XD SETA 1" --list=.\output\star
+tup_gd32f30x_cl.lst ..\firmware\GD32F30x\CMSIS\GD\GD32F30x\Source\ARM\startup_g
+d32f30x_cl.s
 
 
 

@@ -10,10 +10,10 @@
 #include "bsp_uartcomm.h"
 
 #define UART1_BUFF_SIZE 	(50)
-static INT8U g_buffSend[600];	 
+static INT8U g_buffSend[400];	 
 static INT8U g_buffRec[UART1_BUFF_SIZE];
 
-static const UART_CONFIG_STRUCT g_uart0Config= {
+static const UART_CONFIG_STRUCT g_uart1Config= {
     .baud = 115200U,
     .irqN = USART1_IRQn,
     .prePriority = 3,
@@ -35,7 +35,7 @@ static const UART_CONFIG_STRUCT g_uart0Config= {
 };
 static UART_PARA_STRUCT g_UARTPara = {
     .usart_periph = COM1,  
-    .config = &g_uart0Config,
+    .config = &g_uart1Config,
 };
 
 void UART1_init()
@@ -60,8 +60,8 @@ void USART1_IRQHandler(void)
     if (RESET != usart_interrupt_flag_get(COM1, USART_INT_FLAG_RBNE))
     {                        
         res = usart_data_receive(COM1);
-#if USE_UART1_AS_IPMI
         usart_interrupt_flag_clear(COM1, USART_INT_FLAG_RBNE);
+#if USE_UART1_AS_IPMI
         /* receive data */
         if (res == START_BYTE)
         { // start

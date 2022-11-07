@@ -28,3 +28,6 @@
 *.crf
 .vscode
 .vs
+*/output/temp/*
+/bmc_gd32f303/projectGD32F103/output/temp
+/bmc_gd32f303/projectGD32F303/output/temp
