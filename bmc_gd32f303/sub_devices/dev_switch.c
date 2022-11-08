@@ -22,7 +22,7 @@ static SubDevice_Reading_T g_adcVal_switch[ARRARY_SIZE(g_adcChannlConfig_switch)
 
 // config Sensor
 static const  SensorConfig g_sensor_switch[] = {
-    {ADC_CHANNEL_10,         SUB_DEVICE_SDR_TEMP,        "X100 temp"},
+    {ADC_CHANNEL_10,         SUB_DEVICE_SDR_TEMP,        "X100_temp"},
 };
 static SubDevice_Reading_T g_sensorVal_switch[ARRARY_SIZE(g_sensor_switch)];
 const Sensor_Handler g_sensorHandler_switch = {

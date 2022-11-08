@@ -38,7 +38,6 @@ OF SUCH DAMAGE.
 #include "OSPort.h"
 
 #include "systick.h"
-#include "bsp_led.h"
 #include "bsp_uartcomm.h"
 #include "bsp_i2c.h"
 #include "bsp_gpio.h"
@@ -114,9 +113,8 @@ int main(void)
     g_bmc_firmware_version = GetBmcFirmwareVersion(BMC_VERSION);
 
     //timer_config_init();
-    led_init();
     xTaskCreate(start_task, "start", configMINIMAL_STACK_SIZE * 2, NULL, 1, NULL);
-    xTaskCreate(misc_task, "led", configMINIMAL_STACK_SIZE, NULL, 26, NULL);
+    xTaskCreate(misc_task, "misc", configMINIMAL_STACK_SIZE, NULL, 26, NULL);
     watch_dog_init();
 	debug_config();
     vTaskStartScheduler();      //prvIdleTask
@@ -174,9 +172,6 @@ void misc_task(void *pvParameters)
     g_chassisCtrl_Queue = xQueueCreate(2, sizeof(SamllMsgPkt_T));
     while (1)
     {
-        led1_set(1);
-        vTaskDelay(70);
-        led1_set(0);
         //printf("abcde\r\n");
         adc_sample_all();
         if (xQueueReceive(g_chassisCtrl_Queue, &msg, 20) == pdPASS){

@@ -341,7 +341,7 @@ int sensor(int argc, char *argv[])
 
     for (uint8_t numIdex = 0; numIdex < sensorSize; numIdex++)
     {
-        sensorNum = api_sensorGetSensorNumByIdex(numIdex);
+        sensorNum = api_sensorGetMySensorNumByIdex(numIdex);
         get_res = api_sensorGetIPMBValBySensorNum(SubDevice_GetMyMode(), sensorNum, &ipmbVal);
         char *name = pSensor_Handler->sensorCfg[numIdex].sensorAlias;
         if (get_res == false)

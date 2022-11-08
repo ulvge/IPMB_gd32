@@ -115,6 +115,7 @@ typedef enum
 #define IPMI_SENSOR_POWER_SUPPLY    ( (u8)0x08 )
 #define IPMI_SENSOR_POWER_UNIT      ( (u8)0x09 )
 #define IPMI_SENSOR_COOLING_DEVICE  ( (u8)0x0A )
+#define OTHER_UNITS_SENSOR_TYPE     ( (u8)0x0B )
 #define IPMI_SENSOR_MEMORY          ( (u8)0x0C )
 
 /* Sensor Unit Type Codes from the IPMI spec */

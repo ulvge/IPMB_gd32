@@ -39,9 +39,9 @@ static const  ADCChannlesConfig g_adcChannlConfig_main[] = {
 
 static const  SensorConfig g_sensor_main[] = {
 #if 1
-    {ADC_CHANNEL_8,         SUB_DEVICE_SDR_TEMP,        "X100 temp"},
-    {ADC_CHANNEL_0,      	SUB_DEVICE_SDR_P1V8,        "P1V8 VCC"},
-    {ADC_CHANNEL_10,        SUB_DEVICE_SDR_P12V_10_1,   "P12V standby"},
+    {ADC_CHANNEL_8,         SUB_DEVICE_SDR_TEMP,        "X100_temp"},
+    {ADC_CHANNEL_0,      	SUB_DEVICE_SDR_P1V8,        "P1V8_VCC"},
+    {ADC_CHANNEL_10,        SUB_DEVICE_SDR_P12V_10_1,   "P12V_standby"},
     {FAN_CHANNEL_1,			SUB_DEVICE_SDR_FAN,         "FAN_CHANNEL_1"},
 #else
     {ADC_CHANNEL_10,        SUB_DEVICE_SDR_P0V9, "P0V9_VCORE"},

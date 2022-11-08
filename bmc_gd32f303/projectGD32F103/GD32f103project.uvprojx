@@ -81,7 +81,7 @@
           </BeforeMake>
           <AfterMake>
             <RunUserProg1>0</RunUserProg1>
-            <RunUserProg2>1</RunUserProg2>
+            <RunUserProg2>0</RunUserProg2>
             <UserProg1Name></UserProg1Name>
             <UserProg2Name>D:\Keil_v5\ARM\ARMCLANG\bin\fromelf --bin --output .\output\bmc_rom.bin .\output\temp\bmc_rom.axf</UserProg2Name>
             <UserProg1Dos16Mode>0</UserProg1Dos16Mode>
@@ -488,6 +488,16 @@
               <FileType>1</FileType>
               <FilePath>..\api\sensor\api_sensor.c</FilePath>
             </File>
+            <File>
+              <FileName>cJSON_Utils.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\api\tools\cJSON_Utils.c</FilePath>
+            </File>
+            <File>
+              <FileName>cJSON.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\api\tools\cJSON.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -629,11 +639,6 @@
               <FilePath>..\bsp\bsp_i2c_gpio.c</FilePath>
             </File>
             <File>
-              <FileName>bsp_led.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\bsp\bsp_led.c</FilePath>
-            </File>
-            <File>
               <FileName>bsp_pwm.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\bsp\bsp_pwm.c</FilePath>
@@ -652,11 +657,6 @@
               <FileName>bsp_gpio.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\bsp\bsp_gpio.c</FilePath>
-            </File>
-            <File>
-              <FileName>bsp_net_gpio.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\bsp\bsp_net_gpio.c</FilePath>
             </File>
             <File>
               <FileName>bsp_timer.c</FileName>

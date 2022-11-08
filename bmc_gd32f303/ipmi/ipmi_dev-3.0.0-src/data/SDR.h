@@ -112,6 +112,6 @@ extern SDRRecHdr_T* GetSDRRec  (INT16U RecID,int BMCInst);
  * @return 0 if success, -1 if error
 **/
 extern  int  InitSDR (int BMCInst);
-
+extern bool SensorGetUnitType(INT8U destMode, UINT32 sensorNum, uint8_t *unitType);
 
 #endif /* SDR_H */

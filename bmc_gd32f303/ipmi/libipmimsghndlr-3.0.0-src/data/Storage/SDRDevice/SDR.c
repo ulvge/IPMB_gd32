@@ -410,7 +410,7 @@ FullSensorRec_T   g_sensor_sdr[] =
 		.EntityIns            = 0x03,
 		.SensorInit           = 0x7F,
 		.SensorCaps           = 0x68,
-		.SensorType           = 0x02,
+		.SensorType           = IPMI_SENSOR_VOLTAGE,
 		.EventTypeCode        = 0x01,
 		.AssertionEventMask   = 0x7A95,
 		.DeAssertionEventMask = 0x7A95,
@@ -698,7 +698,7 @@ int GetSDR(INT8U *pReq, INT8U ReqLen, INT8U *pRes, int BMCInst)
         pGetSDRRes->CompletionCode = CC_SDR_REC_NOT_PRESENT; // code
         return sizeof(INT8U);
     }
-    INT8U sensorNum = api_sensorGetSensorNumByIdex(getRecID);
+    INT8U sensorNum = api_sensorGetMySensorNumByIdex(getRecID);
     FullSensorRec_T *pCurrentSdr = ReadSensorRecBySensorNum((INT8U)SubDevice_GetMyMode(), sensorNum, BMCInst);
     if (pCurrentSdr == NULL){
         // support max RECODER_MAX_NUM records
@@ -1362,7 +1362,7 @@ ReadSDRRepository(SDRRecHdr_T *pSDRRec, int BMCInst)
     }
 // convert from id to sensorNum
     uint8_t idx = (pSDRRec == NULL) ? 0 : pSDRRec->ID;
-    INT8U sensorNum = api_sensorGetSensorNumByIdex(idx);
+    INT8U sensorNum = api_sensorGetMySensorNumByIdex(idx);
 
     return (SDRRecHdr_T *)ReadSensorRecBySensorNum(SubDevice_GetMyMode(), sensorNum, BMCInst);
 }
@@ -1390,7 +1390,7 @@ FullSensorRec_T * ReadSensorRecBySensorNum(INT8U destMode, INT8U sensorNum, int 
 {
     FullSensorRec_T *pSdr;
     UINT16 id;
-    const Sensor_Handler *pHandler = api_getSensorHandler(SubDevice_GetMyMode());
+    const Sensor_Handler *pHandler = api_getSensorHandler((SUB_DEVICE_MODE)destMode);
 
 //根据 sensorName 找到对应的 adcChannl，即可找到解码 sdrIdx
     const SensorConfig *p_Cfg;
@@ -1402,6 +1402,9 @@ FullSensorRec_T * ReadSensorRecBySensorNum(INT8U destMode, INT8U sensorNum, int 
             sdrIdx = p_Cfg->sdrIdx;
             break;
         }
+    }
+    if (id >= pHandler->sensorCfgSize) {
+        return NULL;
     }
 // 根据sdrIdx，在SDR总表当中搜索对应的解码对象 
     for(int i=0; i < ARRARY_SIZE(g_sensor_sdr); i++)
@@ -1419,6 +1422,38 @@ FullSensorRec_T * ReadSensorRecBySensorNum(INT8U destMode, INT8U sensorNum, int 
         return  &g_fullSensorRec_Tmp;
     }
     return NULL;
+}
+
+bool SensorGetUnitType(INT8U destMode, UINT32 sensorNum, uint8_t *unitType)
+{
+    FullSensorRec_T *pSdr;
+    UINT16 id;                           
+    const Sensor_Handler *pHandler = api_getSensorHandler((SUB_DEVICE_MODE)destMode);
+
+//根据 sensorName 找到对应的 adcChannl，即可找到解码 sdrIdx
+    const SensorConfig *p_Cfg;
+    SUB_DEVICE_SDR_IDX sdrIdx = SUB_DEVICE_SDR_MAX;
+    for (id = 0; id < pHandler->sensorCfgSize; id++)
+    {
+        p_Cfg = &pHandler->sensorCfg[id];
+        if ((p_Cfg->sensorNum) == sensorNum) {
+            sdrIdx = p_Cfg->sdrIdx;
+            break;
+        }
+    }
+    if (id >= pHandler->sensorCfgSize) {
+        return false;
+    }
+// 根据sdrIdx，在SDR总表当中搜索对应的解码对象 
+    for(int i=0; i < ARRARY_SIZE(g_sensor_sdr); i++)
+    {
+        if(sdrIdx != g_sensor_sdr[i].OEMField) {
+            continue;
+        }
+        *unitType = g_sensor_sdr[i].Units2;
+        return true;
+    }
+    return false;
 }
 /*--------------------------------------------------
  * WriteSDRRepository

@@ -89,43 +89,6 @@ xQueueHandle ResponseDatMsg_Queue = NULL;
 xQueueHandle RecvDatMsg_Queue = NULL;
 xQueueHandle RecvForwardI2CDatMsg_Queue = NULL;
 
-/*-----------------------------------------------------------------------------
-* Function Prototypes
-*-----------------------------------------------------------------------------*/
-static void device_addr_set(uint8_t slaveAddr7); 
-
-/*--------------------------------------------------------------------
-* Module Variables
-*--------------------------------------------------------------------*/
-const DisableMsgFilterTbl_T m_DisableMsgFilterTbl[] =
-    {
-        /* NET_FUN                                      Command */
-        /*----------------- BMC Device and Messaging Commands ------------------*/
-        {NETFN_APP, CMD_GET_CH_AUTH_CAP},
-        {NETFN_APP, CMD_GET_CH_AUTH_CAP},
-        {NETFN_APP, CMD_GET_SESSION_CHALLENGE},
-        {NETFN_APP, CMD_ACTIVATE_SESSION},
-        {NETFN_APP, CMD_SET_SESSION_PRIV_LEVEL},
-        {NETFN_APP, CMD_CLOSE_SESSION},
-        {NETFN_APP, CMD_GET_SESSION_INFO},
-        /*------------------------ IPMI 2.0 specific Commands ------------------*/
-        {NETFN_APP, CMD_ACTIVATE_PAYLOAD},
-        {NETFN_APP, CMD_DEACTIVATE_PAYLOAD},
-        {NETFN_APP, CMD_GET_PAYLD_ACT_STATUS},
-        {NETFN_APP, CMD_GET_PAYLD_INST_INFO},
-        {NETFN_APP, CMD_SET_USR_PAYLOAD_ACCESS},
-        {NETFN_APP, CMD_GET_USR_PAYLOAD_ACCESS},
-        {NETFN_APP, CMD_GET_CH_PAYLOAD_SUPPORT},
-        {NETFN_APP, CMD_GET_CH_PAYLOAD_VER},
-        {NETFN_APP, CMD_GET_CH_OEM_PAYLOAD_INFO},
-        {NETFN_APP, CMD_SUS_RES_PAYLOAD_ENCRYPT},
-        /*------------------------ IPMI 2.0 SOL Commands ------------------*/
-        {NETFN_TRANSPORT, CMD_GET_SOL_CONFIGURATION},
-        {NETFN_TRANSPORT, CMD_SET_SOL_CONFIGURATION},
-
-        {NETFN_UNKNOWN, 0}, /* Indicate the end of array */
-};
-
 //INT8U ExtNetFnMap[MAX_NUM_BMC][MAX_NETFN];
 
 static const MsgHndlrTbl_T m_MsgHndlrTbl[15] =

@@ -15,22 +15,48 @@
 #include "sensor.h"    
 #include "api_adc.h"
 #include "api_sensor.h"
+#include "cJSON.h"
 
 #define SUB_DEVICES_ADDR_DEFAULT 0xFF
 #define SUB_DEVICES_ADDR_PRIFIXED 0x80
 
 #define SUB_DEVICES_FAILED_MAX_COUNT 10
 #define SUB_DEVICES_SENDMSG_WAIT_TIMEOUT_XMS 20
-#define SUB_DEVICES_TIMER_PERIOD_XMS 2000
+#define SUB_DEVICES_TIMER_SAMPLE_PERIOD_XMS 2000
+#define SUB_DEVICES_TIMER_UPLOAD_PERIOD_XMS 2000
+
+#define SUB_DEVICES_TIMER_SAMPLE    0
+#define SUB_DEVICES_TIMER_UPLOAD    1
 
 typedef struct
 {
+    uint8_t sensorUnitTypeCode:7;
+    uint8_t isExist:1;
+    char *typeName;
+} SENSOR_UNITTYPECODE_EXIST;
+static SENSOR_UNITTYPECODE_EXIST g_sensorUnitTypeExist[] = {
+    {IPMI_UNIT_DEGREES_C, 0, "tempture"},
+    {IPMI_UNIT_VOLTS, 0, "voltage"},
+    {IPMI_UNIT_AMPS, 0, "current"},
+    {IPMI_UNIT_WATTS, 0, "power"},
+    {IPMI_UNIT_RPM, 0, "fan"},
+};
+typedef struct
+{
     uint32_t  busUsed;
+
+    SENSOR_UNITTYPECODE_EXIST *sensorUnitTypeExist;
+    uint8_t sensorUnitTypeCount;
 } SubDeviceHandler_T;
 
-static TimerHandle_t xTimersIpmiReset = NULL;
-static SubDeviceHandler_T g_subDeviceHandler;
+static SubDeviceHandler_T g_subDeviceHandler = {
+    .busUsed = NM_SECONDARY_IPMB_BUS,
+    .sensorUnitTypeExist = g_sensorUnitTypeExist,
+    .sensorUnitTypeCount = ARRARY_SIZE(g_sensorUnitTypeExist),
+};
 
+static TimerHandle_t g_subdevice_timerSample = NULL;
+static TimerHandle_t g_subdevice_timerUpload = NULL;
 static void SubDevice_HeartBeatTimerCallBack(xTimerHandle pxTimer);
 static const SubDeviceName_T g_SubDeviceConfigName[] = {
     {SUB_DEVICE_MODE_MAIN,      "main"},
@@ -103,6 +129,42 @@ bool SubDevice_CheckAndPrintMode(void)
     pSubDeviceSelf = &g_AllModes[mode];
     return true;
 }
+
+static bool SubDevice_isExistSensorUnit(uint8_t queryUnitType)
+{
+	uint8_t sensorNum;
+	uint8_t unitType;
+    for (SUB_DEVICE_MODE dev = (SUB_DEVICE_MODE)0; dev < SUB_DEVICE_MODE_MAX; dev++)
+    {
+        const Sensor_Handler *pHandler = api_getSensorHandler(dev);
+        if (pHandler == NULL){
+            continue;
+        }
+        for (uint8_t numIdex = 0; numIdex < pHandler->sensorCfgSize; numIdex++)
+        {
+            SubDevice_Reading_T *pDeviceReading = &pHandler->val[numIdex];
+            sensorNum = api_sensorGetMySensorNumByIdex(numIdex);
+            
+            if (api_sensorGetUnitType(dev, sensorNum, &unitType) == true){
+                if (unitType == queryUnitType){
+                    return true;
+                }
+            }
+        }
+    }
+    return false;
+}
+static void SubDevice_readAllSensorUnit(void)
+{
+	uint8_t sensorNum;
+    for (uint8_t idx = 0; idx < g_subDeviceHandler.sensorUnitTypeCount; idx++) {
+        SENSOR_UNITTYPECODE_EXIST *pTypeCode = &g_subDeviceHandler.sensorUnitTypeExist[idx];
+        if (SubDevice_isExistSensorUnit(pTypeCode->sensorUnitTypeCode)){
+            pTypeCode->isExist = true;
+        }
+    }
+}
+
 /// @brief read my slave address from GPIO switch,then init all buff if I'm a main(master)
 /// @param  
 /// @return 
@@ -111,18 +173,34 @@ bool SubDevice_Init(void)
     g_subDeviceHandler.busUsed = NM_SECONDARY_IPMB_BUS;
 	BaseType_t xReturn = pdPASS; 
 	if (SubDevice_IsSelfMaster()) {
-        xTimersIpmiReset = xTimerCreate("SubDeviceHeartBeat", SUB_DEVICES_TIMER_PERIOD_XMS/portTICK_RATE_MS, pdTRUE, 
-                                        0, SubDevice_HeartBeatTimerCallBack);
-		if (xTimersIpmiReset == NULL) {
-			printf("SubDevice_Init xTimerCreate failed\n");     
+        SubDevice_readAllSensorUnit();
+        // create timer sample
+        g_subdevice_timerSample = xTimerCreate("SubDevice", SUB_DEVICES_TIMER_SAMPLE_PERIOD_XMS/portTICK_RATE_MS, pdTRUE, 
+                                        (void*)SUB_DEVICES_TIMER_SAMPLE, SubDevice_HeartBeatTimerCallBack);
+		if (g_subdevice_timerSample == NULL) {
+			printf("SubDevice_Init xTimerCreate sample failed\n");     
 			return false;
 		}
-		
-        //BaseType_t xReturn = xTimerStart(xTimersIpmiReset, portMAX_DELAY);
-		if (pdFAIL != pdPASS) {
-			printf("SubDevice_Init xTimerStart failed %ld\n", xReturn); 
+        xReturn = xTimerStart(g_subdevice_timerSample, portMAX_DELAY);
+		if (xReturn != pdPASS) {
+			printf("SubDevice_Init xTimerStart sample failed %ld\n", xReturn); 
 		}
-	}
+        // create timer upload
+        g_subdevice_timerUpload = xTimerCreate("SubDevice", SUB_DEVICES_TIMER_UPLOAD_PERIOD_XMS/portTICK_RATE_MS, pdTRUE, 
+                                        (void*)SUB_DEVICES_TIMER_UPLOAD, SubDevice_HeartBeatTimerCallBack);
+		if (g_subdevice_timerUpload == NULL) {
+			printf("SubDevice_Init xTimerCreate upload failed\n");     
+			return false;
+		}
+        xReturn = xTimerStart(g_subdevice_timerUpload, portMAX_DELAY);
+		if (xReturn != pdPASS) {
+			printf("SubDevice_Init xTimerStart upload failed %ld\n", xReturn); 
+		}
+        cJSON_Hooks hooks;
+        hooks.malloc_fn = pvPortMalloc;
+        hooks.free_fn = vPortFree;
+        cJSON_InitHooks(&hooks);
+    }
 	return true;
 }
 
@@ -221,6 +299,94 @@ uint32_t SubDevice_GetBus(void)
 {
     return g_subDeviceHandler.busUsed;
 }
+static void SubDevice_SendDataSpilt(char *pstr)
+{
+#define SEND_LENGTH_PRE 50
+    uint32_t len = strlen(pstr);
+    uint32_t offset;
+
+    for (uint32_t i = 0; (i < (len + SEND_LENGTH_PRE) / SEND_LENGTH_PRE);)
+    {
+        offset = i * SEND_LENGTH_PRE;
+        if ((offset + SEND_LENGTH_PRE) <= len) {
+            if (UART_sendData(CPU_UART_PERIPH, (uint8_t *)pstr + offset, SEND_LENGTH_PRE)) {    
+                i++;
+            }
+        }else{ //last
+            if (UART_sendData(CPU_UART_PERIPH, (uint8_t *)pstr + offset, len - offset)) {    
+                return;
+            }
+        }
+    }
+}
+static void SubDevice_Upload(TimerHandle_t timerHandle)
+{
+    char nameBuf[30];
+    char humanVal[10];
+    BaseType_t xReturn = xTimerStop(timerHandle, portMAX_DELAY);
+    if (xReturn != pdPASS) {
+        return;
+    }
+    uint8_t sensorNum;
+    uint8_t unitType;
+	uint8_t prefixLen;
+    cJSON *pCJType = cJSON_CreateObject();
+    cJSON *pCJData = NULL;
+    char *pstr;
+	
+	printf("\t\tSubDevice_Upload, free byte = %d\n", xPortGetFreeHeapSize());
+    for (uint8_t idx = 0; idx < g_subDeviceHandler.sensorUnitTypeCount; idx++) {
+        SENSOR_UNITTYPECODE_EXIST *pTypeCode = &g_subDeviceHandler.sensorUnitTypeExist[idx];
+        if (pTypeCode->isExist == false) {
+            continue;
+        }
+
+        cJSON_AddItemToObject(pCJType, pTypeCode->typeName, pCJData = cJSON_CreateObject());
+        for (SUB_DEVICE_MODE dev = (SUB_DEVICE_MODE)0; dev < SUB_DEVICE_MODE_NET; dev++)
+        {
+            char * modeName = SubDevice_GetModeName(dev);
+			memset(nameBuf, 0, sizeof(nameBuf));
+            memcpy(nameBuf, modeName, strlen(modeName)); 
+			strcat(nameBuf, "-");
+			prefixLen = strlen(nameBuf);
+            const Sensor_Handler *pHandler = api_getSensorHandler(dev);
+            if (pHandler == NULL){
+                continue;
+            }
+            for (uint8_t numIdex = 0; numIdex < pHandler->sensorCfgSize; numIdex++)
+            {
+                sensorNum = api_sensorGetSensorNumByIdex(dev, numIdex);
+                if (api_sensorGetUnitType(dev, sensorNum, &unitType) == true){
+                    if (unitType == pTypeCode->sensorUnitTypeCode) {
+                        char *sensorName = pHandler->sensorCfg[numIdex].sensorAlias;
+						memset(nameBuf + prefixLen, 0, sizeof(nameBuf) - prefixLen);
+                        strcat(nameBuf, sensorName);
+
+                        SubDevice_Reading_T *pDeviceReading = &pHandler->val[numIdex];
+						memset(humanVal, 0, sizeof(humanVal));
+                        if (pDeviceReading->human == 0){
+                            sprintf(humanVal, "%s", "0");
+                        } else{
+                            sprintf(humanVal, "%.3f", pDeviceReading->human);
+                        }
+                        cJSON_AddStringToObject(pCJData, nameBuf, humanVal);
+                    }
+                }
+            }
+        }
+    }
+    pstr = cJSON_PrintUnformatted(pCJType);
+	if (pstr == NULL){
+        cJSON_Delete(pCJType);
+		printf("\t\tupload failed, no memory to malloc, free byte = %d\n", xPortGetFreeHeapSize());
+	} else {
+		SubDevice_SendDataSpilt(pstr);
+        cJSON_Delete(pCJType);
+		vPortFree(pstr);		
+		printf("\t\tupload success, free byte = %d\n", xPortGetFreeHeapSize());
+	}
+    xReturn = xTimerStart(timerHandle, portMAX_DELAY);
+}
 static bool SubDevice_readingSensorForeach(SUB_DEVICE_MODE dev, uint8_t sensorNum, MsgPkt_T *requestPkt, SubDevice_Reading_T *pDeviceReading)
 {
     MsgPkt_T recvReq;
@@ -259,11 +425,9 @@ static bool SubDevice_readingSensorForeach(SUB_DEVICE_MODE dev, uint8_t sensorNu
 
 }
 extern xQueueHandle ResponseDatMsg_Queue;
-static void SubDevice_HeartBeatTimerCallBack(xTimerHandle pxTimer)
+static void SubDevice_SampleAll(TimerHandle_t timerHandle)
 {
-	//uint32_t cmd = (CHASSIS_CMD_CTRL)((uint32_t)pvTimerGetTimerID(pxTimer));
-
-    BaseType_t xReturn = xTimerStop(xTimersIpmiReset, portMAX_DELAY);
+    BaseType_t xReturn = xTimerStop(timerHandle, portMAX_DELAY);
     if (xReturn != pdPASS) {
         return; 
     }
@@ -272,11 +436,11 @@ static void SubDevice_HeartBeatTimerCallBack(xTimerHandle pxTimer)
     IPMIMsgHdr_T *hdr = (IPMIMsgHdr_T *)&(requestPkt.Data);
     requestPkt.Param = IPMB_SUB_DEVICE_HEARTBEAT_REQUEST;
     requestPkt.Channel = SubDevice_GetBus();
-	uint8_t sensorNum;                                        
+	uint8_t sensorNum;
 												 
     for (SUB_DEVICE_MODE dev = (SUB_DEVICE_MODE)0; dev < SUB_DEVICE_MODE_MAX; dev++)
     {
-        const Sensor_Handler *pHandler = api_getSensorHandler(SubDevice_GetMyMode());
+        const Sensor_Handler *pHandler = api_getSensorHandler(dev);
         if (pHandler == NULL){
             continue;
         }
@@ -293,7 +457,8 @@ static void SubDevice_HeartBeatTimerCallBack(xTimerHandle pxTimer)
        {
            SubDevice_Reading_T *pDeviceReading = &pHandler->val[numIdex];
            //sensorNum = 0x23;     // P1V8 standby
-           sensorNum = api_sensorGetSensorNumByIdex(numIdex);
+           sensorNum = api_sensorGetSensorNumByIdex(dev, numIdex);
+           //sensorNum = api_sensorGetMySensorNumByIdex(numIdex);
            if (SubDevice_readingSensorForeach(dev, sensorNum, &requestPkt, pDeviceReading)) {
                if (api_sensorConvert2HumanVal(dev, sensorNum, pDeviceReading->raw, &pDeviceReading->human) == true) {
                    pDeviceReading->errCnt = 0;
@@ -308,5 +473,23 @@ static void SubDevice_HeartBeatTimerCallBack(xTimerHandle pxTimer)
        }
     }
 
-    xReturn = xTimerStart(xTimersIpmiReset, portMAX_DELAY);
+    xReturn = xTimerStart(timerHandle, portMAX_DELAY);
 }
+
+static void SubDevice_HeartBeatTimerCallBack(xTimerHandle pxTimer)
+{
+	uint32_t work = ((uint32_t)pvTimerGetTimerID(pxTimer));
+    switch (work)
+    {
+    case SUB_DEVICES_TIMER_SAMPLE:
+        SubDevice_SampleAll(g_subdevice_timerSample);
+        break;
+    case SUB_DEVICES_TIMER_UPLOAD:
+        SubDevice_Upload(g_subdevice_timerUpload);
+        break;
+    default:
+        break;
+    }
+}
+
+

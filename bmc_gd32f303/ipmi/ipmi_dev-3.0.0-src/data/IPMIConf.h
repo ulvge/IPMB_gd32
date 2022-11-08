@@ -509,8 +509,8 @@ typedef struct
     INT8U ICMBCh ;
     INT8U SMBUSCh ;
     INT8U SERIALch ;
-    INT8U SMMCh ;
-    INT8U SYSCh ;
+    //INT8U SMMCh ;
+    //INT8U SYSCh ;
     IPMIConfig_T IpmiConfig;
     INT8U *pNVRDCMICfg;
     SessionTblInfo_T SessionTblInfo;
@@ -522,7 +522,7 @@ typedef struct
     //PEF_T PefConfig;
     //SEL_T SELConfig;
     SDR_T SDRConfig;
-    IPMB_T IPMBConfig;
+    //IPMB_T IPMBConfig;
     ///SOL_T SOLConfig;
  //   LAN_T LANConfig;
     MSGHNDLR_T Msghndlr;
@@ -561,7 +561,7 @@ typedef struct
     int SetWDTUpdated;
     int WDTPreTmtStat;
 //    DynamicLoader_T g_DynamicInfoTable[MAX_DYNMC_TBL_COUNT];
-    INT32U g_DynamicInfoTableCount ;
+    //INT32U g_DynamicInfoTableCount ;
     //DynamicLoader_T DynamicInfoTable[100];
     //INT32U DynamicInfoTableCount ;
 
@@ -575,7 +575,6 @@ typedef struct
 //    TimerTaskTbl_T    TimerTaskTbl [20];
 
     INT32U CurTimerTick;
-    int kcsfd[3]; //Will be removed once fix is done in hal driver
 //    ChcfgInfo_T NVRChcfgInfo[MAX_NUM_CHANNELS];
 //    IPMICfgLoc_T IPMIConfLoc;
     Mgmt_T MgmtTbl[MAX_MGMT_DEV_LOC_REC];

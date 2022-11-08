@@ -18,7 +18,7 @@
 #include "main.h"
 
 Shell shell;
-char shellBuffer[512];
+char shellBuffer[200];
 
 
 /**

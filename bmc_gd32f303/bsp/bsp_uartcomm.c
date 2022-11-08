@@ -77,10 +77,12 @@ bool UART_sendByte(uint32_t usart_periph, uint8_t dat)
     }
 	FILE *f = NULL;
     
-    FIFO_Write(&uartPara->fifo.sfifo, (INT8U)dat); 
+    if (FIFO_Write(&uartPara->fifo.sfifo, (INT8U)dat) == FALSE){
+        return false;
+    }
 	if(uartPara->fifo.status != UART_SENDING) {
 		UART_sendFinally(usart_periph, &uartPara->fifo);
-	} 
+	}
 	return true;
 }
 
@@ -90,8 +92,10 @@ bool UART_sendData(uint32_t usart_periph, uint8_t *str, uint16_t len)
     if (uartPara == NULL) {
         return false;
     }
-    FIFO_Writes(&uartPara->fifo.sfifo, str, len);
-	
+    if (FIFO_Writes(&uartPara->fifo.sfifo, str, len) == FALSE){
+        return false;
+    }
+
 	if(uartPara->fifo.status != UART_SENDING) {
 		UART_sendFinally(usart_periph, &uartPara->fifo);
 	}            

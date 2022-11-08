@@ -52,7 +52,6 @@ static bool i2c_bytes_read(uint32_t i2cx, uint8_t device_addr, uint8_t read_addr
 
 void i2c_int(void)
 {
-    SubDevice_Init();
 	uint8_t addr8 = SubDevice_GetMySlaveAddress(NM_PRIMARY_IPMB_BUS);
     SetDevAddr(addr8);
 

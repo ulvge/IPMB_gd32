@@ -10,7 +10,7 @@
 #include "bsp_uartcomm.h"
 
 #define UART1_BUFF_SIZE 	(50)
-static INT8U g_buffSend[400];	 
+static INT8U g_buffSend[100];
 static INT8U g_buffRec[UART1_BUFF_SIZE];
 
 static const UART_CONFIG_STRUCT g_uart1Config= {
@@ -52,15 +52,16 @@ extern xQueueHandle RecvDatMsg_Queue;
 
 void USART1_IRQHandler(void)
 {
+#define COM_NUM    COM1
     uint8_t res;
 	static BaseType_t xHigherPriorityTaskWoken;  // must set xHigherPriorityTaskWoken as a static variable, why?
     BaseType_t err;
     static bool is_start = false;
 
-    if (RESET != usart_interrupt_flag_get(COM1, USART_INT_FLAG_RBNE))
-    {                        
-        res = usart_data_receive(COM1);
-        usart_interrupt_flag_clear(COM1, USART_INT_FLAG_RBNE);
+    if (RESET != usart_interrupt_flag_get(COM_NUM, USART_INT_FLAG_RBNE))
+    {
+        res = usart_data_receive(COM_NUM);
+        usart_interrupt_flag_clear(COM_NUM, USART_INT_FLAG_RBNE);
 #if USE_UART1_AS_IPMI
         /* receive data */
         if (res == START_BYTE)
@@ -95,19 +96,19 @@ void USART1_IRQHandler(void)
         }  
 #endif
 
-	// use FIFO store all  
+	// use FIFO store all
 		if (is_start == false)
 		{
 			/* receive data */
-            //UART_sendByte(COM1, res);  //loopback
+            //UART_sendByte(COM_NUM, res);  //loopback
 			FIFO_Write(&g_UARTPara.fifo.rfifo, (INT8U)res); // only save
 		}
 	}
 
-    if (RESET != usart_interrupt_flag_get(COM1, USART_INT_FLAG_TC))
+    if (RESET != usart_interrupt_flag_get(COM_NUM, USART_INT_FLAG_TC))
     {
-        usart_interrupt_flag_clear(COM1, USART_INT_FLAG_TC);
+        usart_interrupt_flag_clear(COM_NUM, USART_INT_FLAG_TC);
         /* send data continue */
-		UART_sendFinally(COM1, &g_UARTPara.fifo);
+		UART_sendFinally(COM_NUM, &g_UARTPara.fifo);
     }
 }

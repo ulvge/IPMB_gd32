@@ -43,7 +43,8 @@ typedef struct {
 bool api_sensorGetUnitType(INT8U destMode, UINT32 sensorNum, UINT8 *unitType);
 void sensor_init(void);
 uint8_t api_sensorGetSensorCount(void);
-uint8_t api_sensorGetSensorNumByIdex(uint8_t idx);
+uint8_t api_sensorGetMySensorNumByIdex(uint8_t idx);
+uint8_t api_sensorGetSensorNumByIdex(SUB_DEVICE_MODE dev, uint8_t idx);
 BOOLEAN api_sensorGetIPMBValBySensorNum(INT8U destMode, UINT16 sensorNum, INT8U *ipmbVal);
 BOOLEAN api_sensorConvert2HumanVal(SUB_DEVICE_MODE dev, uint8_t sensorNum, uint8_t ipmiVal, float *humanVal);
 

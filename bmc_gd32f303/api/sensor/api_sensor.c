@@ -33,13 +33,7 @@ static const Sensor_Handler *g_AllSensorDevices[] = {
 
 bool api_sensorGetUnitType(INT8U destMode, UINT32 sensorNum, uint8_t *unitType)
 {
-	int BMCInst = 0;
-    FullSensorRec_T *pSdr = ReadSensorRecBySensorNum(destMode, sensorNum, BMCInst);   
-	if (pSdr == NULL){
-		return false;
-	}
-    *unitType = pSdr->Units2;
-    return true;
+    return SensorGetUnitType(destMode, sensorNum, unitType);
 }
 // get raw 16 val. maybe ADC, ADC->temp, RPM.
 // after get this val,need to convert by MR
@@ -89,7 +83,7 @@ uint8_t api_sensorGetSensorCount(void)
 /// @brief dev 中,sensor 的 adcChannl 就是他的sensorNum
 /// @param idx 
 /// @return 
-uint8_t api_sensorGetSensorNumByIdex(uint8_t idx)
+uint8_t api_sensorGetMySensorNumByIdex(uint8_t idx)
 {
     if (g_pSensor_Handler == NULL) {
         return SENSOR_CHANNEL_MAX;
@@ -99,7 +93,17 @@ uint8_t api_sensorGetSensorNumByIdex(uint8_t idx)
     }
     return g_pSensor_Handler->sensorCfg[idx].sensorNum;
 }
-
+uint8_t api_sensorGetSensorNumByIdex(SUB_DEVICE_MODE dev, uint8_t idx)
+{
+    const Sensor_Handler *handler = api_getSensorHandler(dev);
+    if (handler == NULL) {
+        return SENSOR_CHANNEL_MAX;
+    }
+    if (idx >= handler->sensorCfgSize) {
+        return SENSOR_CHANNEL_MAX;
+    }
+    return handler->sensorCfg[idx].sensorNum;
+}
 BOOLEAN api_sensorConvert2HumanVal(SUB_DEVICE_MODE dev, uint8_t sensorNum, uint8_t ipmiVal, float *humanVal)
 {
     FullSensorRec_T *pSdr = ReadSensorRecBySensorNum(dev, sensorNum, 0);
@@ -127,11 +131,12 @@ void sensor_init(void)
     SUB_DEVICE_MODE myMode = SubDevice_GetMyMode();
 
     g_pSensor_Handler = api_getSensorHandler(myMode);
-    if (g_pSensor_Handler != NULL)
+    if (g_pSensor_Handler == NULL)
     {
-        adc_init(g_pSensor_Handler);
-        return;
-    }
+		return;
+    }       
+	adc_init(g_pSensor_Handler);
+	SubDevice_Init();
 }
 
 
