@@ -20,9 +20,9 @@
 #include "bsp_gpio.h"
 
 
-extern VariableCPUParam g_CPUVariableParam;
-extern FixedCPUParam g_CPUFixedParam;
-extern __IO bool g_CPUStatus;
+//extern VariableCPUParam g_CPUVariableParam;
+//extern FixedCPUParam g_CPUFixedParam;
+//extern __IO bool g_CPUStatus;
 
 const CmdHndlrMap_T g_Oem_CmdHndlr[] =
 {
@@ -141,23 +141,13 @@ int GetCPUInfo(INT8U *pReq, INT8U ReqLen, INT8U *pRes, int BMCInst)
 
     cpu_res->DeviceInfo = 0xFF;
     cpu_res->BoardType = 0x10 + get_board_addr();
-    cpu_res->BIOSVersion = g_CPUFixedParam.BiosVersion;
-    cpu_res->OSVersion = g_CPUFixedParam.KernelVersion;
-    cpu_res->SevicePackVersion = g_CPUFixedParam.SevicePackVersion;
-    cpu_res->CPUModel = g_CPUFixedParam.CPUModel;
-    cpu_res->RamSpeed = g_CPUFixedParam.RamSpeed;
-    cpu_res->RamSize = g_CPUFixedParam.RamSize;
-    cpu_res->SSDSize = g_CPUFixedParam.SSDSize;
-    cpu_res->CPURate = g_CPUVariableParam.CPURate;
-    cpu_res->MemRate = g_CPUVariableParam.MemRate;
-    cpu_res->UsedSSDSize = g_CPUVariableParam.UsedSSDSize;
-    cpu_res->Eth0Rate = g_CPUVariableParam.Eth0Rate;
-    cpu_res->Eth1Rate = g_CPUVariableParam.Eth1Rate;
-    cpu_res->Eth2Rate = g_CPUVariableParam.Eth2Rate;
-    cpu_res->Eth3Rate = g_CPUVariableParam.Eth3Rate;
-    cpu_res->Eth4Rate = g_CPUVariableParam.Eth4Rate;
-
-    cpu_res->Eth5Rate = g_CPUVariableParam.Eth5Rate;
+//    cpu_res->BIOSVersion = g_CPUFixedParam.BiosVersion;
+//    cpu_res->OSVersion = g_CPUFixedParam.KernelVersion;
+//    cpu_res->SevicePackVersion = g_CPUFixedParam.SevicePackVersion;
+//    cpu_res->CPUModel = g_CPUFixedParam.CPUModel;
+//    cpu_res->RamSpeed = g_CPUFixedParam.RamSpeed;
+//    cpu_res->RamSize = g_CPUFixedParam.RamSize;
+//    cpu_res->SSDSize = g_CPUFixedParam.SSDSize;
     cpu_res->OutletTemp = 0xFF;
     cpu_res->InletTemp = 0xFF;
     cpu_res->CPUTemp = 0xFF;
@@ -208,14 +198,8 @@ int GetBMCInfo(INT8U *pReq, INT8U ReqLen, INT8U *pRes, int BMCInst)
     bmc_res->BMCFirmwareVersion = g_bmc_firmware_version;
     bmc_res->BMCFirmwareTime = g_utc_time_bmc_firmware_build;
 	  bmc_res->BMCRunTime  = GetBmcRunTime();
-    bmc_res->CPUStatus = g_CPUStatus;
-    bmc_res->Eth0Status = g_CPUVariableParam.Eth0Status;
-    bmc_res->Eth1Status = g_CPUVariableParam.Eth1Status;
-    bmc_res->Eth2Status = g_CPUVariableParam.Eth2Status;
-    bmc_res->Eth3Status = g_CPUVariableParam.Eth3Status;
-    bmc_res->Eth4Status = g_CPUVariableParam.Eth4Status;
-    bmc_res->Eth5Status = g_CPUVariableParam.Eth5Status;
-    bmc_res->CPUstartupTime = g_CPUFixedParam.CPUStartTime;
+    //bmc_res->CPUStatus = g_CPUStatus;
+    //bmc_res->CPUstartupTime = g_CPUFixedParam.CPUStartTime;
 
     return sizeof(GetBMCInfoRes_T);
 }

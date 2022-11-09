@@ -10,7 +10,7 @@
 #include "bsp_uartcomm.h"
 
 #define UART1_BUFF_SIZE 	(50)
-static INT8U g_buffSend[100];
+static INT8U g_buffSend[50];
 static INT8U g_buffRec[UART1_BUFF_SIZE];
 
 static const UART_CONFIG_STRUCT g_uart1Config= {

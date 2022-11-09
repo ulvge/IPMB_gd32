@@ -33,7 +33,7 @@ static const PwmChannleConfig g_pwmChannleConfig[] = {
     {FAN_CHANNEL_2, 30000, 2, false, RCU_TIMER3, TIMER3,   TIMER_CH_2,  RCU_GPIOD, GPIOD, GPIO_PIN_14, GPIO_TIMER3_REMAP},
 };
 #define SIZE_FAN_CONFIG     sizeof(g_pwmChannleConfig)/sizeof(g_pwmChannleConfig[0])
-FanStruct g_Fan[SIZE_FAN_CONFIG];
+static FanStruct g_Fan[SIZE_FAN_CONFIG];
 
 static TimerHandle_t xTimersFanWatchdog = NULL;
 

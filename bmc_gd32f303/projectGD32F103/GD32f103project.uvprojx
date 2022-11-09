@@ -474,16 +474,6 @@
               <FilePath>..\api\tmp\hwd1668.c</FilePath>
             </File>
             <File>
-              <FileName>api_cpu.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\api\cpu\api_cpu.c</FilePath>
-            </File>
-            <File>
-              <FileName>api_fan.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\api\fan\api_fan.c</FilePath>
-            </File>
-            <File>
               <FileName>api_sensor.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\api\sensor\api_sensor.c</FilePath>
@@ -497,6 +487,16 @@
               <FileName>cJSON.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\api\tools\cJSON.c</FilePath>
+            </File>
+            <File>
+              <FileName>api_fan.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\api\fan\api_fan.c</FilePath>
+            </File>
+            <File>
+              <FileName>api_cpu.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\api\cpu\api_cpu.c</FilePath>
             </File>
           </Files>
         </Group>

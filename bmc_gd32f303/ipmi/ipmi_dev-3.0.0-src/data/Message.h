@@ -52,9 +52,9 @@ typedef struct
   	// INT32U      ReqTime;
     // INT16U       ResTimeOut;              /* response timeout in secs */
     // INT16U      SessionType;               /* Session Type */
-    INT8U       IPAddr [4];    /* IPv6 Address */
-    INT16U      UDPPort;                  /* UDP Port Number  */
-    INT16S      Socket;                   /* socket handle    */
+    //INT8U       IPAddr [4];    /* IPv6 Address */
+    //INT16U      UDPPort;                  /* UDP Port Number  */
+    //INT16S      Socket;                   /* socket handle    */
     INT32U      Size;                     /* Size of the data */
     INT8U       Data [MSG_PAYLOAD_SIZE];  /* Data */
 } PACKED MsgPkt_T;

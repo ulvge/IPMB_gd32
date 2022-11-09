@@ -420,7 +420,13 @@ PRIVILEGED_DATA static volatile UBaseType_t uxSchedulerSuspended	= ( UBaseType_t
 #if(  configCHECK_FOR_STACK_OVERFLOW > 0 )
 
 	extern void vApplicationStackOverflowHook( TaskHandle_t xTask, char *pcTaskName );
-
+    __weak void vApplicationStackOverflowHook(TaskHandle_t xTask, char *pcTaskName)
+    {
+        /* Run time stack overflow checking is performed if
+        configCHECK_FOR_STACK_OVERFLOW is defined to 1 or 2. This hook function is
+        called if a stack overflow is detected. */
+        printf("task stack overflow, %s\r\n", pcTaskName);
+    }
 #endif
 
 #if( configUSE_TICK_HOOK > 0 )
@@ -5121,3 +5127,20 @@ when performing module tests). */
 #endif
 
 
+#include "bsp_uartcomm.h"
+void vTaskPrintThreadStatus(void)
+{
+	const char *splite = "==================================\r\n";
+	const char *title = "taskName        status    proi     stack   taskID\r\n";
+	char *mytaskstatebuffer = (char *)pvPortMalloc(300);
+	if (mytaskstatebuffer == NULL) {
+		return;
+	}
+																				 
+	UART_sendDataBlock(DEBUG_UART_PERIPH, (uint8_t *)splite, strlen(splite)); 
+	UART_sendDataBlock(DEBUG_UART_PERIPH, (uint8_t *)title, strlen(title));  
+    vTaskList(mytaskstatebuffer);
+	UART_sendDataBlock(DEBUG_UART_PERIPH, (uint8_t *)mytaskstatebuffer, strlen(mytaskstatebuffer));
+
+	vPortFree(mytaskstatebuffer);
+} 

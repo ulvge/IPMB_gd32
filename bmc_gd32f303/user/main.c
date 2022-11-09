@@ -96,7 +96,6 @@ __weak void platform_init(void)
     \param[out] none
     \retval     none
 */
- 
 int main(void)
 {
     // nvic_vector_table_set(NVIC_VECTTAB_FLASH, 0x16000);
@@ -153,7 +152,7 @@ void start_task(void *pvParameters)
 //        errCreateTask |= 4;
 //    }
     if (errCOULD_NOT_ALLOCATE_REQUIRED_MEMORY == 
-        xTaskCreate(shellTask, "shellTask", 512, &shell, 2, NULL)) {
+        xTaskCreate(shellTask, "shellTask", 300, &shell, 2, NULL)) {
         errCreateTask |= 8;
     }
 	if (errCreateTask == 0){
@@ -204,8 +203,14 @@ void time_update(void)
 */
 void vApplicationIdleHook(void)
 {
+    static uint32_t lastTick = 0;
     /* reload FWDGT counter */
     fwdgt_counter_reload();
+    uint32_t nowTick = GetTickMs();
+    if (nowTick - lastTick > 1000) {
+        vTaskPrintThreadStatus();
+        lastTick = nowTick;
+    }
 }
 /// @brief interrupt FWDGT_IRQHandler
 __attribute__((unused)) static void watch_dog_init()
