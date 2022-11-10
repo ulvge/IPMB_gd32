@@ -118,15 +118,15 @@ bool SubDevice_CheckAndPrintMode(void)
     SUB_DEVICE_MODE mode = (SUB_DEVICE_MODE)get_board_addr();
     if (mode >= SUB_DEVICE_MODE_MAX)
     {
-        printf("This borad ID is not support, id=%d\n", mode);
-        printf("\tBelow are supported\n");
+        LOG_E("This borad ID is not support, id=%d\n", mode);
+        LOG_E("\tBelow are supported\n");
         for (uint32_t i = 0; i < ARRARY_SIZE(g_SubDeviceConfigName); i++)
         {
-            printf("\t\tid %d----- [%s]\n", i, SubDevice_GetModeName((SUB_DEVICE_MODE)i));
+            LOG_E("\t\tid %d----- [%s]\n", i, SubDevice_GetModeName((SUB_DEVICE_MODE)i));
         }
         return false;
     }
-    printf("This borad as [%s]\n", SubDevice_GetModeName(mode));
+    LOG_I("This borad as [%s]\n", SubDevice_GetModeName(mode));
     SubDevice_InitAllMode();
 
     SubDevice_InsertMode(&g_AllModes[mode], mode);
@@ -189,26 +189,26 @@ bool SubDevice_Init(void)
                                                (void *)SUB_DEVICES_TIMER_SAMPLE, SubDevice_HeartBeatTimerCallBack);
         if (g_subdevice_timerSample == NULL)
         {
-            printf("SubDevice_Init xTimerCreate sample failed\n");
+            LOG_E("SubDevice_Init xTimerCreate sample failed\n");
             return false;
         }
         xReturn = xTimerStart(g_subdevice_timerSample, portMAX_DELAY);
         if (xReturn != pdPASS)
         {
-            printf("SubDevice_Init xTimerStart sample failed %ld\n", xReturn);
+            LOG_E("SubDevice_Init xTimerStart sample failed %ld\n", xReturn);
         }
         // create timer upload
         g_subdevice_timerUpload = xTimerCreate("SubDevice", SUB_DEVICES_TIMER_UPLOAD_PERIOD_XMS / portTICK_RATE_MS, pdTRUE,
                                                (void *)SUB_DEVICES_TIMER_UPLOAD, SubDevice_HeartBeatTimerCallBack);
         if (g_subdevice_timerUpload == NULL)
         {
-            printf("SubDevice_Init xTimerCreate upload failed\n");
+            LOG_E("SubDevice_Init xTimerCreate upload failed\n");
             return false;
         }
         xReturn = xTimerStart(g_subdevice_timerUpload, portMAX_DELAY);
         if (xReturn != pdPASS)
         {
-            printf("SubDevice_Init xTimerStart upload failed %ld\n", xReturn);
+            LOG_E("SubDevice_Init xTimerStart upload failed %ld\n", xReturn);
         }
         cJSON_Hooks hooks;
         hooks.malloc_fn = pvPortMalloc;
@@ -368,7 +368,7 @@ static void SubDevice_Upload(TimerHandle_t timerHandle)
     cJSON *pCJData = NULL;
     char *pstr;
 
-    printf("\t\tSubDevice_Upload, free byte = %d\n", xPortGetFreeHeapSize());
+    LOG_D("\t\tSubDevice_Upload, free byte = %d\n", xPortGetFreeHeapSize());
     for (uint8_t idx = 0; idx < g_subDeviceHandler.sensorUnitTypeCount; idx++)
     {
         SENSOR_UNITTYPECODE_EXIST *pTypeCode = &g_subDeviceHandler.sensorUnitTypeExist[idx];
@@ -421,14 +421,14 @@ static void SubDevice_Upload(TimerHandle_t timerHandle)
     if (pstr == NULL)
     {
         cJSON_Delete(pCJType);
-        printf("\t\tupload failed, no memory to malloc, free byte = %d\n", xPortGetFreeHeapSize());
+        LOG_E("\t\tupload failed, no memory to malloc, free byte = %d\n", xPortGetFreeHeapSize());
     }
     else
     {
         SubDevice_SendDataSpilt(pstr);
         cJSON_Delete(pCJType);
         vPortFree(pstr);
-        printf("\t\tupload success, free byte = %d\n", xPortGetFreeHeapSize());
+        LOG_D("\t\tupload success, free byte = %d\n", xPortGetFreeHeapSize());
     }
     xReturn = xTimerStart(timerHandle, portMAX_DELAY);
 }
@@ -509,7 +509,6 @@ static void SubDevice_SampleAll(TimerHandle_t timerHandle)
             SubDevice_Reading_T *pDeviceReading = &pHandler->val[numIdex];
             // sensorNum = 0x23;     // P1V8 standby
             sensorNum = api_sensorGetSensorNumByIdex(dev, numIdex);
-            // sensorNum = api_sensorGetMySensorNumByIdex(numIdex);
             if (SubDevice_readingSensorForeach(dev, sensorNum, &requestPkt, pDeviceReading))
             {
                 if (api_sensorConvert2HumanVal(dev, sensorNum, pDeviceReading->raw, &pDeviceReading->human) == true)

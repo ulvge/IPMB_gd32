@@ -45,10 +45,11 @@ void sensor_init(void);
 uint8_t api_sensorGetSensorCount(void);
 uint8_t api_sensorGetMySensorNumByIdex(uint8_t idx);
 uint8_t api_sensorGetSensorNumByIdex(SUB_DEVICE_MODE dev, uint8_t idx);
-BOOLEAN api_sensorGetIPMBValBySensorNum(INT8U destMode, UINT16 sensorNum, INT8U *ipmbVal);
+BOOLEAN api_sensorConvertIPMBValBySensorNum(INT8U destMode, UINT16 sensorNum, UINT16 rawAdc, INT8U *ipmbVal);
 BOOLEAN api_sensorConvert2HumanVal(SUB_DEVICE_MODE dev, uint8_t sensorNum, uint8_t ipmiVal, float *humanVal);
-
+void api_sensorSetValRaw(uint8_t sensorNum, uint8_t ipmbVal);
 const Sensor_Handler *api_getSensorHandler(SUB_DEVICE_MODE destMode);
+uint8_t api_sensorGetIPMBVal(UINT16 sensorNum);
 
 #ifdef __cplusplus
 }

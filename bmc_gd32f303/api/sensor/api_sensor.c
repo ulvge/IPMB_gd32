@@ -37,41 +37,53 @@ bool api_sensorGetUnitType(INT8U destMode, UINT32 sensorNum, uint8_t *unitType)
 }
 // get raw 16 val. maybe ADC, ADC->temp, RPM.
 // after get this val,need to convert by MR
-BOOLEAN api_sensorGetIPMBValBySensorNum(INT8U destMode, UINT16 sensorNum, INT8U *ipmbVal)
+BOOLEAN api_sensorConvertIPMBValBySensorNum(INT8U destMode, UINT16 sensorNum, UINT16 rawAdc, INT8U *ipmbVal)
 {
     uint8_t unitType;
     if (api_sensorGetUnitType(destMode, sensorNum, &unitType) == false){
         return false;
     }
-	uint16_t fanRpm, rawAdc;
+	uint16_t fanRpm = rawAdc;
 	
 	switch (unitType)
 	{
         case IPMI_UNIT_RPM:
-            if (fan_get_rotate_rpm(sensorNum, &fanRpm)) {
+            //if (fan_get_rotate_rpm(sensorNum, &fanRpm)) {
                 *ipmbVal = (INT8U)(fanRpm / 32);
                 return true;
-            }
-            break;
+            //}
         case IPMI_UNIT_VOLTS:
-            if (adc_getRawValBySensorNum(sensorNum, &rawAdc)) {
+            //if (adc_getRawValBySensorNum(sensorNum, &rawAdc)) {
 		        *ipmbVal = (INT8U)(((INT16U)rawAdc)>>4);
                 return true;
-            }
-            break;
+           // }
         case IPMI_UNIT_DEGREES_C:
-            if (adc_getRawValBySensorNum(sensorNum, &rawAdc)) { //获取原始值
+            //if (adc_getRawValBySensorNum(sensorNum, &rawAdc)) { //获取原始值
                 *ipmbVal = (float)adc_sampleVal2Temp1(rawAdc); //转换成真实值 ，并对其进行MR 编码.后续 IPMI 只需要用MR就能解码
                 return true;
-            }
-            break;
+            //}
         case IPMI_UNIT_AMPS:
 	default:
         return false;
 	}       
-	return false;
 }   
-
+/// @brief just get
+/// @param sensorNum 
+/// @return 
+uint8_t api_sensorGetIPMBVal(UINT16 sensorNum)
+{
+    uint8_t ipmbVal;
+    SUB_DEVICE_MODE dev = SubDevice_GetMyMode();
+    const Sensor_Handler *pSensor_Handler = api_getSensorHandler(dev);
+    for (uint8_t numIdex = 0; numIdex < api_sensorGetSensorCount(); numIdex++)
+    {
+        if (pSensor_Handler->sensorCfg[numIdex].sensorNum == sensorNum) {
+            ipmbVal = pSensor_Handler->val[numIdex].raw;
+            break;
+        }
+	}
+    return ipmbVal;
+}
 uint8_t api_sensorGetSensorCount(void)
 {
     if (g_pSensor_Handler == NULL) {
@@ -113,6 +125,21 @@ BOOLEAN api_sensorConvert2HumanVal(SUB_DEVICE_MODE dev, uint8_t sensorNum, uint8
         }
     }
     return false;
+}
+void api_sensorSetValRaw(uint8_t sensorNum, uint8_t ipmbVal)
+{
+    SUB_DEVICE_MODE myMode = SubDevice_GetMyMode();
+    const Sensor_Handler *handler = api_getSensorHandler(myMode);
+    if (handler == NULL) {
+        return;
+    }
+    for (size_t i = 0; i < handler->sensorCfgSize; i++)
+    {
+        if (handler->sensorCfg[i].sensorNum == sensorNum){
+            handler->val[i].raw = ipmbVal;
+            return;
+        }
+    }
 }
 const Sensor_Handler *api_getSensorHandler(SUB_DEVICE_MODE destMode)
 {

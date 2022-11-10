@@ -31,13 +31,6 @@ static uint8_t host_addr;
 
 extern int8_t g_temperature_raw[4];
 
-unsigned char MAC_ADDR0;
-unsigned char MAC_ADDR1;
-unsigned char MAC_ADDR2;
-unsigned char MAC_ADDR3;
-unsigned char MAC_ADDR4;
-unsigned char MAC_ADDR5;
-
 unsigned char GW_ADDR0 = 192;
 unsigned char GW_ADDR1 = 168;
 unsigned char GW_ADDR2 = 2;
@@ -105,17 +98,17 @@ SHELL_EXPORT_CMD(SHELL_CMD_PERMISSION(0) | SHELL_CMD_TYPE(SHELL_TYPE_CMD_MAIN) |
 
 static void display_usage(void)
 {
-    printf("i2c-test\r\n");
-    printf("Usage: i2c-test <arguments>\r\n");
-    printf("Arguments:\r\n");
+    LOG_RAW("i2c-test\r\n");
+    LOG_RAW("Usage: i2c-test <arguments>\r\n");
+    LOG_RAW("Arguments:\r\n");
 
-    printf("\n*** I2C Functions ***\r\n");
-    printf("\t-b <bus number>: Set the bus number for this transaction.  Defaults to 0\r\n");
-    printf("\t--sethost <addr>:\tSet the host slave address\r\n");
-    printf("\t--gethost:\tGet the current host slave address for the specified bus\r\n");
-    printf("\t--reset:\tReset the I2C controller\r\n");
-    printf("\t--scan:\t\tScan the I2C bus and show the slave addresses\r\n");
-    printf("\t\t\tcommand line.\r\n");
+    LOG_RAW("\n*** I2C Functions ***\r\n");
+    LOG_RAW("\t-b <bus number>: Set the bus number for this transaction.  Defaults to 0\r\n");
+    LOG_RAW("\t--sethost <addr>:\tSet the host slave address\r\n");
+    LOG_RAW("\t--gethost:\tGet the current host slave address for the specified bus\r\n");
+    LOG_RAW("\t--reset:\tReset the I2C controller\r\n");
+    LOG_RAW("\t--scan:\t\tScan the I2C bus and show the slave addresses\r\n");
+    LOG_RAW("\t\t\tcommand line.\r\n");
 
     return;
 }
@@ -146,7 +139,7 @@ static void parse_arguments(int argc, char **argv)
                     i += retval;
                 else
                 {
-                    printf("Cannot handle argument: %s\r\n", arglist[j]);
+                    LOG_E("Cannot handle argument: %s\r\n", arglist[j]);
                 }
             }
             j++;
@@ -160,7 +153,7 @@ static int busArgHandler(int argc, char **argv, int index)
         g_bus = (uint8_t)strtol(argv[index + 1], NULL, 10);
     else
     {
-        printf("Missing argument to -b\r\n");
+        LOG_E("Missing argument to -b\r\n");
         return -1;
     }
 
@@ -178,13 +171,13 @@ static int setHostArgHandler(int argc, char **argv, int index)
         host_addr = (uint8_t)strtol(argv[index + 1], NULL, 16);
     else
     {
-        printf("Missing argument to --host\r\n");
+        LOG_E("Missing argument to --host\r\n");
         return -1;
     }
 
     if (host_addr == (uint8_t)0)
     {
-        printf("Host address 0x00 is not valid.\r\n");
+        LOG_E("Host address 0x00 is not valid.\r\n");
         return -1;
     }
 
@@ -209,18 +202,18 @@ static int do_reset(uint8_t bus)
     case 0:
         i2c_deinit(I2C0);
         i2c_channel_init(I2C0);
-        LOG_RAW("I2C0 reset");
+        LOG_I("I2C0 reset");
         break;
     case 1:
         i2c_deinit(I2C1);
         i2c_channel_init(I2C1);
-        LOG_RAW("I2C1 reset");
+        LOG_I("I2C1 reset");
         break;
 	#ifdef I2C2
     case 2:
         i2c_deinit(I2C2);
         i2c_channel_init(I2C2);
-        LOG_RAW("I2C2 reset");
+        LOG_I("I2C2 reset");
         break;
 	#endif
     default:
@@ -238,7 +231,7 @@ static int do_scan(uint8_t bus)
     int retval, k;
     int j = (uint8_t)0;
     uint8_t valid_slaves[Max_SALVES];
-    printf("Scanning the I2C Bus...\n\r");
+    LOG_I("Scanning the I2C Bus...\n\r");
 
     // Valid Address 7-bit Range
     for (k = 0x00; k <= 0x7F; k += 1)
@@ -247,12 +240,12 @@ static int do_scan(uint8_t bus)
         retval = (int)i2c_write(bus, write_buffer, 1);
 
         if ((k % 16) == 0) {
-            printf("\n 0x%d0\t", k / 16);
+            LOG_W("\n 0x%d0\t", k / 16);
             vTaskDelay(20);
 		}
         if (retval > 0)
         {
-            printf("% 2s", "X");
+            LOG_W("% 2s", "X");
 
             if (j < Max_SALVES)
             {
@@ -262,18 +255,18 @@ static int do_scan(uint8_t bus)
         }
         else
         {
-            printf("% 2s", ".");
+            LOG_W("% 2s", ".");
         }
 
     }
 
-    printf("\nDone!  Found %i valid slave address(es)\n\r", (int)j);
+    LOG_W("\nDone!  Found %i valid slave address(es)\n\r", (int)j);
     if (j != 0) {
-		printf("Slave list:\n\r");
+		LOG_W("Slave list:\n\r");
 	}
     /*@-usedef@*/
     for (k = 0; k < (int)j; k += 1)
-        printf("0x%02x\n\r", (unsigned int)valid_slaves[k] << 1);
+        LOG_W("0x%02x\n\r", (unsigned int)valid_slaves[k] << 1);
 
     return true;
 }
@@ -281,13 +274,13 @@ static int do_scan(uint8_t bus)
 static int do_set_host(uint8_t bus)
 {
     i2c_set_slave_addr(bus, host_addr);
-    LOG_RAW("I2C%d:         SLAVE_ADDRESS: %02x\n\r", bus, host_addr);
+    LOG_I("I2C%d:         SLAVE_ADDRESS: %02x\n\r", bus, host_addr);
     return 0;
 }
 
 static int do_get_host(uint8_t bus)
 {
-    printf("do_get_host\r\n");
+    LOG_I("do_get_host\r\n");
     switch (bus)
     {
     case 0:
@@ -320,7 +313,7 @@ SHELL_EXPORT_CMD(SHELL_CMD_PERMISSION(0) | SHELL_CMD_TYPE(SHELL_TYPE_CMD_MAIN) |
 // tool 3******************************************************
 int version(int argc, char *argv[])
 {
-    LOG_RAW("" BMC_VERSION "\r\n");
+    LOG_I("" BMC_VERSION "\r\n");
 
     return 0;
 }
@@ -342,7 +335,7 @@ int sensor(int argc, char *argv[])
     for (uint8_t numIdex = 0; numIdex < sensorSize; numIdex++)
     {
         sensorNum = api_sensorGetMySensorNumByIdex(numIdex);
-        get_res = api_sensorGetIPMBValBySensorNum(SubDevice_GetMyMode(), sensorNum, &ipmbVal);
+        ipmbVal = pSensor_Handler->val[numIdex].raw;
         char *name = pSensor_Handler->sensorCfg[numIdex].sensorAlias;
         if (get_res == false)
         {
@@ -360,141 +353,6 @@ int sensor(int argc, char *argv[])
 
 SHELL_EXPORT_CMD(SHELL_CMD_PERMISSION(0) | SHELL_CMD_TYPE(SHELL_TYPE_CMD_MAIN) | SHELL_CMD_DISABLE_RETURN, sensor, sensor, get sensors info);
 
-// tool5***1.ifconfig  list all eth ip info *************************************
-//      ***2.configure ip and gateway address: ifconfig ************************
-int ifconfig(int argc, char *argv[])
-{
-	UNUSED(argc);
-	UNUSED(argv);
-//    int index = argc;
-//    switch (index)
-//    {
-//    case 1:
-
-//        /******if ip configure success that it echo  list all ip info,otherwise, no echo****************************
-//         * *******example: ifconfig   *******************************
-//        */
-//        if (g_net_init_flag == true)
-//        {
-//            char buf[ETH_MAX_BYTES] = {0};
-//            // MAC address
-//            sprintf(buf, "HwADDR:             	     %02x:%02x:%02x:%2x:%02x:%02x", MAC_ADDR0, MAC_ADDR1, MAC_ADDR2, MAC_ADDR3, MAC_ADDR4, MAC_ADDR5);
-//            LOG_RAW("%s\n\r", buf);
-//            //static IP address
-//            sprintf(buf, "Inet addr：                   %d.%d.%d.%d", IP_ADDR0, IP_ADDR1, IP_ADDR2, IP_ADDR3);
-//            LOG_RAW("%s\n\r", buf);
-//            //remote IP address
-//            //sprintf(buf, "Remote inet addr：            %d.%d.%d.%d", IP_S_ADDR0, IP_S_ADDR1, IP_S_ADDR2, IP_S_ADDR3);
-//           // LOG_RAW("%s\n\r", buf);
-//            //net mask
-//            sprintf(buf, "Mask：                        %d.%d.%d.%d", NETMASK_ADDR0, NETMASK_ADDR1, NETMASK_ADDR2, NETMASK_ADDR3);
-//            LOG_RAW("%s\n\r", buf);
-//            //gateway address
-//            sprintf(buf, "Gateway address：             %d.%d.%d.%d", GW_ADDR0, GW_ADDR1, GW_ADDR2, GW_ADDR3);
-//            LOG_RAW("%s", buf);
-//        }
-//        else
-//        {
-//            LOG_RAW("Link no detected \n\r");
-//        }
-//        break;
-//    case 2:
-//        /*******configure PHY ip addr:*************************************
-//         * ****example:  ifconfig  192.168.2.100 **********************/
-
-//        if (("-G" != argv[argc - 1]) || ("-g" != argv[argc - 1]))
-//        {
-//            char *ipstr = argv[argc - 1];
-//            int num = 0;
-//            char *p[4] = {0};
-//            num = split(ipstr, ".", p);
-//            if (num == 4)
-//            {
-//                if (-1 == parameterChecked(atoi(p[0]), atoi(p[1]), atoi(p[2]), atoi(p[3])))
-//                {
-//                    LOG_RAW("input IP error!");
-//                }
-//                else
-//                {
-//                    IP_ADDR0 = atoi(p[0]);
-//                    IP_ADDR1 = atoi(p[1]);
-//                    IP_ADDR2 = atoi(p[2]);
-//                    IP_ADDR3 = atoi(p[3]);
-
-//                    /* initilaize the LwIP stack */
-//                    if (enet_software_init())
-//                    {
-//                        g_net_init_flag = true;
-//                        /* initilaize the LwIP IP */
-//                        lwip_ip_init();
-//                    }
-//                    LOG_RAW("rebuild ip addr: %d.%d.%d.%d\r\n", IP_ADDR0, IP_ADDR1, IP_ADDR2, IP_ADDR3);
-//                }
-//            }
-//            else
-//            {
-//                LOG_E("input  ip  parameter error!");
-//            }
-//        }
-//        else
-//        {
-//            LOG_RAW("configure ip addr parameter input error!");
-//        }
-
-//        break;
-
-//    case 3:
-//        /*******configure gateway addr:*************************************
-//         * ****example:  ifconfig  -g (-G)  192.168.2.100 **********************/
-
-//        if (("-G" != argv[argc - 2]) || ("-g" != argv[argc - 2]))
-//        {
-//            char *gatewaystr = argv[argc - 1];
-//            int num = 0;
-//            char *p[4] = {0};
-//            num = split(gatewaystr, ".", p);
-//            if (num == 4)
-//            {
-//							
-//                if (-1 == parameterChecked(atoi(p[0]), atoi(p[1]), atoi(p[2]), atoi(p[3])))
-//                {
-//                    LOG_RAW("input IP error!");
-//                }
-//                else
-//                {
-//                    GW_ADDR0 = atoi(p[0]);
-//                    GW_ADDR1 = atoi(p[1]);
-//                    GW_ADDR2 = atoi(p[2]);
-//                    GW_ADDR3 = atoi(p[3]);
-
-//                    /* initilaize the LwIP stack */
-//                    if (enet_software_init())
-//                    {
-//                        g_net_init_flag = true;
-//                        /* initilaize the LwIP IP */
-//                        lwip_ip_init();
-//                    }
-//                    printf("rebuild gateway addr: %d.%d.%d.%d\r\n", GW_ADDR0, GW_ADDR1, GW_ADDR2, GW_ADDR3);
-//                }
-//            }
-//            else
-//            {
-//                LOG_E("gateway  error!");
-//            }
-//        }
-//        else
-//        {
-//            LOG_RAW("configure gateway parameter input error!");
-//        }
-//        break;
-
-//    default:
-//        break;
-//    }
-    return 0;
-}
-
-SHELL_EXPORT_CMD(SHELL_CMD_PERMISSION(0) | SHELL_CMD_TYPE(SHELL_TYPE_CMD_MAIN) | SHELL_CMD_DISABLE_RETURN, ifconfig, ifconfig, get all eth ip info);
 
 int shell_exit(int argc, char *argv[])
 {
@@ -525,5 +383,12 @@ __attribute__((unused)) void StackFlow(void)
 	{
 		a[i]=100/i;
 	}
+}
+
+void Delay_NoSchedue(uint32_t clk)
+{
+	for (uint32_t i = 0; i < clk; i++) {
+        ;
+    }
 }
 

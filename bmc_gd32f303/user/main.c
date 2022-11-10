@@ -70,6 +70,8 @@ void misc_task(void *pvParameters);
 static void watch_dog_init(void);  
 static void debug_config(void);
 
+int g_debugLevel = DBG_LOG;
+
 __IO uint32_t g_localtime = 0; /* for creating a time reference incremented by 10ms */
 __IO uint64_t g_utc_time_bmc_firmware_build = 0;
 __IO uint16_t g_bmc_firmware_version = 0;
@@ -107,7 +109,7 @@ int main(void)
     UART_init();
     GPIO_bspInit();
     GPIO_setPinStatus(GPIO_OUT_LED_GREEN, ENABLE);
-    printf("%s", projectInfo); 
+    LOG_I("%s", projectInfo);
     g_utc_time_bmc_firmware_build = currentSecsSinceEpoch(__DATE__, __TIME__);
     g_bmc_firmware_version = GetBmcFirmwareVersion(BMC_VERSION);
 
@@ -171,7 +173,7 @@ void misc_task(void *pvParameters)
     g_chassisCtrl_Queue = xQueueCreate(2, sizeof(SamllMsgPkt_T));
     while (1)
     {
-        //printf("abcde\r\n");
+        //LOG_D("abcde\r\n");
         adc_sample_all();
         if (xQueueReceive(g_chassisCtrl_Queue, &msg, 20) == pdPASS){
             ChassisCtrl(&msg);
@@ -218,22 +220,22 @@ __attribute__((unused)) static void watch_dog_init()
     /* check if the system has resumed from FWDGT reset */
     if (SET == rcu_flag_get(RCU_FLAG_FWDGTRST))
     {
-        printf("system reset reason: FWDG\n");
+        LOG_W("system reset reason: FWDG\n");
     }
     else if (SET == rcu_flag_get(RCU_FLAG_PORRST))
     {
-        printf("system reset reason: power on\n");
+        LOG_W("system reset reason: power on\n");
     }
     else if (SET == rcu_flag_get(RCU_FLAG_SWRST))
     {
-        printf("system reset reason: soft\n");
+        LOG_W("system reset reason: soft\n");
     }
     else if (SET == rcu_flag_get(RCU_FLAG_EPRST))
     {
-        printf("system reset reason: external PIN\n");
+        LOG_W("system reset reason: external PIN\n");
     }
 	else {
-        printf("system reset reason: unkown\n");
+        LOG_W("system reset reason: unkown\n");
 	}
     rcu_all_reset_flag_clear();
     /* confiure FWDGT counter clock: 40KHz(IRC40K) / 64 = 0.625 KHz */
@@ -243,17 +245,11 @@ __attribute__((unused)) static void watch_dog_init()
 }
 static void debug_config(void)
 {
+    g_debugLevel = DBG_LOG;
     /* disable wdg when the mcu is in debug mode */
     dbg_periph_enable(DBG_FWDGT_HOLD);   
 	
     dbg_periph_enable(DBG_TIMER2_HOLD);
 	
     dbg_periph_enable(DBG_TIMER3_HOLD);
-}
-
-void Delay_NoSchedue(uint32_t clk)
-{
-	for (uint32_t i = 0; i < clk; i++) {
-        ;
-    }
 }

@@ -91,6 +91,6 @@ void CONSTRABC(TIMER, TIMER_NUM, _IRQHandler)(void)
     {
         g_time_run++;
         timer_interrupt_flag_clear(CONSTR(TIMER, TIMER_NUM), TIMER_INT_UP);
-		//printf("g_time_run=%d\n", g_time_run);
+		//LOG_D("g_time_run=%d\n", g_time_run);
     }
 }

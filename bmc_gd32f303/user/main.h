@@ -121,10 +121,10 @@ typedef enum
     MSG_SRC_UART = 1
 }IPMI_MSG_SRC;
 
+extern int g_debugLevel;
 /* function declarations */
 /* updates the system local time */
 void time_update(void);
-void Delay_NoSchedue(uint32_t clk);
 
 #ifdef __cplusplus
 }

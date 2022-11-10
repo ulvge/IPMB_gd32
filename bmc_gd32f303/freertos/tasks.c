@@ -40,6 +40,7 @@ task.h is included from an application file. */
 #include "timers.h"
 #include "stack_macros.h"
 #include "bsp_gpio.h"
+#include "debug_print.h" 
 
 /* Lint e9021, e961 and e750 are suppressed as a MISRA exception justified
 because the MPU ports require MPU_WRAPPERS_INCLUDED_FROM_API_FILE to be defined
@@ -425,7 +426,7 @@ PRIVILEGED_DATA static volatile UBaseType_t uxSchedulerSuspended	= ( UBaseType_t
         /* Run time stack overflow checking is performed if
         configCHECK_FOR_STACK_OVERFLOW is defined to 1 or 2. This hook function is
         called if a stack overflow is detected. */
-        printf("task stack overflow, %s\r\n", pcTaskName);
+        LOG_E("task stack overflow, %s\r\n", pcTaskName);
     }
 #endif
 
@@ -5130,6 +5131,9 @@ when performing module tests). */
 #include "bsp_uartcomm.h"
 void vTaskPrintThreadStatus(void)
 {
+    if (g_debugLevel < DBG_LOG){
+        return;
+    }
 	const char *splite = "==================================\r\n";
 	const char *title = "taskName        status    proi     stack   taskID\r\n";
 	char *mytaskstatebuffer = (char *)pvPortMalloc(300);
@@ -5138,7 +5142,7 @@ void vTaskPrintThreadStatus(void)
 	}
 																				 
 	UART_sendDataBlock(DEBUG_UART_PERIPH, (uint8_t *)splite, strlen(splite)); 
-	UART_sendDataBlock(DEBUG_UART_PERIPH, (uint8_t *)title, strlen(title));  
+	UART_sendDataBlock(DEBUG_UART_PERIPH, (uint8_t *)title, strlen(title));
     vTaskList(mytaskstatebuffer);
 	UART_sendDataBlock(DEBUG_UART_PERIPH, (uint8_t *)mytaskstatebuffer, strlen(mytaskstatebuffer));
 

@@ -156,23 +156,24 @@ static void vTaskResponseDatWrite(void *pvParameters)
             ipmb_write(ResMsg->Channel, ResMsg->Data, ResMsg->Size);
             break;
         case SERIAL_REQUEST:
-            LOG_RAW("send ack msg of original\r\n");
+            LOG_D("send ack msg of original\r\n");
             serial_write(ResMsg->Data, ResMsg->Size);
             break;
         case LAN_REQUEST:
-            // LOG_RAW("LAN write->:");
+            // LOG_D("LAN write->:");
             //SendLANPkt(ResMsg);
             break;
         default:
             break;
         }
-
-		LOG_RAW("\r\nsend ack msg of hex for view para:%#x\r\n", ResMsg->Param);
-       for(int i=0; i<ResMsg->Size; i++)
-       {
-            LOG_RAW("%02x ", ResMsg->Data[i]);
-       }
-       LOG_RAW("\r\n");
+        if (g_debugLevel >= DBG_LOG){
+            LOG_D("\r\nsend ack msg of hex for view para:%#x\r\n", ResMsg->Param);
+            for (int i = 0; i < ResMsg->Size; i++)
+            {
+                LOG_RAW("%02x ", ResMsg->Data[i]);
+            }
+            LOG_D("\r\n");
+        }
     }
 }
 
@@ -243,12 +244,12 @@ void *MsgCoreHndlr(void *pArg)
             LOG_E("xQueueSend send msg ERR!");
         }
 
-        // LOG_RAW("len:%d\n",recvPkt.Size);
+        // LOG_D("len:%d\n",recvPkt.Size);
         // for (int i = 0; i < recvPkt.Size; i++)
         // {
         //     LOG_RAW("%02x ", recvPkt.Data[i]);
         // }
-        // LOG_RAW("\n");
+        // LOG_D("\r\n");
     }
 }
 BaseType_t SendMsgAndWait(MsgPkt_T* pReq, MsgPkt_T* pRes, INT32U timeout)

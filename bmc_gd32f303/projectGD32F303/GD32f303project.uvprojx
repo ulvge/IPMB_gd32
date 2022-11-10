@@ -498,6 +498,11 @@
               <FileType>1</FileType>
               <FilePath>..\api\sensor\api_sensor.c</FilePath>
             </File>
+            <File>
+              <FileName>cJSON.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\api\tools\cJSON.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>

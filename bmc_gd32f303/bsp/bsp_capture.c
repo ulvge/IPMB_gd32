@@ -192,7 +192,7 @@ void TIMER0_Channel_IRQHandler(void)
                 pCap->cap_value_second = timer_channel_capture_value_register_read(timerX, pCap->config->timerCh);
                 pCap->is_start = false;
                 pCap->cap_no_update_cnt = 0;
-                pCap->is_valid = true;              
+                pCap->is_valid = true;
 				pCap->total_value = CAPTURE_TIMER_PERIOD * pCap->period_cnt + pCap->cap_value_second - pCap->cap_value_first;
 			}
         }

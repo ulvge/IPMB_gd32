@@ -12,6 +12,7 @@
 #include "bsp_i2c.h"
 #include "Types.h"
 #include "api_subdevices.h"
+#include "debug_print.h" 
 
 const static GPIOConfig g_gpioConfigComm[] = {
     {GPIO_IN_GAP0, GPIOE, GPIO_PIN_2, RCU_GPIOE, GPIO_MODE_IPU, GPIO_OSPEED_10MHZ, 0},
@@ -43,14 +44,12 @@ static void GPIO_InitGPIOs(const GPIOConfig *config, UINT8 size)
         GPIO_setPinStatus(p_gpioCfg->alias, DISABLE);
     }
 }
-void GPIO_bspInit(void)
+static bool GPIO_CheckMode(void)
 {
-    GPIO_InitGPIOs(&g_gpioConfigComm[0], ARRARY_SIZE(g_gpioConfigComm));
-
     if (!SubDevice_CheckAndPrintMode())
     {
-        printf("Check mode failed, system will reset line=%d", __LINE__);
-        return;
+        LOG_E("Check mode failed, system will reset line=%d", __LINE__);
+        return false;
     }
     SUB_DEVICE_MODE myMode = SubDevice_GetMyMode();
 
@@ -61,11 +60,23 @@ void GPIO_bspInit(void)
         {
             g_pGpioConfig_Handler = *phandler;
             GPIO_InitGPIOs(g_pGpioConfig_Handler->gpioCfg, g_pGpioConfig_Handler->gpioCfgSize);
-            return;
+            return true;
         }
     }
 
-    // printf("not find gpio config mode, system will reset line=%d", __LINE__);
+    LOG_E("not find gpio config mode, system will reset line=%d", __LINE__);
+    return false;
+}
+void GPIO_bspInit(void)
+{
+    GPIO_InitGPIOs(&g_gpioConfigComm[0], ARRARY_SIZE(g_gpioConfigComm));
+
+    while (1)
+    {
+        if (GPIO_CheckMode()){
+            break;
+        }
+    }
 }
 static const GPIOConfig *GPIO_findGpio(BMC_GPIO_enum alias)
 {

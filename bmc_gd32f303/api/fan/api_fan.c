@@ -17,6 +17,7 @@
 #include "queue.h"
 #include "event_groups.h" 
 #include "sensor/api_sensor.h"
+#include "debug_print.h" 
 
 #define FAN_TIMER_ID_TASK   1
 #define FAN_TIMER_ID_WDT    2
@@ -93,6 +94,7 @@ void fan_init(void)
 
 static void fan_ctrl_task(void)
 {
+    uint8_t ipmbVal;
     uint16_t curent_rpm = 0;
     int32_t pid_out = 0; 
     bool isAlreadyPrint = false;
@@ -102,11 +104,17 @@ static void fan_ctrl_task(void)
         if(fan_get_rotate_rpm(pFan->config->fanSensorNum, &curent_rpm) == false){
             continue;
         }
+
+        if (api_sensorConvertIPMBValBySensorNum(SubDevice_GetMyMode(), pFan->config->fanSensorNum, curent_rpm, &ipmbVal))
+        {
+            api_sensorSetValRaw(pFan->config->fanSensorNum, ipmbVal);
+        }
+
 		isAlreadyPrint = true;
-		//printf("fan id = %d, curent_rpm = %d\n", i, curent_rpm);
+		LOG_D("fan id = %d, curent_rpm = %d\n", i, curent_rpm);
     } 
 	if (isAlreadyPrint) {
-		//printf("\n");
+		//LOG_D("\n");
 	}
 }
 bool fan_get_rotate_rpm(unsigned char sensorNum, uint16_t *fan_rpm)

@@ -104,22 +104,19 @@ static float adc_sampleVal2Temp2(uint16 adcValue)
 static void adc_test(void)
 {     
     uint8_t ipmbVal;
-
-    if (api_sensorGetIPMBValBySensorNum(0, ADC_CHANNEL_8, &ipmbVal)) {
-		
-    }
-
-		   
-	//printf("adc_test humanVal = %f\n", adcVal);
+	UNUSED(ipmbVal);
+	
+    ipmbVal = api_sensorGetIPMBVal(ADC_CHANNEL_8);
+	//LOG_D("adc_test humanVal = %d\n", ipmbVal);
     //StackFlow();
 }
-
 #define ADC_SAMPLE_TIMES 3
 #define ADC_SAMPLE_DEALYTIMES 10
 /// @brief consume time = ADC_SAMPLE_TIMES * ADC_SAMPLE_DEALYTIMES * num
 void adc_sample_all(void)
 {
-	int channleSize = adc_getChannelSize();
+    uint8_t ipmbVal;
+    int channleSize = adc_getChannelSize();
     if (channleSize == 0) {
         return;
     }
@@ -145,8 +142,14 @@ void adc_sample_all(void)
             sum += temp_vals[i][j];
         }
         g_pADCConfig_Handler->val[j].rawAdc = sum / ADC_SAMPLE_TIMES;
+        
+        if (api_sensorConvertIPMBValBySensorNum(SubDevice_GetMyMode(), g_pADCConfig_Handler->adcCfg[j].adcChannl,
+                                                                        g_pADCConfig_Handler->val[j].rawAdc, &ipmbVal))
+        {
+            api_sensorSetValRaw(g_pADCConfig_Handler->adcCfg[j].adcChannl, ipmbVal);
+        }
     }
-    adc_test();
+    //adc_test();
 }      
 
 

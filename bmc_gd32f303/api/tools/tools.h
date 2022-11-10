@@ -27,5 +27,7 @@
 #define  Max_SALVES        (127)
 
 static int parameterChecked(int para1, int para2, int para3, int para4);
+void Delay_NoSchedue(uint32_t clk);
+
 #endif
 
