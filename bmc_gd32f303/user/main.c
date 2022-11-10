@@ -70,7 +70,7 @@ void misc_task(void *pvParameters);
 static void watch_dog_init(void);  
 static void debug_config(void);
 
-int g_debugLevel = DBG_LOG;
+int g_debugLevel = DBG_INFO;
 
 __IO uint32_t g_localtime = 0; /* for creating a time reference incremented by 10ms */
 __IO uint64_t g_utc_time_bmc_firmware_build = 0;
@@ -245,7 +245,6 @@ __attribute__((unused)) static void watch_dog_init()
 }
 static void debug_config(void)
 {
-    g_debugLevel = DBG_LOG;
     /* disable wdg when the mcu is in debug mode */
     dbg_periph_enable(DBG_FWDGT_HOLD);   
 	

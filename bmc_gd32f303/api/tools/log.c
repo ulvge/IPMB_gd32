@@ -45,7 +45,7 @@ static char *arglist[] = {
     NULL
 };
 
-int log(int argc, char *argv[])
+static int logs(int argc, char *argv[])
 {
     int retval = 0;
 
@@ -118,8 +118,8 @@ static int setLogLevelHandler(int argc, char **argv, int index)
 
 static int getLogLevelHandler(int argc, char **argv, int index)
 {
-    LOG_RAW("Current log level %d\r\n", g_debugLevel);
+    LOG_RAW("Current log level : %d\r\n", g_debugLevel);
     return 0;
 }
 
-SHELL_EXPORT_CMD(SHELL_CMD_PERMISSION(0) | SHELL_CMD_TYPE(SHELL_TYPE_CMD_MAIN) | SHELL_CMD_DISABLE_RETURN, log, log, log level);
+SHELL_EXPORT_CMD(SHELL_CMD_PERMISSION(0) | SHELL_CMD_TYPE(SHELL_TYPE_CMD_MAIN) | SHELL_CMD_DISABLE_RETURN, log, logs, log level);
