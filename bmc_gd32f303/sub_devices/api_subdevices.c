@@ -468,7 +468,7 @@ static bool SubDevice_readingSensorForeach(SUB_DEVICE_MODE dev, uint8_t sensorNu
     if (pSensorReading->CompletionCode == CC_NORMAL)
     {
         pDeviceReading->raw = pSensorReading->SensorReading;
-        pDeviceReading->ComparisonStatus = pSensorReading->ComparisonStatus;
+        //pDeviceReading->ComparisonStatus = pSensorReading->ComparisonStatus;
         return true;
     }
     return false;

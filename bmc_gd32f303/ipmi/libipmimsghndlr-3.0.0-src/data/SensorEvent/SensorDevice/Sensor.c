@@ -1923,7 +1923,7 @@ int GetSensorReading(INT8U *pReq, INT8U ReqLen, INT8U *pRes, int BMCInst)
     if (ReqLen == 2) {
         myMode = (SUB_DEVICE_MODE)(pReq[1]);
     }
-    adcVal = api_sensorGetIPMBVal(pSensorReadReq->SensorNum);
+    adcVal = api_sensorGetValIPMB(pSensorReadReq->SensorNum);
 	FullSensorRec_T *pSdr = ReadSensorRecBySensorNum(myMode, pSensorReadReq->SensorNum, BMCInst);
 	if (pSdr == NULL){
 		pSensorReadRes->CompletionCode = CC_SDR_REC_NOT_PRESENT;

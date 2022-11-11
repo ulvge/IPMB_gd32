@@ -70,19 +70,31 @@ BOOLEAN api_sensorConvertIPMBValBySensorNum(INT8U destMode, UINT16 sensorNum, UI
 /// @brief just get
 /// @param sensorNum 
 /// @return 
-uint8_t api_sensorGetIPMBVal(UINT16 sensorNum)
+uint8_t api_sensorGetValIPMB(UINT16 sensorNum)
 {
     uint8_t ipmbVal;
     SUB_DEVICE_MODE dev = SubDevice_GetMyMode();
-    const Dev_Handler *pSensor_Handler = api_getDevHandler(dev);
+    const Dev_Handler *pDev_Handler = api_getDevHandler(dev);
     for (uint8_t numIdex = 0; numIdex < api_sensorGetSensorCount(); numIdex++)
     {
-        if (pSensor_Handler->sensorCfg[numIdex].sensorNum == sensorNum) {
-            ipmbVal = pSensor_Handler->val[numIdex].raw;
+        if (pDev_Handler->sensorCfg[numIdex].sensorNum == sensorNum) {
+            ipmbVal = pDev_Handler->val[numIdex].raw;
             break;
         }
 	}
     return ipmbVal;
+}
+float api_sensorGetValHuman(UINT16 sensorNum)
+{
+    SUB_DEVICE_MODE dev = SubDevice_GetMyMode();
+    const Dev_Handler *pDev_Handler = api_getDevHandler(dev);
+    for (uint8_t numIdex = 0; numIdex < api_sensorGetSensorCount(); numIdex++)
+    {
+        if (pDev_Handler->sensorCfg[numIdex].sensorNum == sensorNum) {
+            return pDev_Handler->val[numIdex].human;
+        }
+	}
+    return 0;
 }
 uint8_t api_sensorGetSensorCount(void)
 {
@@ -141,6 +153,22 @@ void api_sensorSetValRaw(uint8_t sensorNum, uint8_t ipmbVal)
         }
     }
 }
+
+void api_sensorSetValHuman(uint8_t sensorNum, float humanVal)
+{
+    SUB_DEVICE_MODE myMode = SubDevice_GetMyMode();
+    const Dev_Handler *handler = api_getDevHandler(myMode);
+    if (handler == NULL) {
+        return;
+    }
+    for (size_t i = 0; i < handler->sensorCfgSize; i++)
+    {
+        if (handler->sensorCfg[i].sensorNum == sensorNum){
+            handler->val[i].human = humanVal;
+            return;
+        }
+    }
+}
 const Dev_Handler *api_getDevHandler(SUB_DEVICE_MODE destMode)
 {
     for (size_t i = 0; i < ARRARY_SIZE(g_AllDevices); i++)
@@ -166,6 +194,11 @@ void Dev_Task(void *pvParameters)
 	SubDevice_Init();
     if (g_pDev_Handler->TaskHandler != NULL){
         g_pDev_Handler->TaskHandler(pvParameters);
+    } else {
+        while (1)
+        {
+            vTaskDelay(1000);
+        }
     }
 }
 

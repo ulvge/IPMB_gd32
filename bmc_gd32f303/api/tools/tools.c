@@ -326,26 +326,18 @@ int sensor(int argc, char *argv[])
 {
     uint8_t sensorNum;
     float humanVal;
-    INT8U ipmbVal;
 	int sensorSize = api_sensorGetSensorCount();
 	SUB_DEVICE_MODE dev = SubDevice_GetMyMode();
-    BOOLEAN get_res;
-    const Dev_Handler *pSensor_Handler = api_getDevHandler(dev);
+    const Dev_Handler *pDev_Handler = api_getDevHandler(dev);
 
     for (uint8_t numIdex = 0; numIdex < sensorSize; numIdex++)
     {
         sensorNum = api_sensorGetMySensorNumByIdex(numIdex);
-        ipmbVal = pSensor_Handler->val[numIdex].raw;
-        char *name = pSensor_Handler->sensorCfg[numIdex].sensorAlias;
-        if (get_res == false)
-        {
-			LOG_I("sensor :idx = %d , name = %s, channel = %d, error \r\n", numIdex, name, sensorNum);
-        }else{
-            if (api_sensorConvert2HumanVal(dev, sensorNum, ipmbVal, &humanVal) == true) {
-                LOG_I("sensor :idx = %d, name = %s, channel = %d, val = %f\r\n", 
+        char *name = pDev_Handler->sensorCfg[numIdex].sensorAlias;
+        //humanVal = pDev_Handler->val[numIdex].human;
+        humanVal = api_sensorGetValHuman(sensorNum);
+        LOG_I("sensor :idx = %d, name = %s, channel = %d, val = %f\r\n", 
                     numIdex, name, sensorNum, humanVal);
-            }
-        }
 	}
 
     return 0;

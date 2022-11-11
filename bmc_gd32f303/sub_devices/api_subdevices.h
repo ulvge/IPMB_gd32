@@ -26,6 +26,7 @@ typedef enum {
     SUB_DEVICE_SDR_P1V8,
     SUB_DEVICE_SDR_P2V5,
     SUB_DEVICE_SDR_P3V3,
+    SUB_DEVICE_SDR_P5V,
     SUB_DEVICE_SDR_P12V,
     SUB_DEVICE_SDR_P12V_10_1,
     SUB_DEVICE_SDR_TEMP,
@@ -49,9 +50,8 @@ typedef struct
 typedef struct
 {
     uint16_t rawAdc;	// ori adc
-    //uint16_t rawEncode;	// eg : "temp ADC "-> "temp"
     uint8_t raw;        // ipmi raw uint8_t
-    uint8_t ComparisonStatus;        // ipmi raw uint8_t
+    //uint8_t ComparisonStatus;        // ipmi raw uint8_t
     uint8_t errCnt;
     float   human;      //human	= covert(raw, M, R)
 } SubDevice_Reading_T;

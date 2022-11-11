@@ -24,10 +24,13 @@ ADC转换步骤：
 1、各模块 自己采集的时候 ，就对值进行标准化输出，byte格式 raw
 	api_sensorConvertIPMBValBySensorNum
 	api_sensorSetValRaw
-2、timer，进行转换化human值
 	api_sensorConvert2HumanVal
-3、adc_test()中也可使用
-	api_sensorGetIPMBVal，直接获取
+	api_sensorSetValHuman
+2、timer，进行转换化human值
+	dev main:api_sensorConvert2HumanVal
+3、adc_test()或devTask
+	api_sensorGetValIPMB，直接获取
+	api_sensorGetValHuman，直接获取
 
 
 

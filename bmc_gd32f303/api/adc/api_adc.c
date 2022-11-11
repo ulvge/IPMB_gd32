@@ -14,9 +14,9 @@ const static Dev_Handler *g_pADCConfig_Handler = NULL;
 static float adc_sampleVal2Temp2(uint16 adcValue);
 static void adc_InitADCs(const Dev_Handler *config);
 
-void adc_init(const  Dev_Handler *pSensor_Handler)
+void adc_init(const  Dev_Handler *pDev_Handler)
 {
-    g_pADCConfig_Handler = pSensor_Handler;
+    g_pADCConfig_Handler = pDev_Handler;
     adc_InitADCs(g_pADCConfig_Handler);
 }
 static void adc_InitADCs(const Dev_Handler *config)
@@ -103,11 +103,9 @@ static float adc_sampleVal2Temp2(uint16 adcValue)
 }
 static void adc_test(void)
 {     
-    uint8_t ipmbVal;
-	UNUSED(ipmbVal);
-	
-    ipmbVal = api_sensorGetIPMBVal(ADC_CHANNEL_8);
-	//LOG_D("adc_test humanVal = %d\n", ipmbVal);
+    float valHuman = api_sensorGetValHuman(ADC_CHANNEL_8);
+    
+	LOG_D("adc_test humanVal = %.3f\n", valHuman);
     //StackFlow();
 }
 #define ADC_SAMPLE_TIMES 3
@@ -137,16 +135,22 @@ void adc_sample_all(void)
     for (UINT32 j = 0; j < channleSize; j++)
     {
         uint16_t sum = 0;
+        uint8_t sensorNum;
+        float humanVal;
+        SUB_DEVICE_MODE dev = SubDevice_GetMyMode();
         for (UINT32 i = 0; i < ADC_SAMPLE_TIMES; i++)
         {
             sum += temp_vals[i][j];
         }
         g_pADCConfig_Handler->val[j].rawAdc = sum / ADC_SAMPLE_TIMES;
-        
-        if (api_sensorConvertIPMBValBySensorNum(SubDevice_GetMyMode(), g_pADCConfig_Handler->adcCfg[j].adcChannl,
-                                                                        g_pADCConfig_Handler->val[j].rawAdc, &ipmbVal))
+        sensorNum = g_pADCConfig_Handler->adcCfg[j].adcChannl;
+
+        if (api_sensorConvertIPMBValBySensorNum(dev, sensorNum, g_pADCConfig_Handler->val[j].rawAdc, &ipmbVal))
         {
-            api_sensorSetValRaw(g_pADCConfig_Handler->adcCfg[j].adcChannl, ipmbVal);
+            api_sensorSetValRaw(sensorNum, ipmbVal);
+            if (api_sensorConvert2HumanVal(dev, sensorNum, ipmbVal, &humanVal)) {
+                api_sensorSetValHuman(sensorNum, humanVal);
+            }
         }
     }
     //adc_test();

@@ -98,16 +98,22 @@ static void fan_ctrl_task(void)
     uint16_t curent_rpm = 0;
     int32_t pid_out = 0; 
     bool isAlreadyPrint = false;
+    uint8_t sensorNum;
+    float humanVal;
 
     for(uint32_t i = 0; i < SIZE_FAN_CONFIG; i++) {
         FanStruct *pFan = &g_Fan[i];
-        if(fan_get_rotate_rpm(pFan->config->fanSensorNum, &curent_rpm) == false){
+        sensorNum = pFan->config->fanSensorNum;
+        if(fan_get_rotate_rpm(sensorNum, &curent_rpm) == false){
             continue;
         }
 
-        if (api_sensorConvertIPMBValBySensorNum(SubDevice_GetMyMode(), pFan->config->fanSensorNum, curent_rpm, &ipmbVal))
+        if (api_sensorConvertIPMBValBySensorNum(SubDevice_GetMyMode(), sensorNum, curent_rpm, &ipmbVal))
         {
-            api_sensorSetValRaw(pFan->config->fanSensorNum, ipmbVal);
+            api_sensorSetValRaw(sensorNum, ipmbVal);
+            if (api_sensorConvert2HumanVal(SubDevice_GetMyMode(), sensorNum, ipmbVal, &humanVal)) {
+                api_sensorSetValHuman(sensorNum, humanVal);
+            }
         }
 
 		isAlreadyPrint = true;

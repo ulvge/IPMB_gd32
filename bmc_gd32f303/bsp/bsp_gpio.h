@@ -60,6 +60,20 @@ typedef enum
     GPIO_OUT_CPU_RESET,
     GPIO_OUT_BMC_POWER_ON_FINISHED,
 
+    
+    GPIO_OUT_VBAT_EN,
+    GPIO_OUT_R_FAIL_N,
+    GPIO_OUT_P12V_EN,
+    GPIO_OUT_P3V3_EN,
+    GPIO_OUT_P5V_EN,
+
+    GPIO_IN_R_GPIO0,
+    GPIO_IN_P3V3_PWRGD,
+    GPIO_IN_P5V_PWRGD,
+    GPIO_IN_P12V_PWRGD,
+    
+    
+
     GPIO_IN_GAP0,
     GPIO_IN_GAP1,
     GPIO_IN_GAP2,
@@ -99,6 +113,6 @@ uint8_t   get_board_addr     (void);
 
 FlagStatus GPIO_getPinStatus(BMC_GPIO_enum alias);    
 bool GPIO_setPinStatus(BMC_GPIO_enum alias, ControlStatus isActive);
-
+bool GPIO_isPinActive(BMC_GPIO_enum alias);
 
 #endif /* __BSP_GPIO_H_ */

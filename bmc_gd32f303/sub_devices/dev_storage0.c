@@ -4,6 +4,7 @@
 #include "sensor.h"  
 #include "api_sensor.h" 
 
+static void DevTaskHandler(void *pArg);
 // config GPIO
 const static GPIOConfig g_gpioConfig_storage0[] = {
     {GPIO_IN_GAP0,            GPIOG, GPIO_PIN_9, RCU_GPIOG, GPIO_MODE_IPD, GPIO_OSPEED_10MHZ, 0},
@@ -31,7 +32,18 @@ const Dev_Handler g_devHandler_storage0 = {
     CREATE_CONFIG_HANDLER(adc, g_adcChannlConfig_storage0),
 
     CREATE_CONFIG_HANDLER(sensor, g_sensor_storage0),
+    .TaskHandler = DevTaskHandler,
 };
+
+static void DevTaskHandler(void *pArg)
+{
+    while (1)
+    {
+        vTaskDelay(2000);
+        LOG_E("filename = %s, line = %d", __FILE__, __LINE__);
+    }
+}
+
 
 
 

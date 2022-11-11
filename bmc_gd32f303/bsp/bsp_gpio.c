@@ -106,6 +106,20 @@ FlagStatus GPIO_getPinStatus(BMC_GPIO_enum alias)
     }
     return gpio_input_bit_get(p_gpioCfg->gpioPort, p_gpioCfg->pin);
 }
+bool GPIO_isPinActive(BMC_GPIO_enum alias)
+{
+    const GPIOConfig *p_gpioCfg = GPIO_findGpio(alias);
+
+    if (p_gpioCfg == NULL)
+    {
+        return false;
+    }
+    FlagStatus staus = gpio_input_bit_get(p_gpioCfg->gpioPort, p_gpioCfg->pin);
+    if (staus == p_gpioCfg->pinMode) {
+        return true;
+    }
+    return false;
+}
 
 bool GPIO_setPinStatus(BMC_GPIO_enum alias, ControlStatus isActive)
 {
@@ -150,12 +164,11 @@ bool GPIO_setPinStatus(BMC_GPIO_enum alias, ControlStatus isActive)
 uint8_t get_board_addr()
 {
     uint8_t addr = 0;
-
     addr |= GPIO_getPinStatus(GPIO_IN_GAP0) << 0;
     addr |= GPIO_getPinStatus(GPIO_IN_GAP1) << 1;
     addr |= GPIO_getPinStatus(GPIO_IN_GAP2) << 2;
 
-    return 0x00;
+    return 0;
 }
 
 

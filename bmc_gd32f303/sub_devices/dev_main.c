@@ -4,9 +4,8 @@
 #include "sensor.h"  
 #include "api_sensor.h"    
 										 
-
 static void DevTaskHandler(void *pArg);
-
+// config GPIO
 static const GPIOConfig g_gpioConfig_main[] = {
     {GPIO_OUT_LED_RED,                  GPIOD, GPIO_PIN_8,  RCU_GPIOD, GPIO_MODE_OUT_PP, GPIO_OSPEED_10MHZ, 1},
     {GPIO_OUT_LED_GREEN,                GPIOD, GPIO_PIN_9,  RCU_GPIOD, GPIO_MODE_OUT_PP, GPIO_OSPEED_10MHZ, 1},
@@ -45,7 +44,7 @@ static const  SensorConfig g_sensor_main[] = {
     {ADC_CHANNEL_8,         SUB_DEVICE_SDR_TEMP,        "X100_temp"},
     {ADC_CHANNEL_0,      	SUB_DEVICE_SDR_P1V8,        "P1V8_VCC"},
     {ADC_CHANNEL_10,        SUB_DEVICE_SDR_P12V_10_1,   "P12V_standby"},
-    {FAN_CHANNEL_1,			SUB_DEVICE_SDR_FAN,         "FAN_CHANNEL_1"},
+    //{FAN_CHANNEL_1,			SUB_DEVICE_SDR_FAN,         "FAN_CHANNEL_1"},
 #else
     {ADC_CHANNEL_10,        SUB_DEVICE_SDR_P0V9, "P0V9_VCORE"},
     {ADC_CHANNEL_11,        SUB_DEVICE_SDR_P2V5, "CPU_P2V5_DDR4"},
@@ -76,6 +75,6 @@ static void DevTaskHandler(void *pArg)
     while (1)
     {
         vTaskDelay(2000);
-        LOG_E("filename = %s, line = %d", __FILE__, __LINE__);
+        LOG_E("filename = %s, line = %d\n", __FILE__, __LINE__);
     }
 }
