@@ -69,6 +69,28 @@
 typedef unsigned int		INTU;
 typedef bool   BOOL ;
 
+					   
+#ifndef FALSE
+#define FALSE 		0
+#endif           
+#ifndef TRUE
+#define TRUE		1
+#endif
+
+#ifndef false
+#define false 		0
+#endif
+#ifndef true
+#define true		1
+#endif
+		   
+#define  KEY_SPACE                      0x20
+#define  KEY_CR                        	0x0D
+#define  KEY_LF                        	0x0A
+#define  KEY_DEL                   		0x08      //Del!
+typedef unsigned char  BOOLEAN;    
+
+
 
 #define uint8 INT8U
 #define uint16 INT16U

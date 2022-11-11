@@ -16,7 +16,8 @@
  extern "C" {
 #endif
 
-#include "shell_cfg.h"
+#include "shell_cfg.h"    
+#include "Types.h"
 
 #define     SHELL_VERSION               "3.0.5"                 /**< 版本号 */
 
