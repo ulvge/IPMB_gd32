@@ -15,20 +15,20 @@
 #include "fan/api_fan.h"    
 #include "sensor_helpers.h"
 
-extern const Sensor_Handler g_sensorHandler_main;
-extern const Sensor_Handler g_sensorHandler_net;
-extern const Sensor_Handler g_sensorHandler_switch;
-extern const Sensor_Handler g_sensorHandler_power;
-extern const Sensor_Handler g_sensorHandler_storage0;
+extern const Dev_Handler g_devHandler_main;
+extern const Dev_Handler g_devHandler_net;
+extern const Dev_Handler g_devHandler_switch;
+extern const Dev_Handler g_devHandler_power;
+extern const Dev_Handler g_devHandler_storage0;
 
 
-const static Sensor_Handler *g_pSensor_Handler = NULL;
-static const Sensor_Handler *g_AllSensorDevices[] = {
-    &g_sensorHandler_main,
-    &g_sensorHandler_net,
-    &g_sensorHandler_switch,
-    &g_sensorHandler_power,
-    &g_sensorHandler_storage0,
+const static Dev_Handler *g_pDev_Handler = NULL;
+static const Dev_Handler *g_AllDevices[] = {
+    &g_devHandler_main,
+    &g_devHandler_net,
+    &g_devHandler_switch,
+    &g_devHandler_power,
+    &g_devHandler_storage0,
 };
 
 bool api_sensorGetUnitType(INT8U destMode, UINT32 sensorNum, uint8_t *unitType)
@@ -74,7 +74,7 @@ uint8_t api_sensorGetIPMBVal(UINT16 sensorNum)
 {
     uint8_t ipmbVal;
     SUB_DEVICE_MODE dev = SubDevice_GetMyMode();
-    const Sensor_Handler *pSensor_Handler = api_getSensorHandler(dev);
+    const Dev_Handler *pSensor_Handler = api_getDevHandler(dev);
     for (uint8_t numIdex = 0; numIdex < api_sensorGetSensorCount(); numIdex++)
     {
         if (pSensor_Handler->sensorCfg[numIdex].sensorNum == sensorNum) {
@@ -86,10 +86,10 @@ uint8_t api_sensorGetIPMBVal(UINT16 sensorNum)
 }
 uint8_t api_sensorGetSensorCount(void)
 {
-    if (g_pSensor_Handler == NULL) {
+    if (g_pDev_Handler == NULL) {
         return 0;
     }
-    return g_pSensor_Handler->sensorCfgSize;
+    return g_pDev_Handler->sensorCfgSize;
 }
 
 /// @brief dev 中,sensor 的 adcChannl 就是他的sensorNum
@@ -97,17 +97,17 @@ uint8_t api_sensorGetSensorCount(void)
 /// @return 
 uint8_t api_sensorGetMySensorNumByIdex(uint8_t idx)
 {
-    if (g_pSensor_Handler == NULL) {
+    if (g_pDev_Handler == NULL) {
         return SENSOR_CHANNEL_MAX;
     }
-    if (idx >= g_pSensor_Handler->sensorCfgSize) {
+    if (idx >= g_pDev_Handler->sensorCfgSize) {
         return SENSOR_CHANNEL_MAX;
     }
-    return g_pSensor_Handler->sensorCfg[idx].sensorNum;
+    return g_pDev_Handler->sensorCfg[idx].sensorNum;
 }
 uint8_t api_sensorGetSensorNumByIdex(SUB_DEVICE_MODE dev, uint8_t idx)
 {
-    const Sensor_Handler *handler = api_getSensorHandler(dev);
+    const Dev_Handler *handler = api_getDevHandler(dev);
     if (handler == NULL) {
         return SENSOR_CHANNEL_MAX;
     }
@@ -129,7 +129,7 @@ BOOLEAN api_sensorConvert2HumanVal(SUB_DEVICE_MODE dev, uint8_t sensorNum, uint8
 void api_sensorSetValRaw(uint8_t sensorNum, uint8_t ipmbVal)
 {
     SUB_DEVICE_MODE myMode = SubDevice_GetMyMode();
-    const Sensor_Handler *handler = api_getSensorHandler(myMode);
+    const Dev_Handler *handler = api_getDevHandler(myMode);
     if (handler == NULL) {
         return;
     }
@@ -141,11 +141,11 @@ void api_sensorSetValRaw(uint8_t sensorNum, uint8_t ipmbVal)
         }
     }
 }
-const Sensor_Handler *api_getSensorHandler(SUB_DEVICE_MODE destMode)
+const Dev_Handler *api_getDevHandler(SUB_DEVICE_MODE destMode)
 {
-    for (size_t i = 0; i < ARRARY_SIZE(g_AllSensorDevices); i++)
+    for (size_t i = 0; i < ARRARY_SIZE(g_AllDevices); i++)
     {
-        const Sensor_Handler **phandler = (g_AllSensorDevices + i);
+        const Dev_Handler **phandler = (g_AllDevices + i);
         if ((*phandler)->mode == destMode)
         {
             return *phandler;
@@ -153,17 +153,20 @@ const Sensor_Handler *api_getSensorHandler(SUB_DEVICE_MODE destMode)
     }
     return NULL;
 }
-void sensor_init(void)
+void Dev_Task(void *pvParameters)
 {
     SUB_DEVICE_MODE myMode = SubDevice_GetMyMode();
 
-    g_pSensor_Handler = api_getSensorHandler(myMode);
-    if (g_pSensor_Handler == NULL)
+    g_pDev_Handler = api_getDevHandler(myMode);
+    if (g_pDev_Handler == NULL)
     {
 		return;
-    }       
-	adc_init(g_pSensor_Handler);
+    }
+	adc_init(g_pDev_Handler);
 	SubDevice_Init();
+    if (g_pDev_Handler->TaskHandler != NULL){
+        g_pDev_Handler->TaskHandler(pvParameters);
+    }
 }
 
 

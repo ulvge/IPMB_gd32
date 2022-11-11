@@ -25,7 +25,7 @@ static const  SensorConfig g_sensor_storage0[] = {
     {ADC_CHANNEL_10,         SUB_DEVICE_SDR_TEMP,        "X100_temp"},
 };
 static SubDevice_Reading_T g_sensorVal_storage0[ARRARY_SIZE(g_sensor_storage0)];
-const Sensor_Handler g_sensorHandler_storage0 = {
+const Dev_Handler g_devHandler_storage0 = {
     .mode = SUB_DEVICE_MODE_STORAGE0,
     .val = g_sensorVal_storage0,
     CREATE_CONFIG_HANDLER(adc, g_adcChannlConfig_storage0),

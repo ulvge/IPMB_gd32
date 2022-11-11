@@ -2,7 +2,10 @@
 #include <stdlib.h>
 #include "bsp_gpio.h"
 #include "sensor.h"  
-#include "api_sensor.h"       
+#include "api_sensor.h"    
+										 
+
+static void DevTaskHandler(void *pArg);
 
 static const GPIOConfig g_gpioConfig_main[] = {
     {GPIO_OUT_LED_RED,                  GPIOD, GPIO_PIN_8,  RCU_GPIOD, GPIO_MODE_OUT_PP, GPIO_OSPEED_10MHZ, 1},
@@ -59,10 +62,20 @@ static const  SensorConfig g_sensor_main[] = {
 };
 
 static SubDevice_Reading_T g_sensorVal_main[ARRARY_SIZE(g_sensor_main)];
-const Sensor_Handler g_sensorHandler_main = {
+const Dev_Handler g_devHandler_main = {
     .mode = SUB_DEVICE_MODE_MAIN,
     .val = g_sensorVal_main,
     CREATE_CONFIG_HANDLER(adc, g_adcChannlConfig_main),
 
     CREATE_CONFIG_HANDLER(sensor, g_sensor_main),
+    .TaskHandler = DevTaskHandler,
 };
+
+static void DevTaskHandler(void *pArg)
+{
+    while (1)
+    {
+        vTaskDelay(2000);
+        LOG_E("filename = %s, line = %d", __FILE__, __LINE__);
+    }
+}

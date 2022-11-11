@@ -18,7 +18,7 @@
 #define     VREFVOL                           3.3
 #define 		ADC_BIT                           4096    //12 bit adc
 
-void adc_init(const Sensor_Handler *pSensor_Handler);
+void adc_init(const Dev_Handler *pSensor_Handler);
 void adc_sample_all(void);
 float adc_sampleVal2Temp1(uint16 adcValue);
 float adc_sampleVal2Temp2(uint16 adcValue);

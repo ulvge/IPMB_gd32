@@ -330,7 +330,7 @@ int sensor(int argc, char *argv[])
 	int sensorSize = api_sensorGetSensorCount();
 	SUB_DEVICE_MODE dev = SubDevice_GetMyMode();
     BOOLEAN get_res;
-    const Sensor_Handler *pSensor_Handler = api_getSensorHandler(dev);
+    const Dev_Handler *pSensor_Handler = api_getDevHandler(dev);
 
     for (uint8_t numIdex = 0; numIdex < sensorSize; numIdex++)
     {

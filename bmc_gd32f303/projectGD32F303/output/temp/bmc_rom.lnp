@@ -21,6 +21,7 @@
 ".\output\temp\filo.o"
 ".\output\temp\api_sensor.o"
 ".\output\temp\cjson.o"
+".\output\temp\log.o"
 ".\output\temp\ipmi_common.o"
 ".\output\temp\ipmbmsghndlr.o"
 ".\output\temp\serialifc.o"

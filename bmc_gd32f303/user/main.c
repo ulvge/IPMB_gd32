@@ -60,6 +60,7 @@ OF SUCH DAMAGE.
 #define TEST_TASK_PRIO 9
 #define COM_TASK_PRIO 21
 #define LANIFC_TASK_PRIO 23
+#define DEV_TASK_PRIO 25
 
 void start_task(void *pvParameters);
 void fan_task(void *pvParameters);
@@ -129,7 +130,6 @@ void start_task(void *pvParameters)
     uint32_t errCreateTask = 0;
     i2c_int();
     //fan_init();
-    sensor_init();
 
 #ifdef FATFS_ENABLE
     fatfs_init();
@@ -137,6 +137,10 @@ void start_task(void *pvParameters)
 
     taskENTER_CRITICAL();
 
+   if (errCOULD_NOT_ALLOCATE_REQUIRED_MEMORY == 
+       xTaskCreate(Dev_Task, "dev_task", configMINIMAL_STACK_SIZE * 2, NULL, DEV_TASK_PRIO, NULL)) {
+       errCreateTask |= 1;
+   }
    if (errCOULD_NOT_ALLOCATE_REQUIRED_MEMORY == 
        xTaskCreate(com_task, "com", configMINIMAL_STACK_SIZE * 2, NULL, COM_TASK_PRIO, (TaskHandle_t *)&ComTask_Handler)) {
        errCreateTask |= 1;

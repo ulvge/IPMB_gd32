@@ -140,8 +140,8 @@ static void vTaskResponseDatWrite(void *pvParameters)
 {
     char buff[sizeof(MsgPkt_T)];
     MsgPkt_T *ResMsg = (MsgPkt_T *)buff;
-    ResponseDatMsg_Queue = xQueueCreate(3, sizeof(MsgPkt_T));
-    RecvForwardI2CDatMsg_Queue = xQueueCreate(3, sizeof(MsgPkt_T));
+    ResponseDatMsg_Queue = xQueueCreate(2, sizeof(MsgPkt_T));
+    RecvForwardI2CDatMsg_Queue = xQueueCreate(2, sizeof(MsgPkt_T));
 
     while (1)
     {
@@ -194,7 +194,7 @@ void *MsgCoreHndlr(void *pArg)
 		xTaskCreate(vTaskResponseDatWrite, "Task ResponseDatWrite", 256, NULL, 24, &xHandleTaskResponseDatWrite)) {
         LOG_E("vTaskResponseDatWrite create task ERR!");
     }
-    RecvDatMsg_Queue = xQueueCreate(5, sizeof(MsgPkt_T));  //10
+    RecvDatMsg_Queue = xQueueCreate(2, sizeof(MsgPkt_T));  //10
     if (RecvDatMsg_Queue ==  NULL) {
         LOG_E("RecvDatMsg_Queue create ERR!");
     }

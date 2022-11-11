@@ -9,17 +9,17 @@
 //  GetSensorReading() call . master to calc the real val by M&R.
 // so, salve cant't calc the real val by self
 
-const static Sensor_Handler *g_pADCConfig_Handler = NULL;
+const static Dev_Handler *g_pADCConfig_Handler = NULL;
 
 static float adc_sampleVal2Temp2(uint16 adcValue);
-static void adc_InitADCs(const Sensor_Handler *config);
+static void adc_InitADCs(const Dev_Handler *config);
 
-void adc_init(const  Sensor_Handler *pSensor_Handler)
+void adc_init(const  Dev_Handler *pSensor_Handler)
 {
     g_pADCConfig_Handler = pSensor_Handler;
     adc_InitADCs(g_pADCConfig_Handler);
 }
-static void adc_InitADCs(const Sensor_Handler *config)
+static void adc_InitADCs(const Dev_Handler *config)
 {
     const ADCChannlesConfig *p_gpioCfg;
     for (UINT8 i = 0; i < config->adcCfgSize; i++)

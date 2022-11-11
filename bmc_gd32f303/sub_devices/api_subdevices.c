@@ -140,7 +140,7 @@ static bool SubDevice_isExistSensorUnit(uint8_t queryUnitType)
     uint8_t unitType;
     for (SUB_DEVICE_MODE dev = (SUB_DEVICE_MODE)0; dev < SUB_DEVICE_MODE_MAX; dev++)
     {
-        const Sensor_Handler *pHandler = api_getSensorHandler(dev);
+        const Dev_Handler *pHandler = api_getDevHandler(dev);
         if (pHandler == NULL)
         {
             continue;
@@ -385,7 +385,7 @@ static void SubDevice_Upload(TimerHandle_t timerHandle)
             memcpy(nameBuf, modeName, strlen(modeName));
             strcat(nameBuf, "-");
             prefixLen = strlen(nameBuf);
-            const Sensor_Handler *pHandler = api_getSensorHandler(dev);
+            const Dev_Handler *pHandler = api_getDevHandler(dev);
             if (pHandler == NULL)
             {
                 continue;
@@ -490,7 +490,7 @@ static void SubDevice_SampleAll(TimerHandle_t timerHandle)
 
     for (SUB_DEVICE_MODE dev = (SUB_DEVICE_MODE)0; dev < SUB_DEVICE_MODE_MAX; dev++)
     {
-        const Sensor_Handler *pHandler = api_getSensorHandler(dev);
+        const Dev_Handler *pHandler = api_getDevHandler(dev);
         if (pHandler == NULL)
         {
             continue;

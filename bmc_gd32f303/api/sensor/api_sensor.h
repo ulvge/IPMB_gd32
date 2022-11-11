@@ -9,7 +9,9 @@
 #include "Types.h"
 #include "bsp_adc.h"
 #include "project_select.h"
-
+#include "debug_print.h"
+#include "FreeRTOS.h"
+#include "task.h"       
 
 typedef enum 
 {          
@@ -37,18 +39,18 @@ typedef struct {
 
     uint8_t sensorCfgSize;
     const SensorConfig *sensorCfg;
-
-} Sensor_Handler;
+    void (*TaskHandler)(void *arg); 
+} Dev_Handler;
 
 bool api_sensorGetUnitType(INT8U destMode, UINT32 sensorNum, UINT8 *unitType);
-void sensor_init(void);
+void Dev_Task(void *pvParameters);
 uint8_t api_sensorGetSensorCount(void);
 uint8_t api_sensorGetMySensorNumByIdex(uint8_t idx);
 uint8_t api_sensorGetSensorNumByIdex(SUB_DEVICE_MODE dev, uint8_t idx);
 BOOLEAN api_sensorConvertIPMBValBySensorNum(INT8U destMode, UINT16 sensorNum, UINT16 rawAdc, INT8U *ipmbVal);
 BOOLEAN api_sensorConvert2HumanVal(SUB_DEVICE_MODE dev, uint8_t sensorNum, uint8_t ipmiVal, float *humanVal);
 void api_sensorSetValRaw(uint8_t sensorNum, uint8_t ipmbVal);
-const Sensor_Handler *api_getSensorHandler(SUB_DEVICE_MODE destMode);
+const Dev_Handler *api_getDevHandler(SUB_DEVICE_MODE destMode);
 uint8_t api_sensorGetIPMBVal(UINT16 sensorNum);
 
 #ifdef __cplusplus

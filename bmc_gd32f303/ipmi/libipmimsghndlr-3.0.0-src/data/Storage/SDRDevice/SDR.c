@@ -1318,7 +1318,7 @@ int InitSDR(int BMCInst)
  *----------------------------------------------------------*/
 static INT16U SDR_GetNextSDRIdNew(uint16_t CurrentSdr, int BMCInst)
 {
-    const Sensor_Handler *pHandler = api_getSensorHandler(SubDevice_GetMyMode());
+    const Dev_Handler *pHandler = api_getDevHandler(SubDevice_GetMyMode());
    if (pHandler == NULL){
        return 0xFFFF; // The last record , next id set to  0xFFFF
    }
@@ -1352,7 +1352,7 @@ SDRRecHdr_T *
 ReadSDRRepository(SDRRecHdr_T *pSDRRec, int BMCInst)
 {
     FullSensorRec_T *pSdr;
-    const Sensor_Handler *pHandler = api_getSensorHandler(SubDevice_GetMyMode());
+    const Dev_Handler *pHandler = api_getDevHandler(SubDevice_GetMyMode());
 
     if (pHandler == NULL){
         return NULL;
@@ -1390,7 +1390,7 @@ FullSensorRec_T * ReadSensorRecBySensorNum(INT8U destMode, INT8U sensorNum, int 
 {
     FullSensorRec_T *pSdr;
     UINT16 id;
-    const Sensor_Handler *pHandler = api_getSensorHandler((SUB_DEVICE_MODE)destMode);
+    const Dev_Handler *pHandler = api_getDevHandler((SUB_DEVICE_MODE)destMode);
 
 //根据 sensorName 找到对应的 adcChannl，即可找到解码 sdrIdx
     const SensorConfig *p_Cfg;
@@ -1428,7 +1428,7 @@ bool SensorGetUnitType(INT8U destMode, UINT32 sensorNum, uint8_t *unitType)
 {
     FullSensorRec_T *pSdr;
     UINT16 id;                           
-    const Sensor_Handler *pHandler = api_getSensorHandler((SUB_DEVICE_MODE)destMode);
+    const Dev_Handler *pHandler = api_getDevHandler((SUB_DEVICE_MODE)destMode);
 
 //根据 sensorName 找到对应的 adcChannl，即可找到解码 sdrIdx
     const SensorConfig *p_Cfg;
