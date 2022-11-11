@@ -73,7 +73,7 @@ static void DevTaskHandler(void *pArg)
 {
     while (1)
     {
-        vTaskDelay(10);
+        vTaskDelay(5);
         if (GPIO_isPinActive(GPIO_IN_R_GPIO0)){
             
         }
