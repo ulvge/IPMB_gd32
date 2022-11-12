@@ -43,30 +43,30 @@ BOOLEAN api_sensorConvertIPMBValBySensorNum(INT8U destMode, UINT16 sensorNum, UI
     if (api_sensorGetUnitType(destMode, sensorNum, &unitType) == false){
         return false;
     }
-	uint16_t fanRpm = rawAdc;
-	
-	switch (unitType)
-	{
-        case IPMI_UNIT_RPM:
-            //if (fan_get_rotate_rpm(sensorNum, &fanRpm)) {
-                *ipmbVal = (INT8U)(fanRpm / 32);
-                return true;
-            //}
-        case IPMI_UNIT_VOLTS:
-            //if (adc_getRawValBySensorNum(sensorNum, &rawAdc)) {
-		        *ipmbVal = (INT8U)(((INT16U)rawAdc)>>4);
-                return true;
-           // }
-        case IPMI_UNIT_DEGREES_C:
-            //if (adc_getRawValBySensorNum(sensorNum, &rawAdc)) { //获取原始值
-                *ipmbVal = (float)adc_sampleVal2Temp1(rawAdc); //转换成真实值 ，并对其进行MR 编码.后续 IPMI 只需要用MR就能解码
-                return true;
-            //}
-        case IPMI_UNIT_AMPS:
-	default:
+    uint16_t fanRpm = rawAdc;
+
+    switch (unitType)
+    {
+    case IPMI_UNIT_RPM:
+        // if (fan_get_rotate_rpm(sensorNum, &fanRpm)) {
+        *ipmbVal = (INT8U)(fanRpm / 32);
+        return true;
+        //}
+    case IPMI_UNIT_VOLTS:
+        // if (adc_getRawValBySensorNum(sensorNum, &rawAdc)) {
+        *ipmbVal = (INT8U)(((INT16U)rawAdc) >> 4);
+        return true;
+        // }
+    case IPMI_UNIT_DEGREES_C:
+        // if (adc_getRawValBySensorNum(sensorNum, &rawAdc)) { //获取原始值
+        *ipmbVal = (float)adc_sampleVal2Temp1(rawAdc); //转换成真实值 ，并对其进行MR 编码.后续 IPMI 只需要用MR就能解码
+        return true;
+        //}
+    case IPMI_UNIT_AMPS:
+    default:
         return false;
-	}       
-}   
+    }
+}
 /// @brief just get
 /// @param sensorNum 
 /// @return 
@@ -81,7 +81,7 @@ uint8_t api_sensorGetValIPMB(UINT16 sensorNum)
             ipmbVal = pDev_Handler->val[numIdex].raw;
             break;
         }
-	}
+    }
     return ipmbVal;
 }
 float api_sensorGetValHuman(UINT16 sensorNum)
@@ -93,7 +93,7 @@ float api_sensorGetValHuman(UINT16 sensorNum)
         if (pDev_Handler->sensorCfg[numIdex].sensorNum == sensorNum) {
             return pDev_Handler->val[numIdex].human;
         }
-	}
+    }
     return 0;
 }
 uint8_t api_sensorGetSensorCount(void)
@@ -188,17 +188,14 @@ void Dev_Task(void *pvParameters)
     g_pDev_Handler = api_getDevHandler(myMode);
     if (g_pDev_Handler == NULL)
     {
-		return;
+        return;
     }
-	adc_init(g_pDev_Handler);
-	SubDevice_Init();
+    adc_init(g_pDev_Handler);
+    SubDevice_Init();
     if (g_pDev_Handler->TaskHandler != NULL){
         g_pDev_Handler->TaskHandler(pvParameters);
     } else {
-        while (1)
-        {
-            vTaskDelay(1000);
-        }
+        vTaskDelete(NULL);
     }
 }
 

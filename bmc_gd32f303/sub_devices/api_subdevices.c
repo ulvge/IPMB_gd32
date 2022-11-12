@@ -378,7 +378,7 @@ static void SubDevice_Upload(TimerHandle_t timerHandle)
         }
 
         cJSON_AddItemToObject(pCJType, pTypeCode->typeName, pCJData = cJSON_CreateObject());
-        for (SUB_DEVICE_MODE dev = (SUB_DEVICE_MODE)0; dev < SUB_DEVICE_MODE_STORAGE1; dev++)
+        for (SUB_DEVICE_MODE dev = (SUB_DEVICE_MODE)0; dev < SUB_DEVICE_MODE_STORAGE0; dev++)
         {
             char *modeName = SubDevice_GetModeName(dev);
             memset(nameBuf, 0, sizeof(nameBuf));

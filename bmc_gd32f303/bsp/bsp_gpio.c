@@ -24,10 +24,10 @@ const static GPIOConfig g_gpioConfigComm[] = {
 const static GPIOConfig_Handler *g_pGpioConfig_Handler = NULL;
 const static GPIOConfig_Handler *g_gpioAllDevices[] = {
     &g_gpioConfigHandler_main,
-    // &g_gpioConfigHandler_net,
-    // &g_gpioConfigHandler_switch,
-    // &g_gpioConfigHandler_power,
-    // &g_gpioConfigHandler_storage0,
+    &g_gpioConfigHandler_net,
+    &g_gpioConfigHandler_switch,
+    &g_gpioConfigHandler_power,
+    &g_gpioConfigHandler_storage0,
 };
 
 

@@ -53,6 +53,12 @@ typedef enum
     GPIO_CPLD_MCU_12,
     GPIO_CPLD_MCU_13,
 
+    R_CPLD_MCU_1,
+    R_CPLD_MCU_2,
+    R_CPLD_MCU_3,
+    R_CPLD_MCU_4,
+    R_CPLD_MCU_5,
+
     GPIO_OUT_LED_RED,
     GPIO_OUT_LED_GREEN,
     GPIO_OUT_CPU_POWER_ON,
@@ -64,15 +70,19 @@ typedef enum
     GPIO_OUT_VBAT_EN,
     GPIO_OUT_R_FAIL_N,
     GPIO_OUT_P12V_EN,
-    GPIO_OUT_P3V3_EN,
     GPIO_OUT_P5V_EN,
+    GPIO_OUT_P3V3_EN,
+    GPIO_OUT_P1V8_EN,
+    GPIO_OUT_P0V9_EN,
 
     GPIO_IN_R_GPIO0,
+    GPIO_IN_P0V9_PWRGD,
+    GPIO_IN_P1V8_PWRGD,
     GPIO_IN_P3V3_PWRGD,
     GPIO_IN_P5V_PWRGD,
     GPIO_IN_P12V_PWRGD,
-    
-    
+
+    GPIO_OUT_WX_NRST,
 
     GPIO_IN_GAP0,
     GPIO_IN_GAP1,
@@ -102,10 +112,10 @@ typedef struct {
 #define CREATE_CONFIG_HANDLER(name, config)   .name##CfgSize = ARRARY_SIZE(config),  .name##Cfg = config 
 
 extern const GPIOConfig_Handler g_gpioConfigHandler_main;
-// extern const GPIOConfig_Handler g_gpioConfigHandler_net; 
-// extern const GPIOConfig_Handler g_gpioConfigHandler_switch; 
-// extern const GPIOConfig_Handler g_gpioConfigHandler_power; 
-// extern const GPIOConfig_Handler g_gpioConfigHandler_storage0; 
+extern const GPIOConfig_Handler g_gpioConfigHandler_net; 
+extern const GPIOConfig_Handler g_gpioConfigHandler_switch; 
+extern const GPIOConfig_Handler g_gpioConfigHandler_power; 
+extern const GPIOConfig_Handler g_gpioConfigHandler_storage0; 
 
 void      GPIO_bspInit     (void);
 uint8_t   get_board_addr     (void);

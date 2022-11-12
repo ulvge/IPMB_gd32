@@ -40,6 +40,6 @@ static void DevTaskHandler(void *pArg)
     while (1)
     {
         vTaskDelay(2000);
-        LOG_E("filename = %s, line = %d", __FILE__, __LINE__);
+        LOG_D("filename = %s, line = %d", __FILE__, __LINE__);
     }
 }

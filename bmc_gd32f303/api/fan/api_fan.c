@@ -69,7 +69,6 @@ int32_t fan_getFanNum(void)
 }
 void fan_init(void)
 {
-
     for(int32_t i = 0; i < SIZE_FAN_CONFIG; i++)
     {
         FanStruct *pFan = &g_Fan[i];

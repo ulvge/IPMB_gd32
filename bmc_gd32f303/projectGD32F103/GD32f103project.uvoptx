@@ -187,12 +187,17 @@
           <WinNumber>2</WinNumber>
           <ItemText>temp</ItemText>
         </Ww>
+        <Ww>
+          <count>5</count>
+          <WinNumber>2</WinNumber>
+          <ItemText>pstr</ItemText>
+        </Ww>
       </WatchWindow2>
       <MemoryWindow1>
         <Mm>
           <WinNumber>1</WinNumber>
           <SubType>8</SubType>
-          <ItemText>argv[i]</ItemText>
+          <ItemText>\\bmc_rom\../api/tools/cJSON.c\cJSON_printFormat\buffer[0].buffer</ItemText>
           <AccSizeX>0</AccSizeX>
         </Mm>
       </MemoryWindow1>

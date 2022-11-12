@@ -54,7 +54,7 @@ extern void SystemInit(void);
 extern void SystemCoreClockUpdate(void);
 
 //#define configTOTAL_HEAP_SIZE					((size_t)(10*1024))
-#define configTOTAL_HEAP_SIZE					((size_t)(9*1024+ 7*0x100))
+#define configTOTAL_HEAP_SIZE					((size_t)(9*1024+ 6*0x100 + 0xA0))
 #ifdef __cplusplus
 }
 #endif

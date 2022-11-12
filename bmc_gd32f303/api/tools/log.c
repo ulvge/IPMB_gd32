@@ -62,7 +62,7 @@ static void display_usage(void)
 
     LOG_RAW("\n*** log Functions ***\r\n");
     LOG_RAW("\t-get: get the current log print level\r\n");
-    LOG_RAW("\t-set <level>:get the current log print level \r\n");
+    LOG_RAW("\t-set <level>:set the current log print level \r\n");
     LOG_RAW("\t\t level %d : DBG_ERROR  \r\n", DBG_ERROR);
     LOG_RAW("\t\t level %d : DBG_WARNING  \r\n", DBG_WARNING);
     LOG_RAW("\t\t level %d : DBG_INFO  \r\n", DBG_INFO);

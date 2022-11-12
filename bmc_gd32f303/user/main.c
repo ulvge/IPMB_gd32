@@ -109,7 +109,6 @@ int main(void)
 
     UART_init();
     GPIO_bspInit();
-    GPIO_setPinStatus(GPIO_OUT_LED_GREEN, ENABLE);
     LOG_I("%s", projectInfo);
     g_utc_time_bmc_firmware_build = currentSecsSinceEpoch(__DATE__, __TIME__);
     g_bmc_firmware_version = GetBmcFirmwareVersion(BMC_VERSION);
@@ -138,7 +137,7 @@ void start_task(void *pvParameters)
     taskENTER_CRITICAL();
 
    if (errCOULD_NOT_ALLOCATE_REQUIRED_MEMORY == 
-       xTaskCreate(Dev_Task, "dev_task", configMINIMAL_STACK_SIZE * 2, NULL, DEV_TASK_PRIO, NULL)) {
+       xTaskCreate(Dev_Task, "dev_task", configMINIMAL_STACK_SIZE, NULL, DEV_TASK_PRIO, NULL)) {
        errCreateTask |= 1;
    }
    if (errCOULD_NOT_ALLOCATE_REQUIRED_MEMORY == 

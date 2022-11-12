@@ -42,16 +42,13 @@ static void ChassisCtrlTimerCallBack(xTimerHandle pxTimer)
     switch (cmd)
     {
         case CHASSIS_SOFT_OFF :
-        case CHASSIS_POWER_OFF :
-            GPIO_setPinStatus(GPIO_OUT_CPU_POWER_OFF, DISABLE);    
+        case CHASSIS_POWER_OFF :   
 			LOG_W("ChassisCtrl : CHASSIS_POWER_OFF\n");
 			break;
         case CHASSIS_POWER_ON :
-            GPIO_setPinStatus(GPIO_OUT_CPU_POWER_ON, DISABLE);   
 			LOG_W("ChassisCtrl : CHASSIS_POWER_ON\n");
 			break;
-        case CHASSIS_POWER_RESET :
-            GPIO_setPinStatus(GPIO_OUT_CPU_RESET, DISABLE);   
+        case CHASSIS_POWER_RESET : 
 			LOG_W("ChassisCtrl : CHASSIS_POWER_RESET\n");
 	        NVIC_SystemReset();
 			break;
@@ -74,13 +71,10 @@ void ChassisCtrl(SamllMsgPkt_T *msg)
     {   
         case CHASSIS_SOFT_OFF :
         case CHASSIS_POWER_OFF :
-            GPIO_setPinStatus(GPIO_OUT_CPU_POWER_OFF, ENABLE);
 			break;
         case CHASSIS_POWER_ON :
-            GPIO_setPinStatus(GPIO_OUT_CPU_POWER_ON, ENABLE);
 			break;
         case CHASSIS_POWER_RESET :
-            GPIO_setPinStatus(GPIO_OUT_CPU_RESET, ENABLE);
 			break;
         default :
 			LOG_E("Sorry, CMD doesn't support it yet\n");

@@ -7,7 +7,8 @@
 static void DevTaskHandler(void *pArg);
 // config GPIO
 const static GPIOConfig g_gpioConfig_storage0[] = {
-    {GPIO_IN_GAP0,            GPIOG, GPIO_PIN_9, RCU_GPIOG, GPIO_MODE_IPD, GPIO_OSPEED_10MHZ, 0},
+    {GPIO_OUT_P3V3_EN,      GPIOB, GPIO_PIN_12, RCU_GPIOB, GPIO_MODE_IN_FLOATING, GPIO_OSPEED_10MHZ, 1}, //unused
+    {GPIO_IN_P3V3_PWRGD,    GPIOB, GPIO_PIN_13, RCU_GPIOB, GPIO_MODE_IN_FLOATING, GPIO_OSPEED_10MHZ, 1}, //unused
 };
 
 const GPIOConfig_Handler g_gpioConfigHandler_storage0 = {
@@ -18,12 +19,18 @@ const GPIOConfig_Handler g_gpioConfigHandler_storage0 = {
 // config ADC
 static const  ADCChannlesConfig g_adcChannlConfig_storage0[] = {
     {ADC_CHANNEL_10,        ADC0, RCU_ADC0, GPIOC, RCU_GPIOC, GPIO_PIN_0},
+    {ADC_CHANNEL_11,        ADC0, RCU_ADC0, GPIOC, RCU_GPIOC, GPIO_PIN_1},
+    {ADC_CHANNEL_5,         ADC0, RCU_ADC0, GPIOA, RCU_GPIOA, GPIO_PIN_5},
+    {ADC_CHANNEL_6,         ADC0, RCU_ADC0, GPIOA, RCU_GPIOA, GPIO_PIN_6},
 };
 static SubDevice_Reading_T g_adcVal_storage0[ARRARY_SIZE(g_adcChannlConfig_storage0)];
 
 // config Sensor
 static const  SensorConfig g_sensor_storage0[] = {
-    {ADC_CHANNEL_10,         SUB_DEVICE_SDR_TEMP,        "X100_temp"},
+    {ADC_CHANNEL_10,        SUB_DEVICE_SDR_P3V3,        "P3V3"},
+    {ADC_CHANNEL_11,        SUB_DEVICE_SDR_P2V5,        "P3V3_STBY"},
+    {ADC_CHANNEL_5,         SUB_DEVICE_SDR_TEMP,        "WORKING_TEMP"},
+    {ADC_CHANNEL_6,         SUB_DEVICE_SDR_P12V,        "P12V"},
 };
 static SubDevice_Reading_T g_sensorVal_storage0[ARRARY_SIZE(g_sensor_storage0)];
 const Dev_Handler g_devHandler_storage0 = {
@@ -40,7 +47,8 @@ static void DevTaskHandler(void *pArg)
     while (1)
     {
         vTaskDelay(2000);
-        LOG_E("filename = %s, line = %d", __FILE__, __LINE__);
+        LOG_D("filename = %s, line = %d", __FILE__, __LINE__);
+        vTaskDelete(NULL);
     }
 }
 

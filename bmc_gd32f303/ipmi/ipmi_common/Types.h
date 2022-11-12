@@ -89,8 +89,9 @@ typedef bool   BOOL ;
 #define  KEY_LF                        	0x0A
 #define  KEY_DEL                   		0x08      //Del!
 typedef unsigned char  BOOLEAN;    
-
-
+#ifndef UNUSED
+#define UNUSED(x) (void)(x)
+#endif
 
 #define uint8 INT8U
 #define uint16 INT16U
