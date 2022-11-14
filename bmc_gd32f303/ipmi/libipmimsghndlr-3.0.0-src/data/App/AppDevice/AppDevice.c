@@ -738,13 +738,13 @@ SendMessage (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst)
     // send msg ipmb
     err = xQueueSend(ResponseDatMsg_Queue, (char*)&MsgReq, 50);
     if(err == pdFALSE){
-        LOG_E("sendmessage send failed.");
+        LOG_E("sendmessage send failed.\n");
          pRes[0] = CC_NO_ACK_FROM_SLAVE;
          return 1;
     }
     err = xQueueReceive(RecvForwardI2CDatMsg_Queue, buff, 50);
     if(err == pdFALSE){
-        LOG_E("sendmessage recv failed.");
+        LOG_E("sendmessage recv failed.\n");
         pRes[0] = CC_NO_ACK_FROM_SLAVE;
         return 1;
     }

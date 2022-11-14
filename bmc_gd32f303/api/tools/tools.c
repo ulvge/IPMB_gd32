@@ -199,23 +199,27 @@ static int do_reset(uint8_t bus)
 {
     switch (bus)
     {
-    case 0:
+    case I2C_BUS_0:
         i2c_deinit(I2C0);
         i2c_channel_init(I2C0);
         LOG_I("I2C0 reset");
         break;
-    case 1:
+    case I2C_BUS_1:
         i2c_deinit(I2C1);
         i2c_channel_init(I2C1);
         LOG_I("I2C1 reset");
         break;
 	#ifdef I2C2
-    case 2:
+    case I2C_BUS_2:
         i2c_deinit(I2C2);
         i2c_channel_init(I2C2);
         LOG_I("I2C2 reset");
         break;
 	#endif
+    case I2C_BUS_S0:
+        i2c_channel_init(I2C_BUS_S0);
+        LOG_I("I2C_BUS_S0 reset");
+        break;
     default:
         break;
     }
@@ -231,7 +235,7 @@ static int do_scan(uint8_t bus)
     int retval, k;
     int j = (uint8_t)0;
     uint8_t valid_slaves[Max_SALVES];
-    LOG_I("Scanning the I2C Bus...\n\r");
+    LOG_RAW("Scanning the I2C Bus...\n\r");
 
     // Valid Address 7-bit Range
     for (k = 0x00; k <= 0x7F; k += 1)
@@ -240,12 +244,12 @@ static int do_scan(uint8_t bus)
         retval = (int)i2c_write(bus, write_buffer, 1);
 
         if ((k % 16) == 0) {
-            LOG_W("\n 0x%d0\t", k / 16);
+            LOG_RAW("\n 0x%d0\t", k / 16);
             vTaskDelay(20);
 		}
         if (retval > 0)
         {
-            LOG_W("% 2s", "X");
+            LOG_RAW("% 2s", "X");
 
             if (j < Max_SALVES)
             {
@@ -255,18 +259,18 @@ static int do_scan(uint8_t bus)
         }
         else
         {
-            LOG_W("% 2s", ".");
+            LOG_RAW("% 2s", ".");
         }
 
     }
 
-    LOG_W("\nDone!  Found %i valid slave address(es)\n\r", (int)j);
+    LOG_RAW("\nDone!  Found %i valid slave address(es)\n\r", (int)j);
     if (j != 0) {
-		LOG_W("Slave list:\n\r");
+		LOG_RAW("Slave list:\n\r");
 	}
     /*@-usedef@*/
     for (k = 0; k < (int)j; k += 1)
-        LOG_W("0x%02x\n\r", (unsigned int)valid_slaves[k] << 1);
+        LOG_RAW("0x%02x\n\r", (unsigned int)valid_slaves[k] << 1);
 
     return true;
 }
@@ -379,7 +383,7 @@ __attribute__((unused)) void StackFlow(void)
 
 void Delay_NoSchedue(uint32_t clk)
 {
-	for (uint32_t i = 0; i < clk; i++) {
+    for (uint32_t i = 0; i < clk; i++) {
         ;
     }
 }

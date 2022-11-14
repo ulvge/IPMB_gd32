@@ -18,7 +18,6 @@ const static GPIOConfig g_gpioConfigComm[] = {
     {GPIO_IN_GAP0, GPIOE, GPIO_PIN_2, RCU_GPIOE, GPIO_MODE_IPU, GPIO_OSPEED_10MHZ, 0},
     {GPIO_IN_GAP1, GPIOE, GPIO_PIN_3, RCU_GPIOE, GPIO_MODE_IPU, GPIO_OSPEED_10MHZ, 0},
     {GPIO_IN_GAP2, GPIOE, GPIO_PIN_4, RCU_GPIOE, GPIO_MODE_IPU, GPIO_OSPEED_10MHZ, 0},
-    {GPIO_IN_DEBUG,GPIOA, GPIO_PIN_11, RCU_GPIOA, GPIO_MODE_IN_FLOATING, GPIO_OSPEED_10MHZ, 0},
 };
 
 const static GPIOConfig_Handler *g_pGpioConfig_Handler = NULL;
@@ -168,7 +167,7 @@ uint8_t get_board_addr()
     addr |= GPIO_getPinStatus(GPIO_IN_GAP1) << 1;
     addr |= GPIO_getPinStatus(GPIO_IN_GAP2) << 2;
 
-    return 0;
+    return SUB_DEVICE_MODE_POWER;
 }
 
 

@@ -45,7 +45,7 @@ static SubDevice_Reading_T g_adcVal_power[ARRARY_SIZE(g_adcChannlConfig_power)];
 static const  SensorConfig g_sensor_power[] = {
     {ADC_CHANNEL_13,        SUB_DEVICE_SDR_P3V3,       "P3V3_AUX"},
     {ADC_CHANNEL_1,         SUB_DEVICE_SDR_P5V,        "P5V"},
-    {ADC_CHANNEL_2,         SUB_DEVICE_SDR_P3V3,       "VBAT"},
+    {ADC_CHANNEL_2,         SUB_DEVICE_SDR_VBAT,       "VBAT"},
     {ADC_CHANNEL_5,         SUB_DEVICE_SDR_TEMP,       "WORKING_TEMP"},
     {ADC_CHANNEL_6,         SUB_DEVICE_SDR_P12V,       "P12V"},
     {ADC_CHANNEL_7,         SUB_DEVICE_SDR_P3V3,       "P3V3"},

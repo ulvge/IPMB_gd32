@@ -530,7 +530,7 @@ typedef struct
  //   HAL_T HALConfig;
     FRU_T FRUConfig;
 //    UDS_T UDSConfig;
-    SERIAL_T SerialConfig;
+    //SERIAL_T SerialConfig;
 //    DCMI_T DCMIConfig;
 //    NMInfo_T NMConfig;
 //    WDT_T WDTCfg;

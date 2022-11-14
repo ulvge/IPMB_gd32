@@ -294,7 +294,7 @@ FullSensorRec_T   g_sensor_sdr[] =
 		.IDStr                = "P1V8_VCORE",
 	},
 
-	{	 /* SDR Record    0x05   "VBAT"   SUB_DEVICE_SDR_P3V3 */
+	{	 /* SDR Record    0x05   "P3V3"   SUB_DEVICE_SDR_P3V3 */
 		.hdr.ID               = 0x0005,
 		.hdr.Version          = 0x51,
 		.hdr.Type             = 0x01,
@@ -341,8 +341,8 @@ FullSensorRec_T   g_sensor_sdr[] =
 		.Reserved1            = 0x00,
 		.Reserved2            = 0x00,
 		.OEMField             = SUB_DEVICE_SDR_P3V3,
-		.IDStrTypeLen         = 0xC0 + sizeof("VBAT"),
-		.IDStr                = "VBAT",
+		.IDStrTypeLen         = 0xC0 + sizeof("P3V3"),
+		.IDStr                = "P3V3",
 	},
 
 	{	 /* SDR Record    0x06   "WORKING_TEMP"   SUB_DEVICE_SDR_TEMP */
@@ -598,6 +598,57 @@ FullSensorRec_T   g_sensor_sdr[] =
 		.OEMField             = 0x00,
 		.IDStrTypeLen         = 0xC0 + sizeof("P5V"),
 		.IDStr                = "P5V",
+	},
+    	
+    {	 /* SDR Record    0x0B   "VBAT"   SUB_DEVICE_SDR_VBAT */
+		.hdr.ID               = 0x000B,
+		.hdr.Version          = 0x51,
+		.hdr.Type             = 0x01,
+		.hdr.Len              = 0x40,
+
+		.OwnerID              = 0x20,
+		.OwnerLUN             = 0x00,
+		.SensorNum            = 0x0B,
+
+		.EntityID             = 0x07,
+		.EntityIns            = 0x03,
+		.SensorInit           = 0x7F,
+		.SensorCaps           = 0x68,
+		.SensorType           = 0x02,
+		.EventTypeCode        = 0x01,
+		.AssertionEventMask   = 0x7A95,
+		.DeAssertionEventMask = 0x7A95,
+		.DiscreteReadingMask  = 0x3F3F,
+		.Units1               = 0x20,
+		.Units2               = IPMI_UNIT_VOLTS,
+		.Units3               = 0x00,
+		.Linearization        = 0x00,
+		.M                    = 0x27,
+		.M_Tolerance          = 0x00,
+		.B                    = 0x00 & 0xff,
+		.B_Accuracy           = 0x3E & 0xFF,
+		.Accuracy             = 0x34,
+		.R_B_Exp              = 0xD0,
+		.Flags                = 0x00,
+		.NominalReading       = 0x00,
+		.NormalMax            = 0x00,
+		.NormalMin            = 0x00,
+		.MaxReading           = 0xFF,
+		.MinReading           = 0x00,
+
+		.UpperNonRecoverable  = 0x6e,
+		.UpperCritical        = 0x66,
+		.UpperNonCritical     = 0x5d,
+		.LowerNonRecoverable  = 0x3b,
+		.LowerCritical        = 0x44,
+		.LowerNonCritical     = 0x4c,
+		.PositiveHysterisis   = 0x00,
+		.NegativeHysterisis   = 0x00,
+		.Reserved1            = 0x00,
+		.Reserved2            = 0x00,
+		.OEMField             = SUB_DEVICE_SDR_VBAT,
+		.IDStrTypeLen         = 0xC0 + sizeof("VBAT"),
+		.IDStr                = "VBAT",
 	},
 
 };

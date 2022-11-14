@@ -35,13 +35,14 @@ bool tmp_init(void)
 {
 	uint8_t res;
 	
-	res = simulated_i2c1_CheckDevice(TMEP1_ADDR);
-	if(res == false)
+	i2cs0_init();
+    res = i2cs0_read_bytes(TMEP1_ADDR, 0, NULL, 0);
+    if(res == false)
 	{
 		LOG_E("SD5075 init failed!");
 	}
 	
-	res = simulated_i2c1_CheckDevice(TMEP2_ADDR);
+    res = i2cs0_read_bytes(TMEP2_ADDR, 0, NULL, 0);
 	if(res == false)
 	{
 		LOG_E("STLM75M2F init failed!");
@@ -64,10 +65,10 @@ bool get_tmp_raw_value(uint8_t channel, int16_t* tmp_value)
 	switch(channel)
 	{
 	case 0:
-		simulated_i2c1_read_bytes(TMEP1_ADDR, SD5075_TEMP_RESULT_REG, value, 2);
+		i2cs0_read_bytes(TMEP1_ADDR, SD5075_TEMP_RESULT_REG, value, 2);
 		break;
 	case 1:
-		simulated_i2c1_read_bytes(TMEP2_ADDR, STLM75M2F_TEMP_RESULT_REG, value, 2);
+		i2cs0_read_bytes(TMEP2_ADDR, STLM75M2F_TEMP_RESULT_REG, value, 2);
 		break;	
 	case 2:
 		simulated_i2c2_read_bytes(TMEP3_ADDR, TMP431A_LOCAL_TEMP_HIGH_READ_REG, &value[0], 1);

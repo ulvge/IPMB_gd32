@@ -68,9 +68,17 @@
     #define I2C2_SDA_GPIO_CLK            RCU_GPIOH
 #endif
 
+typedef enum
+{
+    I2C_BUS_0 = 0,
+    I2C_BUS_1,
+    I2C_BUS_2,
+    I2C_BUS_S0 = 3,
+} I2C_BUS_NUM;
 void i2c_channel_init(uint32_t i2cx);
 void i2c_int(void);
 bool i2c_write(uint32_t bus, const uint8_t *p_buffer, uint16_t len);
+bool i2c_read(uint32_t bus, uint8_t devAddr, uint16_t regAddress, uint8_t *pReadBuf, uint16_t size);
 
 void i2c_set_slave_addr(uint32_t bus, uint8_t device_addr);
 void i2c_dualaddr_set(uint32_t i2c_periph, uint8_t dualaddr);

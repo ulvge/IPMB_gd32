@@ -60,8 +60,8 @@ typedef struct
 typedef struct
 {
     SUB_DEVICE_MODE mode;
-    bool isMain;
-    bool isOnLine;
+    uint8_t isMain : 1;
+    uint8_t isOnLine : 1;
     uint8_t     i2c0SlaveAddr; //8bit
     uint8_t     i2c1SlaveAddr; //8bit
     const char     *name;

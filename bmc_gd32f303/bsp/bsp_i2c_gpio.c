@@ -14,86 +14,100 @@
 
 #include "bsp_i2c_gpio.h"
 #include "tools.h"
+		  
+/********************* GPIO SIMULATED I2C1 MICRO DEF ***************************/
+#define I2CS0_SCL_GPIO_PORT     GPIOB
+#define I2CS0_SCL_CLK           RCU_GPIOB
+#define I2CS0_SCL_PIN           GPIO_PIN_8
 
+#define I2CS0_SDA_GPIO_PORT     GPIOB
+#define I2CS0_SDA_CLK           RCU_GPIOB
+#define I2CS0_SDA_PIN           GPIO_PIN_9
+
+#define I2CS0_SDA_READ() gpio_input_bit_get(I2CS0_SDA_GPIO_PORT, I2CS0_SDA_PIN) /* SDA read */
+/********************* GPIO SIMULATED I2C1 MICRO DEF END***************************/
 
 /*
 *********************************************************************************************************
 local function
 *********************************************************************************************************
 */
-static void i2c1_CfgGpio(void);
-static void i2c2_CfgGpio(void);
+static void i2cs0_CfgGpio(void);
 
 /* simulated i2c1 function declarations */
-static void      i2c1_Start          (void);
-static void      i2c1_Stop           (void);
-static void      i2c1_SendByte       (uint8_t _ucByte);
-static uint8_t   i2c1_ReadByte       (void);
-static uint8_t   i2c1_WaitAck        (void);
-static void      i2c1_Ack            (void);
-static void      i2c1_NAck           (void);
-
-/* simulated i2c2 function declarations */
-static void      i2c2_Start          (void);
-static void      i2c2_Stop           (void);
-static void      i2c2_SendByte       (uint8_t _ucByte);
-static uint8_t   i2c2_ReadByte       (void);
-static uint8_t   i2c2_WaitAck        (void);
-static void      i2c2_Ack            (void);
-static void      i2c2_NAck           (void);
+static void      i2cs0_Start          (void);
+static void      i2cs0_SendByte       (uint8_t _ucByte);
+static uint8_t   i2cs0_ReadByte       (void);
+static uint8_t   i2cs0_WaitAck        (void);
+static void      i2cs0_Ack            (void);
+static void      i2cs0_NAck           (void);
 
 /*
 *********************************************************************************************************
 *********************************************************************************************************
 */
-static void i2c_Delay(void)
+static void i2cs0_Delay(uint32_t clk)
 {
-    Delay_NoSchedue(15);
+    Delay_NoSchedue(clk);
 }
 
+static void I2CS0_SCL_1(void)
+{
+    gpio_bit_set(I2CS0_SCL_GPIO_PORT, I2CS0_SCL_PIN); /* SCL = 1 */
+    i2cs0_Delay(25);
+}
+static void I2CS0_SCL_0(void)
+{
+    gpio_bit_reset(I2CS0_SCL_GPIO_PORT, I2CS0_SCL_PIN); /* SCL = 0 */
+    i2cs0_Delay(15);
+}
+
+static void I2CS0_SDA_1(void)
+{
+    gpio_bit_set(I2CS0_SCL_GPIO_PORT, I2CS0_SDA_PIN); /* SDA = 1 */
+    i2cs0_Delay(15);
+}
+static void I2CS0_SDA_0(void)
+{
+    gpio_bit_reset(I2CS0_SCL_GPIO_PORT, I2CS0_SDA_PIN); /* SDA = 0 */
+    i2cs0_Delay(15);
+}
 /*
 *********************************************************************************************************
 
 *********************************************************************************************************
 */
-static void i2c1_CfgGpio(void)
+static void i2cs0_CfgGpio(void)
 {
 	/* enable the led clock */
-	rcu_periph_clock_enable(macI2C1_CLK);
+	rcu_periph_clock_enable(I2CS0_SCL_CLK);
+	rcu_periph_clock_enable(I2CS0_SDA_CLK);
 	/* configure led GPIO port */ 
-	gpio_init(macI2C1_GPIO_PORT, GPIO_MODE_OUT_PP, GPIO_OSPEED_50MHZ, macI2C1_SCL_PIN | macI2C1_SDA_PIN);
+	gpio_init(I2CS0_SCL_GPIO_PORT, GPIO_MODE_OUT_OD, GPIO_OSPEED_50MHZ, I2CS0_SCL_PIN);
+	gpio_init(I2CS0_SDA_GPIO_PORT, GPIO_MODE_OUT_OD, GPIO_OSPEED_50MHZ, I2CS0_SDA_PIN);
 
-	i2c1_Stop();
+	i2cs0_Stop();
 }
-
 /*
 *********************************************************************************************************
 
 *********************************************************************************************************
 */
-static void i2c1_Start(void)
+void i2cs0_set_address(uint8_t _Address)
 {
 
-	macI2C1_SDA_1();
-	macI2C1_SCL_1();
-	i2c_Delay();
-	macI2C1_SDA_0();
-	i2c_Delay();
-	macI2C1_SCL_0();
-	i2c_Delay();
 }
-
 /*
 *********************************************************************************************************
 
 *********************************************************************************************************
 */
-static void i2c1_Stop(void)
+static void i2cs0_Start(void)
 {
-	macI2C1_SDA_0();
-	macI2C1_SCL_1();
-	i2c_Delay();
-	macI2C1_SDA_1();
+	I2CS0_SDA_1();
+	I2CS0_SCL_1();
+	I2CS0_SDA_0();
+	I2CS0_SCL_0();
 }
 
 /*
@@ -101,7 +115,19 @@ static void i2c1_Stop(void)
 
 *********************************************************************************************************
 */
-static void i2c1_SendByte(uint8_t _ucByte)
+void i2cs0_Stop(void)
+{
+	I2CS0_SDA_0();
+	I2CS0_SCL_1();
+	I2CS0_SDA_1();
+}
+
+/*
+*********************************************************************************************************
+
+*********************************************************************************************************
+*/
+static void i2cs0_SendByte(uint8_t _ucByte)
 {
 	uint8_t i;
 
@@ -109,22 +135,19 @@ static void i2c1_SendByte(uint8_t _ucByte)
 	{		
 		if (_ucByte & 0x80)
 		{
-			macI2C1_SDA_1();
+			I2CS0_SDA_1();
 		}
 		else
 		{
-			macI2C1_SDA_0();
+			I2CS0_SDA_0();
 		}
-		i2c_Delay();
-		macI2C1_SCL_1();
-		i2c_Delay();	
-		macI2C1_SCL_0();
+		I2CS0_SCL_1();	
+		I2CS0_SCL_0();
 		if (i == 7)
 		{
-			 macI2C1_SDA_1(); 
+			 I2CS0_SDA_1(); 
 		}
 		_ucByte <<= 1;	
-		i2c_Delay();
 	}
 }
 
@@ -133,7 +156,7 @@ static void i2c1_SendByte(uint8_t _ucByte)
 
 *********************************************************************************************************
 */
-static uint8_t i2c1_ReadByte(void)
+static uint8_t i2cs0_ReadByte(void)
 {
 	uint8_t i;
 	uint8_t value;
@@ -142,14 +165,12 @@ static uint8_t i2c1_ReadByte(void)
 	for (i = 0; i < 8; i++)
 	{
 		value <<= 1;
-		macI2C1_SCL_1();
-		i2c_Delay();
-		if (macI2C1_SDA_READ())
+		I2CS0_SCL_1();
+		if (I2CS0_SDA_READ())
 		{
 			value++;
 		}
-		macI2C1_SCL_0();
-		i2c_Delay();
+		I2CS0_SCL_0();
 	}
 	return value;
 }
@@ -159,15 +180,13 @@ static uint8_t i2c1_ReadByte(void)
 
 *********************************************************************************************************
 */
-static uint8_t i2c1_WaitAck(void)
+static uint8_t i2cs0_WaitAck(void)
 {
 	uint8_t re;
 
-	macI2C1_SDA_1();	
-	i2c_Delay();
-	macI2C1_SCL_1();
-	i2c_Delay();
-	if (macI2C1_SDA_READ())	
+	I2CS0_SDA_1();	
+	I2CS0_SCL_1();
+	if (I2CS0_SDA_READ())	
 	{
 		re = 1;
 	}
@@ -175,8 +194,7 @@ static uint8_t i2c1_WaitAck(void)
 	{
 		re = 0;
 	}
-	macI2C1_SCL_0();
-	i2c_Delay();
+	I2CS0_SCL_0();
 	return re;
 }
 
@@ -185,15 +203,12 @@ static uint8_t i2c1_WaitAck(void)
 
 *********************************************************************************************************
 */
-static void i2c1_Ack(void)
+static void i2cs0_Ack(void)
 {
-	macI2C1_SDA_0();	
-	i2c_Delay();
-	macI2C1_SCL_1();
-	i2c_Delay();
-	macI2C1_SCL_0();
-	i2c_Delay();
-	macI2C1_SDA_1();	
+	I2CS0_SDA_0();	
+	I2CS0_SCL_1();
+	I2CS0_SCL_0();
+	I2CS0_SDA_1();	
 }
 
 /*
@@ -201,14 +216,11 @@ static void i2c1_Ack(void)
 
 *********************************************************************************************************
 */
-static void i2c1_NAck(void)
+static void i2cs0_NAck(void)
 {
-	macI2C1_SDA_1();	
-	i2c_Delay();
-	macI2C1_SCL_1();
-	i2c_Delay();
-	macI2C1_SCL_0();
-	i2c_Delay();	
+	I2CS0_SDA_1();	
+	I2CS0_SCL_1();
+	I2CS0_SCL_0();	
 }
 
 /*
@@ -216,33 +228,10 @@ static void i2c1_NAck(void)
 
 *********************************************************************************************************
 */
-uint8_t simulated_i2c1_CheckDevice(uint8_t _Address)
+void i2cs0_init(void)
 {
-	uint8_t ucAck;
-
-	i2c1_CfgGpio();		
-	i2c1_Start();	
-	i2c1_SendByte(_Address | macI2C_WR);
-	ucAck = i2c1_WaitAck();	
-	i2c1_Stop();		
-
-	return ucAck;
-}
-
-
-/*
-*****************************************************************************
-I2C2 functions
-*********************************************************************************************************
-*/
-static void i2c2_CfgGpio(void)
-{
-	/* enable the led clock */
-	rcu_periph_clock_enable(macI2C2_CLK);
-	/* configure led GPIO port */ 
-	gpio_init(macI2C2_GPIO_PORT, GPIO_MODE_OUT_PP, GPIO_OSPEED_50MHZ, macI2C2_SCL_PIN | macI2C2_SDA_PIN);
-
-	i2c2_Stop();
+	i2cs0_CfgGpio();		
+	i2cs0_Stop();
 }
 
 /*
@@ -250,218 +239,56 @@ static void i2c2_CfgGpio(void)
 
 *********************************************************************************************************
 */
-static void i2c2_Start(void)
-{
-
-	macI2C2_SDA_1();
-	macI2C2_SCL_1();
-	i2c_Delay();
-	macI2C2_SDA_0();
-	i2c_Delay();
-	macI2C2_SCL_0();
-	i2c_Delay();
-}
-
-/*
-*********************************************************************************************************
-
-*********************************************************************************************************
-*/
-static void i2c2_Stop(void)
-{
-	macI2C2_SDA_0();
-	macI2C2_SCL_1();
-	i2c_Delay();
-	macI2C2_SDA_1();
-}
-
-/*
-*********************************************************************************************************
-
-*********************************************************************************************************
-*/
-static void i2c2_SendByte(uint8_t _ucByte)
-{
-	uint8_t i;
-
-	for (i = 0; i < 8; i++)
-	{		
-		if (_ucByte & 0x80)
-		{
-			macI2C2_SDA_1();
-		}
-		else
-		{
-			macI2C2_SDA_0();
-		}
-		i2c_Delay();
-		macI2C2_SCL_1();
-		i2c_Delay();	
-		macI2C2_SCL_0();
-		if (i == 7)
-		{
-			 macI2C2_SDA_1(); 
-		}
-		_ucByte <<= 1;	
-		i2c_Delay();
-	}
-}
-
-/*
-*********************************************************************************************************
-
-*********************************************************************************************************
-*/
-static uint8_t i2c2_ReadByte(void)
-{
-	uint8_t i;
-	uint8_t value;
-
-	value = 0;
-	for (i = 0; i < 8; i++)
-	{
-		value <<= 1;
-		macI2C2_SCL_1();
-		i2c_Delay();
-		if (macI2C2_SDA_READ())
-		{
-			value++;
-		}
-		macI2C2_SCL_0();
-		i2c_Delay();
-	}
-	return value;
-}
-
-/*
-*********************************************************************************************************
-
-*********************************************************************************************************
-*/
-static uint8_t i2c2_WaitAck(void)
-{
-	uint8_t re;
-
-	macI2C2_SDA_1();	
-	i2c_Delay();
-	macI2C2_SCL_1();
-	i2c_Delay();
-	if (macI2C2_SDA_READ())	
-	{
-		re = 1;
-	}
-	else
-	{
-		re = 0;
-	}
-	macI2C2_SCL_0();
-	i2c_Delay();
-	return re;
-}
-
-/*
-*********************************************************************************************************
-
-*********************************************************************************************************
-*/
-static void i2c2_Ack(void)
-{
-	macI2C2_SDA_0();	
-	i2c_Delay();
-	macI2C2_SCL_1();
-	i2c_Delay();
-	macI2C2_SCL_0();
-	i2c_Delay();
-	macI2C2_SDA_1();	
-}
-
-/*
-*********************************************************************************************************
-
-*********************************************************************************************************
-*/
-static void i2c2_NAck(void)
-{
-	macI2C2_SDA_1();	
-	i2c_Delay();
-	macI2C2_SCL_1();
-	i2c_Delay();
-	macI2C2_SCL_0();
-	i2c_Delay();	
-}
-
-/*
-*********************************************************************************************************
-
-*********************************************************************************************************
-*/
-uint8_t simulated_i2c2_CheckDevice(uint8_t _Address)
-{
-	uint8_t ucAck;
-
-	i2c2_CfgGpio();		
-	i2c2_Start();	
-	i2c2_SendByte(_Address | macI2C_WR);
-	ucAck = i2c2_WaitAck();	
-	i2c2_Stop();		
-
-	return ucAck;
-}
-
-
-
-/*
-*********************************************************************************************************
-
-*********************************************************************************************************
-*/
-bool simulated_i2c1_read_bytes(uint8_t dev_addr, uint16_t _usAddress, uint8_t *_pReadBuf, uint16_t _usSize)
+bool i2cs0_read_bytes(uint8_t dev_addr, uint16_t _usAddress, uint8_t *_pReadBuf, uint16_t _usSize)
 {
 	uint16_t i;
 
-	i2c1_Start();
-	i2c1_SendByte(dev_addr | macI2C_WR);	
+	i2cs0_Start();
+	i2cs0_SendByte(dev_addr | I2CS_WR);	
 	
-	if (i2c1_WaitAck() != 0)
+	if (i2cs0_WaitAck() != 0)
 	{
 		goto cmd_fail;	
 	}
-
-	i2c1_SendByte((uint8_t)_usAddress);
+    if ((_usSize == 0) || (_pReadBuf == NULL)) {
+        i2cs0_Stop();
+        return true;	
+    }
+	i2cs0_SendByte((uint8_t)_usAddress);
 	
-	if (i2c1_WaitAck() != 0)
+	if (i2cs0_WaitAck() != 0)
 	{
 		goto cmd_fail;	
 	}
 	
 
-	i2c1_Start();
-	i2c1_SendByte(dev_addr | macI2C_RD);	
+	i2cs0_Start();
+	i2cs0_SendByte(dev_addr | I2CS_RD);	
 	
-	if (i2c1_WaitAck() != 0)
+	if (i2cs0_WaitAck() != 0)
 	{
 		goto cmd_fail;
 	}	
 	
 	for (i = 0; i < _usSize; i++)
 	{
-		_pReadBuf[i] = i2c1_ReadByte();
+		_pReadBuf[i] = i2cs0_ReadByte();
 		
 		if (i != _usSize - 1)
 		{
-			i2c1_Ack();	
+			i2cs0_Ack();	
 		}
 		else
 		{
-			i2c1_NAck();	
+			i2cs0_NAck();	
 		}
 	}
 
-	i2c1_Stop();
+	i2cs0_Stop();
 	return true;	
 
 cmd_fail: 
-	i2c1_Stop();
+	i2cs0_Stop();
 	return false;
 }
 
@@ -470,7 +297,7 @@ cmd_fail:
 
 *********************************************************************************************************
 */
-bool simulated_i2c1_write_bytes(uint8_t dev_addr, uint16_t _usAddress, uint8_t *_pWriteBuf, uint16_t _usSize)
+bool i2cs0_write_bytes(uint8_t dev_addr, uint16_t _usAddress, const uint8_t *_pWriteBuf, uint16_t _usSize)
 {
 	uint16_t i,m;
 	uint16_t usAddr;
@@ -480,14 +307,14 @@ bool simulated_i2c1_write_bytes(uint8_t dev_addr, uint16_t _usAddress, uint8_t *
 	{
 		if (i == 0)
 		{
-			i2c1_Stop();
+			i2cs0_Stop();
 			
 			for (m = 0; m < 1000; m++)
 			{				
-				i2c1_Start();
-				i2c1_SendByte(dev_addr | macI2C_WR);	
+				i2cs0_Start();
+				i2cs0_SendByte(dev_addr | I2CS_WR);	
 
-				if (i2c1_WaitAck() == 0)
+				if (i2cs0_WaitAck() == 0)
 				{
 					break;
 				}
@@ -497,17 +324,17 @@ bool simulated_i2c1_write_bytes(uint8_t dev_addr, uint16_t _usAddress, uint8_t *
 				goto cmd_fail;	
 			}
 		
-			i2c1_SendByte((uint8_t)usAddr);
+			i2cs0_SendByte((uint8_t)usAddr);
 
-			if (i2c1_WaitAck() != 0)
+			if (i2cs0_WaitAck() != 0)
 			{
 				goto cmd_fail;	
 			}
 		}
 	
-		i2c1_SendByte(_pWriteBuf[i]);
+		i2cs0_SendByte(_pWriteBuf[i]);
 
-		if (i2c1_WaitAck() != 0)
+		if (i2cs0_WaitAck() != 0)
 		{
 			goto cmd_fail;
 		}
@@ -515,123 +342,10 @@ bool simulated_i2c1_write_bytes(uint8_t dev_addr, uint16_t _usAddress, uint8_t *
 		usAddr++;			
 	}
 	
-	i2c1_Stop();
+	i2cs0_Stop();
 	return true;
 
 cmd_fail: 
-	i2c1_Stop();
-	return false;
-}
-
-/*
-*********************************************************************************************************
-
-*********************************************************************************************************
-*/
-bool simulated_i2c2_read_bytes(uint8_t dev_addr, uint16_t _usAddress, uint8_t *_pReadBuf, uint16_t _usSize)
-{
-	uint16_t i;
-
-	i2c2_Start();
-	i2c2_SendByte(dev_addr | macI2C_WR);	
-	
-	if (i2c2_WaitAck() != 0)
-	{
-		goto cmd_fail;	
-	}
-
-	i2c2_SendByte((uint8_t)_usAddress);
-	
-	if (i2c2_WaitAck() != 0)
-	{
-		goto cmd_fail;	
-	}
-	
-
-	i2c2_Start();
-	i2c2_SendByte(dev_addr | macI2C_RD);	
-	
-	if (i2c2_WaitAck() != 0)
-	{
-		goto cmd_fail;
-	}	
-	
-	for (i = 0; i < _usSize; i++)
-	{
-		_pReadBuf[i] = i2c2_ReadByte();
-		
-		if (i != _usSize - 1)
-		{
-			i2c2_Ack();	
-		}
-		else
-		{
-			i2c2_NAck();	
-		}
-	}
-
-	i2c2_Stop();
-	return true;	
-
-cmd_fail: 
-	i2c2_Stop();
-	return false;
-}
-
-/*
-*********************************************************************************************************
-
-*********************************************************************************************************
-*/
-bool simulated_i2c2_write_bytes(uint8_t dev_addr, uint16_t _usAddress, uint8_t *_pWriteBuf, uint16_t _usSize)
-{
-	uint16_t i,m;
-	uint16_t usAddr;
-
-	usAddr = _usAddress;	
-	for (i = 0; i < _usSize; i++)
-	{
-		if (i == 0)
-		{
-			i2c2_Stop();
-			
-			for (m = 0; m < 1000; m++)
-			{				
-				i2c2_Start();
-				i2c2_SendByte(dev_addr | macI2C_WR);	
-
-				if (i2c2_WaitAck() == 0)
-				{
-					break;
-				}
-			}
-			if (m  == 1000)
-			{
-				goto cmd_fail;	
-			}
-		
-			i2c2_SendByte((uint8_t)usAddr);
-
-			if (i2c2_WaitAck() != 0)
-			{
-				goto cmd_fail;	
-			}
-		}
-	
-		i2c2_SendByte(_pWriteBuf[i]);
-
-		if (i2c2_WaitAck() != 0)
-		{
-			goto cmd_fail;
-		}
-
-		usAddr++;			
-	}
-	
-	i2c2_Stop();
-	return true;
-
-cmd_fail: 
-	i2c2_Stop();
+	i2cs0_Stop();
 	return false;
 }

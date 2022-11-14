@@ -16,6 +16,7 @@
 #include "systick.h"
 #include "IPMIConf.h"        
 #include "api_subdevices.h"
+#include "bsp_i2c_gpio.h"
 
 #define USE_I2C0_AS_IPMB 1
 #define USE_I2C1_AS_IPMB 1
@@ -60,6 +61,7 @@ void i2c_int(void)
 #ifdef I2C2
     i2c_channel_init(I2C2); 
 #endif
+    i2c_channel_init(I2C_BUS_S0);
 }
 
 void i2c_channel_init(uint32_t i2cx)
@@ -78,6 +80,9 @@ void i2c_channel_init(uint32_t i2cx)
         LOG_I("i2c2_int");
         break;
 #endif
+    case I2C_BUS_S0:
+        i2cs0_init();
+        break;
     default:
         break;
     }
@@ -1028,22 +1033,45 @@ static void i2c_set_as_slave_device_addr(uint32_t i2c_periph, uint8_t device_add
     i2c_ack_config(i2c_periph, I2C_ACK_ENABLE);
 }
 
-bool i2c_write(uint32_t bus, const uint8_t *p_buffer, uint16_t len)
+bool i2c_read(uint32_t bus, uint8_t devAddr, uint16_t regAddress, uint8_t *pReadBuf, uint16_t size)
 {
     switch (bus)
     {
-        case 0:
+        case I2C_BUS_0:
+        case I2C0:
+        case I2C_BUS_1:
+        case I2C1:
+    #ifdef I2C2
+        case 2:
+        case I2C2:
+    #endif
+			return false;
+        case I2C_BUS_S0:
+            return i2cs0_read_bytes(devAddr, regAddress, pReadBuf, size);
+        default:
+			return false;
+    }
+}
+bool i2c_write(uint32_t bus, const uint8_t *p_buffer, uint16_t len)
+{
+    uint16_t regAddr;
+    switch (bus)
+    {
+        case I2C_BUS_0:
         case I2C0:
             return i2c_bytes_write(I2C0, p_buffer[0], &p_buffer[1], len-1, 20000);
-        case 1:
+        case I2C_BUS_1:
         case I2C1:
             return i2c_bytes_write(I2C1, p_buffer[0], &p_buffer[1], len-1, 20000);
-        
+
     #ifdef I2C2
         case 2:
         case I2C2:
             return i2c_bytes_write(I2C2, p_buffer[0], &p_buffer[1], len-1, 20000);
     #endif   
+        case I2C_BUS_S0:
+            regAddr = p_buffer[1];
+            return i2cs0_write_bytes(p_buffer[0], regAddr, &p_buffer[2], len-2);
         default:
 			return false;
     }
@@ -1052,11 +1080,11 @@ void i2c_set_slave_addr(uint32_t bus, uint8_t device_addr)
 {
     switch (bus)
     {
-        case 0:
+        case I2C_BUS_0:
         case I2C0:
             i2c_set_as_slave_device_addr(I2C0, device_addr);
             break;
-        case 1:
+        case I2C_BUS_1:
         case I2C1:
             i2c_set_as_slave_device_addr(I2C1, device_addr);
             break;
@@ -1066,6 +1094,9 @@ void i2c_set_slave_addr(uint32_t bus, uint8_t device_addr)
             i2c_set_as_slave_device_addr(I2C2, device_addr);
             break;
     #endif   
+        case I2C_BUS_S0:
+            i2cs0_set_address(device_addr);
+            break;
         default:
 			return;
     }

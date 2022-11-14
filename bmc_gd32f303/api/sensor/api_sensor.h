@@ -39,7 +39,7 @@ typedef struct {
 
     uint8_t sensorCfgSize;
     const SensorConfig *sensorCfg;
-    void (*TaskHandler)(void *arg); 
+    void (*TaskHandler)(void *arg);
 } Dev_Handler;
 
 bool api_sensorGetUnitType(INT8U destMode, UINT32 sensorNum, UINT8 *unitType);
