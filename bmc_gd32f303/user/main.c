@@ -55,6 +55,7 @@ OF SUCH DAMAGE.
 #include "update/update.h"
 #include "bsp_timer.h"
 #include "ChassisCtrl.h"
+#include "mac5023.h"
 
 #define FAN_TASK_PRIO 22
 #define TEST_TASK_PRIO 9

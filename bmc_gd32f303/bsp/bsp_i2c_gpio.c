@@ -14,7 +14,8 @@
 
 #include "bsp_i2c_gpio.h"
 #include "tools.h"
-		  
+#include "OSPort.h"
+
 /********************* GPIO SIMULATED I2C1 MICRO DEF ***************************/
 #define I2CS0_SCL_GPIO_PORT     GPIOB
 #define I2CS0_SCL_CLK           RCU_GPIOB
@@ -24,6 +25,7 @@
 #define I2CS0_SDA_CLK           RCU_GPIOB
 #define I2CS0_SDA_PIN           GPIO_PIN_9
 
+#define I2CS0_RETRY_TIMERS      3
 #define I2CS0_SDA_READ() gpio_input_bit_get(I2CS0_SDA_GPIO_PORT, I2CS0_SDA_PIN) /* SDA read */
 /********************* GPIO SIMULATED I2C1 MICRO DEF END***************************/
 
@@ -41,6 +43,9 @@ static uint8_t   i2cs0_ReadByte       (void);
 static uint8_t   i2cs0_WaitAck        (void);
 static void      i2cs0_Ack            (void);
 static void      i2cs0_NAck           (void);
+
+xSemaphoreHandle g_I2CS0_semaphore = NULL;
+#define I2CS0_TAKE_SEMAPHORE_TIMEOUT      100
 
 /*
 *********************************************************************************************************
@@ -79,6 +84,9 @@ static void I2CS0_SDA_0(void)
 */
 static void i2cs0_CfgGpio(void)
 {
+	if (g_I2CS0_semaphore == NULL) {
+		g_I2CS0_semaphore = xSemaphoreCreateBinary();
+	}
 	/* enable the led clock */
 	rcu_periph_clock_enable(I2CS0_SCL_CLK);
 	rcu_periph_clock_enable(I2CS0_SDA_CLK);
@@ -291,7 +299,6 @@ cmd_fail:
 	i2cs0_Stop();
 	return false;
 }
-
 /*
 *********************************************************************************************************
 
@@ -302,6 +309,9 @@ bool i2cs0_write_bytes(uint8_t dev_addr, uint16_t _usAddress, const uint8_t *_pW
 	uint16_t i,m;
 	uint16_t usAddr;
 
+    if (xSemaphoreTake(g_I2CS0_semaphore, I2CS0_TAKE_SEMAPHORE_TIMEOUT)) {
+	    return false;
+    }
 	usAddr = _usAddress;	
 	for (i = 0; i < _usSize; i++)
 	{
@@ -309,7 +319,7 @@ bool i2cs0_write_bytes(uint8_t dev_addr, uint16_t _usAddress, const uint8_t *_pW
 		{
 			i2cs0_Stop();
 			
-			for (m = 0; m < 1000; m++)
+			for (m = 0; m < I2CS0_RETRY_TIMERS; m++)
 			{				
 				i2cs0_Start();
 				i2cs0_SendByte(dev_addr | I2CS_WR);	
@@ -317,9 +327,11 @@ bool i2cs0_write_bytes(uint8_t dev_addr, uint16_t _usAddress, const uint8_t *_pW
 				if (i2cs0_WaitAck() == 0)
 				{
 					break;
-				}
+				}else{
+			        i2cs0_Stop();
+                }
 			}
-			if (m  == 1000)
+			if (m  == I2CS0_RETRY_TIMERS)
 			{
 				goto cmd_fail;	
 			}
@@ -343,9 +355,11 @@ bool i2cs0_write_bytes(uint8_t dev_addr, uint16_t _usAddress, const uint8_t *_pW
 	}
 	
 	i2cs0_Stop();
+    xSemaphoreGive(g_I2CS0_semaphore);
 	return true;
 
-cmd_fail: 
+cmd_fail:
 	i2cs0_Stop();
-	return false;
+    xSemaphoreGive(g_I2CS0_semaphore);
+    return false;
 }

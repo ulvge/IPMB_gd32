@@ -3,7 +3,13 @@
 #include "bsp_gpio.h"
 #include "sensor.h"
 #include "api_sensor.h" 
+#include "mac5023.h" 
 
+
+#define DEV_POWER_TASK_DELAY_XMS  10
+#define MAC5023_SAMPLE_PERIOD_XMS 1000
+    
+	
 static void DevTaskHandler(void *pArg);
 // config GPIO
 const static GPIOConfig g_gpioConfig_power[] = {
@@ -49,6 +55,8 @@ static const  SensorConfig g_sensor_power[] = {
     {ADC_CHANNEL_5,         SUB_DEVICE_SDR_TEMP,       "WORKING_TEMP"},
     {ADC_CHANNEL_6,         SUB_DEVICE_SDR_P12V,       "P12V"},
     {ADC_CHANNEL_7,         SUB_DEVICE_SDR_P3V3,       "P3V3"},
+
+    {ADC_CHANNEL_7,         SUB_DEVICE_SDR_FAN,       "P3V3"},
 };
 static SubDevice_Reading_T g_sensorVal_power[ARRARY_SIZE(g_sensor_power)];
 
@@ -60,34 +68,40 @@ const Dev_Handler g_devHandler_power = {
     CREATE_CONFIG_HANDLER(sensor, g_sensor_power),
     .TaskHandler = DevTaskHandler,
 };
-static UINT32 CountPinPluseMs(BMC_GPIO_enum pin)
+
+static UINT32 CountPinPluseMs(BMC_GPIO_enum pin, uint32_t *lastMs)
 {
     #define GPIO_SCAN_PEROID 10
-    uint32_t  lastMs = GetTickMs();
     uint32_t offsetMs;
     if (!GPIO_isPinActive(pin)){
+        *lastMs = GetTickMs(); //update to newest tick
         return 0;
     }else{
-        while (GPIO_isPinActive(pin))
+        if (GPIO_isPinActive(pin))
         {
-            vTaskDelay(GPIO_SCAN_PEROID);
+            return 0; //not update
         }
-        offsetMs = GetTickMs() - lastMs;
+        offsetMs = GetTickMs() - *lastMs;
+        *lastMs = GetTickMs(); //update to newest tick
         return offsetMs;
     }
 }
 static void DevTaskHandler(void *pArg)
 {
+    static uint32_t lastMs_IN_R_GPIO0;
+    uint32_t mac5023SampleDiv = 0;
     while (1)
     {
-        vTaskDelay(10);
-        if (GPIO_isPinActive(GPIO_IN_R_GPIO0)){
-            if(CountPinPluseMs(GPIO_IN_R_GPIO0)>90){
-            }
-            else{
-            }  
+        vTaskDelay(DEV_POWER_TASK_DELAY_XMS);
+		if(CountPinPluseMs(GPIO_IN_R_GPIO0, &lastMs_IN_R_GPIO0) > 90){
+			
+		}
+		else{
+		}  
+        if (++mac5023SampleDiv >= (MAC5023_SAMPLE_PERIOD_XMS / DEV_POWER_TASK_DELAY_XMS)){
+            mac5023SampleDiv = 0;
+            MAC5023_Sample();
         }
-
 //        if (api_sensorGetValHuman(ADC_CHANNEL_13) > 3.0){
 //            
 //        }
