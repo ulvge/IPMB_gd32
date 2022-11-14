@@ -43,7 +43,7 @@ static SubDevice_Reading_T g_adcVal_power[ARRARY_SIZE(g_adcChannlConfig_power)];
 
 // config Sensor
 static const  SensorConfig g_sensor_power[] = {
-    //{ADC_CHANNEL_13,        SUB_DEVICE_SDR_P3V3,       "P3V3_AUX"},
+    {ADC_CHANNEL_13,        SUB_DEVICE_SDR_P3V3,       "P3V3_AUX"},
     {ADC_CHANNEL_1,         SUB_DEVICE_SDR_P5V,        "P5V"},
     {ADC_CHANNEL_2,         SUB_DEVICE_SDR_P3V3,       "VBAT"},
     {ADC_CHANNEL_5,         SUB_DEVICE_SDR_TEMP,       "WORKING_TEMP"},
@@ -51,6 +51,7 @@ static const  SensorConfig g_sensor_power[] = {
     {ADC_CHANNEL_7,         SUB_DEVICE_SDR_P3V3,       "P3V3"},
 };
 static SubDevice_Reading_T g_sensorVal_power[ARRARY_SIZE(g_sensor_power)];
+
 const Dev_Handler g_devHandler_power = {
     .mode = SUB_DEVICE_MODE_POWER,
     .val = g_sensorVal_power,
@@ -64,10 +65,10 @@ static UINT32 CountPinPluseMs(BMC_GPIO_enum pin)
     #define GPIO_SCAN_PEROID 10
     uint32_t  lastMs = GetTickMs();
     uint32_t offsetMs;
-    if (!GPIO_isPinActive(GPIO_IN_R_GPIO0)){
+    if (!GPIO_isPinActive(pin)){
         return 0;
     }else{
-        while (GPIO_isPinActive(GPIO_IN_R_GPIO0))
+        while (GPIO_isPinActive(pin))
         {
             vTaskDelay(GPIO_SCAN_PEROID);
         }
@@ -81,12 +82,14 @@ static void DevTaskHandler(void *pArg)
     {
         vTaskDelay(10);
         if (GPIO_isPinActive(GPIO_IN_R_GPIO0)){
-            
+            if(CountPinPluseMs(GPIO_IN_R_GPIO0)>90){
+            }
+            else{
+            }  
         }
 
-        LOG_D("filename = %s, line = %d", __FILE__, __LINE__);
-        if (api_sensorGetValHuman(ADC_CHANNEL_13) > 3.0f){
-            
-        }
+//        if (api_sensorGetValHuman(ADC_CHANNEL_13) > 3.0){
+//            
+//        }
     }
 }

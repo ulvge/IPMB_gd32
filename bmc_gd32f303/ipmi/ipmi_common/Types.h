@@ -113,6 +113,10 @@ typedef unsigned char  BOOLEAN;
 
 
 #define ARRARY_SIZE(str)    (sizeof(str) / sizeof(str[0]))
+#ifndef UNUSED
+#define UNUSED(x) (void)(x)
+#endif
+		 
 //#define PACKED __attribute__ ((packed))
 #define PACKED
 
