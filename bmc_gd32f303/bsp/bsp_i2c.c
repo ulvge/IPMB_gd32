@@ -1054,7 +1054,9 @@ bool i2c_read(uint32_t bus, uint8_t devAddr, uint16_t regAddress, uint8_t *pRead
 }
 bool i2c_write(uint32_t bus, const uint8_t *p_buffer, uint16_t len)
 {
-    uint16_t regAddr;
+	if (len == 0) {
+		return false;
+	}
     switch (bus)
     {
         case I2C_BUS_0:
@@ -1070,8 +1072,7 @@ bool i2c_write(uint32_t bus, const uint8_t *p_buffer, uint16_t len)
             return i2c_bytes_write(I2C2, p_buffer[0], &p_buffer[1], len-1, 20000);
     #endif   
         case I2C_BUS_S0:
-            regAddr = p_buffer[1];
-            return i2cs0_write_bytes(p_buffer[0], regAddr, &p_buffer[2], len-2);
+            return i2cs0_write_bytes(p_buffer[0], &p_buffer[1], len-1);
         default:
 			return false;
     }

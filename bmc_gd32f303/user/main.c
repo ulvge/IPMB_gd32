@@ -213,7 +213,7 @@ void vApplicationIdleHook(void)
     /* reload FWDGT counter */
     fwdgt_counter_reload();
     uint32_t nowTick = GetTickMs();
-    if (nowTick - lastTick > 1000) {
+    if (nowTick - lastTick > 3000) {
         vTaskPrintThreadStatus();
         lastTick = nowTick;
     }

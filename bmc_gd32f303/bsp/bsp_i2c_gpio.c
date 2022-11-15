@@ -1,16 +1,15 @@
 /**
-  ******************************************************************************
-  * @file    
-  * @author 
-  * @version
-  * @date   
-  * @brief  
-  ******************************************************************************
-  * @attention
-  *
-  ******************************************************************************
-  */ 
-
+ ******************************************************************************
+ * @file
+ * @author
+ * @version
+ * @date
+ * @brief
+ ******************************************************************************
+ * @attention
+ *
+ ******************************************************************************
+ */
 
 #include "bsp_i2c_gpio.h"
 #include "tools.h"
@@ -84,17 +83,18 @@ static void I2CS0_SDA_0(void)
 */
 static void i2cs0_CfgGpio(void)
 {
-	if (g_I2CS0_semaphore == NULL) {
-		g_I2CS0_semaphore = xSemaphoreCreateBinary();
-	}
-	/* enable the led clock */
-	rcu_periph_clock_enable(I2CS0_SCL_CLK);
-	rcu_periph_clock_enable(I2CS0_SDA_CLK);
-	/* configure led GPIO port */ 
-	gpio_init(I2CS0_SCL_GPIO_PORT, GPIO_MODE_OUT_OD, GPIO_OSPEED_50MHZ, I2CS0_SCL_PIN);
-	gpio_init(I2CS0_SDA_GPIO_PORT, GPIO_MODE_OUT_OD, GPIO_OSPEED_50MHZ, I2CS0_SDA_PIN);
+    if (g_I2CS0_semaphore == NULL)
+    {
+        g_I2CS0_semaphore = xSemaphoreCreateMutex();
+    }
+    /* enable the led clock */
+    rcu_periph_clock_enable(I2CS0_SCL_CLK);
+    rcu_periph_clock_enable(I2CS0_SDA_CLK);
+    /* configure led GPIO port */
+    gpio_init(I2CS0_SCL_GPIO_PORT, GPIO_MODE_OUT_OD, GPIO_OSPEED_50MHZ, I2CS0_SCL_PIN);
+    gpio_init(I2CS0_SDA_GPIO_PORT, GPIO_MODE_OUT_OD, GPIO_OSPEED_50MHZ, I2CS0_SDA_PIN);
 
-	i2cs0_Stop();
+    i2cs0_Stop();
 }
 /*
 *********************************************************************************************************
@@ -103,7 +103,6 @@ static void i2cs0_CfgGpio(void)
 */
 void i2cs0_set_address(uint8_t _Address)
 {
-
 }
 /*
 *********************************************************************************************************
@@ -112,10 +111,10 @@ void i2cs0_set_address(uint8_t _Address)
 */
 static void i2cs0_Start(void)
 {
-	I2CS0_SDA_1();
-	I2CS0_SCL_1();
-	I2CS0_SDA_0();
-	I2CS0_SCL_0();
+    I2CS0_SDA_1();
+    I2CS0_SCL_1();
+    I2CS0_SDA_0();
+    I2CS0_SCL_0();
 }
 
 /*
@@ -125,9 +124,9 @@ static void i2cs0_Start(void)
 */
 void i2cs0_Stop(void)
 {
-	I2CS0_SDA_0();
-	I2CS0_SCL_1();
-	I2CS0_SDA_1();
+    I2CS0_SDA_0();
+    I2CS0_SCL_1();
+    I2CS0_SDA_1();
 }
 
 /*
@@ -137,26 +136,26 @@ void i2cs0_Stop(void)
 */
 static void i2cs0_SendByte(uint8_t _ucByte)
 {
-	uint8_t i;
+    uint8_t i;
 
-	for (i = 0; i < 8; i++)
-	{		
-		if (_ucByte & 0x80)
-		{
-			I2CS0_SDA_1();
-		}
-		else
-		{
-			I2CS0_SDA_0();
-		}
-		I2CS0_SCL_1();	
-		I2CS0_SCL_0();
-		if (i == 7)
-		{
-			 I2CS0_SDA_1(); 
-		}
-		_ucByte <<= 1;	
-	}
+    for (i = 0; i < 8; i++)
+    {
+        if (_ucByte & 0x80)
+        {
+            I2CS0_SDA_1();
+        }
+        else
+        {
+            I2CS0_SDA_0();
+        }
+        I2CS0_SCL_1();
+        I2CS0_SCL_0();
+        if (i == 7)
+        {
+            I2CS0_SDA_1();
+        }
+        _ucByte <<= 1;
+    }
 }
 
 /*
@@ -166,21 +165,21 @@ static void i2cs0_SendByte(uint8_t _ucByte)
 */
 static uint8_t i2cs0_ReadByte(void)
 {
-	uint8_t i;
-	uint8_t value;
+    uint8_t i;
+    uint8_t value;
 
-	value = 0;
-	for (i = 0; i < 8; i++)
-	{
-		value <<= 1;
-		I2CS0_SCL_1();
-		if (I2CS0_SDA_READ())
-		{
-			value++;
-		}
-		I2CS0_SCL_0();
-	}
-	return value;
+    value = 0;
+    for (i = 0; i < 8; i++)
+    {
+        value <<= 1;
+        I2CS0_SCL_1();
+        if (I2CS0_SDA_READ())
+        {
+            value++;
+        }
+        I2CS0_SCL_0();
+    }
+    return value;
 }
 
 /*
@@ -190,20 +189,20 @@ static uint8_t i2cs0_ReadByte(void)
 */
 static uint8_t i2cs0_WaitAck(void)
 {
-	uint8_t re;
+    uint8_t re;
 
-	I2CS0_SDA_1();	
-	I2CS0_SCL_1();
-	if (I2CS0_SDA_READ())	
-	{
-		re = 1;
-	}
-	else
-	{
-		re = 0;
-	}
-	I2CS0_SCL_0();
-	return re;
+    I2CS0_SDA_1();
+    I2CS0_SCL_1();
+    if (I2CS0_SDA_READ())
+    {
+        re = 1;
+    }
+    else
+    {
+        re = 0;
+    }
+    I2CS0_SCL_0();
+    return re;
 }
 
 /*
@@ -213,10 +212,10 @@ static uint8_t i2cs0_WaitAck(void)
 */
 static void i2cs0_Ack(void)
 {
-	I2CS0_SDA_0();	
-	I2CS0_SCL_1();
-	I2CS0_SCL_0();
-	I2CS0_SDA_1();	
+    I2CS0_SDA_0();
+    I2CS0_SCL_1();
+    I2CS0_SCL_0();
+    I2CS0_SDA_1();
 }
 
 /*
@@ -226,9 +225,9 @@ static void i2cs0_Ack(void)
 */
 static void i2cs0_NAck(void)
 {
-	I2CS0_SDA_1();	
-	I2CS0_SCL_1();
-	I2CS0_SCL_0();	
+    I2CS0_SDA_1();
+    I2CS0_SCL_1();
+    I2CS0_SCL_0();
 }
 
 /*
@@ -238,8 +237,8 @@ static void i2cs0_NAck(void)
 */
 void i2cs0_init(void)
 {
-	i2cs0_CfgGpio();		
-	i2cs0_Stop();
+    i2cs0_CfgGpio();
+    i2cs0_Stop();
 }
 
 /*
@@ -247,119 +246,118 @@ void i2cs0_init(void)
 
 *********************************************************************************************************
 */
-bool i2cs0_read_bytes(uint8_t dev_addr, uint16_t _usAddress, uint8_t *_pReadBuf, uint16_t _usSize)
+bool i2cs0_read_bytes(uint8_t dev_addr, uint16_t _usAddress, uint8_t *_pReadBuf, uint16_t readSize)
 {
-	uint16_t i;
+    uint16_t i;
 
-	i2cs0_Start();
-	i2cs0_SendByte(dev_addr | I2CS_WR);	
-	
-	if (i2cs0_WaitAck() != 0)
-	{
-		goto cmd_fail;	
-	}
-    if ((_usSize == 0) || (_pReadBuf == NULL)) {
+    i2cs0_Start();
+    i2cs0_SendByte(dev_addr | I2CS_WR);
+
+    if (i2cs0_WaitAck() != 0)
+    {
+        goto cmd_fail;
+    }
+    if ((readSize == 0) || (_pReadBuf == NULL))
+    {
         i2cs0_Stop();
-        return true;	
+        return true;
     }
-	i2cs0_SendByte((uint8_t)_usAddress);
-	
-	if (i2cs0_WaitAck() != 0)
-	{
-		goto cmd_fail;	
-	}
-	
+    i2cs0_SendByte((uint8_t)_usAddress);
 
-	i2cs0_Start();
-	i2cs0_SendByte(dev_addr | I2CS_RD);	
-	
-	if (i2cs0_WaitAck() != 0)
-	{
-		goto cmd_fail;
-	}	
-	
-	for (i = 0; i < _usSize; i++)
-	{
-		_pReadBuf[i] = i2cs0_ReadByte();
-		
-		if (i != _usSize - 1)
-		{
-			i2cs0_Ack();	
-		}
-		else
-		{
-			i2cs0_NAck();	
-		}
-	}
-
-	i2cs0_Stop();
-	return true;	
-
-cmd_fail: 
-	i2cs0_Stop();
-	return false;
-}
-/*
-*********************************************************************************************************
-
-*********************************************************************************************************
-*/
-bool i2cs0_write_bytes(uint8_t dev_addr, uint16_t _usAddress, const uint8_t *_pWriteBuf, uint16_t _usSize)
-{
-	uint16_t i,m;
-	uint16_t usAddr;
-
-    if (xSemaphoreTake(g_I2CS0_semaphore, I2CS0_TAKE_SEMAPHORE_TIMEOUT)) {
-	    return false;
+    if (i2cs0_WaitAck() != 0)
+    {
+        goto cmd_fail;
     }
-	usAddr = _usAddress;	
-	for (i = 0; i < _usSize; i++)
-	{
-		if (i == 0)
-		{
-			i2cs0_Stop();
-			
-			for (m = 0; m < I2CS0_RETRY_TIMERS; m++)
-			{				
-				i2cs0_Start();
-				i2cs0_SendByte(dev_addr | I2CS_WR);	
 
-				if (i2cs0_WaitAck() == 0)
-				{
-					break;
-				}else{
-			        i2cs0_Stop();
-                }
-			}
-			if (m  == I2CS0_RETRY_TIMERS)
-			{
-				goto cmd_fail;	
-			}
-		
-			i2cs0_SendByte((uint8_t)usAddr);
+    i2cs0_Start();
+    i2cs0_SendByte(dev_addr | I2CS_RD);
 
-			if (i2cs0_WaitAck() != 0)
-			{
-				goto cmd_fail;	
-			}
-		}
-	
-		i2cs0_SendByte(_pWriteBuf[i]);
+    if (i2cs0_WaitAck() != 0)
+    {
+        goto cmd_fail;
+    }
 
-		if (i2cs0_WaitAck() != 0)
-		{
-			goto cmd_fail;
-		}
+    for (i = 0; i < readSize; i++)
+    {
+        _pReadBuf[i] = i2cs0_ReadByte();
 
-		usAddr++;			
-	}
-	
-	i2cs0_Stop();
-    xSemaphoreGive(g_I2CS0_semaphore);
-	return true;
+        if (i != readSize - 1)
+        {
+            i2cs0_Ack();
+        }
+        else
+        {
+            i2cs0_NAck();
+        }
+    }
+
+    i2cs0_Stop();
+    return true;
 
 cmd_fail:
-	i2cs0_Stop();
+    i2cs0_Stop();
+    return false;
+}
+/*
+*********************************************************************************************************
+
+*********************************************************************************************************
+*/
+bool i2cs0_write_bytes(uint8_t dev_addr, const uint8_t *_pWriteBuf, uint16_t writeSize)
+{
+    uint16_t i, m;
+    uint8_t regAddress;
+    if (xSemaphoreTake(g_I2CS0_semaphore, I2CS0_TAKE_SEMAPHORE_TIMEOUT) == pdFALSE)
+    {
+        return false;
+    }
+
+    for (m = 0; m < I2CS0_RETRY_TIMERS; m++)
+    {
+        i2cs0_Start();
+        i2cs0_SendByte(dev_addr | I2CS_WR);
+
+        if (i2cs0_WaitAck() == 0)
+        {
+            break;
+        }
+        else
+        {
+            i2cs0_Stop();
+        }
+    }
+    if (m == I2CS0_RETRY_TIMERS)
+    {
+        goto cmd_fail;
+    }
+
+    if (writeSize >= 1)
+    {
+        regAddress = _pWriteBuf[0];
+        i2cs0_SendByte(regAddress);
+
+        if (i2cs0_WaitAck() != 0)
+        {
+            goto cmd_fail;
+        }
+    }
+
+    for (i = 1; i < writeSize; i++)
+    {
+        i2cs0_SendByte(_pWriteBuf[i]);
+
+        if (i2cs0_WaitAck() != 0)
+        {
+            goto cmd_fail;
+        }
+    }
+
+    i2cs0_Stop();
+    xSemaphoreGive(g_I2CS0_semaphore);
+    return true;
+
+cmd_fail:
+    i2cs0_Stop();
     xSemaphoreGive(g_I2CS0_semaphore);
     return false;
 }

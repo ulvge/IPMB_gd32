@@ -11,7 +11,6 @@
 #include "project_select.h"
 #include "debug_print.h"
 
-bool MAC5023_init(void);
 void MAC5023_Sample(void);
 
 #ifdef __cplusplus

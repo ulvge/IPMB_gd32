@@ -261,16 +261,15 @@ static int do_scan(uint8_t bus)
         {
             LOG_RAW("% 2s", ".");
         }
-
     }
 
     LOG_RAW("\nDone!  Found %i valid slave address(es)\n\r", (int)j);
     if (j != 0) {
-		LOG_RAW("Slave list:\n\r");
+		LOG_RAW("Slave list 7bit, \t 8bit:\n\r");
 	}
     /*@-usedef@*/
     for (k = 0; k < (int)j; k += 1)
-        LOG_RAW("0x%02x\n\r", (unsigned int)valid_slaves[k] << 1);
+        LOG_RAW("\t0x%02x\t\t 0x%02x\n\r", valid_slaves[k], valid_slaves[k] << 1);
 
     return true;
 }

@@ -13,8 +13,8 @@
 
 /* simulated i2c1 function declarations */
 void i2cs0_init(void);
-bool i2cs0_read_bytes(uint8_t dev_addr, uint16_t _usAddress, uint8_t *_pReadBuf, uint16_t _usSize);
-bool i2cs0_write_bytes(uint8_t dev_addr, uint16_t _usAddress, const uint8_t *_pWriteBuf, uint16_t _usSize);
+bool i2cs0_read_bytes(uint8_t dev_addr, uint16_t _usAddress, uint8_t *_pReadBuf, uint16_t readSize);
+bool i2cs0_write_bytes(uint8_t dev_addr, const uint8_t *_pWriteBuf, uint16_t writeSize);
 void i2cs0_set_address(uint8_t _Address);
 void i2cs0_Stop(void);
 

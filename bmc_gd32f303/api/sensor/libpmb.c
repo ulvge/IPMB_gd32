@@ -21,7 +21,7 @@
 #include <bsp_i2c.h>
 
 static int PEC_Verify = 0;
-int PEC_Disable = 0;
+int PEC_Disable = 1;
 
 const PMBus_t PMBusStdCmds[] =
     {
@@ -189,17 +189,17 @@ static const PMBus_t *PMBus_getCmds(u8 cmdCode)
     }
     return NULL;
 }
-static int PMBUS_i2c_master_write(INT8U i2cBus, u8 slave, u8 *writebuf, int writelen)
+static int PMBUS_i2c_master_write(INT8U i2cBus, INT8U *writebuf, INT16U writelen)
 {
     return i2c_write(i2cBus, writebuf, writelen);
 }
 
-static int PMBUS_i2c_writeread(INT8U i2cBus, u8 slave, u8 cmd, int cmdlen, u8 *readbuf, int readlen)
+static bool PMBUS_i2c_writeread(INT8U i2cBus, INT8U slave, INT8U cmd, int cmdlen, INT8U *readbuf, INT16U readlen)
 {
     if (cmdlen != 1)
     {
         LOG_E("\nInvalid Command length");
-        return -1;
+        return false;
     }
     return i2c_read(i2cBus, slave, cmd, readbuf, readlen);
 }
@@ -270,9 +270,9 @@ int PMBUS_Verify_PEC(u8 slave, u8 *writebuf, u8 *readbuf, int readlen)
     int count = 0;
     unsigned char crc = 0;
     unsigned char Recvdbyte[32];
-    Recvdbyte[0] = (slave << 1) | !!(I2C_WRITE & I2C_M_RD);
+    Recvdbyte[0] = (slave /*<< 1*/) | !!(I2C_WRITE & I2C_M_RD);
     Recvdbyte[1] = writebuf[0];
-    Recvdbyte[2] = (slave << 1) | !!(I2C_READ & I2C_M_RD);
+    Recvdbyte[2] = (slave /*<< 1*/) | !!(I2C_READ & I2C_M_RD);
 
     memcpy(&Recvdbyte[3], &readbuf[0], readlen);
 
@@ -306,7 +306,12 @@ void PMBUS_PECEnable(INT8U i2cBus, u8 slave)
         PEC_Verify = 0;
         return;
     }
-
+/*
+Bit             7   6       5       4       3 2 1 0
+Access          r   r       r       r       r r r r
+Function        PEC Max. bus speed Alert    x x x x
+Default value   1   0       1       1       0 0 0 0
+*/
     ret = PMBus_I2CRead(i2cBus, slave, PMBUS_CAPABILITY, &read_buf);
     if (ret < 0)
     {
@@ -336,10 +341,11 @@ void PMBUS_PECEnable(INT8U i2cBus, u8 slave)
  */
 int PMBus_I2CRead(INT8U i2cBus, u8 slave, u8 cmdCode, u8 *readbuf)
 {
-    int i, ret, j;
+    int i, j;
     int readlen = 0;
     int writelen = 1;
     u8 writebuf;
+    bool ret;
 
     if (PEC_Verify == 0)
     {
@@ -372,7 +378,7 @@ int PMBus_I2CRead(INT8U i2cBus, u8 slave, u8 cmdCode, u8 *readbuf)
         readlen++;
     }
     ret = PMBUS_i2c_writeread(i2cBus, slave, writebuf, writelen, readbuf, readlen);
-    if (ret < 0)
+    if (ret == false)
     {
         return -1;
     }
@@ -440,6 +446,7 @@ int PMBus_I2CWrite(INT8U i2cBus, u8 slave, u8 cmdCode, u8 *Write_buf)
     int j, ret;
     int writelen;
     u8 writebuf[50];
+    u8 idx=0;
     if (PEC_Verify == 0)
     {
         PMBUS_PECEnable(i2cBus, slave);
@@ -457,43 +464,34 @@ int PMBus_I2CWrite(INT8U i2cBus, u8 slave, u8 cmdCode, u8 *Write_buf)
         LOG_E("\nInvalid Request for this Command 0x%02x\n", pPMBusCmd->cmdName);
         return -1;
     }
-    writebuf[0] = pPMBusCmd->cmdName;
+    writebuf[writelen++] = slave;
+    writebuf[writelen++] = pPMBusCmd->cmdName;
     switch (pPMBusCmd->dataBytes)
     {
     case 0:
-        writelen = 1;
         break;
     case PMB_BYTE:
-        writelen = 2;
-        writebuf[1] = Write_buf[0];
+        writebuf[writelen++] = Write_buf[0];
         break;
     case PMB_WORD:
-        writelen = 3;
-        writebuf[1] = Write_buf[0];
-        writebuf[2] = Write_buf[1];
+        writebuf[writelen++] = Write_buf[0];
+        writebuf[writelen++] = Write_buf[1];
         break;
     case PMB_BLOCK:
-        writelen = Write_buf[0] + 2; // 2 byte extra - 1 for cmd code and 1 for data length
+        writelen += Write_buf[0]; // 2 byte extra - 1 for cmd code and 1 for data length
         if (writelen > sizeof(writebuf))
         {
             return -1;
         }
-        for (j = 1; j < writelen; j++)
-        {
-            writebuf[j] = Write_buf[j - 1];
-        }
+        memcpy(writebuf+2, Write_buf+1, Write_buf[0]);
         break;
     case PMB_RAW:
-        writelen = Write_buf[0];
+        writelen += Write_buf[0];/*Added for Command Code*/
         if (writelen > sizeof(writebuf))
         {
             return -1;
         }
-        for (j = 1; j <= writelen; j++)
-        {
-            writebuf[j] = Write_buf[j];
-        }
-        writelen += 1; /*Added for Command Code*/
+        memcpy(writebuf+2, Write_buf+1, Write_buf[0]);
         break;
     default:
         return -1;
@@ -501,10 +499,10 @@ int PMBus_I2CWrite(INT8U i2cBus, u8 slave, u8 cmdCode, u8 *Write_buf)
 
     if (PEC_Verify == 1)
     {
-        PMBUS_Add_PEC(slave, writebuf, writelen);
+        PMBUS_Add_PEC(slave, writebuf + 1, writelen - 1); // -1 for remove slave
         writelen++;
     }
-    ret = PMBUS_i2c_master_write(i2cBus, slave, writebuf, writelen);
+    ret = PMBUS_i2c_master_write(i2cBus, writebuf, writelen);
     return ret;
 }
 
