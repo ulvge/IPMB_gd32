@@ -11,7 +11,7 @@
 #include "project_select.h"
 #include "debug_print.h"
 
-void MAC5023_Sample(void);
+bool MAC5023_Sample(UINT8 devIndex, UINT8 cmd, float *humanVal, UINT8 *ipmbVal);
 
 #ifdef __cplusplus
 }

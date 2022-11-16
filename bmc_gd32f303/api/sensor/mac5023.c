@@ -9,48 +9,63 @@
 #include "mac5023.h"
 #include "bsp_i2c_gpio.h"
 #include "bsp_i2c.h"
+#include "FreeRTOS.h"
+#include "task.h"
 
 #define MAC5023_I2C_BUS I2C_BUS_S0
 
-#if 1       
 #define MAC5023_I2C_SLAVE_ADDR_P0V9_1 (0x36 << 1) // 1      P0V9_VCORE
 #define MAC5023_I2C_SLAVE_ADDR_P0V9_2 (0x38 << 1) // 1.475  P0V9_VCORE
 #define MAC5023_I2C_SLAVE_ADDR_P0V885 (0x3E << 1) // 1.475  0.885 VDD_GPU 0x7C
 #define MAC5023_I2C_SLAVE_ADDR_P1V2 (0x31 << 1) // 2      P1V2_VDDQ
 #define MAC5023_I2C_SLAVE_ADDR_P5V  (0x30 << 1)    // 8.5    P5V
+#define MAC5023_I2C_SLAVE_ADDR_P12V  (0x40 << 1)
 
-#define MAC1625_VIN_M   25    // 25mV /LSB
-#define MAC1625_VOUT_M  1.25 // 1.25mV /LSB
-#define MAC1625_IOUT_M  62.5  // 62.5mA/LSB
-
-#define MAC5023_VIN_M 	MAC1625_VIN_M
-#define MAC5023_VOUT_M 	MAC1625_VOUT_M
-#define MAC5023_IOUT_M 	MAC1625_IOUT_M
+#define MAC5023_PIN_M   1 // 1W /LSB
+#define MAC5023_IOUT_M  (62.5/1000) // 62.5mA/LSB
+#if 1
+#define MAC5023_VIN_M   (25.0/1000)    // 25mV /LSB
+#define MAC5023_VOUT_M  (1.25/1000) // 1.25mV /LSB
+#else
+#define MAC5023_VIN_M   (31.25/1000) // 31.25mV /LSB
+#define MAC5023_VOUT_M  (31.25/1000)  // 31.25mV /LSB
+#endif
 typedef struct
 {
     UINT8 dev;
-    float resDiv;
     char *name;
 } MAC5023_VOUT_CONFIG;
 
-static const MAC5023_VOUT_CONFIG g_MAC5023VoutConfig[] = {
-    {MAC5023_I2C_SLAVE_ADDR_P0V9_1,  1.475f, "P0V9_1"},
-    {MAC5023_I2C_SLAVE_ADDR_P0V9_2,  1.475f, "P0.9_2"},
-    {MAC5023_I2C_SLAVE_ADDR_P0V885,  1.475f, "P0V885"},
-    {MAC5023_I2C_SLAVE_ADDR_P1V2,    2.0f,   "P1V2"},
-    {MAC5023_I2C_SLAVE_ADDR_P5V,     8.5f,   "P5V"},
+static const MAC5023_VOUT_CONFIG g_MAC5023DevsConfig[] = {
+    //{MAC5023_I2C_SLAVE_ADDR_P0V9_1,  "P0V9_1"},
+    //{MAC5023_I2C_SLAVE_ADDR_P0V9_2,  "P0.9_2"},
+    //{MAC5023_I2C_SLAVE_ADDR_P0V885,  "P0V885"},
+    //{MAC5023_I2C_SLAVE_ADDR_P1V2,    "P1V2"},
+    {MAC5023_I2C_SLAVE_ADDR_P5V,     "P5V"},
+    //{MAC5023_I2C_SLAVE_ADDR_P12V,    "P12V"},
 };
 
-#define  MAC5023_I2C_SLAVE_ADDR  MAC5023_I2C_SLAVE_ADDR_P0V885
-#else
+typedef struct
+{
+    UINT8 cmd;
+    UINT16 mask;
+    float scaleZoom;
+    float lsb;
+    char *name;
+    char *units;
+} MAC5023_CMDS_CONFIG;
 
-#define MAC5023_VIN_M   31.25 // 31.25mV /LSB
-#define MAC5023_VOUT_M  31.25  // 31.25mV /LSB
-#define MAC5023_IOUT_M  62.5 // 62.5mA/LSB    
+#define  MAC5023_MASK_DEFAULT 0x3FFF
+static const MAC5023_CMDS_CONFIG g_MAC5023CmdsConfig[] = {
+    {PMBUS_VOUT_COMMAND,    MAC5023_MASK_DEFAULT, 1,    2,             "VoutCmd", "V"},
+    {PMBUS_VOUT_SCALE_LOOP, MAC5023_MASK_DEFAULT, 1,    0.001f,        "ScaleLoop",  " "},
+    {PMBUS_READ_PIN,        MAC5023_MASK_DEFAULT, 0.25, MAC5023_PIN_M,  "P-IN", "watt"},
+    {PMBUS_READ_VIN,        MAC5023_MASK_DEFAULT, 10,   MAC5023_VIN_M,  "V-IN", "V"},
 
-#define  MAC5023_I2C_SLAVE_ADDR  0x30
+    {PMBUS_READ_VOUT,       MAC5023_MASK_DEFAULT, 10,   MAC5023_VOUT_M, "V-OUT","V"}, //(R2+R1)/R2,R2=1
+    {PMBUS_READ_IOUT,       MAC5023_MASK_DEFAULT, 5, 	MAC5023_IOUT_M, "I-OUT","A"},
+};
 
-#endif
 
 #define MAC5023_V_I_MASK 0x3FF
 #define MAC5023_TEMP_M 1
@@ -58,29 +73,19 @@ static const MAC5023_VOUT_CONFIG g_MAC5023VoutConfig[] = {
 static const char *MAC1625_MODE_NAME = "P5468Q";
 static const char *MAC5023_MODE_NAME = "XXXXXX";
 
-static bool g_MAC5023_initSuccess[ARRARY_SIZE(g_MAC5023VoutConfig)] = {false};
+static bool g_MAC5023_initSuccess[ARRARY_SIZE(g_MAC5023DevsConfig)] = {false};
 
-static float MAC5023_getResDiv(UINT8 dev)
+static char * MAC5023_getDevName(UINT8 dev)
 {
-	for (UINT8 i = 0; i < ARRARY_SIZE(g_MAC5023VoutConfig); i++)
+	for (UINT8 i = 0; i < ARRARY_SIZE(g_MAC5023DevsConfig); i++)
     {
-        if(g_MAC5023VoutConfig[i].dev == dev) {
-            return g_MAC5023VoutConfig[i].resDiv;
-        }
-    }
-    return 1;
-}
-static char * MAC5023_getName(UINT8 dev)
-{
-	for (UINT8 i = 0; i < ARRARY_SIZE(g_MAC5023VoutConfig); i++)
-    {
-        if(g_MAC5023VoutConfig[i].dev == dev) {
-            return g_MAC5023VoutConfig[i].name;
+        if(g_MAC5023DevsConfig[i].dev == dev) {
+            return g_MAC5023DevsConfig[i].name;
         }
     }
     return "NULL";
 }
-bool MAC5023_init(UINT8 bus, UINT8 slaveAddr)
+static bool MAC5023_init(UINT8 bus, UINT8 slaveAddr)
 {
     char modeStr[10];
 
@@ -95,7 +100,7 @@ bool MAC5023_init(UINT8 bus, UINT8 slaveAddr)
         }
         else
         {
-            LOG_I("MAC5023_init error, mode %s is not support\n", MAC5023_getName(slaveAddr));
+            LOG_I("MAC5023_init error, mode %s is not support\n", MAC5023_getDevName(slaveAddr));
         }
     }
     else
@@ -105,71 +110,64 @@ bool MAC5023_init(UINT8 bus, UINT8 slaveAddr)
     return false;
 }
 
-float MAC5023_vin_read(UINT8 bus, UINT8 slaveAddr)
+static const MAC5023_CMDS_CONFIG *MAC5023_getCmdConfig(UINT8 cmd)
 {
-    u8 vinBuff[4];
-    float mV = 0;
-    memset(vinBuff, 0, sizeof(vinBuff));
-    int ret = PMBus_I2CRead(bus, slaveAddr, PMBUS_READ_VIN, vinBuff);
-    if (ret > 0)
+	for (UINT8 i = 0; i < ARRARY_SIZE(g_MAC5023CmdsConfig); i++)
     {
-        u16 rawAdc = ((vinBuff[1] << 8) | vinBuff[0]) & MAC5023_V_I_MASK;
-        mV = rawAdc * MAC5023_VIN_M;
-    }
-    return mV;
-}
-
-float MAC5023_vout_read(UINT8 bus, UINT8 slaveAddr)
-{ 
-	u16 rawAdc;
-	u16 divedAdc;   
-    float mV = 0; 
-    u8 voutBuff[4];
-    memset(voutBuff, 0, sizeof(voutBuff));
-    int ret = PMBus_I2CRead(bus, slaveAddr, PMBUS_READ_VOUT, voutBuff);
-    if (ret > 0)
-    {
-        rawAdc = ((voutBuff[1] << 8) | voutBuff[0]) & MAC5023_V_I_MASK;
-        divedAdc = rawAdc * MAC5023_VOUT_M;
-        mV = MAC5023_getResDiv(slaveAddr) * divedAdc;
-    }
-    return mV;
-}
-
-float MAC5023_iout_read(UINT8 bus, UINT8 slaveAddr)
-{
-    u8 ioutBuff[4];
-    float mA = 0;
-    memset(ioutBuff, 0, sizeof(ioutBuff));
-    int ret = PMBus_I2CRead(bus, slaveAddr, PMBUS_READ_IOUT, ioutBuff);
-    if (ret > 0)
-    {
-        u16 rawAdc = ((ioutBuff[1] << 8) | ioutBuff[0]) & MAC5023_V_I_MASK;
-        mA = rawAdc * MAC5023_IOUT_M;
-    }
-    return mA;
-}
-
-void MAC5023_Sample(void)
-{
-    for (UINT8 i = 0; i < ARRARY_SIZE(g_MAC5023VoutConfig); i++)
-    {
-        UINT8 slaveAddr = g_MAC5023VoutConfig[i].dev;
-        if (g_MAC5023_initSuccess[i] == false){
-            if (!MAC5023_init(MAC5023_I2C_BUS, slaveAddr))
-            {
-                g_MAC5023_initSuccess[i] = false;
-                continue;
-            }else{
-                g_MAC5023_initSuccess[i] = true;
-            }
+        if(g_MAC5023CmdsConfig[i].cmd == cmd) {
+            return &g_MAC5023CmdsConfig[i];
         }
-
-        float vin = (MAC5023_vin_read(MAC5023_I2C_BUS, slaveAddr)) / 1000;
-        float vout = (MAC5023_vout_read(MAC5023_I2C_BUS, slaveAddr)) / 1000;
-        float iout = (MAC5023_iout_read(MAC5023_I2C_BUS, slaveAddr)) / 1000;
-
-        LOG_D("MAC5023_Sample name=%8s, addr7=%#x, vin=%.2f, vout=%.2f, iout=%.2f\n",
-            g_MAC5023VoutConfig[i].name, slaveAddr>>1, vin, vout, iout);
     }
+    return NULL;
+}
+static char *MAC5023_getCmdName(UINT8 cmd)
+{
+    const MAC5023_CMDS_CONFIG *cmdCfg = MAC5023_getCmdConfig(cmd);
+    if (cmdCfg == NULL) {
+        return "";
+    }
+    return cmdCfg->name;
+}
+static bool MAC5023_ReadItem(UINT8 bus, UINT8 slaveAddr, UINT8 cmd, float *humVal, UINT8 *ipmbVal)
+{
+    u8 buff[4];
+    memset(buff, 0, sizeof(buff));
+    const MAC5023_CMDS_CONFIG *cmdCfg = MAC5023_getCmdConfig(cmd);
+    if (cmdCfg == NULL) {
+        return false;
+    }
+    int ret = PMBus_I2CRead(bus, slaveAddr, cmdCfg->cmd, buff);
+    if (ret > 0)
+    {
+        u16 rawAdc = ((buff[1] << 8) | buff[0]) & (cmdCfg->mask);
+        *humVal = rawAdc * (cmdCfg->lsb);
+        *ipmbVal = (UINT8)(*humVal * (cmdCfg->scaleZoom));
+        return true;
+    }else{
+        return false;
+    }
+}
+
+bool MAC5023_Sample(UINT8 devIndex, UINT8 cmd, float *humanVal, UINT8 *ipmbVal)
+{
+    float pin = 0;
+    float vin = 0;
+    float vout = 0;
+    float iout = 0;
+    if (devIndex >= ARRARY_SIZE(g_MAC5023DevsConfig)) {
+        return false;
+    }
+    UINT8 slaveAddr = g_MAC5023DevsConfig[devIndex].dev;
+    if (g_MAC5023_initSuccess[devIndex] == false){
+        if (!MAC5023_init(MAC5023_I2C_BUS, slaveAddr))
+        {
+            return false;
+        }else{
+            g_MAC5023_initSuccess[devIndex] = true;
+        }
+    }
+    LOG_D("MAC5023_Sample dev name=%-8s, cmd=%s, addr7=%#x, humanVal=%-5.2f %s\n",
+           g_MAC5023DevsConfig[devIndex].name, MAC5023_getCmdName(cmd), slaveAddr >> 1, *humanVal, g_MAC5023CmdsConfig[devIndex].units);
+
+    return MAC5023_ReadItem(MAC5023_I2C_BUS, slaveAddr, cmd, humanVal, ipmbVal);
 }

@@ -8,8 +8,9 @@
 
 #define DEV_POWER_TASK_DELAY_XMS  10
 #define MAC5023_SAMPLE_PERIOD_XMS 1000
+#define MAC5023_FAILED_MAX_COUNT 10
     
-	
+
 static void DevTaskHandler(void *pArg);
 // config GPIO
 const static GPIOConfig g_gpioConfig_power[] = {
@@ -56,7 +57,10 @@ static const  SensorConfig g_sensor_power[] = {
     {ADC_CHANNEL_6,         SUB_DEVICE_SDR_P12V,       "P12V"},
     {ADC_CHANNEL_7,         SUB_DEVICE_SDR_P3V3,       "P3V3"},
 
-    {ADC_CHANNEL_7,         SUB_DEVICE_SDR_FAN,       "P3V3"},
+    {MAC5023_CHANNLE_PIN,   SUB_DEVICE_SDR_MAC5023_P,  "MAC5023_PIN"},
+    {MAC5023_CHANNLE_VIN,   SUB_DEVICE_SDR_MAC5023_V,  "MAC5023_VIN"},
+    {MAC5023_CHANNLE_VOUT,  SUB_DEVICE_SDR_MAC5023_V,  "MAC5023_VOUT"},
+    {MAC5023_CHANNLE_IOUT,  SUB_DEVICE_SDR_MAC5023_I,  "MAC5023_IOUT"},
 };
 static SubDevice_Reading_T g_sensorVal_power[ARRARY_SIZE(g_sensor_power)];
 
@@ -86,6 +90,30 @@ static UINT32 CountPinPluseMs(BMC_GPIO_enum pin, uint32_t *lastMs)
         return offsetMs;
     }
 }
+static void DevPower_SampleMAC5023(void)
+{
+    float humanVal;
+    UINT8 ipmbVal = 0;
+    for (UINT8 i; i < ARRARY_SIZE(g_sensor_power); i++){
+        UINT8 sensorNum = g_sensor_power[i].sensorNum;
+        if ((sensorNum > MAC5023_CHANNLE_START) && (sensorNum < MAC5023_CHANNLE_END)){
+            if (MAC5023_Sample(0, sensorNum, &humanVal, &ipmbVal)){
+                g_sensorVal_power[i].rawAdc = 0;
+                g_sensorVal_power[i].raw = ipmbVal;
+                g_sensorVal_power[i].errCnt = 0;
+                g_sensorVal_power[i].human = humanVal;
+                continue;
+            }
+            if (g_sensorVal_power[i].errCnt++ > MAC5023_FAILED_MAX_COUNT)
+            {
+                g_sensorVal_power[i].rawAdc = 0;
+                g_sensorVal_power[i].errCnt = 0;
+                g_sensorVal_power[i].raw = 0;
+                g_sensorVal_power[i].human = 0;
+            }
+        }
+    }
+}
 static void DevTaskHandler(void *pArg)
 {
     static uint32_t lastMs_IN_R_GPIO0;
@@ -93,17 +121,19 @@ static void DevTaskHandler(void *pArg)
     while (1)
     {
         vTaskDelay(DEV_POWER_TASK_DELAY_XMS);
-		if(CountPinPluseMs(GPIO_IN_R_GPIO0, &lastMs_IN_R_GPIO0) > 90){
-			
-		}
-		else{
-		}  
-        if (++mac5023SampleDiv >= (MAC5023_SAMPLE_PERIOD_XMS / DEV_POWER_TASK_DELAY_XMS)){
-            mac5023SampleDiv = 0;
-            MAC5023_Sample();
+        if (CountPinPluseMs(GPIO_IN_R_GPIO0, &lastMs_IN_R_GPIO0) > 90)
+        {
         }
-//        if (api_sensorGetValHuman(ADC_CHANNEL_13) > 3.0){
-//            
-//        }
+        else
+        {
+        }
+        if (++mac5023SampleDiv >= (MAC5023_SAMPLE_PERIOD_XMS / DEV_POWER_TASK_DELAY_XMS))
+        {
+            mac5023SampleDiv = 0;
+            DevPower_SampleMAC5023();
+        }
+        //        if (api_sensorGetValHuman(ADC_CHANNEL_13) > 3.0){
+        //
+        //        }
     }
 }

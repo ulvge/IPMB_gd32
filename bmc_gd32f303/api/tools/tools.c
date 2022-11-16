@@ -341,6 +341,9 @@ int sensor(int argc, char *argv[])
         humanVal = api_sensorGetValHuman(sensorNum);
         LOG_I("sensor :idx = %d, name = %s, channel = %d, val = %f\r\n", 
                     numIdex, name, sensorNum, humanVal);
+        if ((numIdex + 1) % 5) {
+            vTaskDelay(5);
+        }
 	}
 
     return 0;

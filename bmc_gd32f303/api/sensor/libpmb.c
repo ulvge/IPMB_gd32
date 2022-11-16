@@ -444,7 +444,7 @@ int PMBus_I2CRead_NoPEC(INT8U i2cBus, u8 slave, u8 cmdCode, u8 *buf)
 int PMBus_I2CWrite(INT8U i2cBus, u8 slave, u8 cmdCode, u8 *Write_buf)
 {
     int j, ret;
-    int writelen;
+    int writelen = 0;
     u8 writebuf[50];
     u8 idx=0;
     if (PEC_Verify == 0)
@@ -464,6 +464,7 @@ int PMBus_I2CWrite(INT8U i2cBus, u8 slave, u8 cmdCode, u8 *Write_buf)
         LOG_E("\nInvalid Request for this Command 0x%02x\n", pPMBusCmd->cmdName);
         return -1;
     }
+	memset(writebuf, 0, sizeof(writebuf));
     writebuf[writelen++] = slave;
     writebuf[writelen++] = pPMBusCmd->cmdName;
     switch (pPMBusCmd->dataBytes)

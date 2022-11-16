@@ -11,7 +11,8 @@
 #include "project_select.h"
 #include "debug_print.h"
 #include "FreeRTOS.h"
-#include "task.h"       
+#include "task.h"
+#include "mac5023.h"
 
 typedef enum 
 {          
@@ -20,6 +21,13 @@ typedef enum
     FAN_CHANNEL_1,
     FAN_CHANNEL_2,
     FAN_CHANNEL_MAX,
+
+    MAC5023_CHANNLE_START = 0x80,
+    MAC5023_CHANNLE_VIN = PMBUS_READ_VIN,
+    MAC5023_CHANNLE_VOUT = PMBUS_READ_VOUT,
+    MAC5023_CHANNLE_IOUT = PMBUS_READ_IOUT,
+    MAC5023_CHANNLE_PIN = PMBUS_READ_PIN,
+    MAC5023_CHANNLE_END = 0xa0,
     SENSOR_CHANNEL_MAX	= 0xff,
 }SENSOR_ENUM;
 
