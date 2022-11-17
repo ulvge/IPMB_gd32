@@ -44,7 +44,6 @@ typedef struct {
 	FIFO
 ******************************************************************/
 			
-EXT_FIFO	BOOLEAN		USART_main(INT8U chan);  
 EXT_FIFO	void		FIFO_Init(FIFO *fifo, INT8U *array, INT16U deepth);
 EXT_FIFO	void		FIFO_Reset(FIFO *fifo);
 EXT_FIFO	BOOLEAN		FIFO_Write(FIFO *fifo, INT8U unit); 

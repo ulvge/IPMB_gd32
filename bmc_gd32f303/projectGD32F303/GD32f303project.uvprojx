@@ -459,11 +459,6 @@
               <FilePath>..\api\pid\pid.c</FilePath>
             </File>
             <File>
-              <FileName>api_tmp.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\api\tmp\api_tmp.c</FilePath>
-            </File>
-            <File>
               <FileName>api_cpu.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\api\cpu\api_cpu.c</FilePath>
@@ -477,11 +472,6 @@
               <FileName>tools.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\api\tools\tools.c</FilePath>
-            </File>
-            <File>
-              <FileName>hwd1668.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\api\tmp\hwd1668.c</FilePath>
             </File>
             <File>
               <FileName>FIFO.c</FileName>
@@ -507,6 +497,16 @@
               <FileName>log.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\api\tools\log.c</FilePath>
+            </File>
+            <File>
+              <FileName>mac5023.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\api\sensor\mac5023.c</FilePath>
+            </File>
+            <File>
+              <FileName>libpmb.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\api\sensor\libpmb.c</FilePath>
             </File>
           </Files>
         </Group>

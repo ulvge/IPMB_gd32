@@ -18,6 +18,7 @@
 
   <project>
     <PathAndName>..\projectGD32F303\GD32f303project.uvprojx</PathAndName>
+    <NodeIsExpanded>1</NodeIsExpanded>
   </project>
 
 </ProjectWorkspace>
