@@ -27,15 +27,15 @@ typedef struct
 typedef struct 
 {
     uint8_t idx;
-    const CaptureConfig *config;
-    
-	bool     is_start;
+
+	uint8_t     is_valid :1;
+	uint8_t     is_start :1;
 	uint16_t cap_value_first;
 	uint16_t cap_value_second;
 	uint16_t period_cnt;
 	uint16_t cap_no_update_cnt;
-	bool     is_valid;
 
+    const CaptureConfig *config;
 	uint32_t total_value;
 } CaptureStruct;
 

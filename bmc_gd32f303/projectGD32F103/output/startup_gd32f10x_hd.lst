@@ -599,12 +599,11 @@ ARM Macro Assembler    Page 10
               00000000 
 Command Line: --debug --xref --diag_suppress=9931 --cpu=Cortex-M3 --apcs=interw
 ork --depend=.\output\temp\startup_gd32f10x_hd.d -o.\output\temp\startup_gd32f1
-0x_hd.o -IE:\GD32\gd32\bmc_gd32f303\projectGD32F103\RTE -IC:\Keil_v5\ARM\PACK\G
-igaDevice\GD32F10x_DFP\2.0.3\Device\Include -IC:\Keil_v5\ARM\CMSIS\Include --pr
-edefine="__MICROLIB SETA 1" --predefine="__UVISION_VERSION SETA 515" --predefin
-e="GD32F10X_MD SETA 1" --predefine="USE_STDPERIPH_DRIVER SETA 1" --list=.\outpu
-t\startup_gd32f10x_hd.lst ..\firmware\GD32F10x\CMSIS\GD\GD32F10x\Source\ARM\sta
-rtup_gd32f10x_hd.s
+0x_hd.o -Id:\Users\Arm\Packs\GigaDevice\GD32F10x_DFP\2.0.2\Device\Include -Id:\
+Keil_v5\ARM\CMSIS\Include --predefine="__MICROLIB SETA 1" --predefine="__UVISIO
+N_VERSION SETA 535" --predefine="GD32F10X_MD SETA 1" --predefine="USE_STDPERIPH
+_DRIVER SETA 1" --list=.\output\startup_gd32f10x_hd.lst ..\firmware\GD32F10x\CM
+SIS\GD\GD32F10x\Source\ARM\startup_gd32f10x_hd.s
 
 
 

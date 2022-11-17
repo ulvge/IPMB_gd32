@@ -25,21 +25,9 @@
 #include "stdlib.h"  
 #include "OSPort.h"
 
-static int operation_mode = -1;
-static int g_bus = 0;
+static int8_t operation_mode = -1;
+static uint8_t g_bus = 0;
 static uint8_t host_addr;
-
-extern int8_t g_temperature_raw[4];
-
-unsigned char GW_ADDR0 = 192;
-unsigned char GW_ADDR1 = 168;
-unsigned char GW_ADDR2 = 2;
-unsigned char GW_ADDR3 = 10;
-
-unsigned char IP_ADDR0 = 192;
-unsigned char IP_ADDR1 = 168;
-unsigned char IP_ADDR2 = 2;
-unsigned char IP_ADDR3 = 111;
 
 //truct netif g_mynetif;
 
@@ -58,23 +46,23 @@ static int do_get_host(uint8_t bus);
 
 static int parameterChecked(int para1, int para2, int para3, int para4);
 
-static int (*handlerList[])(int, char **, int) =
-    {
+static int (*const handlerList[])(int, char **, int) =  {
         busArgHandler,
         setHostArgHandler,
         getHostArgHandler,
         resetArgHandler,
         scanArgHandler,
-        NULL};
+        NULL
+};
 
-static char *arglist[] =
-    {
+static char *const arglist[] ={
         "-b",
         "--sethost",
         "--gethost",
         "--reset",
         "--scan",
-        NULL};
+        NULL
+};
 
 int i2cTest(int argc, char *argv[])
 {

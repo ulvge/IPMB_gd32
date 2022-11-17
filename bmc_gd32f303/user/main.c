@@ -44,7 +44,6 @@ OF SUCH DAMAGE.
 
 #include "fan/api_fan.h"
 #include "adc/api_adc.h"
-#include "tmp/api_tmp.h"
 #include "cpu/api_cpu.h"
 #include "utc/api_utc.h"
 
@@ -147,11 +146,6 @@ void start_task(void *pvParameters)
    }
 
     // xTaskCreate(updateTask, "updateTask", configMINIMAL_STACK_SIZE*3, NULL, 18, NULL);
-
-    // if (errCOULD_NOT_ALLOCATE_REQUIRED_MEMORY == 
-    //     xTaskCreate(tmpSampleTask, "tmpSampleTask", configMINIMAL_STACK_SIZE * 2, NULL, 12, NULL)) {
-    //     errCreateTask |= 2;
-    // }
 
 //    if (errCOULD_NOT_ALLOCATE_REQUIRED_MEMORY == 
 //        xTaskCreate(cpuGetInfoTask, "cpu", configMINIMAL_STACK_SIZE * 2, NULL, 11, NULL)) {

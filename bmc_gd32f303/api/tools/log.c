@@ -33,13 +33,13 @@ static int getLogLevelHandler(int argc, char **argv, int index);
 
 static int parameterChecked(int para1, int para2, int para3, int para4);
 
-static int (*handlerList[])(int, char **, int) =  {
+static int (*const handlerList[])(int, char **, int) =  {
     setLogLevelHandler,
     getLogLevelHandler,
     NULL
 };
 
-static char *arglist[] = {
+static char *const arglist[] = {
     "-set",
     "-get",
     NULL

@@ -37,7 +37,7 @@ typedef struct
     uint8_t isExist : 1;
     char *typeName;
 } SENSOR_UNITTYPECODE_EXIST;
-static SENSOR_UNITTYPECODE_EXIST g_sensorUnitTypeExist[] = {
+static  SENSOR_UNITTYPECODE_EXIST g_sensorUnitTypeExist[] = {
     {IPMI_UNIT_DEGREES_C, 0, "tempture"},
     {IPMI_UNIT_VOLTS, 0, "voltage"},
     {IPMI_UNIT_AMPS, 0, "current"},
@@ -46,21 +46,23 @@ static SENSOR_UNITTYPECODE_EXIST g_sensorUnitTypeExist[] = {
 };
 typedef struct
 {
-    uint32_t busUsed;
+    uint8_t busUsed;
+    uint8_t sensorUnitTypeCount;
 
     SENSOR_UNITTYPECODE_EXIST *sensorUnitTypeExist;
-    uint8_t sensorUnitTypeCount;
 } SubDeviceHandler_T;
 
 static SubDeviceHandler_T g_subDeviceHandler = {
     .busUsed = NM_SECONDARY_IPMB_BUS,
-    .sensorUnitTypeExist = g_sensorUnitTypeExist,
     .sensorUnitTypeCount = ARRARY_SIZE(g_sensorUnitTypeExist),
+    .sensorUnitTypeExist = g_sensorUnitTypeExist,
 };
 
 static TimerHandle_t g_subdevice_timerSample = NULL;
 static TimerHandle_t g_subdevice_timerUpload = NULL;
 static void SubDevice_HeartBeatTimerCallBack(xTimerHandle pxTimer);
+static SubDeviceMODE_T *pSubDeviceSelf = NULL;
+
 static const SubDeviceName_T g_SubDeviceConfigName[] = {
     {SUB_DEVICE_MODE_MAIN, "main"},
     {SUB_DEVICE_MODE_POWER, "power"},
@@ -115,7 +117,6 @@ static void SubDevice_InsertMode(SubDeviceMODE_T *obj, SUB_DEVICE_MODE mode)
     obj->name = g_SubDeviceConfigName[mode].name;
     obj->i2c0SlaveAddr = obj->i2c1SlaveAddr = SubDevice_modeConvertSlaveAddr(mode);
 }
-static SubDeviceMODE_T *pSubDeviceSelf = NULL;
 bool SubDevice_CheckAndPrintMode(void)
 {
     SUB_DEVICE_MODE mode = (SUB_DEVICE_MODE)get_board_addr();

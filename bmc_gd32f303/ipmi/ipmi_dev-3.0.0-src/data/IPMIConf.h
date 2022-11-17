@@ -120,7 +120,7 @@ typedef enum
 typedef struct
 {
     INT8U   OWNERID;
-    INT16U  PowerNotification;
+    INT8U  PowerNotification;
     BOOL  Status;
 
 } PACKED  Mgmt_T;
@@ -496,9 +496,9 @@ typedef struct
 //    char EthIndex[64];
 //    char EthIndexValues[64][64];
 //    char par_path[64];
-    int    LANIfccount;
-    INT8U *pStorageNVRAM;
-    INT8U *pNVRUsrConfig;
+    //int    LANIfccount;
+    //INT8U *pStorageNVRAM;
+    //INT8U *pNVRUsrConfig;
     INT8U PrimaryIPMBCh;
     INT8U SecondaryIPMBCh;
     INT8U ThirdIPMBCh;
@@ -506,7 +506,7 @@ typedef struct
     INT8U RMCPLAN2Ch ;
     INT8U RMCPLAN3Ch ;
     INT8U RMCPLAN4Ch ;
-    INT8U ICMBCh ;
+    //INT8U ICMBCh ;
     INT8U SMBUSCh ;
     INT8U SERIALch ;
     //INT8U SMMCh ;
@@ -558,19 +558,19 @@ typedef struct
 //    pthread_mutex_t BMCMsgMutex;
 //    pthread_mutex_t ChUserMutex;
 //    sem_t WDTSem;
-    int SetWDTUpdated;
-    int WDTPreTmtStat;
+    //int SetWDTUpdated;
+    INT8U WDTPreTmtStat;
 //    DynamicLoader_T g_DynamicInfoTable[MAX_DYNMC_TBL_COUNT];
     //INT32U g_DynamicInfoTableCount ;
     //DynamicLoader_T DynamicInfoTable[100];
     //INT32U DynamicInfoTableCount ;
 
-    INT8U MsgHndlrTblSize;
-    INT8U GroupExtnMsgHndlrTblSize;
-    INT8U TimerTaskTblSize;
+    //INT8U MsgHndlrTblSize;
+    //INT8U GroupExtnMsgHndlrTblSize;
+    //INT8U TimerTaskTblSize;
 
 
-    MsgHndlrTbl_T MsgHndlrTbl[15]; // m_MsgHndlrTbl
+    MsgHndlrTbl_T MsgHndlrTbl[7]; // m_MsgHndlrTbl
 //    GroupExtnMsgHndlrTbl_T GroupExtnMsgHndlrTbl [10];
 //    TimerTaskTbl_T    TimerTaskTbl [20];
 
@@ -587,8 +587,8 @@ typedef struct
 //    SSIConfig_T         SSIConfig;
     INT8U               SlotID;
     INT8U               IPMBAddr;
-    INT8U    HostOFFStopWDT;    // This flag is set to TRUE, when Chassis is powered off
-    INT8U    SendMsgSeqNum;
+    //INT8U    HostOFFStopWDT;    // This flag is set to TRUE, when Chassis is powered off
+    //INT8U    SendMsgSeqNum;
 //    EncryptedUserInfo_T EncryptedUserInfo[MAX_USER_CFG_MDS];
  //   pfunc g_PDKPARHandle[MAX_PDKPAR_HANDLE];
 //    IPMIConfigMap_T Ipmiconfigmap [MAX_IPMI_CONFIG_MAPS];

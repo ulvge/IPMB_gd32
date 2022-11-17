@@ -25,8 +25,8 @@ typedef struct
 {
     uint8_t fanIdx;
     const PwmChannleConfig *config;
-    int32_t rpmSet;
-    int32_t rpmCalculate;
+    int16_t rpmSet;
+    int16_t rpmCalculate;
 } FanStruct;
 
 static const PwmChannleConfig g_pwmChannleConfig[] = {

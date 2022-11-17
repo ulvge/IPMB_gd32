@@ -74,8 +74,6 @@
 #include "bsp_gpio.h"
 #include "main.h"
 
-#define UNIMPLEMENTED UnImplementedFunc
-
 // extern pthread_mutex_t MsgHndlrMutex;
 
 /*--------------------------------------------------------------------
@@ -91,7 +89,7 @@ xQueueHandle RecvForwardI2CDatMsg_Queue = NULL;
 
 //INT8U ExtNetFnMap[MAX_NUM_BMC][MAX_NETFN];
 
-static const MsgHndlrTbl_T m_MsgHndlrTbl[15] =
+static const MsgHndlrTbl_T m_MsgHndlrTbl[7] =
     {
         {NETFN_CHASSIS, g_Chassis_CmdHndlr},//0
         {NETFN_BRIDGE, g_Bridge_CmdHndlr},//0

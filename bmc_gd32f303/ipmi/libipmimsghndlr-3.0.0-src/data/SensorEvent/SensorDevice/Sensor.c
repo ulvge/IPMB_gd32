@@ -43,7 +43,6 @@
 
 #include "fan/api_fan.h"
 #include "adc/api_adc.h"
-#include "tmp/api_tmp.h"
 #include "sensor/api_sensor.h"
 #include "api_subdevices.h"
 

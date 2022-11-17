@@ -469,11 +469,6 @@
               <FilePath>..\api\tools\FILO.c</FilePath>
             </File>
             <File>
-              <FileName>hwd1668.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\api\tmp\hwd1668.c</FilePath>
-            </File>
-            <File>
               <FileName>api_sensor.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\api\sensor\api_sensor.c</FilePath>
