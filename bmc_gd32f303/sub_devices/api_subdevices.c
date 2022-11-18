@@ -158,8 +158,7 @@ static bool SubDevice_isExistSensorUnit(uint8_t queryUnitType)
         }
         for (uint8_t numIdex = 0; numIdex < pHandler->sensorCfgSize; numIdex++)
         {
-            SubDevice_Reading_T *pDeviceReading = &pHandler->val[numIdex];
-            sensorNum = api_sensorGetMySensorNumByIdex(numIdex);
+            sensorNum = api_sensorGetSensorNumByIdex(dev, numIdex);
 
             if (api_sensorGetUnitType(dev, sensorNum, &unitType) == true)
             {

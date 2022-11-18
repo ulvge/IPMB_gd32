@@ -152,7 +152,7 @@ void start_task(void *pvParameters)
 //        errCreateTask |= 4;
 //    }
     if (errCOULD_NOT_ALLOCATE_REQUIRED_MEMORY == 
-        xTaskCreate(shellTask, "shellTask", 300, &shell, 2, NULL)) {
+        xTaskCreate(shellTask, "shellTask", 200, &shell, 2, NULL)) {
         errCreateTask |= 8;
     }
 	if (errCreateTask == 0){
