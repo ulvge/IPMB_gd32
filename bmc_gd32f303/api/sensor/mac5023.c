@@ -1,5 +1,5 @@
 /*!
-    \file    api_sensor.c
+    \file    mac5023.c
     \brief   api sensor
 
     \version

@@ -4,7 +4,7 @@
 ******************************************************************
 ******************************************************************
 *
-* libpmbus.c
+* pmbus.c
 *
 * PMBus read/write functions
 *
@@ -16,7 +16,7 @@
 #include <string.h>
 
 #include <types.h>
-#include <libpmb.h>
+#include <pmbus.h>
 #include <debug_print.h>
 #include <bsp_i2c.h>
 

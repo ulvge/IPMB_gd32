@@ -539,8 +539,8 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>..\api\sensor\libpmb.c</PathWithFileName>
-      <FilenameWithoutPath>libpmb.c</FilenameWithoutPath>
+      <PathWithFileName>..\api\sensor\pmbus.c</PathWithFileName>
+      <FilenameWithoutPath>pmbus.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>

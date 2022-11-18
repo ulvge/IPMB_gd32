@@ -16,15 +16,6 @@
 #include "OSPort.h"
 
 /********************* GPIO SIMULATED I2C1 MICRO DEF ***************************/
-#define I2CS0_SCL_GPIO_PORT     GPIOB
-#define I2CS0_SCL_CLK           RCU_GPIOB
-#define I2CS0_SCL_PIN           GPIO_PIN_8
-
-#define I2CS0_SDA_GPIO_PORT     GPIOB
-#define I2CS0_SDA_CLK           RCU_GPIOB
-#define I2CS0_SDA_PIN           GPIO_PIN_9
-
-#define I2CS0_RETRY_TIMERS      3
 #define I2CS0_SDA_READ() gpio_input_bit_get(I2CS0_SDA_GPIO_PORT, I2CS0_SDA_PIN) /* SDA read */
 /********************* GPIO SIMULATED I2C1 MICRO DEF END***************************/
 
@@ -243,15 +234,25 @@ void i2cs0_init(void)
 
 /*
 *********************************************************************************************************
-
+regAddress 
+low 16bit, The meaning of the name
+hi 16bit: regAddressLenth,default=0, if val=2, means len=2
 *********************************************************************************************************
 */
-bool i2cs0_read_bytes(uint8_t dev_addr, uint16_t _usAddress, uint8_t *_pReadBuf, uint16_t readSize)
+bool i2cs0_read_bytes(uint8_t devAddr, uint32_t regAddress, uint8_t *_pReadBuf, uint16_t readSize)
 {
     uint16_t i;
+    uint8_t regAddressLen;
 
+    if(xTaskGetSchedulerState() == taskSCHEDULER_RUNNING)
+    {
+        if (xSemaphoreTake(g_I2CS0_semaphore, I2CS0_TAKE_SEMAPHORE_TIMEOUT) == pdFALSE)
+        {
+            return false;
+        }
+    }
     i2cs0_Start();
-    i2cs0_SendByte(dev_addr | I2CS_WR);
+    i2cs0_SendByte(devAddr | I2CS_WR);
 
     if (i2cs0_WaitAck() != 0)
     {
@@ -259,10 +260,17 @@ bool i2cs0_read_bytes(uint8_t dev_addr, uint16_t _usAddress, uint8_t *_pReadBuf,
     }
     if ((readSize == 0) || (_pReadBuf == NULL))
     {
-        i2cs0_Stop();
-        return true;
+        goto cmd_success;
     }
-    i2cs0_SendByte((uint8_t)_usAddress);
+    regAddressLen = (uint8_t)(regAddress & 0xffff0000) >> 16;
+    if (regAddressLen == 2) {
+        i2cs0_SendByte((uint8_t)regAddress >> 8);
+        if (i2cs0_WaitAck() != 0)
+        {
+            goto cmd_fail;
+        }
+    }
+    i2cs0_SendByte((uint8_t)regAddress);
 
     if (i2cs0_WaitAck() != 0)
     {
@@ -270,7 +278,7 @@ bool i2cs0_read_bytes(uint8_t dev_addr, uint16_t _usAddress, uint8_t *_pReadBuf,
     }
 
     i2cs0_Start();
-    i2cs0_SendByte(dev_addr | I2CS_RD);
+    i2cs0_SendByte(devAddr | I2CS_RD);
 
     if (i2cs0_WaitAck() != 0)
     {
@@ -291,11 +299,20 @@ bool i2cs0_read_bytes(uint8_t dev_addr, uint16_t _usAddress, uint8_t *_pReadBuf,
         }
     }
 
+cmd_success:
     i2cs0_Stop();
+    if(xTaskGetSchedulerState() == taskSCHEDULER_RUNNING)
+    {
+        xSemaphoreGive(g_I2CS0_semaphore);
+    }
     return true;
 
 cmd_fail:
     i2cs0_Stop();
+    if(xTaskGetSchedulerState() == taskSCHEDULER_RUNNING)
+    {
+        xSemaphoreGive(g_I2CS0_semaphore);
+    }
     return false;
 }
 /*
@@ -303,19 +320,22 @@ cmd_fail:
 
 *********************************************************************************************************
 */
-bool i2cs0_write_bytes(uint8_t dev_addr, const uint8_t *_pWriteBuf, uint16_t writeSize)
+bool i2cs0_write_bytes(uint8_t devAddr, const uint8_t *pWriteBuf, uint16_t writeSize)
 {
     uint16_t i, m;
     uint8_t regAddress;
-    if (xSemaphoreTake(g_I2CS0_semaphore, I2CS0_TAKE_SEMAPHORE_TIMEOUT) == pdFALSE)
+    if(xTaskGetSchedulerState() == taskSCHEDULER_RUNNING)
     {
-        return false;
+        if (xSemaphoreTake(g_I2CS0_semaphore, I2CS0_TAKE_SEMAPHORE_TIMEOUT) == pdFALSE)
+        {
+            return false;
+        }
     }
 
     for (m = 0; m < I2CS0_RETRY_TIMERS; m++)
     {
         i2cs0_Start();
-        i2cs0_SendByte(dev_addr | I2CS_WR);
+        i2cs0_SendByte(devAddr | I2CS_WR);
 
         if (i2cs0_WaitAck() == 0)
         {
@@ -333,7 +353,7 @@ bool i2cs0_write_bytes(uint8_t dev_addr, const uint8_t *_pWriteBuf, uint16_t wri
 
     if (writeSize >= 1)
     {
-        regAddress = _pWriteBuf[0];
+        regAddress = pWriteBuf[0];
         i2cs0_SendByte(regAddress);
 
         if (i2cs0_WaitAck() != 0)
@@ -344,7 +364,7 @@ bool i2cs0_write_bytes(uint8_t dev_addr, const uint8_t *_pWriteBuf, uint16_t wri
 
     for (i = 1; i < writeSize; i++)
     {
-        i2cs0_SendByte(_pWriteBuf[i]);
+        i2cs0_SendByte(pWriteBuf[i]);
 
         if (i2cs0_WaitAck() != 0)
         {
@@ -353,11 +373,17 @@ bool i2cs0_write_bytes(uint8_t dev_addr, const uint8_t *_pWriteBuf, uint16_t wri
     }
 
     i2cs0_Stop();
-    xSemaphoreGive(g_I2CS0_semaphore);
+    if(xTaskGetSchedulerState() == taskSCHEDULER_RUNNING)
+    {
+        xSemaphoreGive(g_I2CS0_semaphore);
+    }
     return true;
 
 cmd_fail:
     i2cs0_Stop();
-    xSemaphoreGive(g_I2CS0_semaphore);
+    if(xTaskGetSchedulerState() == taskSCHEDULER_RUNNING)
+    {
+        xSemaphoreGive(g_I2CS0_semaphore);
+    }
     return false;
 }

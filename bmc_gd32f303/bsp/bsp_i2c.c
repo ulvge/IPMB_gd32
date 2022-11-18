@@ -1033,7 +1033,7 @@ static void i2c_set_as_slave_device_addr(uint32_t i2c_periph, uint8_t device_add
     i2c_ack_config(i2c_periph, I2C_ACK_ENABLE);
 }
 
-bool i2c_read(uint32_t bus, uint8_t devAddr, uint16_t regAddress, uint8_t *pReadBuf, uint16_t size)
+bool i2c_read(uint32_t bus, uint8_t devAddr, uint32_t regAddress, uint8_t *pReadBuf, uint16_t size)
 {
     switch (bus)
     {

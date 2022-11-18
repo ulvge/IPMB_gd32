@@ -13,11 +13,16 @@
 #include "Types.h"
 #include "api_subdevices.h"
 #include "debug_print.h" 
+#include "bsp_i2c_gpio.h" 
+
 
 const static GPIOConfig g_gpioConfigComm[] = {
     {GPIO_IN_GAP0, GPIOE, GPIO_PIN_2, RCU_GPIOE, GPIO_MODE_IPU, GPIO_OSPEED_10MHZ, 0},
     {GPIO_IN_GAP1, GPIOE, GPIO_PIN_3, RCU_GPIOE, GPIO_MODE_IPU, GPIO_OSPEED_10MHZ, 0},
     {GPIO_IN_GAP2, GPIOE, GPIO_PIN_4, RCU_GPIOE, GPIO_MODE_IPU, GPIO_OSPEED_10MHZ, 0},
+
+    {GPIO_I2CS0_SCL, I2CS0_SCL_GPIO_PORT, I2CS0_SCL_PIN, I2CS0_SCL_CLK, GPIO_MODE_OUT_OD, GPIO_OSPEED_10MHZ, 0},
+    {GPIO_I2CS0_SDA, I2CS0_SDA_GPIO_PORT, I2CS0_SDA_PIN, I2CS0_SDA_CLK, GPIO_MODE_OUT_OD, GPIO_OSPEED_10MHZ, 0},
 };
 
 const static GPIOConfig_Handler *g_pGpioConfig_Handler = NULL;

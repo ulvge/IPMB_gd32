@@ -196,7 +196,7 @@ Section Cross References
     log.o(shellCommand) refers to log.o(.constdata) for shellCmdlog
     log.o(shellCommand) refers to log.o(.text) for logs
     mac5023.o(.text) refers to strlen.o(.text) for strlen
-    mac5023.o(.text) refers to libpmb.o(.text) for PMBus_I2CRead
+    mac5023.o(.text) refers to pmbus.o(.text) for PMBus_I2CRead
     mac5023.o(.text) refers to strcmp.o(.text) for strcmp
     mac5023.o(.text) refers to printfa.o(i.__0printf) for __2printf
     mac5023.o(.text) refers to f2d.o(.text) for __aeabi_f2d
@@ -206,13 +206,13 @@ Section Cross References
     mac5023.o(.text) refers to mac5023.o(.conststring) for .conststring
     mac5023.o(.constdata) refers to mac5023.o(.conststring) for .conststring
     mac5023.o(.data) refers to mac5023.o(.conststring) for .conststring
-    libpmb.o(.text) refers to bsp_i2c.o(.text) for i2c_write
-    libpmb.o(.text) refers to printfa.o(i.__0printf) for __2printf
-    libpmb.o(.text) refers to memcpya.o(.text) for __aeabi_memcpy
-    libpmb.o(.text) refers to libpmb.o(.constdata) for PMBusStdCmds
-    libpmb.o(.text) refers to main.o(.data) for g_debugLevel
-    libpmb.o(.text) refers to libpmb.o(.data) for PEC_Verify
-    libpmb.o(.text) refers to memseta.o(.text) for __aeabi_memclr4
+    pmbus.o(.text) refers to bsp_i2c.o(.text) for i2c_write
+    pmbus.o(.text) refers to printfa.o(i.__0printf) for __2printf
+    pmbus.o(.text) refers to memcpya.o(.text) for __aeabi_memcpy
+    pmbus.o(.text) refers to pmbus.o(.constdata) for PMBusStdCmds
+    pmbus.o(.text) refers to main.o(.data) for g_debugLevel
+    pmbus.o(.text) refers to pmbus.o(.data) for PEC_Verify
+    pmbus.o(.text) refers to memseta.o(.text) for __aeabi_memclr4
     serialifc.o(.text) refers to printfa.o(i.__0printf) for __2printf
     serialifc.o(.text) refers to bsp_uartcomm.o(.text) for UART_sendData
     serialifc.o(.text) refers to serial.o(.text) for ProcessSerialMessage
@@ -971,56 +971,56 @@ Section Cross References
     dsqrt.o(.text) refers to llushr.o(.text) for __aeabi_llsr
     dsqrt.o(.text) refers to depilogue.o(.text) for _double_round
     ctype_c.o(.text) refers to ctype_c.o(.constdata) for .constdata
-    libpmb.o(i.PMBus_SendByte) refers to libpmb.o(.text) for PMBus_I2CWrite
-    libpmb.o(i.PMBus_ReadFanSpeed) refers to libpmb.o(.text) for PMBus_I2CRead
-    libpmb.o(i.PMBus_ReadFanSpeed) refers to printfa.o(i.__0printf) for __2printf
-    libpmb.o(i.PMBus_ReadFanSpeed) refers to main.o(.data) for g_debugLevel
-    libpmb.o(i.PMBus_ReadFanSpeed) refers to libpmb.o(.conststring) for .conststring
-    libpmb.o(i.PMBus_ReadTemp) refers to libpmb.o(.text) for PMBus_I2CRead
-    libpmb.o(i.PMBus_ReadTemp) refers to printfa.o(i.__0printf) for __2printf
-    libpmb.o(i.PMBus_ReadTemp) refers to main.o(.data) for g_debugLevel
-    libpmb.o(i.PMBus_ReadTemp) refers to libpmb.o(.conststring) for .conststring
-    libpmb.o(i.PMBus_ReadVIN) refers to libpmb.o(.text) for PMBus_I2CRead
-    libpmb.o(i.PMBus_ReadIIN) refers to libpmb.o(.text) for PMBus_I2CRead
-    libpmb.o(i.PMBus_ReadPIN) refers to libpmb.o(.text) for PMBus_I2CRead
-    libpmb.o(i.PMBus_ReadRevision) refers to libpmb.o(.text) for PMBus_I2CRead
-    libpmb.o(i.PMBus_ReadStatusWord) refers to libpmb.o(.text) for PMBus_I2CRead
-    libpmb.o(i.PMBus_ReadStatusCML) refers to libpmb.o(.text) for PMBus_I2CRead
-    libpmb.o(i.PMBus_ReadStatusOther) refers to libpmb.o(.text) for PMBus_I2CRead
-    libpmb.o(i.PMBus_ReadStatusIOUT) refers to libpmb.o(.text) for PMBus_I2CRead
-    libpmb.o(i.PMBus_ReadStatusINPUT) refers to libpmb.o(.text) for PMBus_I2CRead
-    libpmb.o(i.PMBus_ReadStatusTemp) refers to libpmb.o(.text) for PMBus_I2CRead
-    libpmb.o(i.PMBus_ReadStatusFan1_2) refers to libpmb.o(.text) for PMBus_I2CRead
-    libpmb.o(i.PMBus_ReadStatusFan3_4) refers to libpmb.o(.text) for PMBus_I2CRead
-    libpmb.o(i.PMBus_SendClearFaults) refers to libpmb.o(i.PMBus_SendByte) for PMBus_SendByte
-    libpmb.o(i.PMBus_ReadVOUTMODE) refers to libpmb.o(.text) for PMBus_I2CRead
-    libpmb.o(i.PMBus_ReadVOUT) refers to libpmb.o(.text) for PMBus_I2CRead
-    libpmb.o(i.PMBus_ReadMFR_IOUT_MAX) refers to libpmb.o(.text) for PMBus_I2CRead
-    libpmb.o(i.PMBus_ReadIOUT) refers to libpmb.o(.text) for PMBus_I2CRead
-    libpmb.o(i.PMBus_ReadPOUT) refers to libpmb.o(.text) for PMBus_I2CRead
-    libpmb.o(i.PMBus_ReadCapability) refers to libpmb.o(.text) for PMBus_I2CRead
-    libpmb.o(i.PMBus_ReadPIN_OP_WARN_LIMIT) refers to libpmb.o(.text) for PMBus_I2CRead
-    libpmb.o(i.PMBus_WritePIN_OP_WARN_LIMIT) refers to libpmb.o(.text) for PMBus_I2CWrite
-    libpmb.o(i.PMBus_ReadON_OFF_CONFIG) refers to libpmb.o(.text) for PMBus_I2CRead
-    libpmb.o(i.PMBus_WriteON_OFF_CONFIG) refers to libpmb.o(.text) for PMBus_I2CWrite
-    libpmb.o(i.PMBus_ReadOperation) refers to libpmb.o(.text) for PMBus_I2CRead
-    libpmb.o(i.PMBus_WriteOperation) refers to libpmb.o(.text) for PMBus_I2CWrite
-    libpmb.o(i.PMBus_ReadPOUT_MAX) refers to libpmb.o(.text) for PMBus_I2CRead
-    libpmb.o(i.PMBus_WritePOUT_MAX) refers to libpmb.o(.text) for PMBus_I2CWrite
-    libpmb.o(i.PMBus_ReadPOUT_OP_FAULT_LIMIT) refers to libpmb.o(.text) for PMBus_I2CRead
-    libpmb.o(i.PMBus_WritePOUT_OP_FAULT_LIMIT) refers to libpmb.o(.text) for PMBus_I2CWrite
-    libpmb.o(i.PMBus_ReadPOUT_OP_FAULT_RESPONSE) refers to libpmb.o(.text) for PMBus_I2CRead
-    libpmb.o(i.PMBus_WritePOUT_OP_FAULT_RESPONSE) refers to libpmb.o(.text) for PMBus_I2CWrite
-    libpmb.o(i.PMBus_ReadPAGE) refers to libpmb.o(.text) for PMBus_I2CRead
-    libpmb.o(i.PMBus_WritePAGE) refers to libpmb.o(.text) for PMBus_I2CWrite
-    libpmb.o(i.PMBus_ReadQUERY) refers to libpmb.o(.text) for PMBus_I2CRead
-    libpmb.o(i.PMBus_ReadCOEFFICIENTS) refers to libpmb.o(.text) for PMBus_I2CRead
-    libpmb.o(i.PMBus_WriteSMBALERT_MASK) refers to libpmb.o(.text) for PMBus_I2CWrite
-    libpmb.o(i.PMBus_ReadREAD_EIN) refers to libpmb.o(.text) for PMBus_I2CRead
-    libpmb.o(i.PMBus_ReadMFR_MAX_TEMP_1) refers to libpmb.o(.text) for PMBus_I2CRead
-    libpmb.o(i.PMBus_ReadMFR_MAX_TEMP_2) refers to libpmb.o(.text) for PMBus_I2CRead
-    libpmb.o(i.PMBus_WritePAGE_PLUS_WRITE) refers to libpmb.o(.text) for PMBus_I2CWrite
-    libpmb.o(i.PMBus_ReadPAGE_PLUS_READ) refers to libpmb.o(.text) for PMBus_I2CRead
+    pmbus.o(i.PMBus_SendByte) refers to pmbus.o(.text) for PMBus_I2CWrite
+    pmbus.o(i.PMBus_ReadFanSpeed) refers to pmbus.o(.text) for PMBus_I2CRead
+    pmbus.o(i.PMBus_ReadFanSpeed) refers to printfa.o(i.__0printf) for __2printf
+    pmbus.o(i.PMBus_ReadFanSpeed) refers to main.o(.data) for g_debugLevel
+    pmbus.o(i.PMBus_ReadFanSpeed) refers to pmbus.o(.conststring) for .conststring
+    pmbus.o(i.PMBus_ReadTemp) refers to pmbus.o(.text) for PMBus_I2CRead
+    pmbus.o(i.PMBus_ReadTemp) refers to printfa.o(i.__0printf) for __2printf
+    pmbus.o(i.PMBus_ReadTemp) refers to main.o(.data) for g_debugLevel
+    pmbus.o(i.PMBus_ReadTemp) refers to pmbus.o(.conststring) for .conststring
+    pmbus.o(i.PMBus_ReadVIN) refers to pmbus.o(.text) for PMBus_I2CRead
+    pmbus.o(i.PMBus_ReadIIN) refers to pmbus.o(.text) for PMBus_I2CRead
+    pmbus.o(i.PMBus_ReadPIN) refers to pmbus.o(.text) for PMBus_I2CRead
+    pmbus.o(i.PMBus_ReadRevision) refers to pmbus.o(.text) for PMBus_I2CRead
+    pmbus.o(i.PMBus_ReadStatusWord) refers to pmbus.o(.text) for PMBus_I2CRead
+    pmbus.o(i.PMBus_ReadStatusCML) refers to pmbus.o(.text) for PMBus_I2CRead
+    pmbus.o(i.PMBus_ReadStatusOther) refers to pmbus.o(.text) for PMBus_I2CRead
+    pmbus.o(i.PMBus_ReadStatusIOUT) refers to pmbus.o(.text) for PMBus_I2CRead
+    pmbus.o(i.PMBus_ReadStatusINPUT) refers to pmbus.o(.text) for PMBus_I2CRead
+    pmbus.o(i.PMBus_ReadStatusTemp) refers to pmbus.o(.text) for PMBus_I2CRead
+    pmbus.o(i.PMBus_ReadStatusFan1_2) refers to pmbus.o(.text) for PMBus_I2CRead
+    pmbus.o(i.PMBus_ReadStatusFan3_4) refers to pmbus.o(.text) for PMBus_I2CRead
+    pmbus.o(i.PMBus_SendClearFaults) refers to pmbus.o(i.PMBus_SendByte) for PMBus_SendByte
+    pmbus.o(i.PMBus_ReadVOUTMODE) refers to pmbus.o(.text) for PMBus_I2CRead
+    pmbus.o(i.PMBus_ReadVOUT) refers to pmbus.o(.text) for PMBus_I2CRead
+    pmbus.o(i.PMBus_ReadMFR_IOUT_MAX) refers to pmbus.o(.text) for PMBus_I2CRead
+    pmbus.o(i.PMBus_ReadIOUT) refers to pmbus.o(.text) for PMBus_I2CRead
+    pmbus.o(i.PMBus_ReadPOUT) refers to pmbus.o(.text) for PMBus_I2CRead
+    pmbus.o(i.PMBus_ReadCapability) refers to pmbus.o(.text) for PMBus_I2CRead
+    pmbus.o(i.PMBus_ReadPIN_OP_WARN_LIMIT) refers to pmbus.o(.text) for PMBus_I2CRead
+    pmbus.o(i.PMBus_WritePIN_OP_WARN_LIMIT) refers to pmbus.o(.text) for PMBus_I2CWrite
+    pmbus.o(i.PMBus_ReadON_OFF_CONFIG) refers to pmbus.o(.text) for PMBus_I2CRead
+    pmbus.o(i.PMBus_WriteON_OFF_CONFIG) refers to pmbus.o(.text) for PMBus_I2CWrite
+    pmbus.o(i.PMBus_ReadOperation) refers to pmbus.o(.text) for PMBus_I2CRead
+    pmbus.o(i.PMBus_WriteOperation) refers to pmbus.o(.text) for PMBus_I2CWrite
+    pmbus.o(i.PMBus_ReadPOUT_MAX) refers to pmbus.o(.text) for PMBus_I2CRead
+    pmbus.o(i.PMBus_WritePOUT_MAX) refers to pmbus.o(.text) for PMBus_I2CWrite
+    pmbus.o(i.PMBus_ReadPOUT_OP_FAULT_LIMIT) refers to pmbus.o(.text) for PMBus_I2CRead
+    pmbus.o(i.PMBus_WritePOUT_OP_FAULT_LIMIT) refers to pmbus.o(.text) for PMBus_I2CWrite
+    pmbus.o(i.PMBus_ReadPOUT_OP_FAULT_RESPONSE) refers to pmbus.o(.text) for PMBus_I2CRead
+    pmbus.o(i.PMBus_WritePOUT_OP_FAULT_RESPONSE) refers to pmbus.o(.text) for PMBus_I2CWrite
+    pmbus.o(i.PMBus_ReadPAGE) refers to pmbus.o(.text) for PMBus_I2CRead
+    pmbus.o(i.PMBus_WritePAGE) refers to pmbus.o(.text) for PMBus_I2CWrite
+    pmbus.o(i.PMBus_ReadQUERY) refers to pmbus.o(.text) for PMBus_I2CRead
+    pmbus.o(i.PMBus_ReadCOEFFICIENTS) refers to pmbus.o(.text) for PMBus_I2CRead
+    pmbus.o(i.PMBus_WriteSMBALERT_MASK) refers to pmbus.o(.text) for PMBus_I2CWrite
+    pmbus.o(i.PMBus_ReadREAD_EIN) refers to pmbus.o(.text) for PMBus_I2CRead
+    pmbus.o(i.PMBus_ReadMFR_MAX_TEMP_1) refers to pmbus.o(.text) for PMBus_I2CRead
+    pmbus.o(i.PMBus_ReadMFR_MAX_TEMP_2) refers to pmbus.o(.text) for PMBus_I2CRead
+    pmbus.o(i.PMBus_WritePAGE_PLUS_WRITE) refers to pmbus.o(.text) for PMBus_I2CWrite
+    pmbus.o(i.PMBus_ReadPAGE_PLUS_READ) refers to pmbus.o(.text) for PMBus_I2CRead
     scanf_fp.o(i._is_digit) refers (Special) to iusefp.o(.text) for __I$use$fp
 
 
@@ -1074,9 +1074,9 @@ Removing Unused input sections from the image.
     Removing log.o(.revsh_text), (4 bytes).
     Removing mac5023.o(.rev16_text), (4 bytes).
     Removing mac5023.o(.revsh_text), (4 bytes).
-    Removing libpmb.o(.rev16_text), (4 bytes).
-    Removing libpmb.o(.revsh_text), (4 bytes).
-    Removing libpmb.o(.conststring), (102 bytes).
+    Removing pmbus.o(.rev16_text), (4 bytes).
+    Removing pmbus.o(.revsh_text), (4 bytes).
+    Removing pmbus.o(.conststring), (102 bytes).
     Removing ipmbmsghndlr.o(.rev16_text), (4 bytes).
     Removing ipmbmsghndlr.o(.revsh_text), (4 bytes).
     Removing ipmbmsghndlr.o(.text), (14 bytes).
@@ -1211,50 +1211,50 @@ Removing Unused input sections from the image.
     Removing shell_port.o(.rev16_text), (4 bytes).
     Removing shell_port.o(.revsh_text), (4 bytes).
     Removing dneg.o(.text), (6 bytes).
-    Removing libpmb.o(i.PMBus_SendByte), (22 bytes).
-    Removing libpmb.o(i.PMBus_ReadFanSpeed), (188 bytes).
-    Removing libpmb.o(i.PMBus_ReadTemp), (168 bytes).
-    Removing libpmb.o(i.PMBus_ReadVIN), (22 bytes).
-    Removing libpmb.o(i.PMBus_ReadIIN), (22 bytes).
-    Removing libpmb.o(i.PMBus_ReadPIN), (22 bytes).
-    Removing libpmb.o(i.PMBus_ReadRevision), (22 bytes).
-    Removing libpmb.o(i.PMBus_ReadStatusWord), (22 bytes).
-    Removing libpmb.o(i.PMBus_ReadStatusCML), (22 bytes).
-    Removing libpmb.o(i.PMBus_ReadStatusOther), (22 bytes).
-    Removing libpmb.o(i.PMBus_ReadStatusIOUT), (22 bytes).
-    Removing libpmb.o(i.PMBus_ReadStatusINPUT), (22 bytes).
-    Removing libpmb.o(i.PMBus_ReadStatusTemp), (22 bytes).
-    Removing libpmb.o(i.PMBus_ReadStatusFan1_2), (22 bytes).
-    Removing libpmb.o(i.PMBus_ReadStatusFan3_4), (22 bytes).
-    Removing libpmb.o(i.PMBus_SendClearFaults), (18 bytes).
-    Removing libpmb.o(i.PMBus_ReadVOUTMODE), (22 bytes).
-    Removing libpmb.o(i.PMBus_ReadVOUT), (22 bytes).
-    Removing libpmb.o(i.PMBus_ReadMFR_IOUT_MAX), (22 bytes).
-    Removing libpmb.o(i.PMBus_ReadIOUT), (22 bytes).
-    Removing libpmb.o(i.PMBus_ReadPOUT), (22 bytes).
-    Removing libpmb.o(i.PMBus_ReadCapability), (22 bytes).
-    Removing libpmb.o(i.PMBus_ReadPIN_OP_WARN_LIMIT), (22 bytes).
-    Removing libpmb.o(i.PMBus_WritePIN_OP_WARN_LIMIT), (22 bytes).
-    Removing libpmb.o(i.PMBus_ReadON_OFF_CONFIG), (22 bytes).
-    Removing libpmb.o(i.PMBus_WriteON_OFF_CONFIG), (22 bytes).
-    Removing libpmb.o(i.PMBus_ReadOperation), (22 bytes).
-    Removing libpmb.o(i.PMBus_WriteOperation), (22 bytes).
-    Removing libpmb.o(i.PMBus_ReadPOUT_MAX), (22 bytes).
-    Removing libpmb.o(i.PMBus_WritePOUT_MAX), (22 bytes).
-    Removing libpmb.o(i.PMBus_ReadPOUT_OP_FAULT_LIMIT), (22 bytes).
-    Removing libpmb.o(i.PMBus_WritePOUT_OP_FAULT_LIMIT), (22 bytes).
-    Removing libpmb.o(i.PMBus_ReadPOUT_OP_FAULT_RESPONSE), (22 bytes).
-    Removing libpmb.o(i.PMBus_WritePOUT_OP_FAULT_RESPONSE), (22 bytes).
-    Removing libpmb.o(i.PMBus_ReadPAGE), (22 bytes).
-    Removing libpmb.o(i.PMBus_WritePAGE), (22 bytes).
-    Removing libpmb.o(i.PMBus_ReadQUERY), (22 bytes).
-    Removing libpmb.o(i.PMBus_ReadCOEFFICIENTS), (22 bytes).
-    Removing libpmb.o(i.PMBus_WriteSMBALERT_MASK), (22 bytes).
-    Removing libpmb.o(i.PMBus_ReadREAD_EIN), (22 bytes).
-    Removing libpmb.o(i.PMBus_ReadMFR_MAX_TEMP_1), (22 bytes).
-    Removing libpmb.o(i.PMBus_ReadMFR_MAX_TEMP_2), (22 bytes).
-    Removing libpmb.o(i.PMBus_WritePAGE_PLUS_WRITE), (22 bytes).
-    Removing libpmb.o(i.PMBus_ReadPAGE_PLUS_READ), (22 bytes).
+    Removing pmbus.o(i.PMBus_SendByte), (22 bytes).
+    Removing pmbus.o(i.PMBus_ReadFanSpeed), (188 bytes).
+    Removing pmbus.o(i.PMBus_ReadTemp), (168 bytes).
+    Removing pmbus.o(i.PMBus_ReadVIN), (22 bytes).
+    Removing pmbus.o(i.PMBus_ReadIIN), (22 bytes).
+    Removing pmbus.o(i.PMBus_ReadPIN), (22 bytes).
+    Removing pmbus.o(i.PMBus_ReadRevision), (22 bytes).
+    Removing pmbus.o(i.PMBus_ReadStatusWord), (22 bytes).
+    Removing pmbus.o(i.PMBus_ReadStatusCML), (22 bytes).
+    Removing pmbus.o(i.PMBus_ReadStatusOther), (22 bytes).
+    Removing pmbus.o(i.PMBus_ReadStatusIOUT), (22 bytes).
+    Removing pmbus.o(i.PMBus_ReadStatusINPUT), (22 bytes).
+    Removing pmbus.o(i.PMBus_ReadStatusTemp), (22 bytes).
+    Removing pmbus.o(i.PMBus_ReadStatusFan1_2), (22 bytes).
+    Removing pmbus.o(i.PMBus_ReadStatusFan3_4), (22 bytes).
+    Removing pmbus.o(i.PMBus_SendClearFaults), (18 bytes).
+    Removing pmbus.o(i.PMBus_ReadVOUTMODE), (22 bytes).
+    Removing pmbus.o(i.PMBus_ReadVOUT), (22 bytes).
+    Removing pmbus.o(i.PMBus_ReadMFR_IOUT_MAX), (22 bytes).
+    Removing pmbus.o(i.PMBus_ReadIOUT), (22 bytes).
+    Removing pmbus.o(i.PMBus_ReadPOUT), (22 bytes).
+    Removing pmbus.o(i.PMBus_ReadCapability), (22 bytes).
+    Removing pmbus.o(i.PMBus_ReadPIN_OP_WARN_LIMIT), (22 bytes).
+    Removing pmbus.o(i.PMBus_WritePIN_OP_WARN_LIMIT), (22 bytes).
+    Removing pmbus.o(i.PMBus_ReadON_OFF_CONFIG), (22 bytes).
+    Removing pmbus.o(i.PMBus_WriteON_OFF_CONFIG), (22 bytes).
+    Removing pmbus.o(i.PMBus_ReadOperation), (22 bytes).
+    Removing pmbus.o(i.PMBus_WriteOperation), (22 bytes).
+    Removing pmbus.o(i.PMBus_ReadPOUT_MAX), (22 bytes).
+    Removing pmbus.o(i.PMBus_WritePOUT_MAX), (22 bytes).
+    Removing pmbus.o(i.PMBus_ReadPOUT_OP_FAULT_LIMIT), (22 bytes).
+    Removing pmbus.o(i.PMBus_WritePOUT_OP_FAULT_LIMIT), (22 bytes).
+    Removing pmbus.o(i.PMBus_ReadPOUT_OP_FAULT_RESPONSE), (22 bytes).
+    Removing pmbus.o(i.PMBus_WritePOUT_OP_FAULT_RESPONSE), (22 bytes).
+    Removing pmbus.o(i.PMBus_ReadPAGE), (22 bytes).
+    Removing pmbus.o(i.PMBus_WritePAGE), (22 bytes).
+    Removing pmbus.o(i.PMBus_ReadQUERY), (22 bytes).
+    Removing pmbus.o(i.PMBus_ReadCOEFFICIENTS), (22 bytes).
+    Removing pmbus.o(i.PMBus_WriteSMBALERT_MASK), (22 bytes).
+    Removing pmbus.o(i.PMBus_ReadREAD_EIN), (22 bytes).
+    Removing pmbus.o(i.PMBus_ReadMFR_MAX_TEMP_1), (22 bytes).
+    Removing pmbus.o(i.PMBus_ReadMFR_MAX_TEMP_2), (22 bytes).
+    Removing pmbus.o(i.PMBus_WritePAGE_PLUS_WRITE), (22 bytes).
+    Removing pmbus.o(i.PMBus_ReadPAGE_PLUS_READ), (22 bytes).
 
 227 unused section(s) (total 11205 bytes) removed from the image.
 
@@ -1377,8 +1377,8 @@ Image Symbol Table
     ..\\api\\cpu\\api_cpu.c                  0x00000000   Number         0  api_cpu.o ABSOLUTE
     ..\\api\\fan\\api_fan.c                  0x00000000   Number         0  api_fan.o ABSOLUTE
     ..\\api\\sensor\\api_sensor.c            0x00000000   Number         0  api_sensor.o ABSOLUTE
-    ..\\api\\sensor\\libpmb.c                0x00000000   Number         0  libpmb.o ABSOLUTE
     ..\\api\\sensor\\mac5023.c               0x00000000   Number         0  mac5023.o ABSOLUTE
+    ..\\api\\sensor\\pmbus.c                 0x00000000   Number         0  pmbus.o ABSOLUTE
     ..\\api\\shell\\shell.c                  0x00000000   Number         0  shell.o ABSOLUTE
     ..\\api\\shell\\shell_port.c             0x00000000   Number         0  shell_port.o ABSOLUTE
     ..\\api\\tools\\FIFO.c                   0x00000000   Number         0  fifo.o ABSOLUTE
@@ -1458,8 +1458,8 @@ Image Symbol Table
     ..\api\fan\api_fan.c                     0x00000000   Number         0  api_fan.o ABSOLUTE
     ..\api\pid\pid.c                         0x00000000   Number         0  pid.o ABSOLUTE
     ..\api\sensor\api_sensor.c               0x00000000   Number         0  api_sensor.o ABSOLUTE
-    ..\api\sensor\libpmb.c                   0x00000000   Number         0  libpmb.o ABSOLUTE
     ..\api\sensor\mac5023.c                  0x00000000   Number         0  mac5023.o ABSOLUTE
+    ..\api\sensor\pmbus.c                    0x00000000   Number         0  pmbus.o ABSOLUTE
     ..\api\shell\shell.c                     0x00000000   Number         0  shell.o ABSOLUTE
     ..\api\shell\shell_cmd_list.c            0x00000000   Number         0  shell_cmd_list.o ABSOLUTE
     ..\api\shell\shell_companion.c           0x00000000   Number         0  shell_companion.o ABSOLUTE
@@ -1668,10 +1668,10 @@ Image Symbol Table
     MAC5023_getCmdConfig                     0x08005b3d   Thumb Code    42  mac5023.o(.text)
     MAC5023_getCmdName                       0x08005b67   Thumb Code    22  mac5023.o(.text)
     MAC5023_ReadItem                         0x08005b7d   Thumb Code   122  mac5023.o(.text)
-    .text                                    0x08005d84   Section        0  libpmb.o(.text)
-    PMBus_getCmds                            0x08005d85   Thumb Code    38  libpmb.o(.text)
-    PMBUS_i2c_master_write                   0x08005dab   Thumb Code    20  libpmb.o(.text)
-    PMBUS_i2c_writeread                      0x08005dbf   Thumb Code   112  libpmb.o(.text)
+    .text                                    0x08005d84   Section        0  pmbus.o(.text)
+    PMBus_getCmds                            0x08005d85   Thumb Code    38  pmbus.o(.text)
+    PMBUS_i2c_master_write                   0x08005dab   Thumb Code    20  pmbus.o(.text)
+    PMBUS_i2c_writeread                      0x08005dbf   Thumb Code   112  pmbus.o(.text)
     .text                                    0x080063cc   Section        0  ipmi_common.o(.text)
     .text                                    0x08006440   Section        0  serialifc.o(.text)
     ValidateSerialCheckSum                   0x08006527   Thumb Code   204  serialifc.o(.text)
@@ -1978,7 +1978,7 @@ Image Symbol Table
     .constdata                               0x08019ce0   Section      128  mac5023.o(.constdata)
     g_MAC5023DevsConfig                      0x08019ce0   Data           8  mac5023.o(.constdata)
     g_MAC5023CmdsConfig                      0x08019ce8   Data         120  mac5023.o(.constdata)
-    .constdata                               0x08019d60   Section      447  libpmb.o(.constdata)
+    .constdata                               0x08019d60   Section      447  pmbus.o(.constdata)
     .constdata                               0x08019f20   Section       66  msghndlr.o(.constdata)
     m_MsgHndlrTbl                            0x08019f20   Data          56  msghndlr.o(.constdata)
     .constdata                               0x08019f64   Section      560  app.o(.constdata)
@@ -2089,8 +2089,8 @@ Image Symbol Table
     MAC1625_MODE_NAME                        0x200000b0   Data           4  mac5023.o(.data)
     MAC5023_MODE_NAME                        0x200000b4   Data           4  mac5023.o(.data)
     g_MAC5023_initSuccess                    0x200000b8   Data           1  mac5023.o(.data)
-    .data                                    0x200000bc   Section        8  libpmb.o(.data)
-    PEC_Verify                               0x200000bc   Data           4  libpmb.o(.data)
+    .data                                    0x200000bc   Section        8  pmbus.o(.data)
+    PEC_Verify                               0x200000bc   Data           4  pmbus.o(.data)
     .data                                    0x200000c4   Section       16  msghndlr.o(.data)
     xHandleTaskResponseDatWrite              0x200000c4   Data           4  msghndlr.o(.data)
     .data                                    0x200000d4   Section      896  sdr.o(.data)
@@ -2433,14 +2433,14 @@ Image Symbol Table
     cJSON_Compare                            0x08005581   Thumb Code   378  cjson.o(.text)
     cJSON_malloc                             0x080056fb   Thumb Code    14  cjson.o(.text)
     MAC5023_Sample                           0x08005bf7   Thumb Code   238  mac5023.o(.text)
-    PMBUS_Crc8                               0x08005e2f   Thumb Code    52  libpmb.o(.text)
-    PMBUS_Add_PEC                            0x08005e63   Thumb Code    58  libpmb.o(.text)
-    PMBUS_Verify_PEC                         0x08005e9d   Thumb Code   166  libpmb.o(.text)
-    PMBus_I2CRead                            0x08005f43   Thumb Code   310  libpmb.o(.text)
-    PMBUS_PECEnable                          0x08006079   Thumb Code    80  libpmb.o(.text)
-    PMBus_I2CRead_NoPEC                      0x080060c9   Thumb Code    76  libpmb.o(.text)
-    PMBus_I2CWrite                           0x08006115   Thumb Code   568  libpmb.o(.text)
-    PMBus_I2CWrite_NoPEC                     0x0800634d   Thumb Code    76  libpmb.o(.text)
+    PMBUS_Crc8                               0x08005e2f   Thumb Code    52  pmbus.o(.text)
+    PMBUS_Add_PEC                            0x08005e63   Thumb Code    58  pmbus.o(.text)
+    PMBUS_Verify_PEC                         0x08005e9d   Thumb Code   166  pmbus.o(.text)
+    PMBus_I2CRead                            0x08005f43   Thumb Code   310  pmbus.o(.text)
+    PMBUS_PECEnable                          0x08006079   Thumb Code    80  pmbus.o(.text)
+    PMBus_I2CRead_NoPEC                      0x080060c9   Thumb Code    76  pmbus.o(.text)
+    PMBus_I2CWrite                           0x08006115   Thumb Code   568  pmbus.o(.text)
+    PMBus_I2CWrite_NoPEC                     0x0800634d   Thumb Code    76  pmbus.o(.text)
     CalculateCheckSum2                       0x080063cd   Thumb Code    30  ipmi_common.o(.text)
     CalculateCheckSum                        0x080063eb   Thumb Code    30  ipmi_common.o(.text)
     CheckMsgValidation                       0x08006409   Thumb Code    56  ipmi_common.o(.text)
@@ -3251,7 +3251,7 @@ Image Symbol Table
     shellDescexit                            0x08019cad   Data          11  tools.o(.constdata)
     shellCmdlog                              0x08019cd0   Data           4  log.o(.constdata)
     shellDesclog                             0x08019cd4   Data          10  log.o(.constdata)
-    PMBusStdCmds                             0x08019d60   Data         447  libpmb.o(.constdata)
+    PMBusStdCmds                             0x08019d60   Data         447  pmbus.o(.constdata)
     m_FlashModeFilterTbl                     0x08019f58   Data          10  msghndlr.o(.constdata)
     g_App_CmdHndlr                           0x08019f64   Data         560  app.o(.constdata)
     g_Chassis_CmdHndlr                       0x0801a194   Data          48  chassis.o(.constdata)
@@ -3324,7 +3324,7 @@ Image Symbol Table
     g_bmc_firmware_version                   0x20000018   Data           2  main.o(.data)
     projectInfo                              0x2000001c   Data           4  main.o(.data)
     g_chassisCtrl_Queue                      0x20000020   Data           4  main.o(.data)
-    PEC_Disable                              0x200000c0   Data           4  libpmb.o(.data)
+    PEC_Disable                              0x200000c0   Data           4  pmbus.o(.data)
     ResponseDatMsg_Queue                     0x200000c8   Data           4  msghndlr.o(.data)
     RecvDatMsg_Queue                         0x200000cc   Data           4  msghndlr.o(.data)
     RecvForwardI2CDatMsg_Queue               0x200000d0   Data           4  msghndlr.o(.data)
@@ -3393,7 +3393,7 @@ Memory Map of the image
     0x08003390   0x08003390   0x0000237c   Code   RO         1077    .text               cjson.o
     0x0800570c   0x0800570c   0x00000330   Code   RO         1113    .text               log.o
     0x08005a3c   0x08005a3c   0x00000348   Code   RO         1137    .text               mac5023.o
-    0x08005d84   0x08005d84   0x00000648   Code   RO         1173    .text               libpmb.o
+    0x08005d84   0x08005d84   0x00000648   Code   RO         1173    .text               pmbus.o
     0x080063cc   0x080063cc   0x00000074   Code   RO         1468    .text               ipmi_common.o
     0x08006440   0x08006440   0x00000474   Code   RO         1552    .text               serialifc.o
     0x080068b4   0x080068b4   0x0000007e   Code   RO         1590    .text               serial.o
@@ -3546,7 +3546,7 @@ Memory Map of the image
     0x08019cb8   0x08019cb8   0x00000026   Data   RO         1114    .constdata          log.o
     0x08019cde   0x08019cde   0x00000002   PAD
     0x08019ce0   0x08019ce0   0x00000080   Data   RO         1138    .constdata          mac5023.o
-    0x08019d60   0x08019d60   0x000001bf   Data   RO         1174    .constdata          libpmb.o
+    0x08019d60   0x08019d60   0x000001bf   Data   RO         1174    .constdata          pmbus.o
     0x08019f1f   0x08019f1f   0x00000001   PAD
     0x08019f20   0x08019f20   0x00000042   Data   RO         1697    .constdata          msghndlr.o
     0x08019f62   0x08019f62   0x00000002   PAD
@@ -3616,7 +3616,7 @@ Memory Map of the image
     0x20000098   COMPRESSED   0x00000018   Data   RW         1079    .data               cjson.o
     0x200000b0   COMPRESSED   0x00000009   Data   RW         1140    .data               mac5023.o
     0x200000b9   COMPRESSED   0x00000003   PAD
-    0x200000bc   COMPRESSED   0x00000008   Data   RW         1176    .data               libpmb.o
+    0x200000bc   COMPRESSED   0x00000008   Data   RW         1176    .data               pmbus.o
     0x200000c4   COMPRESSED   0x00000010   Data   RW         1698    .data               msghndlr.o
     0x200000d4   COMPRESSED   0x00000380   Data   RW         1948    .data               sdr.o
     0x20000454   COMPRESSED   0x00000014   Data   RW         1982    .data               ipmdevice.o
@@ -3722,13 +3722,13 @@ Image component sizes
          0          0          0          0          0        796   ipmbmsghndlr.o
        616        164          3         20          0       6035   ipmdevice.o
        116          0          0          0          0       1666   ipmi_common.o
-      1608        262        447          8          0      11785   libpmb.o
        148          0          0          0          0       1994   list.o
        816        472        135          0          0       2875   log.o
        840        160        285          9          0       4397   mac5023.o
       1404        400        261         40          0     111936   main.o
       2300        434         66         16       4192      19060   msghndlr.o
        420          8         96          0          0       4168   oem.o
+      1608        262        447          8          0      11773   pmbus.o
        886        102          0         12          0       8035   port.o
       4048         56          0          0        120      20926   queue.o
       5232        130         20        896         64      20785   sdr.o
@@ -3749,7 +3749,7 @@ Image component sizes
       2792        880        426          3          0      38824   tools.o
 
     ----------------------------------------------------------------------
-     90556       8846       6676       1544      44704     790448   Object Totals
+     90556       8846       6676       1544      44704     790436   Object Totals
          0          0         32          0          0          0   (incl. Generated)
          8          0         34         10          8          0   (incl. Padding)
 
@@ -3852,8 +3852,8 @@ Image component sizes
 
       Code (inc. data)   RO Data    RW Data    ZI Data      Debug   
 
-    103484       9548       7012       1568      44704     780008   Grand Totals
-    103484       9548       7012        588      44704     780008   ELF Image Totals (compressed)
+    103484       9548       7012       1568      44704     779996   Grand Totals
+    103484       9548       7012        588      44704     779996   ELF Image Totals (compressed)
     103484       9548       7012        588          0          0   ROM Totals
 
 ==============================================================================

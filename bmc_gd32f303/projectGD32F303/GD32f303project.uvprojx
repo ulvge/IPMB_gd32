@@ -504,9 +504,9 @@
               <FilePath>..\api\sensor\mac5023.c</FilePath>
             </File>
             <File>
-              <FileName>libpmb.c</FileName>
+              <FileName>pmbus.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\api\sensor\libpmb.c</FilePath>
+              <FilePath>..\api\sensor\pmbus.c</FilePath>
             </File>
           </Files>
         </Group>

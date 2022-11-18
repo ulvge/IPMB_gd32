@@ -499,14 +499,19 @@
               <FilePath>..\api\tools\log.c</FilePath>
             </File>
             <File>
-              <FileName>libpmb.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\api\sensor\libpmb.c</FilePath>
-            </File>
-            <File>
               <FileName>mac5023.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\api\sensor\mac5023.c</FilePath>
+            </File>
+            <File>
+              <FileName>pmbus.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\api\sensor\pmbus.c</FilePath>
+            </File>
+            <File>
+              <FileName>eeprom.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\api\sensor\eeprom.c</FilePath>
             </File>
           </Files>
         </Group>

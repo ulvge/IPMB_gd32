@@ -13,15 +13,15 @@
 ******************************************************************
 ******************************************************************
 *
-* libpmb.h
+* pmbus.h
 *
-* Private prototypes and defines for libpmb.
+* Private prototypes and defines for pmbus.
 *
 * Author: Revanth A <revantha@amiindia.co.in>
 *
 ******************************************************************/
-#ifndef LIBPMB_H
-#define LIBPMB_H
+#ifndef PMBUS_H
+#define PMBUS_H
 
 #ifdef __cplusplus
 extern "C" {

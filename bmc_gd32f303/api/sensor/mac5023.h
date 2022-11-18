@@ -7,7 +7,7 @@
 	 
 #include <stdbool.h>
 #include "Types.h"
-#include "libpmb.h"
+#include "pmbus.h"
 #include "project_select.h"
 #include "debug_print.h"
 

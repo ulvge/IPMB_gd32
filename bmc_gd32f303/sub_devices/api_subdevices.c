@@ -16,6 +16,7 @@
 #include "api_adc.h"
 #include "api_sensor.h"
 #include "cJSON.h"
+#include "eeprom.h"
 
 #define SUB_DEVICES_ADDR_DEFAULT 0xFF
 #define SUB_DEVICES_ADDR_PRIFIXED 0x80
@@ -119,11 +120,15 @@ static void SubDevice_InsertMode(SubDeviceMODE_T *obj, SUB_DEVICE_MODE mode)
 }
 bool SubDevice_CheckAndPrintMode(void)
 {
+    char buff[100];
+    memset(buff, 0, sizeof(buff));
     SUB_DEVICE_MODE mode = (SUB_DEVICE_MODE)get_board_addr();
     if (mode >= SUB_DEVICE_MODE_MAX)
     {
         LOG_E("This borad ID is not support, id=%d\n", mode);
         LOG_E("\tBelow are supported\n");
+        sprintf(buff, "This borad ID is not support, id=%d\n", mode);
+        EEP_WriteDataCheckFirst(EEP_ADDR_SAVE_MODE, (uint8_t *)buff, strlen(buff));
         for (uint32_t i = 0; i < ARRARY_SIZE(g_SubDeviceConfigName); i++)
         {
             LOG_E("\t\tid %d----- [%s]\n", i, SubDevice_GetModeName((SUB_DEVICE_MODE)i));
@@ -131,6 +136,8 @@ bool SubDevice_CheckAndPrintMode(void)
         return false;
     }
     LOG_I("This borad as [%s]\n", SubDevice_GetModeName(mode));
+    sprintf(buff, "This borad as [%s]\n", SubDevice_GetModeName(mode));
+    EEP_WriteDataCheckFirst(EEP_ADDR_SAVE_MODE, (uint8_t *)buff, strlen(buff));
     SubDevice_InitAllMode();
 
     SubDevice_InsertMode(&g_AllModes[mode], mode);

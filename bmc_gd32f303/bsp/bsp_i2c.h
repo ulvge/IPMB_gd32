@@ -78,7 +78,7 @@ typedef enum
 void i2c_channel_init(uint32_t i2cx);
 void i2c_int(void);
 bool i2c_write(uint32_t bus, const uint8_t *p_buffer, uint16_t len);
-bool i2c_read(uint32_t bus, uint8_t devAddr, uint16_t regAddress, uint8_t *pReadBuf, uint16_t size);
+bool i2c_read(uint32_t bus, uint8_t devAddr, uint32_t regAddress, uint8_t *pReadBuf, uint16_t size);
 
 void i2c_set_slave_addr(uint32_t bus, uint8_t device_addr);
 void i2c_dualaddr_set(uint32_t i2c_periph, uint8_t dualaddr);
