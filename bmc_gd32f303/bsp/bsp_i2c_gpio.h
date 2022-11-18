@@ -9,6 +9,15 @@
 #define I2CS_RD 1 /* read ctrl bit */
 
 /********************* GPIO SIMULATED I2C1 MICRO DEF ***************************/
+#if 0 // debug on NS206 board &need mask i2c_channel_init(I2C1)
+#define I2CS0_SCL_GPIO_PORT     GPIOB
+#define I2CS0_SCL_CLK           RCU_GPIOB
+#define I2CS0_SCL_PIN           GPIO_PIN_10
+
+#define I2CS0_SDA_GPIO_PORT     GPIOB
+#define I2CS0_SDA_CLK           RCU_GPIOB
+#define I2CS0_SDA_PIN           GPIO_PIN_11
+#else
 #define I2CS0_SCL_GPIO_PORT     GPIOB
 #define I2CS0_SCL_CLK           RCU_GPIOB
 #define I2CS0_SCL_PIN           GPIO_PIN_8
@@ -16,7 +25,7 @@
 #define I2CS0_SDA_GPIO_PORT     GPIOB
 #define I2CS0_SDA_CLK           RCU_GPIOB
 #define I2CS0_SDA_PIN           GPIO_PIN_9
-
+#endif
 #define I2CS0_RETRY_TIMERS      3
 /********************* GPIO SIMULATED I2C1 MICRO DEF END***************************/
 

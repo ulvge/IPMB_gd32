@@ -3,6 +3,9 @@
 #include "bsp_gpio.h"
 #include "sensor.h"  
 #include "api_sensor.h"    
+#include "MsgHndlr.h"
+#include "ipmi_common.h"
+
 										 
 static void DevTaskHandler(void *pArg);
 // config GPIO
@@ -20,7 +23,7 @@ static const GPIOConfig g_gpioConfig_main[] = {
     {GPIO_CPLD_MCU_4,                   GPIOC, GPIO_PIN_6,RCU_GPIOC, GPIO_MODE_IN_FLOATING, GPIO_OSPEED_10MHZ, 1}, //unused
     {GPIO_CPLD_MCU_3,                   GPIOC, GPIO_PIN_7,RCU_GPIOC, GPIO_MODE_IN_FLOATING, GPIO_OSPEED_10MHZ, 1}, //unused
     {GPIO_CPLD_MCU_2,                   GPIOC, GPIO_PIN_8,RCU_GPIOC, GPIO_MODE_IN_FLOATING, GPIO_OSPEED_10MHZ, 1}, //unused
-    {GPIO_CPLD_MCU_1,                   GPIOC, GPIO_PIN_9,RCU_GPIOC, GPIO_MODE_IN_FLOATING, GPIO_OSPEED_10MHZ, 1}, //unused
+    {GPIO_CPLD_MCU_1,                   GPIOC, GPIO_PIN_9,RCU_GPIOC, GPIO_MODE_OUT_PP, GPIO_OSPEED_10MHZ, 1}, // CPU run state
 };
 
 const GPIOConfig_Handler g_gpioConfigHandler_main = {
@@ -73,11 +76,47 @@ const Dev_Handler g_devHandler_main = {
     .TaskHandler = DevTaskHandler,
 };
 
+xQueueHandle CPU_recvDatMsg_Queue = NULL;
+static bool CPU_MsgCoreInit(void)
+{
+    BaseType_t err = pdFALSE;
+    CPU_recvDatMsg_Queue = xQueueCreate(1, sizeof(SamllMsgPkt_T));
+    if (CPU_recvDatMsg_Queue == NULL) {
+        return false;
+    }
+    return true;
+}
+static void CPU_MsgCoreHndlr(void)
+{
+    SamllMsgPkt_T recvPkt;
+    INT8U cmd;
+
+    BaseType_t err = xQueueReceive(CPU_recvDatMsg_Queue, &recvPkt, 0);
+    if (err == pdFALSE) {
+        return;
+    }
+    if (recvPkt.Param == SERIAL_REQUEST) {
+        //recvPkt.Size = DecodeSerialPkt(recvPkt.Data, recvPkt.Size);
+        /* 1 Validate the checksum */
+        if (0 != CalculateCheckSum (recvPkt.Data, recvPkt.Size))
+        {
+            LOG_I("receved msg from CPU, but checksum err!");
+            return;
+        }
+        cmd = recvPkt.Data[0];
+        ControlStatus isActive = (cmd == 1) ? ENABLE : DISABLE;
+        GPIO_setPinStatus(GPIO_CPLD_MCU_1, isActive);
+    }
+}
+
 static void DevTaskHandler(void *pArg)
 {
-    while (1)
-    {
-        vTaskDelay(2000);
-        LOG_D("filename = %s, line = %d", __FILE__, __LINE__);
+    LOG_D("filename = %s, line = %d", __FILE__, __LINE__);
+    if (!CPU_MsgCoreInit()) {
+        LOG_E("RecvDatMsg_Queue create ERR!");
+    }
+    while (1) {
+        vTaskDelay(500);
+        CPU_MsgCoreHndlr();
     }
 }

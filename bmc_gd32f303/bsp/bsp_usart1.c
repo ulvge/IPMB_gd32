@@ -45,10 +45,8 @@ void UART1_init()
     COM_init(&g_UARTPara);
 }
 
-#if USE_UART1_AS_IPMI
-static MsgPkt_T    g_uart_Req;
-extern xQueueHandle RecvDatMsg_Queue;
-#endif
+static SamllMsgPkt_T    g_uart_Req;
+extern xQueueHandle CPU_recvDatMsg_Queue;
 
 void USART1_IRQHandler(void)
 {
@@ -62,7 +60,7 @@ void USART1_IRQHandler(void)
     {
         res = usart_data_receive(COM_NUM);
         usart_interrupt_flag_clear(COM_NUM, USART_INT_FLAG_RBNE);
-#if USE_UART1_AS_IPMI
+
         /* receive data */
         if (res == START_BYTE)
         { // start
@@ -73,10 +71,10 @@ void USART1_IRQHandler(void)
         { // stop
             is_start = false;
             // usart_data_transmit(USART1, HAND_SHAKE_BYTE); // BMC hand shake
-            if (RecvDatMsg_Queue != NULL)
+            if (CPU_recvDatMsg_Queue != NULL)
             {
                 g_uart_Req.Param = SERIAL_REQUEST;
-                err = xQueueSendFromISR(RecvDatMsg_Queue, (char*)&g_uart_Req, &xHigherPriorityTaskWoken);
+                err = xQueueSendFromISR(CPU_recvDatMsg_Queue, (char*)&g_uart_Req, &xHigherPriorityTaskWoken);
                 portYIELD_FROM_ISR(xHigherPriorityTaskWoken);
                 if (err == pdFAIL)
                 {
@@ -91,17 +89,16 @@ void USART1_IRQHandler(void)
             {
                 is_start = false;
                 g_uart_Req.Size = 0;
-                //    LOG_E("uart recv overlap!");
+                LOG_E("uart recv overlap!");
             }
-        }  
-#endif
+        }
 
 	// use FIFO store all
 		if (is_start == false)
 		{
 			/* receive data */
             //UART_sendByte(COM_NUM, res);  //loopback
-			FIFO_Write(&g_UARTPara.fifo.rfifo, (INT8U)res); // only save
+			//FIFO_Write(&g_UARTPara.fifo.rfifo, (INT8U)res); // only save
 		}
 	}
 

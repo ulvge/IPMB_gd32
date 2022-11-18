@@ -52,9 +52,6 @@ OF SUCH DAMAGE.
     
 	#define CPU_UART_PERIPH    USART1
 	
-	#define USE_UART0_AS_IPMI  1 
-	//#define USE_UART1_AS_IPMI  1
-
 	// #define FATFS_ENABLE    
 
 	#define  ft_uart_write(x, len)    UART_sendData(USART1, x, len)

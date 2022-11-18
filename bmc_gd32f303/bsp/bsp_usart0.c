@@ -44,10 +44,8 @@ void UART0_init(void)
 	FIFO_Init(&g_UARTPara.fifo.rfifo, g_buffRec, sizeof(g_buffRec));
     COM_init(&g_UARTPara);
 }
-#ifdef USE_UART0_AS_IPMI
 extern xQueueHandle RecvDatMsg_Queue;
 static MsgPkt_T    g_uart_Req;
-#endif
 
 void USART0_IRQHandler(void)
 {
@@ -61,7 +59,6 @@ void USART0_IRQHandler(void)
     {
         res = usart_data_receive(COM_NUM);
         usart_interrupt_flag_clear(COM_NUM, USART_INT_FLAG_RBNE);
-#if USE_UART0_AS_IPMI
         /* receive data */
         if (res == START_BYTE)
         { // start
@@ -90,10 +87,9 @@ void USART0_IRQHandler(void)
             {
                 is_start = false;
                 g_uart_Req.Size = 0;
-                //    LOG_E("uart recv overlap!");
+                LOG_E("uart recv overlap!");
             }
         }  
-#endif
 
 	// use FIFO store all
 		if (is_start == false)
