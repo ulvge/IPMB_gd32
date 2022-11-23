@@ -24,6 +24,7 @@
 #include "utc/api_utc.h"
 #include "stdlib.h"  
 #include "OSPort.h"
+#include "update.h"
 
 static int8_t operation_mode = -1;
 static uint8_t g_bus = 0;
@@ -295,6 +296,12 @@ static int do_get_host(uint8_t bus)
 // tool 2******************************************************
 int reboot(int argc, char *argv[])
 {
+    if (argc == 2){
+        if (strcmp(argv[1], UPDATING_CMD_SYS_BOOT) == 0)
+        {
+            JumpToBootloader();
+        }
+    }
     NVIC_SystemReset();
     return 0;
 }

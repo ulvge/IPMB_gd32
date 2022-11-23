@@ -16,8 +16,8 @@ static INT8U g_buffRec[UART1_BUFF_SIZE];
 static const UART_CONFIG_STRUCT g_uart1Config= {
     .baud = 115200U,
     .irqN = USART1_IRQn,
-    .prePriority = 3,
-    .subPriority = 0,
+    .prePriority = 5,
+    .subPriority = 2,
     
     .txPort = COM1_GPIO_PORT,
     .txPin = COM1_TX_PIN,

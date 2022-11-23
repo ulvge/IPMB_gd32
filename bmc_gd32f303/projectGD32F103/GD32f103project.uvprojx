@@ -81,7 +81,7 @@
           </BeforeMake>
           <AfterMake>
             <RunUserProg1>0</RunUserProg1>
-            <RunUserProg2>0</RunUserProg2>
+            <RunUserProg2>1</RunUserProg2>
             <UserProg1Name></UserProg1Name>
             <UserProg2Name>D:\Keil_v5\ARM\ARMCLANG\bin\fromelf --bin --output .\output\bmc_rom.bin .\output\temp\bmc_rom.axf</UserProg2Name>
             <UserProg1Dos16Mode>0</UserProg1Dos16Mode>
@@ -138,7 +138,7 @@
           </Flash1>
           <bUseTDR>1</bUseTDR>
           <Flash2>BIN\UL2CM3.DLL</Flash2>
-          <Flash3></Flash3>
+          <Flash3>"" ()</Flash3>
           <Flash4></Flash4>
           <pFcarmOut></pFcarmOut>
           <pFcarmGrp></pFcarmGrp>
@@ -275,13 +275,13 @@
               </OCR_RVCT3>
               <OCR_RVCT4>
                 <Type>1</Type>
-                <StartAddress>0x8000000</StartAddress>
-                <Size>0x20000</Size>
+                <StartAddress>0x8004000</StartAddress>
+                <Size>0x1c000</Size>
               </OCR_RVCT4>
               <OCR_RVCT5>
                 <Type>1</Type>
-                <StartAddress>0x0</StartAddress>
-                <Size>0x0</Size>
+                <StartAddress>0x1ffff000</StartAddress>
+                <Size>0x1000</Size>
               </OCR_RVCT5>
               <OCR_RVCT6>
                 <Type>0</Type>
@@ -339,7 +339,7 @@
               <MiscControls>--diag_suppress=177</MiscControls>
               <Define>ARM_MATH_CM3,__CC_ARM,GD32F1x</Define>
               <Undefine></Undefine>
-              <IncludePath>..\firmware;..\firmware\GD32F10x\GD32F10x_standard_peripheral\Include;..\firmware\GD32F10x\CMSIS\GD\GD32F10x\Include;..\firmware\GD32F10x\CMSIS;..\user;..\bsp;..\ipmi;..\ipmi\data;..\ipmi\ipmi_dev-3.0.0-src;..\ipmi\ipmi_dev-3.0.0-src\data;..\ipmi\libipmi-3.1.0-src\data\include;..\ipmi\libipmi-3.1.0-src\data;..\ipmi\ipmi_common;..\ipmb;..\api;..\api\adc;..\api\flash;..\api\shell;..\api\tools;..\api\cpu;..\api\sensor;..\sub_devices;..\freertos\include;..\freertos\portable;..\freertos\portable\RVDS\ARM_CM3;..\ff10</IncludePath>
+              <IncludePath>..\firmware;..\firmware\GD32F10x\GD32F10x_standard_peripheral\Include;..\firmware\GD32F10x\CMSIS\GD\GD32F10x\Include;..\firmware\GD32F10x\CMSIS;..\user;..\bsp;..\ipmi;..\ipmi\data;..\ipmi\ipmi_dev-3.0.0-src;..\ipmi\ipmi_dev-3.0.0-src\data;..\ipmi\libipmi-3.1.0-src\data\include;..\ipmi\libipmi-3.1.0-src\data;..\ipmi\ipmi_common;..\ipmb;..\api;..\api\adc;..\api\flash;..\api\shell;..\api\tools;..\api\cpu;..\api\sensor;..\api\update;..\sub_devices;..\freertos\include;..\freertos\portable;..\freertos\portable\RVDS\ARM_CM3;..\ff10</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -512,6 +512,11 @@
               <FileName>eeprom.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\api\sensor\eeprom.c</FilePath>
+            </File>
+            <File>
+              <FileName>update.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\api\update\update.c</FilePath>
             </File>
           </Files>
         </Group>

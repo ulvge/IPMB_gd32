@@ -12,8 +12,8 @@
 static const UART_CONFIG_STRUCT g_uart0Config= {
     .baud = 115200U,
     .irqN = USART0_IRQn,
-    .prePriority = 10,
-    .subPriority = 0,
+    .prePriority = 1,
+    .subPriority = 1,
     
     .txPort = GPIOA,
     .txPin = GPIO_PIN_9,

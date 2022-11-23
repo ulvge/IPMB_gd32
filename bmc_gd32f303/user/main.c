@@ -54,7 +54,8 @@ OF SUCH DAMAGE.
 #include "update/update.h"
 #include "bsp_timer.h"
 #include "ChassisCtrl.h"
-#include "mac5023.h"
+#include "mac5023.h"   
+#include "tools.h"
 
 #define FAN_TASK_PRIO 22
 #define TEST_TASK_PRIO 9
@@ -101,7 +102,7 @@ __weak void platform_init(void)
 */
 int main(void)
 {
-    // nvic_vector_table_set(NVIC_VECTTAB_FLASH, 0x16000);
+    nvic_vector_table_set(ADDRESS_START_APP, 0);
     bsp_systick_config();
     nvic_priority_group_set(NVIC_PRIGROUP_PRE4_SUB0);
 
@@ -109,11 +110,11 @@ int main(void)
 
     UART_init();
     GPIO_bspInit();
-    LOG_I("%s", projectInfo);
+    LOG_I("%s", projectInfo); 
+
     g_utc_time_bmc_firmware_build = currentSecsSinceEpoch(__DATE__, __TIME__);
     g_bmc_firmware_version = GetBmcFirmwareVersion(BMC_VERSION);
 
-    //timer_config_init();
     xTaskCreate(start_task, "start", configMINIMAL_STACK_SIZE * 2, NULL, 1, NULL);
     xTaskCreate(misc_task, "misc", configMINIMAL_STACK_SIZE, NULL, 26, NULL);
     watch_dog_init();
