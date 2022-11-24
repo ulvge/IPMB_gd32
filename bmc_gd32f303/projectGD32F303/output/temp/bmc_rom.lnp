@@ -22,6 +22,8 @@
 ".\output\temp\log.o"
 ".\output\temp\mac5023.o"
 ".\output\temp\pmbus.o"
+".\output\temp\jump2bootloader.o"
+".\output\temp\eeprom.o"
 ".\output\temp\ipmi_common.o"
 ".\output\temp\ipmbmsghndlr.o"
 ".\output\temp\serialifc.o"

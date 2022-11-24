@@ -39,23 +39,11 @@ OF SUCH DAMAGE.
 
 #include "systick.h"
 #include "bsp_uartcomm.h"
-#include "bsp_i2c.h"
-#include "bsp_gpio.h"
-
-#include "fan/api_fan.h"
-#include "adc/api_adc.h"
-#include "cpu/api_cpu.h"
-#include "utc/api_utc.h"
-
-#include "shell_port.h"
-
-#include "MsgHndlr.h"
 
 #include "update/jump.h"
 #include "bsp_timer.h"
-#include "ChassisCtrl.h"
-#include "mac5023.h"   
 #include "tools.h"
+#include "boot_update.h"
 
 #define FAN_TASK_PRIO 22
 #define TEST_TASK_PRIO 9
@@ -63,30 +51,28 @@ OF SUCH DAMAGE.
 #define LANIFC_TASK_PRIO 23
 #define DEV_TASK_PRIO 25
 
+TaskHandle_t jump_task_handle;
+
 void start_task(void *pvParameters);
-void fan_task(void *pvParameters);
-TaskHandle_t ComTask_Handler;
-void com_task(void *pvParameters);
-void misc_task(void *pvParameters);
 
 static void watch_dog_init(void);  
 static void debug_config(void);
+ 
+void Delay_NoSchedue(uint32_t clk);
 
-int g_debugLevel = DBG_INFO;
+int g_debugLevel = DBG_LOG;
 
 __IO uint32_t g_localtime = 0; /* for creating a time reference incremented by 10ms */
-__IO uint64_t g_utc_time_bmc_firmware_build = 0;
 __IO uint16_t g_bmc_firmware_version = 0;
 
 const char *projectInfo =
     "\r\n"
     "********************************************\r\n"
-    "************      BMC INFO      ************\r\n"
+    "************      bootloader      ************\r\n"
     "********************************************\r\n"
     "Build:    "__DATE__
     "  "__TIME__
     "\r\n"
-    "Version:  " BMC_VERSION " \r\n"
     "Copyright: (c) HXZY\r\n"
     "********************************************\r\n"
     "\r\n";
@@ -94,6 +80,25 @@ const char *projectInfo =
 __weak void platform_init(void)
 {
 }
+
+
+void jump_task(void *pvParameters)
+{
+    UINT32 tick = 0;
+				  
+    while (1)
+    {
+        tick++;
+        //LOG_I("prepare jump to APP ,delay = %d\n", tick);
+        if(tick > 1000)
+        {
+            JumpToAPP();
+        }                
+		fwdgt_counter_reload(); 
+        vTaskDelay(1000);
+    }
+}
+
 /*!
     \brief      main function
     \param[in]  none
@@ -102,85 +107,26 @@ __weak void platform_init(void)
 */
 int main(void)
 {
-    nvic_vector_table_set(ADDRESS_START_APP, 0);
+	UINT32 count = 0;
+    nvic_vector_table_set(ADDRESS_START_BOOTLOADER, 0);
     bsp_systick_config();
     nvic_priority_group_set(NVIC_PRIGROUP_PRE4_SUB0);
 
     platform_init();
 
-    UART_init();
-    GPIO_bspInit();
-    LOG_I("%s", projectInfo); 
+    UART_init(); 
+	LOG_I("%s", projectInfo); 
 
-    g_utc_time_bmc_firmware_build = currentSecsSinceEpoch(__DATE__, __TIME__);
-    g_bmc_firmware_version = GetBmcFirmwareVersion(BMC_VERSION);
+    //watch_dog_init();
+	//debug_config();
 
-    xTaskCreate(start_task, "start", configMINIMAL_STACK_SIZE * 2, NULL, 1, NULL);
-    xTaskCreate(misc_task, "misc", configMINIMAL_STACK_SIZE, NULL, 26, NULL);
-    watch_dog_init();
-	debug_config();
-    vTaskStartScheduler();      //prvIdleTask
+	xTaskCreate(jump_task, "jump_task", configMINIMAL_STACK_SIZE*2, NULL, 6, &jump_task_handle);
+	xTaskCreate(updateTask, "update", configMINIMAL_STACK_SIZE*2, NULL, 20, NULL);
+    vTaskStartScheduler();
     while (1)
     {
+		LOG_I("vTaskStartScheduler  error"); 
     }
-}
-
-void start_task(void *pvParameters)
-{
-    uint32_t errCreateTask = 0;
-    i2c_int();
-    //fan_init();
-
-#ifdef FATFS_ENABLE
-    fatfs_init();
-#endif
-
-    taskENTER_CRITICAL();
-
-   if (errCOULD_NOT_ALLOCATE_REQUIRED_MEMORY == 
-       xTaskCreate(Dev_Task, "dev_task", configMINIMAL_STACK_SIZE, NULL, DEV_TASK_PRIO, NULL)) {
-       errCreateTask |= 1;
-   }
-   if (errCOULD_NOT_ALLOCATE_REQUIRED_MEMORY == 
-       xTaskCreate(com_task, "com", configMINIMAL_STACK_SIZE * 2, NULL, COM_TASK_PRIO, (TaskHandle_t *)&ComTask_Handler)) {
-       errCreateTask |= 1;
-   }
-
-//    if (errCOULD_NOT_ALLOCATE_REQUIRED_MEMORY == 
-//        xTaskCreate(cpuGetInfoTask, "cpu", configMINIMAL_STACK_SIZE * 2, NULL, 11, NULL)) {
-//        errCreateTask |= 4;
-//    }
-    if (errCOULD_NOT_ALLOCATE_REQUIRED_MEMORY == 
-        xTaskCreate(shellTask, "shellTask", 200, &shell, 2, NULL)) {
-        errCreateTask |= 8;
-    }
-	if (errCreateTask == 0){
-		LOG_I("create task finished : succeed\r\n");
-	} else {
-		LOG_I("create task finished : error = %d\r\n", errCreateTask);
-	}
-    vTaskDelete(NULL);
-    taskEXIT_CRITICAL();
-}
-
-xQueueHandle g_chassisCtrl_Queue = NULL;
-void misc_task(void *pvParameters)
-{                                 
-	SamllMsgPkt_T msg;
-    g_chassisCtrl_Queue = xQueueCreate(2, sizeof(SamllMsgPkt_T));
-    while (1)
-    {
-        //LOG_D("abcde\r\n");
-        adc_sample_all();
-        if (xQueueReceive(g_chassisCtrl_Queue, &msg, 20) == pdPASS){
-            ChassisCtrl(&msg);
-        }
-    }
-}
-
-void com_task(void *pvParameters)
-{
-    MsgCoreHndlr(pvParameters);
 }
 
 /*!
@@ -205,11 +151,6 @@ void vApplicationIdleHook(void)
     static uint32_t lastTick = 0;
     /* reload FWDGT counter */
     fwdgt_counter_reload();
-    uint32_t nowTick = GetTickMs();
-    if (nowTick - lastTick > 3000) {
-        vTaskPrintThreadStatus();
-        lastTick = nowTick;
-    }
 }
 /// @brief interrupt FWDGT_IRQHandler
 __attribute__((unused)) static void watch_dog_init()
@@ -218,6 +159,10 @@ __attribute__((unused)) static void watch_dog_init()
     if (SET == rcu_flag_get(RCU_FLAG_FWDGTRST))
     {
         LOG_W("system reset reason: FWDG\n");
+    }                                         
+    else if (SET == rcu_flag_get(RCU_FLAG_WWDGTRST))
+    {
+        LOG_W("system reset reason: WWDGT\n");
     }
     else if (SET == rcu_flag_get(RCU_FLAG_PORRST))
     {
@@ -230,6 +175,10 @@ __attribute__((unused)) static void watch_dog_init()
     else if (SET == rcu_flag_get(RCU_FLAG_EPRST))
     {
         LOG_W("system reset reason: external PIN\n");
+    }                           
+    else if (SET == rcu_flag_get(RCU_FLAG_LPRST))
+    {
+        LOG_W("system reset reason: low-power reset\n");
     }
 	else {
         LOG_W("system reset reason: unkown\n");
@@ -249,3 +198,11 @@ static void debug_config(void)
 	
     dbg_periph_enable(DBG_TIMER3_HOLD);
 }
+
+void Delay_NoSchedue(uint32_t clk)
+{
+    for (uint32_t i = 0; i < clk; i++) {
+        ;
+    }
+}
+

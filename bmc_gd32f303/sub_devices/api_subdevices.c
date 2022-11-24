@@ -393,7 +393,7 @@ static void SubDevice_Upload(TimerHandle_t timerHandle)
             char *modeName = SubDevice_GetModeName(dev);
             memset(nameBuf, 0, sizeof(nameBuf));
             memcpy(nameBuf, modeName, strlen(modeName));
-            strcat(nameBuf, "-");
+            strcat(nameBuf, "_");
             prefixLen = strlen(nameBuf);
             const Dev_Handler *pHandler = api_getDevHandler(dev);
             if (pHandler == NULL)

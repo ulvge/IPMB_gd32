@@ -7,7 +7,7 @@
 
   <Targets>
     <Target>
-      <TargetName>bmc_f103</TargetName>
+      <TargetName>F103Boot</TargetName>
       <ToolsetNumber>0x4</ToolsetNumber>
       <ToolsetName>ARM-ADS</ToolsetName>
       <pCCUsed>5060960::V5.06 update 7 (build 960)::.\ARMCC</pCCUsed>
@@ -49,7 +49,7 @@
             <InvalidFlash>1</InvalidFlash>
           </TargetStatus>
           <OutputDirectory>.\output\temp\</OutputDirectory>
-          <OutputName>bmc_app</OutputName>
+          <OutputName>bmc_boot</OutputName>
           <CreateExecutable>1</CreateExecutable>
           <CreateLib>0</CreateLib>
           <CreateHexFile>1</CreateHexFile>
@@ -83,7 +83,7 @@
             <RunUserProg1>0</RunUserProg1>
             <RunUserProg2>1</RunUserProg2>
             <UserProg1Name></UserProg1Name>
-            <UserProg2Name>D:\Keil_v5\ARM\ARMCLANG\bin\fromelf --bin --output .\output\bmc_app.bin .\output\temp\bmc_app.axf</UserProg2Name>
+            <UserProg2Name>D:\Keil_v5\ARM\ARMCLANG\bin\fromelf --bin --output .\output\bmc_boot.bin .\output\temp\bmc_boot.axf</UserProg2Name>
             <UserProg1Dos16Mode>0</UserProg1Dos16Mode>
             <UserProg2Dos16Mode>0</UserProg2Dos16Mode>
             <nStopA1X>0</nStopA1X>
@@ -275,8 +275,8 @@
               </OCR_RVCT3>
               <OCR_RVCT4>
                 <Type>1</Type>
-                <StartAddress>0x8008000</StartAddress>
-                <Size>0x18000</Size>
+                <StartAddress>0x8000000</StartAddress>
+                <Size>0x8000</Size>
               </OCR_RVCT4>
               <OCR_RVCT5>
                 <Type>1</Type>
@@ -337,9 +337,9 @@
             <v6Rtti>0</v6Rtti>
             <VariousControls>
               <MiscControls>--diag_suppress=177</MiscControls>
-              <Define>ARM_MATH_CM3,__CC_ARM,GD32F1x</Define>
+              <Define>ARM_MATH_CM3,__CC_ARM,GD32F1x,BOOTLOADER</Define>
               <Undefine></Undefine>
-              <IncludePath>..\firmware;..\firmware\GD32F10x\GD32F10x_standard_peripheral\Include;..\firmware\GD32F10x\CMSIS\GD\GD32F10x\Include;..\firmware\GD32F10x\CMSIS;..\user;..\bsp;..\ipmi;..\ipmi\data;..\ipmi\ipmi_dev-3.0.0-src;..\ipmi\ipmi_dev-3.0.0-src\data;..\ipmi\libipmi-3.1.0-src\data\include;..\ipmi\libipmi-3.1.0-src\data;..\ipmi\ipmi_common;..\ipmb;..\api;..\api\adc;..\api\flash;..\api\shell;..\api\tools;..\api\cpu;..\api\sensor;..\api\update;..\sub_devices;..\freertos\include;..\freertos\portable;..\freertos\portable\RVDS\ARM_CM3;..\ff10</IncludePath>
+              <IncludePath>..\firmware;..\firmware\GD32F10x\GD32F10x_standard_peripheral\Include;..\firmware\GD32F10x\CMSIS\GD\GD32F10x\Include;..\firmware\GD32F10x\CMSIS;..\user;..\bsp;..\ipmi;..\ipmi\data;..\ipmi\ipmi_dev-3.0.0-src;..\ipmi\ipmi_dev-3.0.0-src\data;..\ipmi\libipmi-3.1.0-src\data\include;..\ipmi\libipmi-3.1.0-src\data;..\ipmi\ipmi_common;..\ipmb;..\api;..\api\adc;..\api\flash;..\api\shell;..\api\tools;..\api\cpu;..\api\sensor;..\api\update;..\sub_devices;..\freertos\include;..\freertos\portable;..\freertos\portable\RVDS\ARM_CM3;..\ff10;..\boot</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -384,9 +384,9 @@
           <GroupName>app</GroupName>
           <Files>
             <File>
-              <FileName>main.c</FileName>
+              <FileName>boot_main.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\user\main.c</FilePath>
+              <FilePath>..\boot\boot_main.c</FilePath>
             </File>
             <File>
               <FileName>systick.c</FileName>
@@ -403,61 +403,16 @@
               <FileType>1</FileType>
               <FilePath>..\firmware\GD32F10x\gd32f10x_platform.c</FilePath>
             </File>
-          </Files>
-        </Group>
-        <Group>
-          <GroupName>sub_decives</GroupName>
-          <Files>
             <File>
-              <FileName>api_subdevices.c</FileName>
+              <FileName>boot_update.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\sub_devices\api_subdevices.c</FilePath>
-            </File>
-            <File>
-              <FileName>dev_main.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\sub_devices\dev_main.c</FilePath>
-            </File>
-            <File>
-              <FileName>dev_net.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\sub_devices\dev_net.c</FilePath>
-            </File>
-            <File>
-              <FileName>dev_power.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\sub_devices\dev_power.c</FilePath>
-            </File>
-            <File>
-              <FileName>dev_storage0.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\sub_devices\dev_storage0.c</FilePath>
-            </File>
-            <File>
-              <FileName>dev_switch.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\sub_devices\dev_switch.c</FilePath>
+              <FilePath>..\boot\boot_update.c</FilePath>
             </File>
           </Files>
         </Group>
         <Group>
           <GroupName>api</GroupName>
           <Files>
-            <File>
-              <FileName>api_adc.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\api\adc\api_adc.c</FilePath>
-            </File>
-            <File>
-              <FileName>api_utc.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\api\utc\api_utc.c</FilePath>
-            </File>
-            <File>
-              <FileName>tools.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\api\tools\tools.c</FilePath>
-            </File>
             <File>
               <FileName>FIFO.c</FileName>
               <FileType>1</FileType>
@@ -469,169 +424,9 @@
               <FilePath>..\api\tools\FILO.c</FilePath>
             </File>
             <File>
-              <FileName>api_sensor.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\api\sensor\api_sensor.c</FilePath>
-            </File>
-            <File>
-              <FileName>cJSON_Utils.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\api\tools\cJSON_Utils.c</FilePath>
-            </File>
-            <File>
-              <FileName>cJSON.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\api\tools\cJSON.c</FilePath>
-            </File>
-            <File>
-              <FileName>api_fan.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\api\fan\api_fan.c</FilePath>
-            </File>
-            <File>
-              <FileName>api_cpu.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\api\cpu\api_cpu.c</FilePath>
-            </File>
-            <File>
               <FileName>log.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\api\tools\log.c</FilePath>
-            </File>
-            <File>
-              <FileName>mac5023.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\api\sensor\mac5023.c</FilePath>
-            </File>
-            <File>
-              <FileName>pmbus.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\api\sensor\pmbus.c</FilePath>
-            </File>
-            <File>
-              <FileName>eeprom.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\api\sensor\eeprom.c</FilePath>
-            </File>
-            <File>
-              <FileName>jump2Bootloader.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\api\update\jump2Bootloader.c</FilePath>
-            </File>
-          </Files>
-        </Group>
-        <Group>
-          <GroupName>ipmi</GroupName>
-          <Files>
-            <File>
-              <FileName>ipmi_common.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\ipmi\ipmi_common\ipmi_common.c</FilePath>
-            </File>
-          </Files>
-        </Group>
-        <Group>
-          <GroupName>ipmb_msg_handlr</GroupName>
-          <Files>
-            <File>
-              <FileName>IpmbMsgHndlr.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\ipmb\IpmbMsgHndlr.c</FilePath>
-            </File>
-            <File>
-              <FileName>SerialIfc.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\ipmb\libipmiserial-src\SerialIfc.c</FilePath>
-            </File>
-            <File>
-              <FileName>Serial.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\ipmb\libipmiserial-src\Serial.c</FilePath>
-            </File>
-            <File>
-              <FileName>RMCP.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\ipmb\libipmilan-src\RMCP.c</FilePath>
-            </File>
-          </Files>
-        </Group>
-        <Group>
-          <GroupName>ipmi_msg_handlr</GroupName>
-          <Files>
-            <File>
-              <FileName>MsgHndlr.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\ipmi\libipmimsghndlr-3.0.0-src\data\MsgHndlr.c</FilePath>
-            </File>
-            <File>
-              <FileName>App.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\ipmi\libipmimsghndlr-3.0.0-src\data\App\App.c</FilePath>
-            </File>
-            <File>
-              <FileName>AppDevice.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\ipmi\libipmimsghndlr-3.0.0-src\data\App\AppDevice\AppDevice.c</FilePath>
-            </File>
-            <File>
-              <FileName>Chassis.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\ipmi\libipmimsghndlr-3.0.0-src\data\Chassis\Chassis.c</FilePath>
-            </File>
-            <File>
-              <FileName>Oem.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\ipmi\libipmimsghndlr-3.0.0-src\data\Oem\Oem.c</FilePath>
-            </File>
-            <File>
-              <FileName>SensorEvent.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\ipmi\libipmimsghndlr-3.0.0-src\data\SensorEvent\SensorEvent.c</FilePath>
-            </File>
-            <File>
-              <FileName>Sensor.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\ipmi\libipmimsghndlr-3.0.0-src\data\SensorEvent\SensorDevice\Sensor.c</FilePath>
-            </File>
-            <File>
-              <FileName>Storage.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\ipmi\libipmimsghndlr-3.0.0-src\data\Storage\Storage.c</FilePath>
-            </File>
-            <File>
-              <FileName>SDR.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\ipmi\libipmimsghndlr-3.0.0-src\data\Storage\SDRDevice\SDR.c</FilePath>
-            </File>
-            <File>
-              <FileName>IPMDevice.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\ipmi\libipmimsghndlr-3.0.0-src\data\App\IPMDevice\IPMDevice.c</FilePath>
-            </File>
-            <File>
-              <FileName>Bridge.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\ipmi\libipmimsghndlr-3.0.0-src\data\Bridge\Bridge.c</FilePath>
-            </File>
-            <File>
-              <FileName>ChassisDevice.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\ipmi\libipmimsghndlr-3.0.0-src\data\Chassis\ChassisDevice.c</FilePath>
-            </File>
-            <File>
-              <FileName>ChassisCtrl.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\ipmi\libipmimsghndlr-3.0.0-src\data\App\AppDevice\ChassisCtrl.c</FilePath>
-            </File>
-          </Files>
-        </Group>
-        <Group>
-          <GroupName>libipmi</GroupName>
-          <Files>
-            <File>
-              <FileName>sensor_helpers.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\ipmi\libipmi-3.1.0-src\data\sensor_helpers.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -639,44 +434,9 @@
           <GroupName>bsp</GroupName>
           <Files>
             <File>
-              <FileName>bsp_adc.c</FileName>
+              <FileName>flash.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\bsp\bsp_adc.c</FilePath>
-            </File>
-            <File>
-              <FileName>bsp_capture.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\bsp\bsp_capture.c</FilePath>
-            </File>
-            <File>
-              <FileName>bsp_i2c.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\bsp\bsp_i2c.c</FilePath>
-            </File>
-            <File>
-              <FileName>bsp_i2c_gpio.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\bsp\bsp_i2c_gpio.c</FilePath>
-            </File>
-            <File>
-              <FileName>bsp_pwm.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\bsp\bsp_pwm.c</FilePath>
-            </File>
-            <File>
-              <FileName>bsp_usart0.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\bsp\bsp_usart0.c</FilePath>
-            </File>
-            <File>
-              <FileName>bsp_usart1.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\bsp\bsp_usart1.c</FilePath>
-            </File>
-            <File>
-              <FileName>bsp_gpio.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\bsp\bsp_gpio.c</FilePath>
+              <FilePath>..\api\update\flash.c</FilePath>
             </File>
             <File>
               <FileName>bsp_timer.c</FileName>
@@ -687,6 +447,11 @@
               <FileName>bsp_uartcomm.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\bsp\bsp_uartcomm.c</FilePath>
+            </File>
+            <File>
+              <FileName>boot_bsp_usart0.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\boot\boot_bsp_usart0.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -835,36 +600,6 @@
             </File>
           </Files>
         </Group>
-        <Group>
-          <GroupName>shell</GroupName>
-          <Files>
-            <File>
-              <FileName>shell.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\api\shell\shell.c</FilePath>
-            </File>
-            <File>
-              <FileName>shell_cmd_list.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\api\shell\shell_cmd_list.c</FilePath>
-            </File>
-            <File>
-              <FileName>shell_companion.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\api\shell\shell_companion.c</FilePath>
-            </File>
-            <File>
-              <FileName>shell_ext.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\api\shell\shell_ext.c</FilePath>
-            </File>
-            <File>
-              <FileName>shell_port.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\api\shell\shell_port.c</FilePath>
-            </File>
-          </Files>
-        </Group>
       </Groups>
     </Target>
   </Targets>
@@ -880,6 +615,7 @@
       <Layer>
         <LayName>project</LayName>
         <LayPrjMark>1</LayPrjMark>
+        <LayTitle>F103 Boot</LayTitle>
       </Layer>
     </Layers>
   </LayerInfo>

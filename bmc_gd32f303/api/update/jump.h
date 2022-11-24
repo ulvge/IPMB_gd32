@@ -8,27 +8,11 @@
 #include <debug_print.h>
 
 #define ADDRESS_START_BOOTLOADER  0x08000000
-#define ADDRESS_START_APP         0x08004000
+
+#define ADDRESS_START_APP         0x08008000
+#define ADDRESS_END_APP           0x08020000
 
 #pragma pack(1)
-
-typedef struct{
-    uint16_t cmd1;
-    uint8_t  cmd2;
-    uint8_t  sq;
-    uint8_t  addr;
-    uint8_t  len;
-    char     dat[64];
-    uint8_t  crc;
-}UpdateMsgReq;
-
-typedef struct{
-    uint16_t cmd1;
-    uint8_t  cmd2;
-    uint8_t  sq;
-    uint8_t  addr;
-    uint8_t  err_code;  // 00:normal
-}UpdateMsgRes;
 
 #pragma pack()
 

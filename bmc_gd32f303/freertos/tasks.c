@@ -3306,7 +3306,6 @@ static portTASK_FUNCTION( prvIdleTask, pvParameters )
 	any. */
 	portTASK_CALLS_SECURE_FUNCTIONS();
 
-    GPIO_setPinStatus(GPIO_OUT_BMC_POWER_ON_FINISHED, ENABLE);
 	for( ;; )
 	{
 		/* See if any tasks have deleted themselves - if so then the idle task

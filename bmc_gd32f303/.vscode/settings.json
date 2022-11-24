@@ -51,6 +51,10 @@
         "freertos.h": "c",
         "task.h": "c",
         "list.h": "c",
-        "algorithm": "c"
+        "algorithm": "c",
+        "project_select.h": "c",
+        "stdio.h": "c",
+        "boot_update.h": "c",
+        "bsp_uartcomm.h": "c"
     }
 }

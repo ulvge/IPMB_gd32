@@ -78,7 +78,7 @@ void USART1_IRQHandler(void)
                 portYIELD_FROM_ISR(xHigherPriorityTaskWoken);
                 if (err == pdFAIL)
                 {
-                    LOG_E("uart queue msg send failed!");
+                    //LOG_E("uart queue msg send failed!");
                 }
             }
         }
@@ -89,7 +89,7 @@ void USART1_IRQHandler(void)
             {
                 is_start = false;
                 g_uart_Req.Size = 0;
-                LOG_E("uart recv overlap!");
+                //LOG_E("uart recv overlap!");
             }
         }
 

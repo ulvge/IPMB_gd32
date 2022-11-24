@@ -23,7 +23,7 @@
     \retval     none
 */
 
-TestStatus FLASH_Program(uint32_t WRITE_START_ADDR, uint16_t Size, uint32_t * data)
+TestStatus FLASH_Program(uint32_t WRITE_START_ADDR, uint32_t * data, uint16_t Size)
 {
     uint32_t Address;
     TestStatus TransferStatus = FAILED;
@@ -33,7 +33,12 @@ TestStatus FLASH_Program(uint32_t WRITE_START_ADDR, uint16_t Size, uint32_t * da
     fmc_unlock();
     
     /* Clear All pending flags */
-    fmc_flag_clear(FMC_FLAG_BANK0_END | FMC_FLAG_BANK0_WPERR | FMC_FLAG_BANK0_PGERR);
+    //清除操作结束标志
+    fmc_flag_clear(FMC_FLAG_BANK0_END);
+    //清除擦除/错误标志
+    fmc_flag_clear(FMC_FLAG_BANK0_WPERR);
+    //清楚页编程错误标志
+    fmc_flag_clear(FMC_FLAG_BANK0_PGERR);
     
     
     /* Program Flash Bank1 */
@@ -44,7 +49,9 @@ TestStatus FLASH_Program(uint32_t WRITE_START_ADDR, uint16_t Size, uint32_t * da
         fmc_word_program(Address, data[i]);
         i++;
         Address = Address + 4; 
-        fmc_flag_clear(FMC_FLAG_BANK0_END | FMC_FLAG_BANK0_WPERR | FMC_FLAG_BANK0_PGERR);
+        fmc_flag_clear(FMC_FLAG_BANK0_END);
+        fmc_flag_clear(FMC_FLAG_BANK0_WPERR);
+        fmc_flag_clear(FMC_FLAG_BANK0_PGERR);
     }
     
     fmc_lock();
@@ -105,17 +112,23 @@ void read_fmc_pid(uint8_t *data,uint8_t len)
     }
 }
 
-void erase_page(uint16_t num_pages, uint16_t page_num)
+void erase_page(uint16_t startPageNum, uint16_t page_num)
 {
     uint16_t i;
 
     uint32_t base_address = 0x08000000;
-    uint32_t page_address = base_address + (FMC_PAGE_SIZE * page_num);
+    uint32_t page_address = base_address + (FMC_PAGE_SIZE * startPageNum);
     fmc_unlock();
-    fmc_flag_clear(FMC_FLAG_BANK0_END | FMC_FLAG_BANK0_WPERR | FMC_FLAG_BANK0_PGERR);
-    for(i = 0; i < num_pages; i++){
+    fmc_flag_clear(FMC_FLAG_BANK0_END);
+    fmc_flag_clear(FMC_FLAG_BANK0_WPERR);
+    fmc_flag_clear(FMC_FLAG_BANK0_PGERR);
+    for(i = 0; i < page_num; i++){
         fmc_page_erase(page_address);
         page_address = page_address + FMC_PAGE_SIZE;
-        fmc_flag_clear(FMC_FLAG_BANK0_END | FMC_FLAG_BANK0_WPERR | FMC_FLAG_BANK0_PGERR);
+        fmc_flag_clear(FMC_FLAG_BANK0_END);
+        fmc_flag_clear(FMC_FLAG_BANK0_WPERR);
+        fmc_flag_clear(FMC_FLAG_BANK0_PGERR);
     }
 }
+
+

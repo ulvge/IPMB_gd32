@@ -75,7 +75,6 @@ bool UART_sendByte(uint32_t usart_periph, uint8_t dat)
     if (uartPara == NULL) {
         return false;
     }
-	FILE *f = NULL;
     
     if (FIFO_Write(&uartPara->fifo.sfifo, (INT8U)dat) == FALSE){
         return false;
@@ -184,5 +183,7 @@ void COM_init(UART_PARA_STRUCT *uartPara)
 void UART_init(void)
 {
     UART0_init();
+	#ifndef BOOTLOADER
     UART1_init();
+	#endif
 }

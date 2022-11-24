@@ -47,8 +47,6 @@ static char *const arglist[] = {
 
 static int logs(int argc, char *argv[])
 {
-    int retval = 0;
-
     /* Read and interpret the arguments */
     parse_arguments(argc, argv);
 	return 0;

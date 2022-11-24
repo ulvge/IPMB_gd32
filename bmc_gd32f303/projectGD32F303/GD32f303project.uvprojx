@@ -339,7 +339,7 @@
               <MiscControls>--diag_suppress=177,550</MiscControls>
               <Define>ARM_MATH_CM4,__CC_ARM,GD32F3x</Define>
               <Undefine></Undefine>
-              <IncludePath>..\firmware;..\firmware\GD32F30x\GD32F30x_standard_peripheral\Include;..\firmware\GD32F30x\CMSIS\GD\GD32F30x\Include;..\firmware\GD32F30x\CMSIS;..\user;..\bsp;..\ipmi;..\ipmi\data;..\ipmi\ipmi_dev-3.0.0-src;..\ipmi\ipmi_dev-3.0.0-src\data;..\ipmi\ipmi_common;..\ipmi\libipmi-3.1.0-src\data\include;..\ipmi\libipmi-3.1.0-src\data;..\ipmb;..\api;..\api\adc;..\api\flash;..\api\shell;..\api\tools;..\sub_devices;..\api\sensor;..\freertos\include;..\freertos\portable;..\freertos\portable\RVDS\ARM_CM4F;..\ff10</IncludePath>
+              <IncludePath>..\firmware;..\firmware\GD32F30x\GD32F30x_standard_peripheral\Include;..\firmware\GD32F30x\CMSIS\GD\GD32F30x\Include;..\firmware\GD32F30x\CMSIS;..\user;..\bsp;..\ipmi;..\ipmi\data;..\ipmi\ipmi_dev-3.0.0-src;..\ipmi\ipmi_dev-3.0.0-src\data;..\ipmi\ipmi_common;..\ipmi\libipmi-3.1.0-src\data\include;..\ipmi\libipmi-3.1.0-src\data;..\ipmb;..\api;..\api\adc;..\api\flash;..\api\shell;..\api\tools;..\sub_devices;..\api\sensor;..\api\update;..\freertos\include;..\freertos\portable;..\freertos\portable\RVDS\ARM_CM4F;..\ff10</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -507,6 +507,16 @@
               <FileName>pmbus.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\api\sensor\pmbus.c</FilePath>
+            </File>
+            <File>
+              <FileName>jump2Bootloader.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\api\update\jump2Bootloader.c</FilePath>
+            </File>
+            <File>
+              <FileName>eeprom.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\api\sensor\eeprom.c</FilePath>
             </File>
           </Files>
         </Group>
