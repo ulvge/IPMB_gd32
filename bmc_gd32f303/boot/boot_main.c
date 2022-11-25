@@ -31,19 +31,19 @@ ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSI
 OF SUCH DAMAGE.
 */
 
-#include <stdio.h>
-#include <stdbool.h>
 #include "main.h"
+#include <stdbool.h>
+#include <stdio.h>
 
 #include "OSPort.h"
 
-#include "systick.h"
 #include "bsp_uartcomm.h"
+#include "systick.h"
 
-#include "update/jump.h"
+#include "boot_update.h"
 #include "bsp_timer.h"
 #include "tools.h"
-#include "boot_update.h"
+#include "update/jump.h"
 
 #define FAN_TASK_PRIO 22
 #define TEST_TASK_PRIO 9
@@ -51,19 +51,24 @@ OF SUCH DAMAGE.
 #define LANIFC_TASK_PRIO 23
 #define DEV_TASK_PRIO 25
 
-TaskHandle_t jump_task_handle;
+TaskHandle_t updateMonitorHandle;
 
 void start_task(void *pvParameters);
 
-static void watch_dog_init(void);  
+xQueueHandle CPU_recvDatMsg_Queue = NULL;
+
+static void watch_dog_init(void);
 static void debug_config(void);
- 
+
 void Delay_NoSchedue(uint32_t clk);
 
+
+#define MONITOR_TASK_DELAY_ms 1000
+#define RESEND_TIMEOUT (4000 / MONITOR_TASK_DELAY_ms)
+#define BOOT_DELAY_MAX (5000 / MONITOR_TASK_DELAY_ms)
 int g_debugLevel = DBG_LOG;
 
 __IO uint32_t g_localtime = 0; /* for creating a time reference incremented by 10ms */
-__IO uint16_t g_bmc_firmware_version = 0;
 
 const char *projectInfo =
     "\r\n"
@@ -77,25 +82,53 @@ const char *projectInfo =
     "********************************************\r\n"
     "\r\n";
 
+static const char *g_bootUsage =
+    "\r\n"
+    "** boot help  ************\r\n"
+    "support xmodem and package length 128 Byte only\r\n"
+    "When the system starts, you have 3 seconds to select\r\n"
+    "'u' or 'CTRL+C' can stop startup, and prepare to update \r\n"
+    "'a' When you are updating, you can give up and continue startup the APP system \r\n"
+    "\r\n";
+
 __weak void platform_init(void)
 {
 }
-
-
-void jump_task(void *pvParameters)
-{
-    UINT32 tick = 0;
-				  
-    while (1)
-    {
-        tick++;
-        //LOG_I("prepare jump to APP ,delay = %d\n", tick);
-        if(tick > 1000)
-        {
-            JumpToAPP();
-        }                
-		fwdgt_counter_reload(); 
-        vTaskDelay(1000);
+void updateMonitor(void *pvParameters)
+{   
+	vTaskDelay(MONITOR_TASK_DELAY_ms);
+    while (1) {
+        g_resendCount++;
+        switch (g_UpdatingSM) {
+            case UPDATE_SM_INIT:
+                if (g_resendCount >= BOOT_DELAY_MAX) {
+                    LOG_I("jump to APP \n");
+                    JumpToAPP();
+                }
+                LOG_I("jump to APP :countdown = %d s\r\n", (BOOT_DELAY_MAX - g_resendCount));
+                break;
+            case UPDATE_SM_ERROR_TRYAGAIN:
+                if (g_resendCount >= RESEND_TIMEOUT) {
+                    boot_UartSendByte(XMODEM_NAK);
+                }
+                break;
+            case UPDATE_SM_START:
+                boot_UartSendByte(XMODEM_HANDSHAKE);
+                break;
+            case UPDATE_SM_FINISHED:
+                JumpToAPP();
+                break;
+            case UPDATE_SM_CANCEL:
+                NVIC_SystemReset();
+                break;
+            case UPDATE_SM_PROGRAMING:
+                if (g_resendCount >= RESEND_TIMEOUT) {
+                    boot_UartSendByte(XMODEM_ACK);
+                }
+            default:
+                break;
+        }
+        vTaskDelay(MONITOR_TASK_DELAY_ms);
     }
 }
 
@@ -107,25 +140,24 @@ void jump_task(void *pvParameters)
 */
 int main(void)
 {
-	UINT32 count = 0;
-    nvic_vector_table_set(ADDRESS_START_BOOTLOADER, 0);
+    UINT32 count = 0;
     bsp_systick_config();
     nvic_priority_group_set(NVIC_PRIGROUP_PRE4_SUB0);
 
     platform_init();
 
-    UART_init(); 
-	LOG_I("%s", projectInfo); 
+    UART_init();
+    UART_sendDataBlock(DEBUG_UART_PERIPH, (uint8_t *)projectInfo, strlen(projectInfo));
+    UART_sendDataBlock(DEBUG_UART_PERIPH, (uint8_t *)g_bootUsage, strlen(g_bootUsage));
 
-    //watch_dog_init();
-	//debug_config();
+    watch_dog_init();
+    debug_config();
 
-	xTaskCreate(jump_task, "jump_task", configMINIMAL_STACK_SIZE*2, NULL, 6, &jump_task_handle);
-	xTaskCreate(updateTask, "update", configMINIMAL_STACK_SIZE*2, NULL, 20, NULL);
+    xTaskCreate(updateMonitor, "updateMonitor", configMINIMAL_STACK_SIZE * 2, NULL, 25, &updateMonitorHandle);
+    xTaskCreate(updateTask, "update", configMINIMAL_STACK_SIZE * 2, NULL, 20, NULL);
     vTaskStartScheduler();
-    while (1)
-    {
-		LOG_I("vTaskStartScheduler  error"); 
+    while (1) {
+        LOG_I("vTaskStartScheduler  error");
     }
 }
 
@@ -156,33 +188,21 @@ void vApplicationIdleHook(void)
 __attribute__((unused)) static void watch_dog_init()
 {
     /* check if the system has resumed from FWDGT reset */
-    if (SET == rcu_flag_get(RCU_FLAG_FWDGTRST))
-    {
+    if (SET == rcu_flag_get(RCU_FLAG_FWDGTRST)) {
         LOG_W("system reset reason: FWDG\n");
-    }                                         
-    else if (SET == rcu_flag_get(RCU_FLAG_WWDGTRST))
-    {
+    } else if (SET == rcu_flag_get(RCU_FLAG_WWDGTRST)) {
         LOG_W("system reset reason: WWDGT\n");
-    }
-    else if (SET == rcu_flag_get(RCU_FLAG_PORRST))
-    {
+    } else if (SET == rcu_flag_get(RCU_FLAG_PORRST)) {
         LOG_W("system reset reason: power on\n");
-    }
-    else if (SET == rcu_flag_get(RCU_FLAG_SWRST))
-    {
+    } else if (SET == rcu_flag_get(RCU_FLAG_SWRST)) {
         LOG_W("system reset reason: soft\n");
-    }
-    else if (SET == rcu_flag_get(RCU_FLAG_EPRST))
-    {
+    } else if (SET == rcu_flag_get(RCU_FLAG_EPRST)) {
         LOG_W("system reset reason: external PIN\n");
-    }                           
-    else if (SET == rcu_flag_get(RCU_FLAG_LPRST))
-    {
+    } else if (SET == rcu_flag_get(RCU_FLAG_LPRST)) {
         LOG_W("system reset reason: low-power reset\n");
-    }
-	else {
+    } else {
         LOG_W("system reset reason: unkown\n");
-	}
+    }
     rcu_all_reset_flag_clear();
     /* confiure FWDGT counter clock: 40KHz(IRC40K) / 64 = 0.625 KHz */
     fwdgt_config(2 * 500, FWDGT_PSC_DIV64);
@@ -192,10 +212,10 @@ __attribute__((unused)) static void watch_dog_init()
 static void debug_config(void)
 {
     /* disable wdg when the mcu is in debug mode */
-    dbg_periph_enable(DBG_FWDGT_HOLD);   
-	
+    dbg_periph_enable(DBG_FWDGT_HOLD);
+
     dbg_periph_enable(DBG_TIMER2_HOLD);
-	
+
     dbg_periph_enable(DBG_TIMER3_HOLD);
 }
 
@@ -205,4 +225,3 @@ void Delay_NoSchedue(uint32_t clk)
         ;
     }
 }
-

@@ -46,8 +46,12 @@ OF SUCH DAMAGE.
 #include "bsp_uart3.h"
 					  
 #define    BMC_VERSION    "1.0.1"
-
+								   
+	#ifdef BOOTLOADER
+	#define DEBUG_UART_PERIPH    USART1
+	#else                  
 	#define DEBUG_UART_PERIPH    USART0
+	#endif
 	#define IPMI_UART_PERIPH    USART0
     
 	#define CPU_UART_PERIPH    USART1

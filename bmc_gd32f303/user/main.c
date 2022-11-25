@@ -102,7 +102,7 @@ __weak void platform_init(void)
 */
 int main(void)
 {
-    nvic_vector_table_set(ADDRESS_START_APP, 0);
+    //nvic_vector_table_set(ADDRESS_START_APP, 0);
     bsp_systick_config();
     nvic_priority_group_set(NVIC_PRIGROUP_PRE4_SUB0);
 

@@ -453,6 +453,11 @@
               <FileType>1</FileType>
               <FilePath>..\boot\boot_bsp_usart0.c</FilePath>
             </File>
+            <File>
+              <FileName>bsp_usart1.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\bsp\bsp_usart1.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>

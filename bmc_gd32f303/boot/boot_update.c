@@ -1,30 +1,24 @@
 
-#include <stdio.h>
-#include <stdbool.h>
-#include "Types.h"
-#include "OSPort.h"
 #include "boot_update.h"
-#include "project_select.h"   
-#include "jump.h"
-#include "Message.h"     
-#include "flash.h" 
+#include "Message.h"
+#include "OSPort.h"
+#include "Types.h"
 #include "bsp_uartcomm.h"
+#include "flash.h"
+#include "jump.h"
+#include "project_select.h"
+#include <stdbool.h>
+#include <stdio.h>
 
-
-#define APP_UPGRADE_PAKGE   128
-#define DRV_UART1_PutChar(dat) UART_sendByte(USART0, dat)
+#define XMODEM_PAKGE_LENGTH 128
 
 typedef void (*pFunction)(void);
-
 static void param_init(void);
-static unsigned char checksum(const char *buff, int len); 
-static UINT32 ProcessUpdateReq(const BootPkt_T *pReq);  
-static unsigned char hexchecksum(const char *buff, int len);    
-static bool convert_hex_to_msg(const char *hex_dat, uint32_t len, HexRomMsg *hex_msg); 
-static int ProcessHexDat(const char *hex_dat, uint32_t len);
-
+static UPDATE_SM boot_ProcessUpdateReq(const BootPkt_T *pReq);
 
 xQueueHandle updateDatMsg_Queue = NULL;
+UPDATE_SM g_UpdatingSM = UPDATE_SM_INIT;
+UINT32 g_resendCount = 0;
 
 void JumpToAPP(void)
 {
@@ -36,17 +30,14 @@ void JumpToAPP(void)
 
     /* 设置所有时钟到默认状态， 使用 HSI 时钟 */
     rcu_deinit();
-
-    fwdgt_config(2 * 500, FWDGT_PSC_DIV256);
-    /* after 1.6 seconds to generate a reset */
-    fwdgt_write_disable();
+    // fwdgt_write_disable();
 
     rcu_periph_clock_disable(RCU_TIMER0);
     rcu_periph_clock_disable(RCU_TIMER1);
     rcu_periph_clock_disable(RCU_TIMER2);
     rcu_periph_clock_disable(RCU_TIMER3);
     rcu_periph_clock_disable(RCU_TIMER4);
-    //rcu_periph_clock_disable(RCU_USART0);
+    // rcu_periph_clock_disable(RCU_USART0);
     rcu_periph_clock_disable(RCU_USART1);
     rcu_periph_clock_disable(RCU_USART2);
     rcu_periph_clock_disable(RCU_I2C0);
@@ -68,60 +59,43 @@ void JumpToAPP(void)
     }
 
     /* 跳转到系统 BootLoader，首地址是 MSP，地址+4 是复位中断服务程序地址 */
-	
-	uint32_t appJumpAddress = *(volatile uint32_t *)(ADDRESS_START_APP + 4);
+    uint32_t appJumpAddress = *(volatile uint32_t *)(ADDRESS_START_APP + 4);
     pFunction appJump = (pFunction)appJumpAddress;
-								
-    nvic_vector_table_set(ADDRESS_START_APP, 0);   
+
+    nvic_vector_table_set(ADDRESS_START_APP, 0);
     /* 设置主堆栈指针 */
     __set_CONTROL(0);
     __set_MSP(*(volatile uint32_t *)ADDRESS_START_APP);
-	
-	CPU_IntEnable();
+
+    CPU_IntEnable();
     /* 跳转到系统 BootLoader */
     appJump();
-
     /* 跳转成功的话，不会执行到这里，用户可以在这里添加代码 */
     while (1) {
         ;
     }
 }
 
-
-__IO uint32_t g_app_addr_base = ADDRESS_START_BOOTLOADER;
-__IO uint32_t g_app_addr;
-
 void updateTask(void *arg)
 {
     BootPkt_T reqMsg;
 
-	UINT32 res;
-				  
+    UINT32 res;
+
     updateDatMsg_Queue = xQueueCreate(1, sizeof(BootPkt_T));
-    if (updateDatMsg_Queue ==  NULL) {
+    if (updateDatMsg_Queue == NULL) {
         LOG_E("updateDatMsg_Queue create ERR!");
     }
 
-	while (1)
-	{
+    while (1) {
         xQueueReceive(updateDatMsg_Queue, &reqMsg, portMAX_DELAY);
-		
-		printf("xQueueReceive  count = %d \r\n", reqMsg.Size);
-		res = ProcessUpdateReq(&reqMsg); 
-		
-        //vTaskDelay(10);
 
-//		if (res == UPDATE_EVENT_FINISHED)
-//		{
-//			printf("jump to app \r\n");
-//			sleep(1);
-//			JumpToAPP();
-//        }
-	}
+        //printf("xQueueReceive  count = %d \r\n", reqMsg.Size);
+        g_UpdatingSM = boot_ProcessUpdateReq(&reqMsg);
+    }
 }
 
-
-static UINT16 XMODEM_Crc16(const UINT8 *buf, UINT8 len)
+static UINT16 boot_xmodeCrc16(const UINT8 *buf, UINT8 len)
 {
     UINT8 i = 0;
     UINT16 crc = 0;
@@ -145,52 +119,77 @@ static bool boot_eraseAllPage()
     UINT32 erasePageNum = (ADDRESS_END_APP - ADDRESS_START_APP + 1) / FMC_PAGE_SIZE;
 
     erase_page(startPageNum, erasePageNum);
-	return true;
+    return true;
 }
-static bool g_userUpdating = false;
-static bool g_userPrepareUpdate = false;
-static bool g_userFormatYet = false;
 
-static UINT32 ProcessUpdateReq(const BootPkt_T *pReq)
+static UPDATE_SM boot_ProcessUpdateReq(const BootPkt_T *pReq)
 {
     xmodemMsg *msg = (xmodemMsg *)(&pReq->Data);
+    static UINT32 pnPage = 0;
+    static UINT8 lastPn = 0;
     UINT32 startAddr;
-	UINT16 crc;
-    switch (msg->head)//128*256 = 
+    UINT16 crc;
+    UINT16 tmpCrc;
+
+    g_resendCount = 0;
+    switch (msg->head) // 128*256 =
     {
         case XMODEM_SOH:
-            crc = XMODEM_Crc16(msg->data, sizeof(msg->data));
-            //tcrc = (buf[sz]<<8)+buf[sz+1];
-            if (crc != msg->crc) {
-                DRV_UART1_PutChar(XMODEM_NAK);
-                return UPDATE_EVENT_ERROR_TRYAGAIN;
+            crc = boot_xmodeCrc16(msg->data, sizeof(msg->data));
+            tmpCrc = (crc << 8) + (crc >> 8);
+            if (tmpCrc != msg->crc) {
+                boot_UartSendByte(XMODEM_NAK);
+                return UPDATE_SM_ERROR_TRYAGAIN;
             }
-            if (g_userPrepareUpdate && !g_userFormatYet) {
-                g_userFormatYet = true;
-				boot_eraseAllPage();
+            if (g_UpdatingSM == UPDATE_SM_START) {
+                boot_eraseAllPage();
             }
-            if ((msg->pn * APP_UPGRADE_PAKGE) > ADDRESS_END_APP) {
-                return UPDATE_EVENT_ERROR_TRYAGAIN;
+            if (((UINT8)(lastPn + 1)) != msg->pn){
+                return UPDATE_SM_ERROR_TRYAGAIN;
             }
-            startAddr = msg->pn * APP_UPGRADE_PAKGE;
-            FLASH_Program(startAddr, (uint32_t*)(&msg->data), sizeof(msg->data));
-            return UPDATE_EVENT_CONTINUE;
+            lastPn = msg->pn;
+            if (msg->pn == 0) {
+                pnPage += 256;
+            }
+            startAddr = ADDRESS_START_APP + (pnPage + msg->pn - 1) * XMODEM_PAKGE_LENGTH;
+
+            printf("update start addr = %#X , page Num = %d \r\n", startAddr, pnPage + msg->pn);
+            if ((startAddr + XMODEM_PAKGE_LENGTH) > ADDRESS_END_APP) {
+                boot_UartSendByte(XMODEM_NAK);
+                return UPDATE_SM_ERROR_TRYAGAIN;
+            }
+            FLASH_Program(startAddr, (uint32_t *)(&msg->data), sizeof(msg->data));
+            vTaskDelay(2);
+            boot_UartSendByte(XMODEM_ACK);
+            return UPDATE_SM_PROGRAMING;
         case XMODEM_EOT:
-            DRV_UART1_PutChar(XMODEM_ACK);
-            return UPDATE_EVENT_FINISHED;
+            boot_UartSendByte(XMODEM_ACK);
+            pnPage = 0;
+            return UPDATE_SM_FINISHED;
         case XMODEM_CANCEL:
-            if (g_userPrepareUpdate == false) {
-                g_userPrepareUpdate = true;
-            }
-            return UPDATE_EVENT_START;
-        case 'q':
+        case 'q': // quit
         case 'Q':
-            DRV_UART1_PutChar(XMODEM_ACK);
-            return UPDATE_EVENT_CANCEL;
+            boot_UartSendByte(XMODEM_ACK);
+            pnPage = 0;
+            return UPDATE_SM_CANCEL;
+        case XMODEM_CTRLC: /* abandon startup ,and prepare to upload */
+        case 'u':
+        case 'U':
+            if (g_UpdatingSM == UPDATE_SM_INIT) {
+                return UPDATE_SM_START;
+            }
+            if (g_UpdatingSM == UPDATE_SM_PROGRAMING) {
+                return UPDATE_SM_CANCEL;
+            }
+            break;
+        case 'a': // go to app /* give up upload,then startup */
+        case 'A':
+            if ((g_UpdatingSM == UPDATE_SM_INIT) || (g_UpdatingSM == UPDATE_SM_START)) {
+                return UPDATE_SM_FINISHED;
+            }
+            break;
         default:
-            return UPDATE_EVENT_CONTINUE;
+            break;
     }
+    return g_UpdatingSM;
 }
-
-
-

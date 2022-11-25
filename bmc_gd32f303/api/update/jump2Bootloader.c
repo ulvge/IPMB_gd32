@@ -51,13 +51,10 @@ void JumpToBootloader(void)
 	uint32_t JumpAddress = *(volatile uint32_t *)(ADDRESS_START_BOOTLOADER + 4);
     pFunction SysMemBootJump = (pFunction)JumpAddress;
 								
-    //nvic_vector_table_set(ADDRESS_START_BOOTLOADER, 0);
+    nvic_vector_table_set(ADDRESS_START_BOOTLOADER, 0);
     /* 设置主堆栈指针 */
-    __set_PSP(*(volatile uint32_t*) ADDRESS_START_BOOTLOADER);
-    //__set_PSP(0x20004000);  // 0x200003FC
     __set_CONTROL(0);
     __set_MSP(*(volatile uint32_t *)ADDRESS_START_BOOTLOADER);
-    //__set_MSP(0x20004000);
 
 	CPU_IntEnable();
     /* 跳转到系统 BootLoader */

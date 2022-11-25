@@ -183,7 +183,5 @@ void COM_init(UART_PARA_STRUCT *uartPara)
 void UART_init(void)
 {
     UART0_init();
-	#ifndef BOOTLOADER
     UART1_init();
-	#endif
 }

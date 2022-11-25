@@ -128,6 +128,9 @@ void erase_page(uint16_t startPageNum, uint16_t page_num)
         fmc_flag_clear(FMC_FLAG_BANK0_END);
         fmc_flag_clear(FMC_FLAG_BANK0_WPERR);
         fmc_flag_clear(FMC_FLAG_BANK0_PGERR);
+		if ((i + 1) % 10 == 0){
+			fwdgt_counter_reload(); 
+		}
     }
 }
 

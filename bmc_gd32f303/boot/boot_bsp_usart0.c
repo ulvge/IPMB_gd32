@@ -47,7 +47,7 @@ void UART0_init(void)
 
     usart_interrupt_enable(g_UARTPara.usart_periph, USART_INT_IDLE);
 }
-static __IO  BootPkt_T    g_uart_Req;
+static BootPkt_T    g_uart_Req;
 
 extern void Delay_NoSchedue(uint32_t clk);
 void USART0_IRQHandler(void)
