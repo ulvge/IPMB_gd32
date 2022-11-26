@@ -96,16 +96,22 @@ __weak void platform_init(void)
 }
 void updateMonitor(void *pvParameters)
 {   
+	static char sendBuff[100];
 	vTaskDelay(MONITOR_TASK_DELAY_ms);
     while (1) {
         g_resendCount++;
         switch (g_UpdatingSM) {
             case UPDATE_SM_INIT:
                 if (g_resendCount >= BOOT_DELAY_MAX) {
-                    LOG_I("jump to APP \n");
+                    const char *tips_Jump2APP = "jump to APP \n";
+					UART_sendDataBlock(USART0, (uint8_t *)tips_Jump2APP, strlen(tips_Jump2APP));
                     JumpToAPP();
-                }
-                LOG_I("jump to APP :countdown = %d s\r\n", (BOOT_DELAY_MAX - g_resendCount));
+                }else {                     
+					const char *tips_JumpCountDown = "jump to APP :countdown =  \n";
+					sprintf(sendBuff, "jump to APP :countdown = %d s\r\n", (BOOT_DELAY_MAX - g_resendCount));	
+					UART_sendDataBlock(USART0, (uint8_t *)sendBuff, strlen(sendBuff));
+					//LOG_I("jump to APP :countdown = %d s\r\n", (BOOT_DELAY_MAX - g_resendCount));
+				}
                 break;
             case UPDATE_SM_ERROR_TRYAGAIN:
                 if (g_resendCount >= RESEND_TIMEOUT) {
@@ -113,7 +119,14 @@ void updateMonitor(void *pvParameters)
                 }
                 break;
             case UPDATE_SM_START:
-                boot_UartSendByte(XMODEM_HANDSHAKE);
+                if (g_resendCount % (2000 / MONITOR_TASK_DELAY_ms) == 0) {
+                    g_xmodemIsCheckTpyeCrc = !g_xmodemIsCheckTpyeCrc;
+                }
+                if (g_xmodemIsCheckTpyeCrc) {
+                    boot_UartSendByte(XMODEM_HANDSHAKECRC);
+                } else  {
+                    boot_UartSendByte(XMODEM_NAK);
+                }
                 break;
             case UPDATE_SM_FINISHED:
                 JumpToAPP();
@@ -132,6 +145,20 @@ void updateMonitor(void *pvParameters)
     }
 }
 
+static void SPC_config(void)
+{
+    if (RESET == ob_spc_get()){
+        fmc_unlock();
+        ob_unlock();
+        while (FMC_BUSY == ob_security_protection_config(FMC_USPC))
+        {
+            ;
+        }
+        ob_lock();
+        fmc_lock();
+        NVIC_SystemReset();
+    }
+}
 /*!
     \brief      main function
     \param[in]  none
@@ -141,14 +168,15 @@ void updateMonitor(void *pvParameters)
 int main(void)
 {
     UINT32 count = 0;
+    //SPC_config();
     bsp_systick_config();
     nvic_priority_group_set(NVIC_PRIGROUP_PRE4_SUB0);
 
     platform_init();
 
     UART_init();
-    UART_sendDataBlock(DEBUG_UART_PERIPH, (uint8_t *)projectInfo, strlen(projectInfo));
-    UART_sendDataBlock(DEBUG_UART_PERIPH, (uint8_t *)g_bootUsage, strlen(g_bootUsage));
+    UART_sendDataBlock(USART0, (uint8_t *)projectInfo, strlen(projectInfo));
+    UART_sendDataBlock(USART0, (uint8_t *)g_bootUsage, strlen(g_bootUsage));
 
     watch_dog_init();
     debug_config();

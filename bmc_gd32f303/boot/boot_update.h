@@ -55,6 +55,12 @@ typedef __packed struct {
     uint16_t crc;
 } xmodemMsg;
 
+typedef enum {
+    XMODEM_CHECK_SUM = 0,
+    XMODEM_CHECK_CRC16,
+} XMODEM_CHECK_TYPE;
+
+
 typedef __packed struct
 {
     INT8U Size;      /* Command that needs to be processed*/
@@ -68,7 +74,7 @@ typedef __packed struct
 #define XMODEM_NAK 0x15       /* 不认可响应 */
 #define XMODEM_CANCEL 0x18    /* 撤销传送 */
 #define XMODEM_CTRLZ 0x1A     /* 填充数据包 */
-#define XMODEM_HANDSHAKE 0x43 /* 握手 C  当接收方一开始启动传输时发送的是字符“C”，表示它希望以CRC方式校验*/
+#define XMODEM_HANDSHAKECRC 0x43 /* 握手 C  当接收方一开始启动传输时发送的是字符“C”，表示它希望以CRC方式校验*/
 
 #define XMODEM_CTRLC 0x03 /* abandon startup ,and prepare to upload */
 
@@ -77,7 +83,8 @@ typedef __packed struct
 extern TaskHandle_t updateMonitorHandle;
 extern xQueueHandle updateDatMsg_Queue;
 extern UPDATE_SM g_UpdatingSM;
-extern UINT32 g_resendCount;
+extern volatile UINT32 g_resendCount;
+extern bool g_xmodemIsCheckTpyeCrc;
 
 void JumpToAPP(void);
 void updateTask(void *arg);

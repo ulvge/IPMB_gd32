@@ -275,8 +275,8 @@
               </OCR_RVCT3>
               <OCR_RVCT4>
                 <Type>1</Type>
-                <StartAddress>0x8000000</StartAddress>
-                <Size>0x100000</Size>
+                <StartAddress>0x8008000</StartAddress>
+                <Size>0x20000</Size>
               </OCR_RVCT4>
               <OCR_RVCT5>
                 <Type>1</Type>
@@ -383,6 +383,11 @@
         <Group>
           <GroupName>app</GroupName>
           <Files>
+            <File>
+              <FileName>jump2Bootloader.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\api\update\jump2Bootloader.c</FilePath>
+            </File>
             <File>
               <FileName>gd32f30x_it.c</FileName>
               <FileType>1</FileType>
@@ -507,11 +512,6 @@
               <FileName>pmbus.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\api\sensor\pmbus.c</FilePath>
-            </File>
-            <File>
-              <FileName>jump2Bootloader.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\api\update\jump2Bootloader.c</FilePath>
             </File>
             <File>
               <FileName>eeprom.c</FileName>

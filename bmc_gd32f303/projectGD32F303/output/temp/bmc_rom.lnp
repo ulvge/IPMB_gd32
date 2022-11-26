@@ -1,4 +1,5 @@
 --cpu=Cortex-M4.fp.sp
+".\output\temp\jump2bootloader.o"
 ".\output\temp\gd32f30x_it.o"
 ".\output\temp\main.o"
 ".\output\temp\systick.o"
@@ -22,7 +23,6 @@
 ".\output\temp\log.o"
 ".\output\temp\mac5023.o"
 ".\output\temp\pmbus.o"
-".\output\temp\jump2bootloader.o"
 ".\output\temp\eeprom.o"
 ".\output\temp\ipmi_common.o"
 ".\output\temp\ipmbmsghndlr.o"

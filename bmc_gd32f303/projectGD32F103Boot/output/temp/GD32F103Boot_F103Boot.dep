@@ -1,6 +1,6 @@
 Dependencies for Project 'GD32F103Boot', Target 'F103Boot': (DO NOT MODIFY !)
 CompilerVersion: 5060960::V5.06 update 7 (build 960)::.\ARMCC
-F (..\boot\boot_main.c)(0x63808B62)(--c99 -c --cpu Cortex-M3 -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I ..\firmware -I ..\firmware\GD32F10x\GD32F10x_standard_peripheral\Include -I ..\firmware\GD32F10x\CMSIS\GD\GD32F10x\Include -I ..\firmware\GD32F10x\CMSIS -I ..\user -I ..\bsp -I ..\ipmi -I ..\ipmi\data -I ..\ipmi\ipmi_dev-3.0.0-src -I ..\ipmi\ipmi_dev-3.0.0-src\data -I ..\ipmi\libipmi-3.1.0-src\data\include -I ..\ipmi\libipmi-3.1.0-src\data -I ..\ipmi\ipmi_common -I ..\ipmb -I ..\api -I ..\api\adc -I ..\api\flash -I ..\api\shell -I ..\api\tools -I ..\api\cpu -I ..\api\sensor -I ..\api\update -I ..\sub_devices -I ..\freertos\include -I ..\freertos\portable -I ..\freertos\portable\RVDS\ARM_CM3 -I ..\ff10 -I ..\boot --diag_suppress=177-Id:\Users\Arm\Packs\GigaDevice\GD32F10x_DFP\2.0.2\Device\Include-Id:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="535" -DGD32F10X_MD -DUSE_STDPERIPH_DRIVER -DARM_MATH_CM3 -D__CC_ARM -DGD32F1x -DBOOTLOADER-o .\output\temp\boot_main.o --omf_browse .\output\temp\boot_main.crf --depend .\output\temp\boot_main.d)
+F (..\boot\boot_main.c)(0x6381B56F)(--c99 -c --cpu Cortex-M3 -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I ..\firmware -I ..\firmware\GD32F10x\GD32F10x_standard_peripheral\Include -I ..\firmware\GD32F10x\CMSIS\GD\GD32F10x\Include -I ..\firmware\GD32F10x\CMSIS -I ..\user -I ..\bsp -I ..\ipmi -I ..\ipmi\data -I ..\ipmi\ipmi_dev-3.0.0-src -I ..\ipmi\ipmi_dev-3.0.0-src\data -I ..\ipmi\libipmi-3.1.0-src\data\include -I ..\ipmi\libipmi-3.1.0-src\data -I ..\ipmi\ipmi_common -I ..\ipmb -I ..\api -I ..\api\adc -I ..\api\flash -I ..\api\shell -I ..\api\tools -I ..\api\cpu -I ..\api\sensor -I ..\api\update -I ..\sub_devices -I ..\freertos\include -I ..\freertos\portable -I ..\freertos\portable\RVDS\ARM_CM3 -I ..\ff10 -I ..\boot --diag_suppress=177-Id:\Users\Arm\Packs\GigaDevice\GD32F10x_DFP\2.0.2\Device\Include-Id:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="535" -DGD32F10X_MD -DUSE_STDPERIPH_DRIVER -DARM_MATH_CM3 -D__CC_ARM -DGD32F1x -DBOOTLOADER-o .\output\temp\boot_main.o --omf_browse .\output\temp\boot_main.crf --depend .\output\temp\boot_main.d)
 I (..\user\main.h)(0x638057B2)
 I (..\bsp\bsp_uart3.h)(0x6334EDDF)
 I (..\firmware\project_select.h)(0x637EE081)
@@ -61,7 +61,7 @@ I (..\api\net_print/net_print.h)(0x604ABF58)
 I (..\bsp\bsp_uartcomm.h)(0x63686EEF)
 I (..\api\tools\FIFO.h)(0x6375CA14)
 I (..\user\systick.h)(0x632D1846)
-I (..\boot\boot_update.h)(0x63807821)
+I (..\boot\boot_update.h)(0x6381BA36)
 I (..\bsp\bsp_timer.h)(0x632D21BC)
 I (..\api\tools\tools.h)(0x636C9920)
 I (..\api\shell\shell_cfg.h)(0x632413CC)
@@ -196,8 +196,8 @@ I (..\user\main.h)(0x638057B2)
 I (..\bsp\bsp_uart3.h)(0x6334EDDF)
 I (d:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x60252374)
 I (..\sub_devices\api_subdevices.h)(0x63749504)
-F (..\boot\boot_update.c)(0x63808ADA)(--c99 -c --cpu Cortex-M3 -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I ..\firmware -I ..\firmware\GD32F10x\GD32F10x_standard_peripheral\Include -I ..\firmware\GD32F10x\CMSIS\GD\GD32F10x\Include -I ..\firmware\GD32F10x\CMSIS -I ..\user -I ..\bsp -I ..\ipmi -I ..\ipmi\data -I ..\ipmi\ipmi_dev-3.0.0-src -I ..\ipmi\ipmi_dev-3.0.0-src\data -I ..\ipmi\libipmi-3.1.0-src\data\include -I ..\ipmi\libipmi-3.1.0-src\data -I ..\ipmi\ipmi_common -I ..\ipmb -I ..\api -I ..\api\adc -I ..\api\flash -I ..\api\shell -I ..\api\tools -I ..\api\cpu -I ..\api\sensor -I ..\api\update -I ..\sub_devices -I ..\freertos\include -I ..\freertos\portable -I ..\freertos\portable\RVDS\ARM_CM3 -I ..\ff10 -I ..\boot --diag_suppress=177-Id:\Users\Arm\Packs\GigaDevice\GD32F10x_DFP\2.0.2\Device\Include-Id:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="535" -DGD32F10X_MD -DUSE_STDPERIPH_DRIVER -DARM_MATH_CM3 -D__CC_ARM -DGD32F1x -DBOOTLOADER-o .\output\temp\boot_update.o --omf_browse .\output\temp\boot_update.crf --depend .\output\temp\boot_update.d)
-I (..\boot\boot_update.h)(0x63807821)
+F (..\boot\boot_update.c)(0x6381BBB6)(--c99 -c --cpu Cortex-M3 -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I ..\firmware -I ..\firmware\GD32F10x\GD32F10x_standard_peripheral\Include -I ..\firmware\GD32F10x\CMSIS\GD\GD32F10x\Include -I ..\firmware\GD32F10x\CMSIS -I ..\user -I ..\bsp -I ..\ipmi -I ..\ipmi\data -I ..\ipmi\ipmi_dev-3.0.0-src -I ..\ipmi\ipmi_dev-3.0.0-src\data -I ..\ipmi\libipmi-3.1.0-src\data\include -I ..\ipmi\libipmi-3.1.0-src\data -I ..\ipmi\ipmi_common -I ..\ipmb -I ..\api -I ..\api\adc -I ..\api\flash -I ..\api\shell -I ..\api\tools -I ..\api\cpu -I ..\api\sensor -I ..\api\update -I ..\sub_devices -I ..\freertos\include -I ..\freertos\portable -I ..\freertos\portable\RVDS\ARM_CM3 -I ..\ff10 -I ..\boot --diag_suppress=177-Id:\Users\Arm\Packs\GigaDevice\GD32F10x_DFP\2.0.2\Device\Include-Id:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="535" -DGD32F10X_MD -DUSE_STDPERIPH_DRIVER -DARM_MATH_CM3 -D__CC_ARM -DGD32F1x -DBOOTLOADER-o .\output\temp\boot_update.o --omf_browse .\output\temp\boot_update.crf --depend .\output\temp\boot_update.d)
+I (..\boot\boot_update.h)(0x6381BA36)
 I (..\ipmi\ipmi_dev-3.0.0-src\data\OSPort.h)(0x604ABF59)
 I (d:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x60252374)
 I (d:\Keil_v5\ARM\ARMCC\include\stdlib.h)(0x60252374)
@@ -643,7 +643,7 @@ I (..\ipmi\ipmi_dev-3.0.0-src\data\Message.h)(0x636B06EA)
 I (..\ipmi\libipmi-3.1.0-src\data\include\libipmi.h)(0x6369B2F6)
 I (..\ipmi\ipmi_dev-3.0.0-src\data\MsgHndlr.h)(0x6359EFF8)
 I (..\ipmi\ipmi_dev-3.0.0-src\data\IPMIDefs.h)(0x604ABF59)
-I (..\boot\boot_update.h)(0x63807821)
+I (..\boot\boot_update.h)(0x6381BA36)
 F (..\bsp\bsp_usart1.c)(0x63806F2A)(--c99 -c --cpu Cortex-M3 -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I ..\firmware -I ..\firmware\GD32F10x\GD32F10x_standard_peripheral\Include -I ..\firmware\GD32F10x\CMSIS\GD\GD32F10x\Include -I ..\firmware\GD32F10x\CMSIS -I ..\user -I ..\bsp -I ..\ipmi -I ..\ipmi\data -I ..\ipmi\ipmi_dev-3.0.0-src -I ..\ipmi\ipmi_dev-3.0.0-src\data -I ..\ipmi\libipmi-3.1.0-src\data\include -I ..\ipmi\libipmi-3.1.0-src\data -I ..\ipmi\ipmi_common -I ..\ipmb -I ..\api -I ..\api\adc -I ..\api\flash -I ..\api\shell -I ..\api\tools -I ..\api\cpu -I ..\api\sensor -I ..\api\update -I ..\sub_devices -I ..\freertos\include -I ..\freertos\portable -I ..\freertos\portable\RVDS\ARM_CM3 -I ..\ff10 -I ..\boot --diag_suppress=177-Id:\Users\Arm\Packs\GigaDevice\GD32F10x_DFP\2.0.2\Device\Include-Id:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="535" -DGD32F10X_MD -DUSE_STDPERIPH_DRIVER -DARM_MATH_CM3 -D__CC_ARM -DGD32F1x -DBOOTLOADER-o .\output\temp\bsp_usart1.o --omf_browse .\output\temp\bsp_usart1.crf --depend .\output\temp\bsp_usart1.d)
 I (..\bsp\bsp_usart1.h)(0x6334ED83)
 I (..\firmware\project_select.h)(0x637EE081)

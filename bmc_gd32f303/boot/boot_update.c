@@ -18,7 +18,8 @@ static UPDATE_SM boot_ProcessUpdateReq(const BootPkt_T *pReq);
 
 xQueueHandle updateDatMsg_Queue = NULL;
 UPDATE_SM g_UpdatingSM = UPDATE_SM_INIT;
-UINT32 g_resendCount = 0;
+volatile UINT32 g_resendCount = 0;
+bool g_xmodemIsCheckTpyeCrc = false;
 
 void JumpToAPP(void)
 {
@@ -94,24 +95,43 @@ void updateTask(void *arg)
         g_UpdatingSM = boot_ProcessUpdateReq(&reqMsg);
     }
 }
-
-static UINT16 boot_xmodeCrc16(const UINT8 *buf, UINT8 len)
+static bool boot_xmodeCheck(bool type, const UINT8 *buf, UINT8 len, UINT16 recCrc)
 {
     UINT8 i = 0;
-    UINT16 crc = 0;
 
-    while (len--) {
-        crc ^= *buf++ << 8;
+    if (type == XMODEM_CHECK_CRC16) {     
+		UINT16 crc = 0;
+		UINT16 tcrc;
+        while (len--) {
+            crc ^= *buf++ << 8;
 
-        for (i = 0; i < 8; ++i) {
-            if (crc & 0x8000) {
-                crc = (crc << 1) ^ 0x1021;
-            } else {
-                crc = crc << 1;
+            for (i = 0; i < 8; ++i) {
+                if (crc & 0x8000) {
+                    crc = (crc << 1) ^ 0x1021;
+                } else {
+                    crc = crc << 1;
+                }
             }
         }
+		tcrc = recCrc<<8 | (recCrc >> 8);
+        if (crc != tcrc)
+        {
+            return false;
+        }
+         return true;
+    } else  if (type == XMODEM_CHECK_SUM) {
+        UINT8 cks = 0;
+        for (i = 0; i < len; ++i) 
+        {
+            cks += buf[i];
+        }
+        if (cks != recCrc)
+        {
+            return false;
+        }
+         return true;
     }
-    return crc;
+    return false;
 }
 static bool boot_eraseAllPage()
 {
@@ -128,16 +148,19 @@ static UPDATE_SM boot_ProcessUpdateReq(const BootPkt_T *pReq)
     static UINT32 pnPage = 0;
     static UINT8 lastPn = 0;
     UINT32 startAddr;
-    UINT16 crc;
+    bool isCrcOK;
     UINT16 tmpCrc;
 
     g_resendCount = 0;
     switch (msg->head) // 128*256 =
     {
         case XMODEM_SOH:
-            crc = boot_xmodeCrc16(msg->data, sizeof(msg->data));
-            tmpCrc = (crc << 8) + (crc >> 8);
-            if (tmpCrc != msg->crc) {
+            isCrcOK = boot_xmodeCheck(g_xmodemIsCheckTpyeCrc, msg->data, sizeof(msg->data), msg->crc);
+            if (!isCrcOK && (g_UpdatingSM == UPDATE_SM_START)) {
+                g_xmodemIsCheckTpyeCrc = !g_xmodemIsCheckTpyeCrc;
+                isCrcOK = boot_xmodeCheck(g_xmodemIsCheckTpyeCrc, msg->data, sizeof(msg->data), msg->crc);
+            }
+            if (!isCrcOK) {
                 boot_UartSendByte(XMODEM_NAK);
                 return UPDATE_SM_ERROR_TRYAGAIN;
             }
