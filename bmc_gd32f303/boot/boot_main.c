@@ -85,9 +85,10 @@ const char *projectInfo =
 static const char *g_bootUsage =
     "\r\n"
     "** boot help  ************\r\n"
-    "support xmodem and package length 128 Byte only\r\n"
-    "When the system starts, you have 3 seconds to select\r\n"
-    "'u' or 'CTRL+C' can stop startup, and prepare to update \r\n"
+    "support xmodem(crc&checkSum) and package length 128 Byte only\r\n"
+    "When the system starts, you have x seconds to select\r\n"
+    "'u' or 'CTRL+C' can stop startup, and prepare to update \r\n"    
+    "'q' reset and startup from boot \r\n"
     "'a' When you are updating, you can give up and continue startup the APP system \r\n"
     "\r\n";
 
