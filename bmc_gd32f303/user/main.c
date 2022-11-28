@@ -74,7 +74,6 @@ static void debug_config(void);
 
 int g_debugLevel = DBG_INFO;
 
-__IO uint32_t g_localtime = 0; /* for creating a time reference incremented by 10ms */
 __IO uint64_t g_utc_time_bmc_firmware_build = 0;
 __IO uint16_t g_bmc_firmware_version = 0;
 
@@ -131,10 +130,6 @@ void start_task(void *pvParameters)
     i2c_int();
     //fan_init();
 
-#ifdef FATFS_ENABLE
-    fatfs_init();
-#endif
-
     taskENTER_CRITICAL();
 
    if (errCOULD_NOT_ALLOCATE_REQUIRED_MEMORY == 
@@ -181,17 +176,6 @@ void misc_task(void *pvParameters)
 void com_task(void *pvParameters)
 {
     MsgCoreHndlr(pvParameters);
-}
-
-/*!
-    \brief      updates the system local time
-    \param[in]  none
-    \param[out] none
-    \retval     none
-*/
-void time_update(void)
-{
-    g_localtime += portTICK_PERIOD_MS;
 }
 
 /*!
@@ -243,7 +227,7 @@ __attribute__((unused)) static void watch_dog_init()
 static void debug_config(void)
 {
     /* disable wdg when the mcu is in debug mode */
-    dbg_periph_enable(DBG_FWDGT_HOLD);   
+    dbg_periph_enable(DBG_FWDGT_HOLD);
 	
     dbg_periph_enable(DBG_TIMER2_HOLD);
 	

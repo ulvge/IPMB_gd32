@@ -43,7 +43,7 @@ OF SUCH DAMAGE.
 #include "boot_update.h"
 #include "bsp_timer.h"
 #include "tools.h"
-#include "update/jump.h"
+#include "update/jump.h" 
 
 #define FAN_TASK_PRIO 22
 #define TEST_TASK_PRIO 9
@@ -67,8 +67,6 @@ void Delay_NoSchedue(uint32_t clk);
 #define RESEND_TIMEOUT (4000 / MONITOR_TASK_DELAY_ms)
 #define BOOT_DELAY_MAX (5000 / MONITOR_TASK_DELAY_ms)
 int g_debugLevel = DBG_LOG;
-
-__IO uint32_t g_localtime = 0; /* for creating a time reference incremented by 10ms */
 
 const char *projectInfo =
     "\r\n"
@@ -188,17 +186,6 @@ int main(void)
     while (1) {
         LOG_I("vTaskStartScheduler  error");
     }
-}
-
-/*!
-    \brief      updates the system local time
-    \param[in]  none
-    \param[out] none
-    \retval     none
-*/
-void time_update(void)
-{
-    g_localtime += portTICK_PERIOD_MS;
 }
 
 /*!

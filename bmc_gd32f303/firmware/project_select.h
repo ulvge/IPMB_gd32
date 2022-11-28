@@ -27,15 +27,6 @@ ram:    20k     0x5000=20,480
 #endif
 
 
-#ifdef GD32F2x
-#include "gd32f20x_it.h"
-#include "system_gd32f20x.h"
-//#include "flash/api_flash.h"
-#endif
-
-
-
-
  #ifdef GD32F3x
 //#elif GD32F3x
 /*gd32f303VGT6

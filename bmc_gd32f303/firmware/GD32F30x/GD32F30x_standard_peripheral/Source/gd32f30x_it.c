@@ -34,13 +34,15 @@ PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY
 WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) 
 ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY 
 OF SUCH DAMAGE.
-*/
+*/                
+#include <string.h>
 #include "gd32f30x_it.h"
 #include "main.h"
 #include "systick.h"
 #include "FreeRTOS.h"
-#include "task.h"
-#include "queue.h"
+#include "task.h" 
+#include "api_cpu.h"
+#include "bsp_uartcomm.h"
 
 /*!
     \brief      this function handles NMI exception
@@ -52,6 +54,9 @@ void NMI_Handler(void)
 {
 }
 
+
+static char faultBuf[90];
+extern const char *projectInfo;
 /*!
     \brief      this function handles HardFault exception
     \param[in]  none
@@ -60,8 +65,25 @@ void NMI_Handler(void)
 */
 void HardFault_Handler(void)
 {
+	static INT32U *r_msp;
+	r_msp = (INT32U *)__get_PSP();
+	
+	//_lr = (unsigned long)sp[5];
+	//_pc = (unsigned long)sp[6];                                              
+	sprintf(faultBuf + strlen(faultBuf), "\n\n");                                 
+	sprintf(faultBuf + strlen(faultBuf), ">> HardFault !!!  prepare reset\n");
+	sprintf(faultBuf + strlen(faultBuf), ">> lr = 0x%08x\n", *(r_msp+5)); // seek behind
+	sprintf(faultBuf + strlen(faultBuf), ">> pc = 0x%08x\n", *(r_msp+6));                            
+	sprintf(faultBuf + strlen(faultBuf), "\n\n");     
+	
+	UART_sendDataBlock(DEBUG_UART_PERIPH, (uint8_t *)faultBuf, strlen(faultBuf));
+										
+	UART_sendDataBlock(DEBUG_UART_PERIPH, (uint8_t *)projectInfo, strlen(projectInfo));  
+	
     /* if Hard Fault exception occurs, go to infinite loop */
-    while (1);
+    while(1){
+	  //NVIC_SystemReset();	
+    }
 }
 
 /*!
@@ -124,6 +146,8 @@ void DebugMon_Handler(void)
     \brief      this function handles PendSV exception
     \param[in]  none
     \param[out] none
+
+
     \retval     none
 */
 //void PendSV_Handler(void)
@@ -139,7 +163,7 @@ void DebugMon_Handler(void)
 extern void xPortSysTickHandler(void);
 void SysTick_Handler(void)
 {
-	if(xTaskGetSchedulerState()!=taskSCHEDULER_NOT_STARTED)//ϵͳ�Ѿ�����
+	if(xTaskGetSchedulerState()!=taskSCHEDULER_NOT_STARTED)//系统已经运行
 	{
 		xPortSysTickHandler();	
 	}

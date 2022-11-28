@@ -42,85 +42,22 @@ OF SUCH DAMAGE.
 #ifdef __cplusplus
  extern "C" {
 #endif
-
-#include "bsp_uart3.h"
 					  
 #define    BMC_VERSION    "1.0.1"
 								   
-	#ifdef BOOTLOADER
-	#define DEBUG_UART_PERIPH    USART1
-	#else                  
-	#define DEBUG_UART_PERIPH    USART0
-	#endif
-	#define IPMI_UART_PERIPH    USART0
-    
-	#define CPU_UART_PERIPH    USART1
-	
-	// #define FATFS_ENABLE    
+#ifdef BOOTLOADER
+#define DEBUG_UART_PERIPH    USART1
+#else                  
+#define DEBUG_UART_PERIPH    USART0
+#endif
 
-	#define  ft_uart_write(x, len)    UART_sendData(USART1, x, len)
+#define IPMI_UART_PERIPH    USART0
+
+#define CPU_UART_PERIPH    USART1
 	
 
 #define  CPU_IntDisable()           { __set_PRIMASK(0xFFFF); }	/* Interrupt Disable */
 #define  CPU_IntEnable()            { __set_PRIMASK(0x0000); }	/* Interrupt Enable  */
-
-//#define  CPU_IntDisable()           { __set_PRIMASK(1); }	
-//#define  CPU_IntEnable()            { __set_PRIMASK(0); }
-
-//#define USE_DHCP       /* enable DHCP, if disabled static address is used */
-
-//#define USE_ENET_INTERRUPT
-//#define TIMEOUT_CHECK_USE_LWIP
-
-/* MAC address: MAC_ADDR0:MAC_ADDR1:MAC_ADDR2:MAC_ADDR3:MAC_ADDR4:MAC_ADDR5 */
-
-extern unsigned char MAC_ADDR0;
-extern unsigned char MAC_ADDR1;
-extern unsigned char MAC_ADDR2;
-extern unsigned char MAC_ADDR3;
-extern unsigned char MAC_ADDR4;
-extern unsigned char MAC_ADDR5;
-
-/*
-#define MAC_ADDR0   2
-#define MAC_ADDR1   0xA
-#define MAC_ADDR2   0xF
-#define MAC_ADDR3   0xE
-#define MAC_ADDR4   0xD
-#define MAC_ADDR5   6
-*/
-/* static IP address: IP_ADDR0.IP_ADDR1.IP_ADDR2.IP_ADDR3 */
-
-extern unsigned char IP_ADDR0;
-extern unsigned char IP_ADDR1;
-extern unsigned char IP_ADDR2;
-extern unsigned char IP_ADDR3;
-
-/* remote IP address: IP_S_ADDR0.IP_S_ADDR1.IP_S_ADDR2.IP_S_ADDR3 */
-
-#define IP_S_ADDR0   192
-#define IP_S_ADDR1   168
-#define IP_S_ADDR2   2
-#define IP_S_ADDR3   88
-  
-/* net mask */
-
-#define NETMASK_ADDR0   255
-#define NETMASK_ADDR1   255
-#define NETMASK_ADDR2   255
-#define NETMASK_ADDR3   0
-
-/* gateway address */
-extern unsigned char  GW_ADDR0;
-extern unsigned char  GW_ADDR1;
-extern unsigned char  GW_ADDR2;
-extern unsigned char  GW_ADDR3; 
-
-typedef enum 
-{ 
-    MSG_SRC_I2C = 0,
-    MSG_SRC_UART = 1
-}IPMI_MSG_SRC;
 
 extern int g_debugLevel;
 /* function declarations */

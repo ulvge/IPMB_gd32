@@ -37,11 +37,12 @@ OF SUCH DAMAGE.
 */
 
 #include "project_select.h"
-#include "systick.h"
+#include "systick.h" 
+#include "OSPort.h"
 
 volatile static uint32_t delay;
 
-extern uint32_t g_localtime;
+__IO uint32_t g_localtime;
 
 /*!
     \brief      configure systick handler:SysTick_Handler
@@ -63,6 +64,17 @@ void bsp_systick_config(void)
     NVIC_SetPriority(SysTick_IRQn, 0x00U);
 }
 
+
+/*!
+    \brief      updates the system local time
+    \param[in]  none
+    \param[out] none
+    \retval     none
+*/
+void time_update(void)
+{
+    g_localtime += portTICK_PERIOD_MS;
+}
 uint32_t GetTickMs(void)
 {
     return g_localtime;

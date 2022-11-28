@@ -22,7 +22,7 @@
   </DaveTm>
 
   <Target>
-    <TargetName>F103Boot</TargetName>
+    <TargetName>F303Boot</TargetName>
     <ToolsetNumber>0x4</ToolsetNumber>
     <ToolsetName>ARM-ADS</ToolsetName>
     <TargetOption>
@@ -103,7 +103,7 @@
         <bEvRecOn>1</bEvRecOn>
         <bSchkAxf>0</bSchkAxf>
         <bTchkAxf>0</bTchkAxf>
-        <nTsel>3</nTsel>
+        <nTsel>0</nTsel>
         <sDll></sDll>
         <sDllPa></sDllPa>
         <sDlgDll></sDlgDll>
@@ -114,18 +114,18 @@
         <tDlgDll></tDlgDll>
         <tDlgPa></tDlgPa>
         <tIfile></tIfile>
-        <pMon>BIN\CMSIS_AGDI.dll</pMon>
+        <pMon>BIN\UL2CM3.DLL</pMon>
       </DebugOpt>
       <TargetDriverDllRegistry>
         <SetRegEntry>
           <Number>0</Number>
-          <Key>CMSIS_AGDI</Key>
-          <Name>-X"Fire CMSIS-DAP" -UFS-00000001 -O206 -S10 -C0 -P00000000 -N00("ARM CoreSight SW-DP") -D00(1BA01477) -L00(0) -TO65554 -TC10000000 -TT10000000 -TP20 -TDS8007 -TDT0 -TDC1F -TIEFFFFFFFF -TIP8 -FO7 -FD20000000 -FC1C00 -FN1 -FF0GD32F10x_MD.FLM -FS08000000 -FL08000 -FP0($$Device:GD32F103VB$Flash\GD32F10x_MD.FLM)</Name>
+          <Key>UL2CM3</Key>
+          <Name>UL2CM3(-S0 -C0 -P0 )  -FN1 -FC1000 -FD20000000 -FF0GD32F30x_XD -FL0100000 -FS08000000 -FP0($$Device:GD32F303VG$Flash\GD32F30x_XD.FLM)</Name>
         </SetRegEntry>
         <SetRegEntry>
           <Number>0</Number>
-          <Key>UL2CM3</Key>
-          <Name>UL2CM3(-S0 -C0 -P0 )  -FN1 -FC1000 -FD20000000 -FF0GD32F10x_MD -FL020000 -FS08000000 -FP0($$Device:GD32F103VB$Flash\GD32F10x_MD.FLM)</Name>
+          <Key>CMSIS_AGDI</Key>
+          <Name>UL2CM3(-S0 -C0 -P0 )  -FN1 -FC1000 -FD20000000 -FF0GD32F30x_XD -FL0100000 -FS08000000 -FP0($$Device:GD32F303VG$Flash\GD32F30x_XD.FLM)</Name>
         </SetRegEntry>
         <SetRegEntry>
           <Number>0</Number>
@@ -319,8 +319,8 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>..\firmware\GD32F10x\GD32F10x_standard_peripheral\Source\gd32f10x_it.c</PathWithFileName>
-      <FilenameWithoutPath>gd32f10x_it.c</FilenameWithoutPath>
+      <PathWithFileName>..\boot\boot_update.c</PathWithFileName>
+      <FilenameWithoutPath>boot_update.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>
@@ -331,8 +331,8 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>..\firmware\GD32F10x\gd32f10x_platform.c</PathWithFileName>
-      <FilenameWithoutPath>gd32f10x_platform.c</FilenameWithoutPath>
+      <PathWithFileName>..\firmware\GD32F30x\gd32f30x_platform.c</PathWithFileName>
+      <FilenameWithoutPath>gd32f30x_platform.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>
@@ -343,8 +343,8 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>..\boot\boot_update.c</PathWithFileName>
-      <FilenameWithoutPath>boot_update.c</FilenameWithoutPath>
+      <PathWithFileName>..\firmware\GD32F30x\GD32F30x_standard_peripheral\Source\gd32f30x_it.c</PathWithFileName>
+      <FilenameWithoutPath>gd32f30x_it.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>
@@ -464,7 +464,7 @@
 
   <Group>
     <GroupName>cmsis</GroupName>
-    <tvExp>0</tvExp>
+    <tvExp>1</tvExp>
     <tvExpOptDlg>0</tvExpOptDlg>
     <cbSel>0</cbSel>
     <RteFlg>0</RteFlg>
@@ -475,8 +475,8 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>..\firmware\GD32F10x\CMSIS\GD\GD32F10x\Source\system_gd32f10x.c</PathWithFileName>
-      <FilenameWithoutPath>system_gd32f10x.c</FilenameWithoutPath>
+      <PathWithFileName>..\firmware\GD32F30x\CMSIS\GD\GD32F30x\Source\system_gd32f30x.c</PathWithFileName>
+      <FilenameWithoutPath>system_gd32f30x.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>
@@ -495,8 +495,8 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>..\firmware\GD32F10x\GD32F10x_standard_peripheral\Source\gd32f10x_adc.c</PathWithFileName>
-      <FilenameWithoutPath>gd32f10x_adc.c</FilenameWithoutPath>
+      <PathWithFileName>..\firmware\GD32F30x\GD32F30x_standard_peripheral\Source\gd32f30x_adc.c</PathWithFileName>
+      <FilenameWithoutPath>gd32f30x_adc.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>
@@ -507,8 +507,8 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>..\firmware\GD32F10x\GD32F10x_standard_peripheral\Source\gd32f10x_bkp.c</PathWithFileName>
-      <FilenameWithoutPath>gd32f10x_bkp.c</FilenameWithoutPath>
+      <PathWithFileName>..\firmware\GD32F30x\GD32F30x_standard_peripheral\Source\gd32f30x_bkp.c</PathWithFileName>
+      <FilenameWithoutPath>gd32f30x_bkp.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>
@@ -519,8 +519,8 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>..\firmware\GD32F10x\GD32F10x_standard_peripheral\Source\gd32f10x_dma.c</PathWithFileName>
-      <FilenameWithoutPath>gd32f10x_dma.c</FilenameWithoutPath>
+      <PathWithFileName>..\firmware\GD32F30x\GD32F30x_standard_peripheral\Source\gd32f30x_dma.c</PathWithFileName>
+      <FilenameWithoutPath>gd32f30x_dma.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>
@@ -531,8 +531,8 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>..\firmware\GD32F10x\GD32F10x_standard_peripheral\Source\gd32f10x_exti.c</PathWithFileName>
-      <FilenameWithoutPath>gd32f10x_exti.c</FilenameWithoutPath>
+      <PathWithFileName>..\firmware\GD32F30x\GD32F30x_standard_peripheral\Source\gd32f30x_exti.c</PathWithFileName>
+      <FilenameWithoutPath>gd32f30x_exti.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>
@@ -543,8 +543,8 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>..\firmware\GD32F10x\GD32F10x_standard_peripheral\Source\gd32f10x_fmc.c</PathWithFileName>
-      <FilenameWithoutPath>gd32f10x_fmc.c</FilenameWithoutPath>
+      <PathWithFileName>..\firmware\GD32F30x\GD32F30x_standard_peripheral\Source\gd32f30x_fmc.c</PathWithFileName>
+      <FilenameWithoutPath>gd32f30x_fmc.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>
@@ -555,8 +555,8 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>..\firmware\GD32F10x\GD32F10x_standard_peripheral\Source\gd32f10x_fwdgt.c</PathWithFileName>
-      <FilenameWithoutPath>gd32f10x_fwdgt.c</FilenameWithoutPath>
+      <PathWithFileName>..\firmware\GD32F30x\GD32F30x_standard_peripheral\Source\gd32f30x_fwdgt.c</PathWithFileName>
+      <FilenameWithoutPath>gd32f30x_fwdgt.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>
@@ -567,8 +567,8 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>..\firmware\GD32F10x\GD32F10x_standard_peripheral\Source\gd32f10x_gpio.c</PathWithFileName>
-      <FilenameWithoutPath>gd32f10x_gpio.c</FilenameWithoutPath>
+      <PathWithFileName>..\firmware\GD32F30x\GD32F30x_standard_peripheral\Source\gd32f30x_gpio.c</PathWithFileName>
+      <FilenameWithoutPath>gd32f30x_gpio.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>
@@ -579,8 +579,8 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>..\firmware\GD32F10x\GD32F10x_standard_peripheral\Source\gd32f10x_i2c.c</PathWithFileName>
-      <FilenameWithoutPath>gd32f10x_i2c.c</FilenameWithoutPath>
+      <PathWithFileName>..\firmware\GD32F30x\GD32F30x_standard_peripheral\Source\gd32f30x_i2c.c</PathWithFileName>
+      <FilenameWithoutPath>gd32f30x_i2c.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>
@@ -591,8 +591,8 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>..\firmware\GD32F10x\GD32F10x_standard_peripheral\Source\gd32f10x_misc.c</PathWithFileName>
-      <FilenameWithoutPath>gd32f10x_misc.c</FilenameWithoutPath>
+      <PathWithFileName>..\firmware\GD32F30x\GD32F30x_standard_peripheral\Source\gd32f30x_rtc.c</PathWithFileName>
+      <FilenameWithoutPath>gd32f30x_rtc.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>
@@ -603,8 +603,8 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>..\firmware\GD32F10x\GD32F10x_standard_peripheral\Source\gd32f10x_rcu.c</PathWithFileName>
-      <FilenameWithoutPath>gd32f10x_rcu.c</FilenameWithoutPath>
+      <PathWithFileName>..\firmware\GD32F30x\GD32F30x_standard_peripheral\Source\gd32f30x_misc.c</PathWithFileName>
+      <FilenameWithoutPath>gd32f30x_misc.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>
@@ -615,8 +615,8 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>..\firmware\GD32F10x\GD32F10x_standard_peripheral\Source\gd32f10x_spi.c</PathWithFileName>
-      <FilenameWithoutPath>gd32f10x_spi.c</FilenameWithoutPath>
+      <PathWithFileName>..\firmware\GD32F30x\GD32F30x_standard_peripheral\Source\gd32f30x_rcu.c</PathWithFileName>
+      <FilenameWithoutPath>gd32f30x_rcu.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>
@@ -627,8 +627,8 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>..\firmware\GD32F10x\GD32F10x_standard_peripheral\Source\gd32f10x_timer.c</PathWithFileName>
-      <FilenameWithoutPath>gd32f10x_timer.c</FilenameWithoutPath>
+      <PathWithFileName>..\firmware\GD32F30x\GD32F30x_standard_peripheral\Source\gd32f30x_spi.c</PathWithFileName>
+      <FilenameWithoutPath>gd32f30x_spi.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>
@@ -639,8 +639,8 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>..\firmware\GD32F10x\GD32F10x_standard_peripheral\Source\gd32f10x_usart.c</PathWithFileName>
-      <FilenameWithoutPath>gd32f10x_usart.c</FilenameWithoutPath>
+      <PathWithFileName>..\firmware\GD32F30x\GD32F30x_standard_peripheral\Source\gd32f30x_timer.c</PathWithFileName>
+      <FilenameWithoutPath>gd32f30x_timer.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>
@@ -651,8 +651,8 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>..\firmware\GD32F10x\GD32F10x_standard_peripheral\Source\gd32f10x_wwdgt.c</PathWithFileName>
-      <FilenameWithoutPath>gd32f10x_wwdgt.c</FilenameWithoutPath>
+      <PathWithFileName>..\firmware\GD32F30x\GD32F30x_standard_peripheral\Source\gd32f30x_usart.c</PathWithFileName>
+      <FilenameWithoutPath>gd32f30x_usart.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>
@@ -663,8 +663,20 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>..\firmware\GD32F10x\GD32F10x_standard_peripheral\Source\gd32f10x_dbg.c</PathWithFileName>
-      <FilenameWithoutPath>gd32f10x_dbg.c</FilenameWithoutPath>
+      <PathWithFileName>..\firmware\GD32F30x\GD32F30x_standard_peripheral\Source\gd32f30x_wwdgt.c</PathWithFileName>
+      <FilenameWithoutPath>gd32f30x_wwdgt.c</FilenameWithoutPath>
+      <RteFlg>0</RteFlg>
+      <bShared>0</bShared>
+    </File>
+    <File>
+      <GroupNumber>5</GroupNumber>
+      <FileNumber>30</FileNumber>
+      <FileType>1</FileType>
+      <tvExp>0</tvExp>
+      <tvExpOptDlg>0</tvExpOptDlg>
+      <bDave2>0</bDave2>
+      <PathWithFileName>..\firmware\GD32F30x\GD32F30x_standard_peripheral\Source\gd32f30x_dbg.c</PathWithFileName>
+      <FilenameWithoutPath>gd32f30x_dbg.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>
@@ -678,13 +690,13 @@
     <RteFlg>0</RteFlg>
     <File>
       <GroupNumber>6</GroupNumber>
-      <FileNumber>30</FileNumber>
+      <FileNumber>31</FileNumber>
       <FileType>2</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>..\firmware\GD32F10x\CMSIS\GD\GD32F10x\Source\ARM\startup_gd32f10x_hd.s</PathWithFileName>
-      <FilenameWithoutPath>startup_gd32f10x_hd.s</FilenameWithoutPath>
+      <PathWithFileName>..\firmware\GD32F30x\CMSIS\GD\GD32F30x\Source\ARM\startup_gd32f30x_hd.s</PathWithFileName>
+      <FilenameWithoutPath>startup_gd32f30x_hd.s</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>
@@ -698,7 +710,7 @@
     <RteFlg>0</RteFlg>
     <File>
       <GroupNumber>7</GroupNumber>
-      <FileNumber>31</FileNumber>
+      <FileNumber>32</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
@@ -710,7 +722,7 @@
     </File>
     <File>
       <GroupNumber>7</GroupNumber>
-      <FileNumber>32</FileNumber>
+      <FileNumber>33</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
@@ -722,7 +734,7 @@
     </File>
     <File>
       <GroupNumber>7</GroupNumber>
-      <FileNumber>33</FileNumber>
+      <FileNumber>34</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
@@ -734,7 +746,7 @@
     </File>
     <File>
       <GroupNumber>7</GroupNumber>
-      <FileNumber>34</FileNumber>
+      <FileNumber>35</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
@@ -746,7 +758,7 @@
     </File>
     <File>
       <GroupNumber>7</GroupNumber>
-      <FileNumber>35</FileNumber>
+      <FileNumber>36</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
@@ -758,7 +770,7 @@
     </File>
     <File>
       <GroupNumber>7</GroupNumber>
-      <FileNumber>36</FileNumber>
+      <FileNumber>37</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
@@ -770,7 +782,7 @@
     </File>
     <File>
       <GroupNumber>7</GroupNumber>
-      <FileNumber>37</FileNumber>
+      <FileNumber>38</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
@@ -782,7 +794,7 @@
     </File>
     <File>
       <GroupNumber>7</GroupNumber>
-      <FileNumber>38</FileNumber>
+      <FileNumber>39</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
