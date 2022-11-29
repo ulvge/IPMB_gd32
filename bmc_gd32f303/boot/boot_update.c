@@ -13,7 +13,6 @@
 #define XMODEM_PAKGE_LENGTH 128
 
 typedef void (*pFunction)(void);
-static void param_init(void);
 static UPDATE_SM boot_ProcessUpdateReq(const BootPkt_T *pReq);
 
 xQueueHandle updateDatMsg_Queue = NULL;
@@ -81,8 +80,6 @@ void updateTask(void *arg)
 {
     BootPkt_T reqMsg;
 
-    UINT32 res;
-
     updateDatMsg_Queue = xQueueCreate(1, sizeof(BootPkt_T));
     if (updateDatMsg_Queue == NULL) {
         LOG_E("updateDatMsg_Queue create ERR!");
@@ -149,7 +146,6 @@ static UPDATE_SM boot_ProcessUpdateReq(const BootPkt_T *pReq)
     static UINT8 lastPn = 0;
     UINT32 startAddr;
     bool isCrcOK;
-    UINT16 tmpCrc;
 
     g_resendCount = 0;
     switch (msg->head) // 128*256 =

@@ -70,8 +70,7 @@ static const MAC5023_CMDS_CONFIG g_MAC5023CmdsConfig[] = {
 #define MAC5023_V_I_MASK 0x3FF
 #define MAC5023_TEMP_M 1
 
-static const char *MAC1625_MODE_NAME = "P5468Q";
-static const char *MAC5023_MODE_NAME = "XXXXXX";
+static const char *MAC5023_MODE_NAME = "P5468Q";
 
 static bool g_MAC5023_initSuccess[ARRARY_SIZE(g_MAC5023DevsConfig)] = {false};
 
@@ -90,11 +89,11 @@ static bool MAC5023_init(UINT8 bus, UINT8 slaveAddr)
     char modeStr[10];
 
     memset(modeStr, 0, sizeof(modeStr));
-	modeStr[0] = strlen(MAC1625_MODE_NAME) + 1;
+	modeStr[0] = strlen(MAC5023_MODE_NAME) + 1;
     int ret = PMBus_I2CRead(bus, slaveAddr, PMBUS_MFR_MODEL, (u8 *)modeStr);
     if (ret > 0)
     {
-        if (strcmp(modeStr + 1, MAC1625_MODE_NAME) == 0)
+        if (strcmp(modeStr + 1, MAC5023_MODE_NAME) == 0)
         {
             return true;
         }
@@ -150,10 +149,6 @@ static bool MAC5023_ReadItem(UINT8 bus, UINT8 slaveAddr, UINT8 cmd, float *humVa
 
 bool MAC5023_Sample(UINT8 devIndex, UINT8 cmd, float *humanVal, UINT8 *ipmbVal)
 {
-    float pin = 0;
-    float vin = 0;
-    float vout = 0;
-    float iout = 0;
     if (devIndex >= ARRARY_SIZE(g_MAC5023DevsConfig)) {
         return false;
     }

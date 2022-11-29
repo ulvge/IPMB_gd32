@@ -14,7 +14,7 @@ static const UART_CONFIG_STRUCT g_uart0Config= {
     .baud = 115200U,
     .irqN = USART0_IRQn,
     .prePriority = 10,
-    .subPriority = 1,
+    .subPriority = 0,
     
     .txPort = GPIOA,
     .txPin = GPIO_PIN_9,
@@ -44,8 +44,6 @@ void UART0_init(void)
 	FIFO_Init(&g_UARTPara.fifo.sfifo, g_buffSend, sizeof(g_buffSend));	
 	FIFO_Init(&g_UARTPara.fifo.rfifo, g_buffRec, sizeof(g_buffRec));
     COM_init(&g_UARTPara);
-
-    usart_interrupt_enable(g_UARTPara.usart_periph, USART_INT_IDLE);
 }
 static BootPkt_T    g_uart_Req;
 

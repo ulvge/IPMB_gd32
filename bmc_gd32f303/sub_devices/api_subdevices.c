@@ -173,7 +173,6 @@ static bool SubDevice_isExistSensorUnit(uint8_t queryUnitType)
 }
 static void SubDevice_readAllSensorUnit(void)
 {
-    uint8_t sensorNum;
     for (uint8_t idx = 0; idx < g_subDeviceHandler.sensorUnitTypeCount; idx++)
     {
         SENSOR_UNITTYPECODE_EXIST *pTypeCode = &g_subDeviceHandler.sensorUnitTypeExist[idx];
@@ -278,7 +277,7 @@ SubDeviceMODE_T *SubDevice_GetSelf(void)
     return pSubDeviceSelf;
 }
 // master called only
-static void SubDevice_SetOnLine(SUB_DEVICE_MODE mode, bool isOnline)
+__attribute__((unused)) static void SubDevice_SetOnLine(SUB_DEVICE_MODE mode, bool isOnline)
 {
     for (uint8_t i = 0; i < SUB_DEVICE_MODE_MAX; i++)
     {

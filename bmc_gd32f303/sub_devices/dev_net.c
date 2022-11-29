@@ -19,7 +19,6 @@ const GPIOConfig_Handler g_gpioConfigHandler_net = {
 static const  ADCChannlesConfig g_adcChannlConfig_net[] = {
     {ADC_CHANNEL_10,        ADC0, RCU_ADC0, GPIOC, RCU_GPIOC, GPIO_PIN_0},
 };
-static SubDevice_Reading_T g_adcVal_net[ARRARY_SIZE(g_adcChannlConfig_net)];
 
 // config Sensor
 static const  SensorConfig g_sensor_net[] = {

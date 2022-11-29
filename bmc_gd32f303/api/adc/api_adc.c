@@ -89,7 +89,7 @@ float adc_sampleVal2Temp1(uint16 adcValue)
 /// @brief convert methods 2 取近似值
 /// @param adcValue 
 /// @return 
-static float adc_sampleVal2Temp2(uint16 adcValue)
+__attribute__((unused)) static float adc_sampleVal2Temp2(uint16 adcValue)
 {
 #define 		SENSOR_V25_VALUE		1.43f
 #define 		SENSOR_TEMP25_VALUE     25
@@ -101,7 +101,7 @@ static float adc_sampleVal2Temp2(uint16 adcValue)
 
     return temperate;
 }
-static void adc_test(void)
+__attribute__((unused)) static void adc_test(void)
 {     
     float valHuman = api_sensorGetValHuman(ADC_CHANNEL_8);
     

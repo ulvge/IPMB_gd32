@@ -23,7 +23,6 @@ static const  ADCChannlesConfig g_adcChannlConfig_storage0[] = {
     {ADC_CHANNEL_5,         ADC0, RCU_ADC0, GPIOA, RCU_GPIOA, GPIO_PIN_5},
     {ADC_CHANNEL_6,         ADC0, RCU_ADC0, GPIOA, RCU_GPIOA, GPIO_PIN_6},
 };
-static SubDevice_Reading_T g_adcVal_storage0[ARRARY_SIZE(g_adcChannlConfig_storage0)];
 
 // config Sensor
 static const  SensorConfig g_sensor_storage0[] = {

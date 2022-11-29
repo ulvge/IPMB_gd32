@@ -46,7 +46,6 @@ static const  ADCChannlesConfig g_adcChannlConfig_power[] = {
     {ADC_CHANNEL_6,         ADC0, RCU_ADC0, GPIOA, RCU_GPIOA, GPIO_PIN_6},
     {ADC_CHANNEL_7,         ADC0, RCU_ADC0, GPIOA, RCU_GPIOA, GPIO_PIN_7},
 };
-static SubDevice_Reading_T g_adcVal_power[ARRARY_SIZE(g_adcChannlConfig_power)];
 
 // config Sensor
 static const  SensorConfig g_sensor_power[] = {

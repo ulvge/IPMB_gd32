@@ -1039,13 +1039,15 @@ bool i2c_read(uint32_t bus, uint8_t devAddr, uint32_t regAddress, uint8_t *pRead
     {
         case I2C_BUS_0:
         case I2C0:
+            return i2c_bytes_read(I2C0, devAddr, regAddress, pReadBuf, size, 300);
         case I2C_BUS_1:
         case I2C1:
+            return i2c_bytes_read(I2C1, devAddr, regAddress, pReadBuf, size, 300);
     #ifdef I2C2
-        case 2:
+        case I2C_BUS_2:
         case I2C2:
+            return i2c_bytes_read(I2C2, devAddr, regAddress, pReadBuf, size, 300);
     #endif
-			return false;
         case I2C_BUS_S0:
             return i2cs0_read_bytes(devAddr, regAddress, pReadBuf, size);
         default:

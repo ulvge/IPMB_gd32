@@ -36,8 +36,6 @@ static const PwmChannleConfig g_pwmChannleConfig[] = {
 #define SIZE_FAN_CONFIG     sizeof(g_pwmChannleConfig)/sizeof(g_pwmChannleConfig[0])
 static FanStruct g_Fan[SIZE_FAN_CONFIG];
 
-static TimerHandle_t xTimersFanWatchdog = NULL;
-
 static void 	 vTimerFanWatchdogCallback      (xTimerHandle pxTimer);
 
 static FanStruct *fan_getHandler(int sensorNum)
@@ -95,7 +93,6 @@ static void fan_ctrl_task(void)
 {
     uint8_t ipmbVal;
     uint16_t curent_rpm = 0;
-    int32_t pid_out = 0; 
     bool isAlreadyPrint = false;
     uint8_t sensorNum;
     float humanVal;

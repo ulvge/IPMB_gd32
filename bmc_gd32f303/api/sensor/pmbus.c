@@ -341,7 +341,6 @@ Default value   1   0       1       1       0 0 0 0
  */
 int PMBus_I2CRead(INT8U i2cBus, u8 slave, u8 cmdCode, u8 *readbuf)
 {
-    int i, j;
     int readlen = 0;
     int writelen = 1;
     u8 writebuf;
@@ -443,10 +442,9 @@ int PMBus_I2CRead_NoPEC(INT8U i2cBus, u8 slave, u8 cmdCode, u8 *buf)
  */
 int PMBus_I2CWrite(INT8U i2cBus, u8 slave, u8 cmdCode, u8 *Write_buf)
 {
-    int j, ret;
+    int ret;
     int writelen = 0;
     u8 writebuf[50];
-    u8 idx=0;
     if (PEC_Verify == 0)
     {
         PMBUS_PECEnable(i2cBus, slave);

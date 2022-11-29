@@ -79,7 +79,6 @@ const Dev_Handler g_devHandler_main = {
 xQueueHandle CPU_recvDatMsg_Queue = NULL;
 static bool CPU_MsgCoreInit(void)
 {
-    BaseType_t err = pdFALSE;
     CPU_recvDatMsg_Queue = xQueueCreate(1, sizeof(SamllMsgPkt_T));
     if (CPU_recvDatMsg_Queue == NULL) {
         return false;

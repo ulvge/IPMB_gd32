@@ -106,7 +106,6 @@ void updateMonitor(void *pvParameters)
 					UART_sendDataBlock(USART0, (uint8_t *)tips_Jump2APP, strlen(tips_Jump2APP));
                     JumpToAPP();
                 }else {                     
-					const char *tips_JumpCountDown = "jump to APP :countdown =  \n";
 					sprintf(sendBuff, "jump to APP :countdown = %d s\r\n", (BOOT_DELAY_MAX - g_resendCount));	
 					UART_sendDataBlock(USART0, (uint8_t *)sendBuff, strlen(sendBuff));
 					//LOG_I("jump to APP :countdown = %d s\r\n", (BOOT_DELAY_MAX - g_resendCount));
@@ -144,7 +143,7 @@ void updateMonitor(void *pvParameters)
     }
 }
 
-static void SPC_config(void)
+__attribute__((unused)) static void SPC_config(void)
 {
     if (RESET == ob_spc_get()){
         fmc_unlock();
@@ -166,7 +165,6 @@ static void SPC_config(void)
 */
 int main(void)
 {
-    UINT32 count = 0;
     //SPC_config();
     bsp_systick_config();
     nvic_priority_group_set(NVIC_PRIGROUP_PRE4_SUB0);
@@ -196,7 +194,6 @@ int main(void)
 */
 void vApplicationIdleHook(void)
 {
-    static uint32_t lastTick = 0;
     /* reload FWDGT counter */
     fwdgt_counter_reload();
 }
