@@ -45,18 +45,20 @@ OF SUCH DAMAGE.
 #include "tools.h"
 #include "update/jump.h" 
 
+
+#define MONITOR_TASK_DELAY_ms 1000
+#define RESEND_TIMEOUT (4000 / MONITOR_TASK_DELAY_ms)
+#define BOOT_DELAY_MAX (5000 / MONITOR_TASK_DELAY_ms)
+
+int g_debugLevel = DBG_LOG;   
+UINT32 g_bootDebugUartPeriph = USART0;
+
 void start_task(void *pvParameters);
 						 
 static void watch_dog_init(void);
 static void debug_config(void);
 
 void Delay_NoSchedue(uint32_t clk);
-
-
-#define MONITOR_TASK_DELAY_ms 1000
-#define RESEND_TIMEOUT (4000 / MONITOR_TASK_DELAY_ms)
-#define BOOT_DELAY_MAX (5000 / MONITOR_TASK_DELAY_ms)
-int g_debugLevel = DBG_LOG;
 
 const char *projectInfo =
     "\r\n"
@@ -83,22 +85,22 @@ static const char *g_bootUsage =
 __weak void platform_init(void)
 {
 }
+void boot_setPrintUartPeriph(UINT32 periph)
+{
+    g_bootDebugUartPeriph = periph;
+}
 void updateMonitor(void *pvParameters)
 {   
-	static char sendBuff[100];
 	vTaskDelay(MONITOR_TASK_DELAY_ms);
     while (1) {
         g_resendCount++;
         switch (g_UpdatingSM) {
             case UPDATE_SM_INIT:
                 if (g_resendCount >= BOOT_DELAY_MAX) {
-                    const char *tips_Jump2APP = "jump to APP \n";
-					UART_sendDataBlock(USART0, (uint8_t *)tips_Jump2APP, strlen(tips_Jump2APP));
+					LOG_I("jump to APP \r\n");
                     JumpToAPP();
                 }else {                     
-					sprintf(sendBuff, "jump to APP :countdown = %d s\r\n", (BOOT_DELAY_MAX - g_resendCount));	
-					UART_sendDataBlock(USART0, (uint8_t *)sendBuff, strlen(sendBuff));
-					//LOG_I("jump to APP :countdown = %d s\r\n", (BOOT_DELAY_MAX - g_resendCount));
+					LOG_I("jump to APP :countdown = %d s\r\n", (BOOT_DELAY_MAX - g_resendCount));
 				}
                 break;
             case UPDATE_SM_ERROR_TRYAGAIN:
@@ -161,6 +163,7 @@ int main(void)
 
     platform_init();
 
+	boot_setPrintUartPeriph(USART0);
     UART_init();
     UART_sendDataBlock(USART0, (uint8_t *)projectInfo, strlen(projectInfo));
     UART_sendDataBlock(USART0, (uint8_t *)g_bootUsage, strlen(g_bootUsage));

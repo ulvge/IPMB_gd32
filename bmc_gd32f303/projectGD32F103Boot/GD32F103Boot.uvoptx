@@ -157,9 +157,9 @@
         <Bp>
           <Number>0</Number>
           <Type>0</Type>
-          <LineNumber>194</LineNumber>
+          <LineNumber>161</LineNumber>
           <EnabledFlag>1</EnabledFlag>
-          <Address>134232346</Address>
+          <Address>134224414</Address>
           <ByteObject>0</ByteObject>
           <HtxType>0</HtxType>
           <ManyObjects>0</ManyObjects>
@@ -168,7 +168,7 @@
           <BreakIfRCount>1</BreakIfRCount>
           <Filename>&lt;1&gt;..\boot\boot_main.c</Filename>
           <ExecCommand></ExecCommand>
-          <Expression>\\bmc_boot\../boot/boot_main.c\194</Expression>
+          <Expression>\\bmc_boot\../boot/boot_main.c\161</Expression>
         </Bp>
       </Breakpoint>
       <WatchWindow1>
@@ -260,7 +260,7 @@
       <DebugFlag>
         <trace>0</trace>
         <periodic>0</periodic>
-        <aLwin>1</aLwin>
+        <aLwin>0</aLwin>
         <aCover>0</aCover>
         <aSer1>0</aSer1>
         <aSer2>0</aSer2>

@@ -47,7 +47,8 @@ OF SUCH DAMAGE.
 #define    BMC_VERSION    		"1.0.1"
 								   
 #ifdef BOOTLOADER
-#define DEBUG_UART_PERIPH    USART1
+extern unsigned int g_bootDebugUartPeriph;
+#define DEBUG_UART_PERIPH    g_bootDebugUartPeriph
 #else                  
 #define DEBUG_UART_PERIPH    USART0
 #endif

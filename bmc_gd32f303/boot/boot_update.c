@@ -160,7 +160,8 @@ static UPDATE_SM boot_ProcessUpdateReq(const BootPkt_T *pReq)
                 boot_UartSendByte(XMODEM_NAK);
                 return UPDATE_SM_ERROR_TRYAGAIN;
             }
-            if (g_UpdatingSM == UPDATE_SM_START) {
+            if (g_UpdatingSM == UPDATE_SM_START) {  
+				boot_setPrintUartPeriph(USART1);
                 boot_eraseAllPage();
             }
             if (((UINT8)(lastPn + 1)) != msg->pn){

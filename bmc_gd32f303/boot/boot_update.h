@@ -78,8 +78,11 @@ typedef __packed struct
 
 #define XMODEM_CTRLC 0x03 /* abandon startup ,and prepare to upload */
 
-#define boot_UartSendByte(dat) UART_sendByte(USART0, dat)
+//#define boot_UartSendByte(dat) UART_sendByte(USART0, dat)
 
+#define boot_UartSendByte(dat)	usart_data_transmit(USART0, dat); while (RESET == usart_flag_get(USART0, USART_FLAG_TBE)) ;
+
+extern void boot_setPrintUartPeriph(UINT32 periph);
 extern TaskHandle_t updateMonitorHandle;
 extern xQueueHandle updateDatMsg_Queue;
 extern UPDATE_SM g_UpdatingSM;
