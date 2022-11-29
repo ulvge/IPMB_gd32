@@ -101,12 +101,26 @@ __attribute__((unused)) static float adc_sampleVal2Temp2(uint16 adcValue)
 
     return temperate;
 }
+
+__attribute__((unused)) static void StackFlow(void)
+{
+	int a[3],i;
+	
+	//while(1);
+	SCB->CCR |= SCB_CCR_DIV_0_TRP_Msk; /* DIV_0_TRP enable */
+
+	for(i=0; i<3; i++)
+	{
+		a[i]=100/i;
+	}       
+	LOG_E("adc_test StackFlow = %d\n", a[0]);
+}
 __attribute__((unused)) static void adc_test(void)
 {     
     float valHuman = api_sensorGetValHuman(ADC_CHANNEL_8);
     
 	LOG_D("adc_test humanVal = %.3f\n", valHuman);
-    //StackFlow();
+    StackFlow();
 }
 #define ADC_SAMPLE_TIMES 3
 #define ADC_SAMPLE_DEALYTIMES 10

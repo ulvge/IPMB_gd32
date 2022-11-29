@@ -43,7 +43,8 @@ OF SUCH DAMAGE.
  extern "C" {
 #endif
 					  
-#define    BMC_VERSION    "1.0.1"
+#define    HARDWARE_VERSION    	"1.0.0"
+#define    BMC_VERSION    		"1.0.1"
 								   
 #ifdef BOOTLOADER
 #define DEBUG_UART_PERIPH    USART1

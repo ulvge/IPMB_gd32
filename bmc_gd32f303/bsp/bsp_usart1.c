@@ -45,15 +45,24 @@ void UART1_init()
     COM_init(&g_UARTPara);
 }
 
+#ifndef BOOTLOADER
 static SamllMsgPkt_T    g_uart_Req;
 extern xQueueHandle CPU_recvDatMsg_Queue;
+#endif
 
 void USART1_IRQHandler(void)
 {
 #define COM_NUM    COM1
     uint8_t res;
+	#ifdef BOOTLOADER
+    if (RESET != usart_interrupt_flag_get(COM_NUM, USART_INT_FLAG_RBNE))
+    {
+        res = usart_data_receive(COM_NUM);
+        usart_interrupt_flag_clear(COM_NUM, USART_INT_FLAG_RBNE);  
+		UNUSED(res);
+	}
+	#else
 	static BaseType_t xHigherPriorityTaskWoken;  // must set xHigherPriorityTaskWoken as a static variable, why?
-    BaseType_t err;
     static bool is_start = false;
 
     if (RESET != usart_interrupt_flag_get(COM_NUM, USART_INT_FLAG_RBNE))
@@ -74,7 +83,7 @@ void USART1_IRQHandler(void)
             if (CPU_recvDatMsg_Queue != NULL)
             {
                 g_uart_Req.Param = SERIAL_REQUEST;
-                err = xQueueSendFromISR(CPU_recvDatMsg_Queue, (char*)&g_uart_Req, &xHigherPriorityTaskWoken);
+                BaseType_t err = xQueueSendFromISR(CPU_recvDatMsg_Queue, (char*)&g_uart_Req, &xHigherPriorityTaskWoken);
                 portYIELD_FROM_ISR(xHigherPriorityTaskWoken);
                 if (err == pdFAIL)
                 {
@@ -100,7 +109,8 @@ void USART1_IRQHandler(void)
             //UART_sendByte(COM_NUM, res);  //loopback
 			//FIFO_Write(&g_UARTPara.fifo.rfifo, (INT8U)res); // only save
 		}
-	}
+	} 
+	#endif
 
     if (RESET != usart_interrupt_flag_get(COM_NUM, USART_INT_FLAG_TC))
     {

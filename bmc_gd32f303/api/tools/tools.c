@@ -367,17 +367,6 @@ __attribute__((unused)) static int parameterChecked(int para1, int para2, int pa
   }
 }
 
-__attribute__((unused)) void StackFlow(void)
-{
-	int a[3],i;
-	
-	UNUSED(a); 
-	for(i=0; i<10000; i++)
-	{
-		a[i]=100/i;
-	}
-}
-
 void Delay_NoSchedue(uint32_t clk)
 {
     for (uint32_t i = 0; i < clk; i++) {

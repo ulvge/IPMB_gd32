@@ -65,7 +65,7 @@ static char faultBuf[90];
 extern const char *projectInfo;
 /// @brief print Last words
 /// @param sp 
-void HardFault_Handler(void)
+void HardFault_Handler_UNUSED(void)
 {              
 	static INT32U *r_msp;
 	r_msp = (INT32U *)__get_PSP();

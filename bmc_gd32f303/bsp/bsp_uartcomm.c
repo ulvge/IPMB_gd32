@@ -11,11 +11,20 @@
 #define UART_NUM_TOTAL 3
 
 static UART_PARA_STRUCT *g_pUARTSHandler[UART_NUM_TOTAL] = {NULL};	
+bool g_isPrintUseFifo = true;
 
 //use FIFO
 int fputc(int ch, FILE *f)
 {
-    return UART_sendByte(DEBUG_UART_PERIPH, ch);
+	if (g_isPrintUseFifo){		
+		return UART_sendByte(DEBUG_UART_PERIPH, ch);
+	}
+    else{
+		usart_data_transmit(DEBUG_UART_PERIPH, ch);
+        while (RESET == usart_flag_get(DEBUG_UART_PERIPH, USART_FLAG_TBE)) ;
+            
+		return 0;
+	}
 }
 bool com_registHandler(UART_PARA_STRUCT *uartPara)
 {

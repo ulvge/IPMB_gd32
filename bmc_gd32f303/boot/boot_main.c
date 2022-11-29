@@ -45,18 +45,8 @@ OF SUCH DAMAGE.
 #include "tools.h"
 #include "update/jump.h" 
 
-#define FAN_TASK_PRIO 22
-#define TEST_TASK_PRIO 9
-#define COM_TASK_PRIO 21
-#define LANIFC_TASK_PRIO 23
-#define DEV_TASK_PRIO 25
-
-TaskHandle_t updateMonitorHandle;
-
 void start_task(void *pvParameters);
-
-xQueueHandle CPU_recvDatMsg_Queue = NULL;
-
+						 
 static void watch_dog_init(void);
 static void debug_config(void);
 
@@ -178,7 +168,7 @@ int main(void)
     watch_dog_init();
     debug_config();
 
-    xTaskCreate(updateMonitor, "updateMonitor", configMINIMAL_STACK_SIZE * 2, NULL, 25, &updateMonitorHandle);
+    xTaskCreate(updateMonitor, "updateMonitor", configMINIMAL_STACK_SIZE * 2, NULL, 25, NULL);
     xTaskCreate(updateTask, "update", configMINIMAL_STACK_SIZE * 2, NULL, 20, NULL);
     vTaskStartScheduler();
     while (1) {

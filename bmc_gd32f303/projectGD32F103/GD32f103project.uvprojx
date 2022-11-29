@@ -336,10 +336,10 @@
             <v6WtE>0</v6WtE>
             <v6Rtti>0</v6Rtti>
             <VariousControls>
-              <MiscControls>--diag_suppress=1771</MiscControls>
+              <MiscControls></MiscControls>
               <Define>ARM_MATH_CM3,__CC_ARM,GD32F1x</Define>
               <Undefine></Undefine>
-              <IncludePath>..\firmware;..\firmware\GD32F10x\GD32F10x_standard_peripheral\Include;..\firmware\GD32F10x\CMSIS\GD\GD32F10x\Include;..\firmware\GD32F10x\CMSIS;..\user;..\bsp;..\ipmi;..\ipmi\data;..\ipmi\ipmi_dev-3.0.0-src;..\ipmi\ipmi_dev-3.0.0-src\data;..\ipmi\libipmi-3.1.0-src\data\include;..\ipmi\libipmi-3.1.0-src\data;..\ipmi\ipmi_common;..\ipmb;..\api;..\api\adc;..\api\flash;..\api\shell;..\api\tools;..\api\cpu;..\api\sensor;..\api\update;..\sub_devices;..\freertos\include;..\freertos\portable;..\freertos\portable\RVDS\ARM_CM3;..\ff10</IncludePath>
+              <IncludePath>..\firmware;..\firmware\GD32F10x\GD32F10x_standard_peripheral\Include;..\firmware\GD32F10x\CMSIS\GD\GD32F10x\Include;..\firmware\GD32F10x\CMSIS;..\user;..\bsp;..\ipmi;..\ipmi\data;..\ipmi\ipmi_dev-3.0.0-src;..\ipmi\ipmi_dev-3.0.0-src\data;..\ipmi\libipmi-3.1.0-src\data\include;..\ipmi\libipmi-3.1.0-src\data;..\ipmi\ipmi_common;..\ipmb;..\api;..\api\adc;..\api\flash;..\api\shell;..\api\tools;..\api\cpu;..\api\sensor;..\api\update;..\sub_devices;..\freertos\include;..\freertos\portable;..\freertos\portable\RVDS\ARM_CM3;..\ff10;..\api\cm_backtrace</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -1069,6 +1069,21 @@
               <FileName>shell_port.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\api\shell\shell_port.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>cm_backtrace</GroupName>
+          <Files>
+            <File>
+              <FileName>cm_backtrace.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\api\cm_backtrace\cm_backtrace.c</FilePath>
+            </File>
+            <File>
+              <FileName>cmb_fault.S</FileName>
+              <FileType>2</FileType>
+              <FilePath>..\api\cm_backtrace\cmb_fault.S</FilePath>
             </File>
           </Files>
         </Group>

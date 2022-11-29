@@ -4,7 +4,7 @@
 
 #include "project_select.h"
 #include <stdio.h>
-#include <stdbool.h>
+#include <stdbool.h>  
 
 #define UART1_REMAP
 
@@ -27,8 +27,8 @@
 #define COM1_GPIO_CLK               RCU_GPIOA
 
 #endif
-
-
+										
 void UART1_init(void);
+
 
 #endif /* __BSP_USART2_H */

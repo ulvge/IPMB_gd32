@@ -63,7 +63,7 @@ extern const char *projectInfo;
     \param[out] none
     \retval     none
 */
-void HardFault_Handler(void)
+void HardFault_Handler_UNUSED(void)
 {
 	static INT32U *r_msp;
 	r_msp = (INT32U *)__get_PSP();

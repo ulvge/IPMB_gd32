@@ -48,19 +48,14 @@ OF SUCH DAMAGE.
 #include "utc/api_utc.h"
 
 #include "shell_port.h"
-
 #include "MsgHndlr.h"
 
 #include "update/jump.h"
 #include "bsp_timer.h"
 #include "ChassisCtrl.h"
-#include "mac5023.h"   
-#include "tools.h"
+#include "cm_backtrace.h"
 
-#define FAN_TASK_PRIO 22
-#define TEST_TASK_PRIO 9
 #define COM_TASK_PRIO 21
-#define LANIFC_TASK_PRIO 23
 #define DEV_TASK_PRIO 25
 
 void start_task(void *pvParameters);
@@ -110,6 +105,9 @@ int main(void)
     UART_init();
     GPIO_bspInit();
     LOG_I("%s", projectInfo); 
+
+    /* CmBacktrace initialize */
+    cm_backtrace_init("CmBacktrace", HARDWARE_VERSION, BMC_VERSION);
 
     g_utc_time_bmc_firmware_build = currentSecsSinceEpoch(__DATE__, __TIME__);
     g_bmc_firmware_version = GetBmcFirmwareVersion(BMC_VERSION);

@@ -339,7 +339,7 @@
               <MiscControls></MiscControls>
               <Define>ARM_MATH_CM4,__CC_ARM,GD32F3x</Define>
               <Undefine></Undefine>
-              <IncludePath>..\firmware;..\firmware\GD32F30x\GD32F30x_standard_peripheral\Include;..\firmware\GD32F30x\CMSIS\GD\GD32F30x\Include;..\firmware\GD32F30x\CMSIS;..\user;..\bsp;..\ipmi;..\ipmi\data;..\ipmi\ipmi_dev-3.0.0-src;..\ipmi\ipmi_dev-3.0.0-src\data;..\ipmi\ipmi_common;..\ipmi\libipmi-3.1.0-src\data\include;..\ipmi\libipmi-3.1.0-src\data;..\ipmb;..\api;..\api\adc;..\api\flash;..\api\shell;..\api\tools;..\api\cpu;..\sub_devices;..\api\sensor;..\api\update;..\api\fan;..\freertos\include;..\freertos\portable;..\freertos\portable\RVDS\ARM_CM4F;..\ff10</IncludePath>
+              <IncludePath>..\firmware;..\firmware\GD32F30x\GD32F30x_standard_peripheral\Include;..\firmware\GD32F30x\CMSIS\GD\GD32F30x\Include;..\firmware\GD32F30x\CMSIS;..\user;..\bsp;..\ipmi;..\ipmi\data;..\ipmi\ipmi_dev-3.0.0-src;..\ipmi\ipmi_dev-3.0.0-src\data;..\ipmi\ipmi_common;..\ipmi\libipmi-3.1.0-src\data\include;..\ipmi\libipmi-3.1.0-src\data;..\ipmb;..\api;..\api\adc;..\api\flash;..\api\shell;..\api\tools;..\api\cpu;..\sub_devices;..\api\sensor;..\api\update;..\api\fan;..\freertos\include;..\freertos\portable;..\freertos\portable\RVDS\ARM_CM4F;..\ff10;..\api\cm_backtrace</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -1090,7 +1090,20 @@
               <FileType>1</FileType>
               <FilePath>..\api\shell\shell_port.c</FilePath>
             </File>
+            <File>
+              <FileName>cm_backtrace.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\api\cm_backtrace\cm_backtrace.c</FilePath>
+            </File>
+            <File>
+              <FileName>cmb_fault.S</FileName>
+              <FileType>2</FileType>
+              <FilePath>..\api\cm_backtrace\cmb_fault.S</FilePath>
+            </File>
           </Files>
+        </Group>
+        <Group>
+          <GroupName>cm_backtrace</GroupName>
         </Group>
       </Groups>
     </Target>
