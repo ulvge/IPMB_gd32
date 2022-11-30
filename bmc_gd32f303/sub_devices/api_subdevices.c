@@ -430,7 +430,7 @@ static void SubDevice_Upload(TimerHandle_t timerHandle)
     if (pstr == NULL)
     {
         cJSON_Delete(pCJType);
-        LOG_E("\t\tupload failed, no memory to malloc, free byte = %d\n", xPortGetFreeHeapSize());
+        LOG_E("\t\tupload failed, no memory to malloc, free byte = %d\r\n", xPortGetFreeHeapSize());
     }
     else
     {

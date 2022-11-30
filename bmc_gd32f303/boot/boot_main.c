@@ -47,14 +47,16 @@ OF SUCH DAMAGE.
 
 
 #define MONITOR_TASK_DELAY_ms 1000
-#define RESEND_TIMEOUT (4000 / MONITOR_TASK_DELAY_ms)
-#define BOOT_DELAY_MAX (5000 / MONITOR_TASK_DELAY_ms)
+#define RESEND_HANDSHAKE 1000
+#define RESEND_TIMEOUT 3000
+#define BOOT_DELAY_MAX 2000
 
-int g_debugLevel = DBG_LOG;   
+int g_debugLevel = DBG_LOG;
 UINT32 g_bootDebugUartPeriph = USART0;
+TaskHandle_t updateMonitorHandle;
 
 void start_task(void *pvParameters);
-						 
+
 static void watch_dog_init(void);
 static void debug_config(void);
 
@@ -91,25 +93,38 @@ void boot_setPrintUartPeriph(UINT32 periph)
 }
 void updateMonitor(void *pvParameters)
 {   
-	vTaskDelay(MONITOR_TASK_DELAY_ms);
+    vTaskDelay(100);
     while (1) {
+        vTaskDelay(MONITOR_TASK_DELAY_ms);
         g_resendCount++;
+        if ((MONITOR_TASK_DELAY_ms > 1000) || (g_resendCount % (1000 / MONITOR_TASK_DELAY_ms)) != 0) {
+            continue;
+        }
         switch (g_UpdatingSM) {
             case UPDATE_SM_INIT:
-                if (g_resendCount >= BOOT_DELAY_MAX) {
-					LOG_I("jump to APP \r\n");
+                if ((g_resendCount * MONITOR_TASK_DELAY_ms) >= BOOT_DELAY_MAX) {
+                    LOG_I("jump to APP \r\n");
                     JumpToAPP();
-                }else {                     
-					LOG_I("jump to APP :countdown = %d s\r\n", (BOOT_DELAY_MAX - g_resendCount));
-				}
+                }else {
+                    LOG_I("jump to APP :countdown = %d s\r\n", 
+                        (BOOT_DELAY_MAX - (g_resendCount * MONITOR_TASK_DELAY_ms)) / 1000);
+                }
                 break;
             case UPDATE_SM_ERROR_TRYAGAIN:
-                if (g_resendCount >= RESEND_TIMEOUT) {
+                if ((g_resendCount * MONITOR_TASK_DELAY_ms) >= RESEND_TIMEOUT) {
+                    g_resendCount = 0;
                     boot_UartSendByte(XMODEM_NAK);
                 }
                 break;
+            case UPDATE_SM_PROGRAMING:
+                if ((g_resendCount * MONITOR_TASK_DELAY_ms) >= RESEND_TIMEOUT) {
+                    g_resendCount = 0;
+                    boot_UartSendByte(XMODEM_ACK);
+                }
+                break;
             case UPDATE_SM_START:
-                if (g_resendCount % (2000 / MONITOR_TASK_DELAY_ms) == 0) {
+                if ((g_resendCount * MONITOR_TASK_DELAY_ms) >= RESEND_HANDSHAKE) { // switch per 2 sec
+                    g_resendCount = 0;
                     g_xmodemIsCheckTpyeCrc = !g_xmodemIsCheckTpyeCrc;
                 }
                 if (g_xmodemIsCheckTpyeCrc) {
@@ -119,19 +134,15 @@ void updateMonitor(void *pvParameters)
                 }
                 break;
             case UPDATE_SM_FINISHED:
+                vTaskDelay(2); // print over
                 JumpToAPP();
                 break;
             case UPDATE_SM_CANCEL:
                 NVIC_SystemReset();
                 break;
-            case UPDATE_SM_PROGRAMING:
-                if (g_resendCount >= RESEND_TIMEOUT) {
-                    boot_UartSendByte(XMODEM_ACK);
-                }
             default:
                 break;
         }
-        vTaskDelay(MONITOR_TASK_DELAY_ms);
     }
 }
 
@@ -163,7 +174,7 @@ int main(void)
 
     platform_init();
 
-	boot_setPrintUartPeriph(USART0);
+    boot_setPrintUartPeriph(USART0);
     UART_init();
     UART_sendDataBlock(USART0, (uint8_t *)projectInfo, strlen(projectInfo));
     UART_sendDataBlock(USART0, (uint8_t *)g_bootUsage, strlen(g_bootUsage));
@@ -171,7 +182,7 @@ int main(void)
     watch_dog_init();
     debug_config();
 
-    xTaskCreate(updateMonitor, "updateMonitor", configMINIMAL_STACK_SIZE * 2, NULL, 25, NULL);
+    xTaskCreate(updateMonitor, "updateMonitor", configMINIMAL_STACK_SIZE * 2, NULL, 25, &updateMonitorHandle);
     xTaskCreate(updateTask, "update", configMINIMAL_STACK_SIZE * 2, NULL, 20, NULL);
     vTaskStartScheduler();
     while (1) {
@@ -195,19 +206,19 @@ __attribute__((unused)) static void watch_dog_init()
 {
     /* check if the system has resumed from FWDGT reset */
     if (SET == rcu_flag_get(RCU_FLAG_FWDGTRST)) {
-        LOG_W("system reset reason: FWDG\n");
+        LOG_W("system reset reason: FWDG\r\n");
     } else if (SET == rcu_flag_get(RCU_FLAG_WWDGTRST)) {
-        LOG_W("system reset reason: WWDGT\n");
+        LOG_W("system reset reason: WWDGT\r\n");
     } else if (SET == rcu_flag_get(RCU_FLAG_PORRST)) {
-        LOG_W("system reset reason: power on\n");
+        LOG_W("system reset reason: power on\r\n");
     } else if (SET == rcu_flag_get(RCU_FLAG_SWRST)) {
-        LOG_W("system reset reason: soft\n");
+        LOG_W("system reset reason: soft\r\n");
     } else if (SET == rcu_flag_get(RCU_FLAG_EPRST)) {
-        LOG_W("system reset reason: external PIN\n");
+        LOG_W("system reset reason: external PIN\r\n");
     } else if (SET == rcu_flag_get(RCU_FLAG_LPRST)) {
-        LOG_W("system reset reason: low-power reset\n");
+        LOG_W("system reset reason: low-power reset\r\n");
     } else {
-        LOG_W("system reset reason: unkown\n");
+        LOG_W("system reset reason: unkown\r\n");
     }
     rcu_all_reset_flag_clear();
     /* confiure FWDGT counter clock: 40KHz(IRC40K) / 64 = 0.625 KHz */

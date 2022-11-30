@@ -88,17 +88,18 @@ void updateTask(void *arg)
     while (1) {
         xQueueReceive(updateDatMsg_Queue, &reqMsg, portMAX_DELAY);
 
-        //printf("xQueueReceive  count = %d \r\n", reqMsg.Size);
+        vTaskSuspend(updateMonitorHandle);
         g_UpdatingSM = boot_ProcessUpdateReq(&reqMsg);
+        vTaskResume(updateMonitorHandle);
     }
 }
 static bool boot_xmodeCheck(bool type, const UINT8 *buf, UINT8 len, UINT16 recCrc)
 {
     UINT8 i = 0;
 
-    if (type == XMODEM_CHECK_CRC16) {     
-		UINT16 crc = 0;
-		UINT16 tcrc;
+    if (type == XMODEM_CHECK_CRC16) {
+        UINT16 crc = 0;
+        UINT16 tcrc;
         while (len--) {
             crc ^= *buf++ << 8;
 
@@ -110,7 +111,7 @@ static bool boot_xmodeCheck(bool type, const UINT8 *buf, UINT8 len, UINT16 recCr
                 }
             }
         }
-		tcrc = recCrc<<8 | (recCrc >> 8);
+        tcrc = (recCrc << 8) | (recCrc >> 8);
         if (crc != tcrc)
         {
             return false;
@@ -122,7 +123,7 @@ static bool boot_xmodeCheck(bool type, const UINT8 *buf, UINT8 len, UINT16 recCr
         {
             cks += buf[i];
         }
-        if (cks != recCrc)
+        if (cks != (recCrc & 0xff))
         {
             return false;
         }
@@ -153,15 +154,19 @@ static UPDATE_SM boot_ProcessUpdateReq(const BootPkt_T *pReq)
         case XMODEM_SOH:
             isCrcOK = boot_xmodeCheck(g_xmodemIsCheckTpyeCrc, msg->data, sizeof(msg->data), msg->crc);
             if (!isCrcOK && (g_UpdatingSM == UPDATE_SM_START)) {
-                g_xmodemIsCheckTpyeCrc = !g_xmodemIsCheckTpyeCrc;
-                isCrcOK = boot_xmodeCheck(g_xmodemIsCheckTpyeCrc, msg->data, sizeof(msg->data), msg->crc);
+                isCrcOK = boot_xmodeCheck(!g_xmodemIsCheckTpyeCrc, msg->data, sizeof(msg->data), msg->crc);
+                if (!isCrcOK) {
+                    break;
+                } else {
+                    g_xmodemIsCheckTpyeCrc = !g_xmodemIsCheckTpyeCrc;
+                }
             }
             if (!isCrcOK) {
                 boot_UartSendByte(XMODEM_NAK);
                 return UPDATE_SM_ERROR_TRYAGAIN;
             }
-            if (g_UpdatingSM == UPDATE_SM_START) {  
-				boot_setPrintUartPeriph(USART1);
+            if (g_UpdatingSM == UPDATE_SM_START) {
+                boot_setPrintUartPeriph(USART1);
                 boot_eraseAllPage();
             }
             if (((UINT8)(lastPn + 1)) != msg->pn){
@@ -173,13 +178,13 @@ static UPDATE_SM boot_ProcessUpdateReq(const BootPkt_T *pReq)
             }
             startAddr = ADDRESS_START_APP + (pnPage + msg->pn - 1) * XMODEM_PAKGE_LENGTH;
 
-            printf("update start addr = %#X , page Num = %d \r\n", startAddr, pnPage + msg->pn);
+            LOG_D("update addr = %#X, page Num = %d \r\n", startAddr, pnPage + msg->pn);
             if ((startAddr + XMODEM_PAKGE_LENGTH) > ADDRESS_END_APP) {
                 boot_UartSendByte(XMODEM_NAK);
                 return UPDATE_SM_ERROR_TRYAGAIN;
             }
             FLASH_Program(startAddr, (uint32_t *)(&msg->data), sizeof(msg->data));
-            vTaskDelay(2);
+            vTaskDelay(1);
             boot_UartSendByte(XMODEM_ACK);
             return UPDATE_SM_PROGRAMING;
         case XMODEM_EOT:

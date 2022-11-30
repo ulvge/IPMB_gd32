@@ -199,22 +199,22 @@ __attribute__((unused)) static void watch_dog_init()
     /* check if the system has resumed from FWDGT reset */
     if (SET == rcu_flag_get(RCU_FLAG_FWDGTRST))
     {
-        LOG_W("system reset reason: FWDG\n");
+        LOG_W("system reset reason: FWDG\r\n");
     }
     else if (SET == rcu_flag_get(RCU_FLAG_PORRST))
     {
-        LOG_W("system reset reason: power on\n");
+        LOG_W("system reset reason: power on\r\n");
     }
     else if (SET == rcu_flag_get(RCU_FLAG_SWRST))
     {
-        LOG_W("system reset reason: soft\n");
+        LOG_W("system reset reason: soft\r\n");
     }
     else if (SET == rcu_flag_get(RCU_FLAG_EPRST))
     {
-        LOG_W("system reset reason: external PIN\n");
+        LOG_W("system reset reason: external PIN\r\n");
     }
 	else {
-        LOG_W("system reset reason: unkown\n");
+        LOG_W("system reset reason: unkown\r\n");
 	}
     rcu_all_reset_flag_clear();
     /* confiure FWDGT counter clock: 40KHz(IRC40K) / 64 = 0.625 KHz */
