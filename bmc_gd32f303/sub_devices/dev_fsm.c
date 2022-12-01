@@ -32,6 +32,7 @@ void fsm_Handler(FSM_StateMachine *pSM, const FSM_EventID evt)
     if (act(pSM, evt) == true) { // is handler over
         pSM->curState = pTrans->nextState;
         pSM->lastHandlerTimeStamp = GetTickMs();
+        pSM->printState(pSM->curState);
     }
 }
 

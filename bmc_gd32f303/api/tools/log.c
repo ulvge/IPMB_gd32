@@ -15,7 +15,6 @@
 #include <stdarg.h>
 #include "shell_ext.h"
 #include "shell_port.h"
-#include "shell_port.h"
 #include "project_select.h"
 #include "debug_print.h"
 #include "main.h"

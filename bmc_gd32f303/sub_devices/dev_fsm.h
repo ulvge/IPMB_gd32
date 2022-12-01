@@ -18,12 +18,18 @@ typedef enum {
     DEV_ST_P5VP3V_DIS,
 } FSM_State;
 
+
+typedef struct {
+    FSM_State state;
+    const char *alias;
+} FSM_StateST;
 typedef enum {
     DEV_EVENT_NULL = 0,
     DEV_EVENT_KEY_RELEASED = 1,
 } FSM_EventID;
 
 typedef bool (*FSM_Action)(void *pSM, FSM_EventID eventId);
+typedef void (*FSM_PrintState)(FSM_State curState);
 typedef struct {
     FSM_State curState;  //当前状态
     FSM_EventID eventId; //事件ID
@@ -36,6 +42,7 @@ typedef struct {
     UINT8 transNum;
     UINT32 lastHandlerTimeStamp;
     const FSM_StateTransform *transform;
+    FSM_PrintState printState;
 } FSM_StateMachine;
 
 void fsm_Handler(FSM_StateMachine *pSM, const FSM_EventID evt);
