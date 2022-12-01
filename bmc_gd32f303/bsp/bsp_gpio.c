@@ -172,7 +172,7 @@ uint8_t get_board_addr()
     addr |= GPIO_getPinStatus(GPIO_IN_GAP1) << 1;
     addr |= GPIO_getPinStatus(GPIO_IN_GAP2) << 2;
 
-    return SUB_DEVICE_MODE_MAIN;
+    return SUB_DEVICE_MODE_POWER;
 }
 
 

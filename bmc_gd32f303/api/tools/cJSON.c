@@ -1187,7 +1187,7 @@ CJSON_PUBLIC(cJSON *) cJSON_ParseWithLength(const char *value, size_t buffer_len
 
 static unsigned char *cJSON_printFormat(const cJSON * const item, cJSON_bool format, const internal_hooks * const hooks)
 {
-    static size_t default_buffer_size = 400;
+    static size_t default_buffer_size = 750;
     printbuffer buffer[1];
     unsigned char *printed = NULL;
 

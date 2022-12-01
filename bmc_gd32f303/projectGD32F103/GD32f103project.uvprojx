@@ -443,6 +443,11 @@
               <FileType>1</FileType>
               <FilePath>..\sub_devices\dev_switch.c</FilePath>
             </File>
+            <File>
+              <FileName>dev_fsm.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\sub_devices\dev_fsm.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>

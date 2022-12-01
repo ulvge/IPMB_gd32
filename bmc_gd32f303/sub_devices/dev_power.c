@@ -4,12 +4,15 @@
 #include "sensor.h"
 #include "api_sensor.h" 
 #include "mac5023.h" 
+#include "dev_fsm.h"
 
 
 #define DEV_POWER_TASK_DELAY_XMS  10
 #define MAC5023_SAMPLE_PERIOD_XMS 1000
 #define MAC5023_FAILED_MAX_COUNT 10
     
+#define WAIT_POWERON_STABILIZE_XMS  100
+#define WAIT_POWERDOWN_STABILIZE_XMS  100
 
 static void DevTaskHandler(void *pArg);
 // config GPIO
@@ -24,11 +27,11 @@ const static GPIOConfig g_gpioConfig_power[] = {
     {R_CPLD_MCU_2,          GPIOD, GPIO_PIN_12, RCU_GPIOD, GPIO_MODE_IN_FLOATING, GPIO_OSPEED_10MHZ, 0},//unused
     {R_CPLD_MCU_1,          GPIOD, GPIO_PIN_13, RCU_GPIOD, GPIO_MODE_IN_FLOATING, GPIO_OSPEED_10MHZ, 0},//unused
 
-    {GPIO_IN_P12V_PWRGD,    GPIOD, GPIO_PIN_14, RCU_GPIOD, GPIO_MODE_IN_FLOATING, GPIO_OSPEED_10MHZ, 1}, //unused
+    {GPIO_IN_P12V_PWRGD,    GPIOD, GPIO_PIN_14, RCU_GPIOD, GPIO_MODE_IN_FLOATING, GPIO_OSPEED_10MHZ, 1},
     {GPIO_OUT_P12V_EN,      GPIOD, GPIO_PIN_15, RCU_GPIOD, GPIO_MODE_OUT_PP, GPIO_OSPEED_10MHZ, 1},
-    {GPIO_IN_P3V3_PWRGD,    GPIOC, GPIO_PIN_6,  RCU_GPIOC, GPIO_MODE_IN_FLOATING, GPIO_OSPEED_10MHZ, 1},//unused
+    {GPIO_IN_P3V3_PWRGD,    GPIOC, GPIO_PIN_6,  RCU_GPIOC, GPIO_MODE_IN_FLOATING, GPIO_OSPEED_10MHZ, 1},
     {GPIO_OUT_P3V3_EN,      GPIOC, GPIO_PIN_7,  RCU_GPIOC, GPIO_MODE_OUT_PP, GPIO_OSPEED_10MHZ, 1},
-    {GPIO_IN_P5V_PWRGD,     GPIOC, GPIO_PIN_8,  RCU_GPIOC, GPIO_MODE_IN_FLOATING, GPIO_OSPEED_10MHZ, 1},//unused
+    {GPIO_IN_P5V_PWRGD,     GPIOC, GPIO_PIN_8,  RCU_GPIOC, GPIO_MODE_IN_FLOATING, GPIO_OSPEED_10MHZ, 1},
     {GPIO_OUT_P5V_EN,       GPIOC, GPIO_PIN_9,  RCU_GPIOC, GPIO_MODE_OUT_PP, GPIO_OSPEED_10MHZ, 1},
 };
 
@@ -89,6 +92,74 @@ static UINT32 CountPinPluseMs(BMC_GPIO_enum pin, uint32_t *lastMs)
         return offsetMs;
     }
 }
+
+//    StateMachine
+static bool DevPowerSM_P12VEn(void *pSM, FSM_EventID eventId)
+{
+    LOG_I("DevPower FSM: P12V opened\r\n");
+    return GPIO_setPinStatus(GPIO_OUT_P12V_EN, ENABLE);
+}
+static bool DevPowerSM_WaitP12PowerGD(void *pSM, FSM_EventID eventId)
+{
+    if (GPIO_isPinActive(GPIO_IN_P12V_PWRGD)) {
+        GPIO_setPinStatus(GPIO_OUT_P5V_EN,  ENABLE);
+        GPIO_setPinStatus(GPIO_OUT_P3V3_EN, ENABLE);
+        LOG_I("DevPower FSM: P12V powerGD, P5V P3V3 opened\r\n");
+        return true;
+    }
+    return false;
+}
+static bool DevPowerSM_WaitP5VP3VPowerGD(void *pSM, FSM_EventID eventId)
+{                                           
+    FSM_StateMachine *pFsm = (FSM_StateMachine *)pSM;
+    bool P3V3 = GPIO_isPinActive(GPIO_IN_P3V3_PWRGD);
+    bool P5V = GPIO_isPinActive(GPIO_IN_P5V_PWRGD);
+
+    if ((P3V3 && P5V) || (GetTickMs() - pFsm->lastHandlerTimeStamp > WAIT_POWERDOWN_STABILIZE_XMS)) {
+        LOG_I("DevPower FSM: all power GD\r\n");
+        return true;
+    }
+    return false;
+}
+static bool DevPowerSM_P12Dis(void *pSM, FSM_EventID eventId)
+{
+    LOG_I("DevPower FSM: P12V closed\r\n");
+    return GPIO_setPinStatus(GPIO_OUT_P12V_EN, DISABLE);
+}
+static bool DevPowerSM_P5VP3VDis(void *pSM, FSM_EventID eventId)
+{
+    if (GPIO_isPinActive(GPIO_IN_P12V_PWRGD)) {
+        return false;
+    }
+    GPIO_setPinStatus(GPIO_OUT_P12V_EN, DISABLE);
+    GPIO_setPinStatus(GPIO_OUT_P12V_EN, DISABLE);
+    LOG_I("DevPower FSM: all power closed\r\n");
+    return true;
+}
+static bool DevPowerSM_PowerOff(void *pSM, FSM_EventID eventId)
+{
+    FSM_StateMachine *pFsm = (FSM_StateMachine *)pSM;
+    if (GetTickMs() - pFsm->lastHandlerTimeStamp > WAIT_POWERDOWN_STABILIZE_XMS) {
+        LOG_I("DevPower FSM: power off\r\n");
+        return true;
+    }
+    return false;
+}
+static const FSM_StateTransform g_powerStateTran[] = {
+    {DEV_ST_POWEROFF,       DEV_EVENT_KEY_RELEASED, DEV_ST_P12VEN,      DevPowerSM_P12VEn},
+    {DEV_ST_P12VEN,         DEV_EVENT_NULL,         DEV_ST_P5V_P3VEN,   DevPowerSM_WaitP12PowerGD},
+    {DEV_ST_P5V_P3VEN,      DEV_EVENT_NULL,         DEV_ST_POWERON,     DevPowerSM_WaitP5VP3VPowerGD},
+
+    {DEV_ST_POWERON,        DEV_EVENT_KEY_RELEASED, DEV_ST_P12VDIS,     DevPowerSM_P12Dis},
+    {DEV_ST_P12VDIS,        DEV_EVENT_NULL,         DEV_ST_P5VP3V_DIS,  DevPowerSM_P5VP3VDis},
+    {DEV_ST_P5VP3V_DIS,     DEV_EVENT_NULL,         DEV_ST_POWEROFF,    DevPowerSM_PowerOff},
+};
+static FSM_StateMachine g_powerSM = {
+    .curState = DEV_ST_POWEROFF,
+    .transNum = ARRARY_SIZE(g_powerStateTran),
+    .lastHandlerTimeStamp = 0,
+    .transform = g_powerStateTran,
+};
 static void DevPower_SampleMAC5023(void)
 {
     float humanVal;
@@ -117,14 +188,19 @@ static void DevTaskHandler(void *pArg)
 {
     static uint32_t lastMs_IN_R_GPIO0;
     uint32_t mac5023SampleDiv = 0;
+    vTaskDelay(WAIT_POWERON_STABILIZE_XMS);
+    fsm_Handler(&g_powerSM, DEV_EVENT_KEY_RELEASED); // auto power on
+
     while (1)
     {
         vTaskDelay(DEV_POWER_TASK_DELAY_XMS);
         if (CountPinPluseMs(GPIO_IN_R_GPIO0, &lastMs_IN_R_GPIO0) > 90)
         {
+            fsm_Handler(&g_powerSM, DEV_EVENT_KEY_RELEASED);
         }
         else
         {
+            fsm_Handler(&g_powerSM, DEV_EVENT_NULL);
         }
         if (++mac5023SampleDiv >= (MAC5023_SAMPLE_PERIOD_XMS / DEV_POWER_TASK_DELAY_XMS))
         {
