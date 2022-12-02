@@ -76,21 +76,41 @@ const Dev_Handler g_devHandler_power = {
     .TaskHandler = DevTaskHandler,
 };
 
-static UINT32 CountPinPluseMs(BMC_GPIO_enum pin, uint32_t *lastMs)
+typedef struct {
+    UINT32 isLastPressed:1; // May be invalid
+    UINT32 isPreesed : 1;   // valid Preesed
+    UINT32 isReleased : 1;
+    BMC_GPIO_enum  pin;    
+    UINT32 preesedStartTick;
+} Key_ScanST;
+/// @brief count pluse ms of the pin
+/// @param pin 
+/// @param lastMs 
+/// @return The duration of the key pressed
+static UINT32 KeyPressedDurationMs(Key_ScanST *key)
 {
-    #define GPIO_SCAN_PEROID 10
-    uint32_t offsetMs;
-    if (!GPIO_isPinActive(pin)){
-        *lastMs = GetTickMs(); //update to newest tick
-        return 0;
-    }else{
-        if (GPIO_isPinActive(pin))
-        {
-            return 0; //not update
+    #define KEY_JITTER_DELAY  20
+    uint32_t durationMs;
+    BMC_GPIO_enum pin = key->pin;
+    if (GPIO_isPinActive(pin)) {
+        key->isLastPressed = true;
+        durationMs = GetTickMs() - key->preesedStartTick;
+        if (durationMs >= KEY_JITTER_DELAY) {
+            key->isPreesed = true;
         }
-        offsetMs = GetTickMs() - *lastMs;
-        *lastMs = GetTickMs(); //update to newest tick
-        return offsetMs;
+        return durationMs;
+    }else{
+        if (key->isLastPressed == true) {
+            key->isLastPressed = false; 
+            key->isPreesed = false;
+            key->isReleased = true;
+            durationMs = GetTickMs() - key->preesedStartTick;
+        } else{
+            key->isReleased = false;
+			durationMs = 0;
+        }
+        key->preesedStartTick = GetTickMs(); //update to newest tick
+        return durationMs;
     }
 }
 
@@ -212,20 +232,19 @@ static void DevPower_SampleMAC5023(void)
 }
 static void DevTaskHandler(void *pArg)
 {
-    static uint32_t lastMs_IN_R_GPIO0;
+    Key_ScanST g_key_GPIO_IN_R_GPIO0 = {0};
+    uint32_t durationKeyMs;
     uint32_t mac5023SampleDiv = 0;
     vTaskDelay(WAIT_POWERON_STABILIZE_XMS);
     fsm_Handler(&g_powerSM, DEV_EVENT_KEY_RELEASED); // auto power on
-
+    g_key_GPIO_IN_R_GPIO0.pin = GPIO_IN_R_GPIO0;
     while (1)
     {
         vTaskDelay(DEV_POWER_TASK_DELAY_XMS);
-        if (CountPinPluseMs(GPIO_IN_R_GPIO0, &lastMs_IN_R_GPIO0) > 90)
-        {
+        durationKeyMs = KeyPressedDurationMs(&g_key_GPIO_IN_R_GPIO0);
+        if (g_key_GPIO_IN_R_GPIO0.isReleased && (durationKeyMs > 90)) {
             fsm_Handler(&g_powerSM, DEV_EVENT_KEY_RELEASED);
-        }
-        else
-        {
+        } else {
             fsm_Handler(&g_powerSM, DEV_EVENT_NULL);
         }
         if (++mac5023SampleDiv >= (MAC5023_SAMPLE_PERIOD_XMS / DEV_POWER_TASK_DELAY_XMS))

@@ -9,6 +9,7 @@
 
   <project>
     <PathAndName>..\projectGD32F103Boot\GD32F103Boot.uvprojx</PathAndName>
+    <NodeIsExpanded>1</NodeIsExpanded>
   </project>
 
   <project>

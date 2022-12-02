@@ -186,16 +186,16 @@ void Dev_Task(void *pvParameters)
     SUB_DEVICE_MODE myMode = SubDevice_GetMyMode();
 
     g_pDev_Handler = api_getDevHandler(myMode);
-    if (g_pDev_Handler == NULL)
-    {
-        return;
-    }
-    adc_init(g_pDev_Handler);
-    SubDevice_Init();
-    if (g_pDev_Handler->TaskHandler != NULL){
-        g_pDev_Handler->TaskHandler(pvParameters);
-    } else {
+    if (g_pDev_Handler == NULL) {
         vTaskDelete(NULL);
+    } else {
+        adc_init(g_pDev_Handler);
+        SubDevice_Init();
+        if (g_pDev_Handler->TaskHandler == NULL) {
+            vTaskDelete(NULL);
+        } else {
+            g_pDev_Handler->TaskHandler(pvParameters);
+        }
     }
 }
 
