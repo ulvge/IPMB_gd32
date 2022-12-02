@@ -104,7 +104,7 @@ static bool MAC5023_init(UINT8 bus, UINT8 slaveAddr)
     }
     else
     {
-        LOG_I("MAC5023_init read bus error\n");
+        LOG_I("MAC5023_init read bus error\r\n");
     }
     return false;
 }

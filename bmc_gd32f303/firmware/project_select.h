@@ -25,6 +25,7 @@ ram:    20k     0x5000=20,480
 #include "gd32f10x_it.h"
 #include "system_gd32f10x.h"
 #define FMC_PAGE_SIZE           ((uint16_t)0x400)
+#define SRAM_BASE_LEN           ((uint32_t)0x5000)
 #endif
 
 
@@ -38,6 +39,7 @@ ram:    96k     0x1 8000
 #include "system_gd32f30x.h"
 //#include "flash/api_flash.h"
 #define FMC_PAGE_SIZE           ((uint16_t)0x800)
+#define SRAM_BASE_LEN           ((uint32_t)0x18000)
 #endif
 
 

@@ -20,10 +20,11 @@
 #define GET_CHIP_INFO_CMD       0x02
 #define ERASE_FLASH_CMD         0x03
 #define UPDATING_CMD            0x04
-#define RESTART_BOARD_CMD       0x05   
+#define RESTART_BOARD_CMD       0x05
 
-#define UPDATING_CMD_SYS_BOOT   "sys"
-
+#define UPDATING_CMD_SYS_BOOT   "bt"
+#define APP_WANTTO_UPDATE_KEYS   0x98761234
+#define APP_WANTTO_UPDATE_KEYS_ADDR (SRAM_BASE + SRAM_BASE_LEN - 0x10)
 
 void JumpToBootloader(void);
 

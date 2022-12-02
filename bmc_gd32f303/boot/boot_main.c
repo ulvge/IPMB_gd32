@@ -42,14 +42,14 @@ OF SUCH DAMAGE.
 
 #include "boot_update.h"
 #include "bsp_timer.h"
-#include "tools.h"
 #include "update/jump.h" 
 
 
 #define MONITOR_TASK_DELAY_ms 1000
 #define RESEND_HANDSHAKE 1000
 #define RESEND_TIMEOUT 3000
-#define BOOT_DELAY_MAX 2000
+#define BOOT_DELAY_DEFAULT 2000
+#define BOOT_DELAY_REASET_FROM_APP (2* 60 * 1000)
 
 int g_debugLevel = DBG_LOG;
 UINT32 g_bootDebugUartPeriph = USART0;
@@ -91,8 +91,15 @@ void boot_setPrintUartPeriph(UINT32 periph)
 {
     g_bootDebugUartPeriph = periph;
 }
+		
+static UINT32 g_AppWantToUpdateKeys __attribute__((at(APP_WANTTO_UPDATE_KEYS_ADDR)));
 void updateMonitor(void *pvParameters)
-{   
+{
+    UINT32 jumpToAPPMaxDelay = BOOT_DELAY_DEFAULT;
+
+    if (g_AppWantToUpdateKeys == APP_WANTTO_UPDATE_KEYS) {
+        jumpToAPPMaxDelay = BOOT_DELAY_REASET_FROM_APP;
+    }
     vTaskDelay(100);
     while (1) {
         vTaskDelay(MONITOR_TASK_DELAY_ms);
@@ -102,12 +109,12 @@ void updateMonitor(void *pvParameters)
         }
         switch (g_UpdatingSM) {
             case UPDATE_SM_INIT:
-                if ((g_resendCount * MONITOR_TASK_DELAY_ms) >= BOOT_DELAY_MAX) {
+                if ((g_resendCount * MONITOR_TASK_DELAY_ms) >= jumpToAPPMaxDelay) {
                     LOG_I("jump to APP \r\n");
                     JumpToAPP();
                 }else {
                     LOG_I("jump to APP :countdown = %d s\r\n", 
-                        (BOOT_DELAY_MAX - (g_resendCount * MONITOR_TASK_DELAY_ms)) / 1000);
+                        (jumpToAPPMaxDelay - (g_resendCount * MONITOR_TASK_DELAY_ms)) / 1000);
                 }
                 break;
             case UPDATE_SM_ERROR_TRYAGAIN:
@@ -135,6 +142,7 @@ void updateMonitor(void *pvParameters)
                 break;
             case UPDATE_SM_FINISHED:
                 vTaskDelay(2); // print over
+				g_AppWantToUpdateKeys = 0;
                 JumpToAPP();
                 break;
             case UPDATE_SM_CANCEL:
