@@ -190,7 +190,6 @@ void Dev_Task(void *pvParameters)
         vTaskDelete(NULL);
     } else {
         adc_init(g_pDev_Handler);
-        SubDevice_Init();
         if (g_pDev_Handler->TaskHandler == NULL) {
             vTaskDelete(NULL);
         } else {

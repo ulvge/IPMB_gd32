@@ -49,7 +49,7 @@ OF SUCH DAMAGE.
 #define RESEND_HANDSHAKE 1000
 #define RESEND_TIMEOUT 3000
 #define BOOT_DELAY_DEFAULT 2000
-#define BOOT_DELAY_REASET_FROM_APP (2* 60 * 1000)
+#define BOOT_DELAY_RESET_FROM_APP (2* 60 * 1000)
 
 int g_debugLevel = DBG_LOG;
 UINT32 g_bootDebugUartPeriph = USART0;
@@ -98,7 +98,7 @@ void updateMonitor(void *pvParameters)
     UINT32 jumpToAPPMaxDelay = BOOT_DELAY_DEFAULT;
 
     if (g_AppWantToUpdateKeys == APP_WANTTO_UPDATE_KEYS) {
-        jumpToAPPMaxDelay = BOOT_DELAY_REASET_FROM_APP;
+        jumpToAPPMaxDelay = BOOT_DELAY_RESET_FROM_APP;
     }
     vTaskDelay(100);
     while (1) {

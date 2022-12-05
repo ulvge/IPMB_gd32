@@ -70,7 +70,7 @@ typedef struct
     const char     *name;
 } SubDeviceMODE_T;
 
-bool SubDevice_Init(void);
+void SubDevice_commuTask(void *pvParameters);
 bool SubDevice_CheckAndPrintMode(void);
 bool SubDevice_IsSelfMaster(void);
 bool SubDevice_IsOnLine(void);
@@ -78,7 +78,6 @@ uint8_t SubDevice_GetMySlaveAddress(uint32_t bus);
 bool SubDevice_Management(uint8_t addr);
 uint32_t SubDevice_GetBus(void);
 SUB_DEVICE_MODE SubDevice_GetMyMode(void);
-
 SubDeviceMODE_T *SubDevice_GetSelf(void);
 
 #ifdef __cplusplus

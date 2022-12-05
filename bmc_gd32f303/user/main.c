@@ -55,6 +55,8 @@ OF SUCH DAMAGE.
 #include "ChassisCtrl.h"
 #include "cm_backtrace.h"
 
+#define SHELL_TASK_PRIO 10
+#define ADC_SAMPLE_TASK_PRIO 10
 #define COM_TASK_PRIO 21
 #define DEV_TASK_PRIO 25
 
@@ -62,7 +64,7 @@ void start_task(void *pvParameters);
 void fan_task(void *pvParameters);
 TaskHandle_t ComTask_Handler;
 void com_task(void *pvParameters);
-void misc_task(void *pvParameters);
+void adc_sample_task(void *pvParameters);
 
 static void watch_dog_init(void);  
 static void debug_config(void);
@@ -113,7 +115,6 @@ int main(void)
     g_bmc_firmware_version = GetBmcFirmwareVersion(BMC_VERSION);
 
     xTaskCreate(start_task, "start", configMINIMAL_STACK_SIZE * 2, NULL, 1, NULL);
-    xTaskCreate(misc_task, "misc", configMINIMAL_STACK_SIZE, NULL, 26, NULL);
     watch_dog_init();
 	debug_config();
     vTaskStartScheduler();      //prvIdleTask
@@ -136,15 +137,14 @@ void start_task(void *pvParameters)
    }
    if (errCOULD_NOT_ALLOCATE_REQUIRED_MEMORY == 
        xTaskCreate(com_task, "com", configMINIMAL_STACK_SIZE * 2, NULL, COM_TASK_PRIO, (TaskHandle_t *)&ComTask_Handler)) {
-       errCreateTask |= 1;
+       errCreateTask |= 2;
    }
-
-//    if (errCOULD_NOT_ALLOCATE_REQUIRED_MEMORY == 
-//        xTaskCreate(cpuGetInfoTask, "cpu", configMINIMAL_STACK_SIZE * 2, NULL, 11, NULL)) {
-//        errCreateTask |= 4;
-//    }
     if (errCOULD_NOT_ALLOCATE_REQUIRED_MEMORY == 
-        xTaskCreate(shellTask, "shellTask", 200, &shell, 2, NULL)) {
+        xTaskCreate(adc_sample_task, "adc_sample", configMINIMAL_STACK_SIZE, NULL, ADC_SAMPLE_TASK_PRIO, NULL)) {
+        errCreateTask |= 4;
+    }
+    if (errCOULD_NOT_ALLOCATE_REQUIRED_MEMORY == 
+        xTaskCreate(shellTask, "shellTask", 200, &shell, SHELL_TASK_PRIO, NULL)) {
         errCreateTask |= 8;
     }
 	if (errCreateTask == 0){
@@ -157,7 +157,7 @@ void start_task(void *pvParameters)
 }
 
 xQueueHandle g_chassisCtrl_Queue = NULL;
-void misc_task(void *pvParameters)
+void adc_sample_task(void *pvParameters)
 {                                 
 	SamllMsgPkt_T msg;
     g_chassisCtrl_Queue = xQueueCreate(2, sizeof(SamllMsgPkt_T));

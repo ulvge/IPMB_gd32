@@ -23,6 +23,8 @@
 
 #define SUB_DEVICES_FAILED_MAX_COUNT 10
 #define SUB_DEVICES_SENDMSG_WAIT_TIMEOUT_XMS 20
+
+#define SUB_DEVICES_TASK_DELAY_MS 500
 #define SUB_DEVICES_TIMER_SAMPLE_PERIOD_XMS 2000
 #define SUB_DEVICES_TIMER_UPLOAD_PERIOD_XMS 2000
 
@@ -59,9 +61,6 @@ static SubDeviceHandler_T g_subDeviceHandler = {
     .sensorUnitTypeExist = g_sensorUnitTypeExist,
 };
 
-static TimerHandle_t g_subdevice_timerSample = NULL;
-static TimerHandle_t g_subdevice_timerUpload = NULL;
-static void SubDevice_HeartBeatTimerCallBack(xTimerHandle pxTimer);
 static SubDeviceMODE_T *pSubDeviceSelf = NULL;
 
 static const SubDeviceName_T g_SubDeviceConfigName[] = {
@@ -135,7 +134,7 @@ bool SubDevice_CheckAndPrintMode(void)
         }
         return false;
     }
-    LOG_I("This borad as [%s]\n", SubDevice_GetModeName(mode));
+    LOG_I("\r\n\r\nThis borad as [%s]]\r\n", SubDevice_GetModeName(mode));
     sprintf(buff, "This borad as [%s]\n", SubDevice_GetModeName(mode));
     EEP_WriteDataCheckFirst(EEP_ADDR_SAVE_MODE, (uint8_t *)buff, strlen(buff));
     SubDevice_InitAllMode();
@@ -186,45 +185,15 @@ static void SubDevice_readAllSensorUnit(void)
 /// @brief read my slave address from GPIO switch,then init all buff if I'm a main(master)
 /// @param
 /// @return
-bool SubDevice_Init(void)
+static void SubDevice_Init(void)
 {
+    cJSON_Hooks hooks;
+    hooks.malloc_fn = pvPortMalloc;
+    hooks.free_fn = vPortFree;
+    cJSON_InitHooks(&hooks);
+
     g_subDeviceHandler.busUsed = NM_SECONDARY_IPMB_BUS;
-    BaseType_t xReturn = pdPASS;
-    if (SubDevice_IsSelfMaster())
-    {
-        SubDevice_readAllSensorUnit();
-        // create timer sample
-        g_subdevice_timerSample = xTimerCreate("SubDevice", SUB_DEVICES_TIMER_SAMPLE_PERIOD_XMS / portTICK_RATE_MS, pdTRUE,
-                                               (void *)SUB_DEVICES_TIMER_SAMPLE, SubDevice_HeartBeatTimerCallBack);
-        if (g_subdevice_timerSample == NULL)
-        {
-            LOG_E("SubDevice_Init xTimerCreate sample failed\n");
-            return false;
-        }
-        xReturn = xTimerStart(g_subdevice_timerSample, portMAX_DELAY);
-        if (xReturn != pdPASS)
-        {
-            LOG_E("SubDevice_Init xTimerStart sample failed %ld\n", xReturn);
-        }
-        // create timer upload
-        g_subdevice_timerUpload = xTimerCreate("SubDevice", SUB_DEVICES_TIMER_UPLOAD_PERIOD_XMS / portTICK_RATE_MS, pdTRUE,
-                                               (void *)SUB_DEVICES_TIMER_UPLOAD, SubDevice_HeartBeatTimerCallBack);
-        if (g_subdevice_timerUpload == NULL)
-        {
-            LOG_E("SubDevice_Init xTimerCreate upload failed\n");
-            return false;
-        }
-        xReturn = xTimerStart(g_subdevice_timerUpload, portMAX_DELAY);
-        if (xReturn != pdPASS)
-        {
-            LOG_E("SubDevice_Init xTimerStart upload failed %ld\n", xReturn);
-        }
-        cJSON_Hooks hooks;
-        hooks.malloc_fn = pvPortMalloc;
-        hooks.free_fn = vPortFree;
-        cJSON_InitHooks(&hooks);
-    }
-    return true;
+    SubDevice_readAllSensorUnit();
 }
 
 bool SubDevice_IsSelfMaster(void)
@@ -361,15 +330,10 @@ static void SubDevice_SendDataSpilt(char *pstr)
         }
     }
 }
-static void SubDevice_Upload(TimerHandle_t timerHandle)
+static void SubDevice_Upload()
 {
     char nameBuf[30];
     char humanVal[10];
-    BaseType_t xReturn = xTimerStop(timerHandle, portMAX_DELAY);
-    if (xReturn != pdPASS)
-    {
-        return;
-    }
     uint8_t sensorNum;
     uint8_t unitType;
     uint8_t prefixLen;
@@ -439,7 +403,6 @@ static void SubDevice_Upload(TimerHandle_t timerHandle)
         vPortFree(pstr);
         LOG_D("\t\tupload success, free byte = %d\n", xPortGetFreeHeapSize());
     }
-    xReturn = xTimerStart(timerHandle, portMAX_DELAY);
 }
 static bool SubDevice_readingSensorForeach(SUB_DEVICE_MODE dev, uint8_t sensorNum, MsgPkt_T *requestPkt, SubDevice_Reading_T *pDeviceReading)
 {
@@ -482,15 +445,8 @@ static bool SubDevice_readingSensorForeach(SUB_DEVICE_MODE dev, uint8_t sensorNu
     }
     return false;
 }
-extern xQueueHandle ResponseDatMsg_Queue;
-static void SubDevice_SampleAll(TimerHandle_t timerHandle)
+static void SubDevice_SampleAll()
 {
-    BaseType_t xReturn = xTimerStop(timerHandle, portMAX_DELAY);
-    if (xReturn != pdPASS)
-    {
-        return;
-    }
-
     MsgPkt_T requestPkt;
     IPMIMsgHdr_T *hdr = (IPMIMsgHdr_T *)&(requestPkt.Data);
     requestPkt.Param = IPMB_SUB_DEVICE_HEARTBEAT_REQUEST;
@@ -534,22 +490,35 @@ static void SubDevice_SampleAll(TimerHandle_t timerHandle)
             }
         }
     }
-
-    xReturn = xTimerStart(timerHandle, portMAX_DELAY);
 }
 
-static void SubDevice_HeartBeatTimerCallBack(xTimerHandle pxTimer)
+/// @brief sample & upload
+/// @param pvParameters 
+void SubDevice_commuTask(void *pvParameters)
 {
-    uint32_t work = ((uint32_t)pvTimerGetTimerID(pxTimer));
-    switch (work)
+    uint32_t sampleCount = 0;
+    uint32_t uploadCount = 0;
+    cJSON_Hooks hooks;
+    hooks.malloc_fn = pvPortMalloc;
+    hooks.free_fn = vPortFree;
+
+    SubDevice_Init();
+    cJSON_InitHooks(&hooks);
+    while (1)
     {
-    case SUB_DEVICES_TIMER_SAMPLE:
-        SubDevice_SampleAll(g_subdevice_timerSample);
-        break;
-    case SUB_DEVICES_TIMER_UPLOAD:
-        SubDevice_Upload(g_subdevice_timerUpload);
-        break;
-    default:
-        break;
+        vTaskDelay(SUB_DEVICES_TASK_DELAY_MS);
+        if (sampleCount >= SUB_DEVICES_TIMER_SAMPLE_PERIOD_XMS / SUB_DEVICES_TASK_DELAY_MS){
+            SubDevice_SampleAll();
+            sampleCount = 0;
+        }
+        if (uploadCount >= SUB_DEVICES_TIMER_UPLOAD_PERIOD_XMS / SUB_DEVICES_TASK_DELAY_MS){
+            SubDevice_Upload();
+            uploadCount = 0;
+        }
+        sampleCount++;
+        uploadCount++;
     }
 }
+
+
+
