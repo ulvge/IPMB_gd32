@@ -78,7 +78,7 @@ uint8_t api_sensorGetValIPMB(UINT16 sensorNum)
     for (uint8_t numIdex = 0; numIdex < api_sensorGetSensorCount(); numIdex++)
     {
         if (pDev_Handler->sensorCfg[numIdex].sensorNum == sensorNum) {
-            ipmbVal = pDev_Handler->val[numIdex].raw;
+            ipmbVal = pDev_Handler->val[numIdex].rawIPMB;
             break;
         }
     }
@@ -148,7 +148,7 @@ void api_sensorSetValRaw(uint8_t sensorNum, uint8_t ipmbVal)
     for (size_t i = 0; i < handler->sensorCfgSize; i++)
     {
         if (handler->sensorCfg[i].sensorNum == sensorNum){
-            handler->val[i].raw = ipmbVal;
+            handler->val[i].rawIPMB = ipmbVal;
             return;
         }
     }

@@ -54,8 +54,7 @@ typedef struct
 typedef struct
 {
     uint16_t rawAdc;	// ori adc
-    uint8_t raw;        // ipmi raw uint8_t
-    //uint8_t ComparisonStatus;        // ipmi raw uint8_t
+    uint8_t rawIPMB;        // ipmi raw uint8_t
     uint8_t errCnt;
     float   human;      //human	= covert(raw, M, R)
 } SubDevice_Reading_T;

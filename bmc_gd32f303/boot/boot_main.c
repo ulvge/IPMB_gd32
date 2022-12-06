@@ -81,7 +81,7 @@ static const char *g_bootUsage =
     "When the system starts, you have x seconds to select\r\n"
     "'u' or 'CTRL+C' can stop startup, and prepare to update \r\n"    
     "'q' reset and startup from boot \r\n"
-    "'a' When you are updating, you can give up and continue startup the APP system \r\n"
+    "'a' When you are booting, you can give up wait and directly start the APP system \r\n"
     "\r\n";
 
 __weak void platform_init(void)
@@ -91,7 +91,7 @@ void boot_setPrintUartPeriph(UINT32 periph)
 {
     g_bootDebugUartPeriph = periph;
 }
-		
+
 static UINT32 g_AppWantToUpdateKeys __attribute__((at(APP_WANTTO_UPDATE_KEYS_ADDR)));
 void updateMonitor(void *pvParameters)
 {
@@ -110,6 +110,7 @@ void updateMonitor(void *pvParameters)
         switch (g_UpdatingSM) {
             case UPDATE_SM_INIT:
                 if ((g_resendCount * MONITOR_TASK_DELAY_ms) >= jumpToAPPMaxDelay) {
+				    g_AppWantToUpdateKeys = 0;
                     LOG_I("jump to APP \r\n");
                     JumpToAPP();
                 }else {

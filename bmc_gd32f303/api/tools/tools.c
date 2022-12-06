@@ -45,8 +45,6 @@ static int do_scan(uint8_t bus);
 static int do_set_host(uint8_t bus);
 static int do_get_host(uint8_t bus);
 
-static int parameterChecked(int para1, int para2, int para3, int para4);
-
 static int (*const handlerList[])(int, char **, int) =  {
         busArgHandler,
         setHostArgHandler,
@@ -347,27 +345,6 @@ int sensor(int argc, char *argv[])
 }
 
 SHELL_EXPORT_CMD(SHELL_CMD_PERMISSION(0) | SHELL_CMD_TYPE(SHELL_TYPE_CMD_MAIN) | SHELL_CMD_DISABLE_RETURN, sensor, sensor, get sensors info);
-
-
-int shell_exit(int argc, char *argv[])
-{
-
-    NVIC_SystemReset();
-    return 0;
-}
-SHELL_EXPORT_CMD(SHELL_CMD_PERMISSION(0) | SHELL_CMD_TYPE(SHELL_TYPE_CMD_MAIN) | SHELL_CMD_DISABLE_RETURN, exit, shell_exit, exit shell);
-
-__attribute__((unused)) static int parameterChecked(int para1, int para2, int para3, int para4)
-{
-	if(((para1>=0) && (para1<=255)) && ((para2>=0) && (para2<=255)) && ((para3>=0) && (para3<=255)) && ((para4>=0) && (para4<=255)))
-  {
-     return 0;
-  }
-  else
-  {
-      return -1;
-  }
-}
 
 void Delay_NoSchedue(uint32_t clk)
 {

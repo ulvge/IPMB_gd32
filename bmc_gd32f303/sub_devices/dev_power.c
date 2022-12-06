@@ -215,7 +215,7 @@ static void DevPower_SampleMAC5023(void)
         if ((sensorNum > MAC5023_CHANNLE_START) && (sensorNum < MAC5023_CHANNLE_END)){
             if (MAC5023_Sample(0, sensorNum, &humanVal, &ipmbVal)){
                 g_sensorVal_power[i].rawAdc = 0;
-                g_sensorVal_power[i].raw = ipmbVal;
+                g_sensorVal_power[i].rawIPMB = ipmbVal;
                 g_sensorVal_power[i].errCnt = 0;
                 g_sensorVal_power[i].human = humanVal;
                 continue;
@@ -224,7 +224,7 @@ static void DevPower_SampleMAC5023(void)
             {
                 g_sensorVal_power[i].rawAdc = 0;
                 g_sensorVal_power[i].errCnt = 0;
-                g_sensorVal_power[i].raw = 0;
+                g_sensorVal_power[i].rawIPMB = 0;
                 g_sensorVal_power[i].human = 0;
             }
         }

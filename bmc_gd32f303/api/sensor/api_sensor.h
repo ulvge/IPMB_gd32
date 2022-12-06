@@ -17,7 +17,7 @@
 typedef enum 
 {          
     ADC_CHANNEL_MAX = ADC_CHANNEL_17 + 1,
-	
+
     FAN_CHANNEL_1,
     FAN_CHANNEL_2,
     FAN_CHANNEL_MAX,
@@ -39,7 +39,7 @@ typedef struct {
 } SensorConfig;
 
 typedef struct {          
-	SUB_DEVICE_MODE mode;
+    SUB_DEVICE_MODE mode;
     SubDevice_Reading_T *val;
 
     uint8_t adcCfgSize;

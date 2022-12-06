@@ -439,7 +439,7 @@ static bool SubDevice_readingSensorForeach(SUB_DEVICE_MODE dev, uint8_t sensorNu
 
     if (pSensorReading->CompletionCode == CC_NORMAL)
     {
-        pDeviceReading->raw = pSensorReading->SensorReading;
+        pDeviceReading->rawIPMB = pSensorReading->SensorReading;
         //pDeviceReading->ComparisonStatus = pSensorReading->ComparisonStatus;
         return true;
     }
@@ -476,7 +476,7 @@ static void SubDevice_SampleAll()
             sensorNum = api_sensorGetSensorNumByIdex(dev, numIdex);
             if (SubDevice_readingSensorForeach(dev, sensorNum, &requestPkt, pDeviceReading))
             {
-                if (api_sensorConvert2HumanVal(dev, sensorNum, pDeviceReading->raw, &pDeviceReading->human) == true)
+                if (api_sensorConvert2HumanVal(dev, sensorNum, pDeviceReading->rawIPMB, &pDeviceReading->human) == true)
                 {
                     pDeviceReading->errCnt = 0;
                     continue; // success
@@ -485,7 +485,7 @@ static void SubDevice_SampleAll()
             if (pDeviceReading->errCnt++ > SUB_DEVICES_FAILED_MAX_COUNT)
             {
                 pDeviceReading->errCnt = 0;
-                pDeviceReading->raw = 0;
+                pDeviceReading->rawIPMB = 0;
                 pDeviceReading->human = 0;
             }
         }

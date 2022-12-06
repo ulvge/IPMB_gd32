@@ -29,7 +29,7 @@ static void adc_InitADCs(const Dev_Handler *config)
             continue;
         }
         adc_init_channle(p_gpioCfg);
-        config->val[i].raw = 0;
+        config->val[i].rawIPMB = 0;
         config->val[i].errCnt = 0;
         config->val[i].human = 0;
     }

@@ -69,7 +69,6 @@ typedef enum
     GPIO_I2CS0_SCL,
     GPIO_I2CS0_SDA,
 
-    
     GPIO_OUT_VBAT_EN,
     GPIO_OUT_R_FAIL_N,
     GPIO_OUT_P12V_EN,
@@ -105,9 +104,9 @@ typedef struct {
     uint8_t             pinSpeed;
     uint8_t             activeMode; // if output, hi or low active
 } GPIOConfig;
-  
-typedef struct {          
-	SUB_DEVICE_MODE mode;
+
+typedef struct {
+    SUB_DEVICE_MODE mode;
     uint8_t gpioCfgSize;
     const GPIOConfig *gpioCfg;
 } GPIOConfig_Handler;
