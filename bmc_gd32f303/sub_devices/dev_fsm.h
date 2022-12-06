@@ -40,9 +40,9 @@ typedef struct {
 typedef struct {
     FSM_State curState;
     UINT8 transNum;
-    UINT32 lastHandlerTimeStamp;
     const FSM_StateTransform *transform;
     FSM_PrintState printState;
+    UINT32 lastHandlerTimeStamp;
 } FSM_StateMachine;
 
 void fsm_Handler(FSM_StateMachine *pSM, const FSM_EventID evt);

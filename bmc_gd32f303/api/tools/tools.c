@@ -293,7 +293,7 @@ static int do_get_host(uint8_t bus)
     return 0;
 }
 
-static UINT32 g_AppWantToUpdateKeys __attribute__((at(APP_WANTTO_UPDATE_KEYS_ADDR)));
+__attribute__((unused)) static UINT32 g_AppWantToUpdateKeys __attribute__((at(APP_WANTTO_UPDATE_KEYS_ADDR)));
 // tool 2******************************************************
 int reboot(int argc, char *argv[])
 {
