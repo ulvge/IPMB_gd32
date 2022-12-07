@@ -289,7 +289,7 @@ static int do_get_host(uint8_t bus)
     default:
         break;
     }
-
+									
     return 0;
 }
 
