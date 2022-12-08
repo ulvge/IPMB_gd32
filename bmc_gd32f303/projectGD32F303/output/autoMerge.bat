@@ -1,4 +1,4 @@
-@echo on
+@echo off
 set exePath="%~dp0"
 cd %exePath%
 

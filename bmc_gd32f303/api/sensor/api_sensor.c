@@ -36,7 +36,7 @@ bool api_sensorGetUnitType(INT8U destMode, UINT32 sensorNum, uint8_t *unitType)
     return SensorGetUnitType(destMode, sensorNum, unitType);
 }
 // get raw 16 val. maybe ADC, ADC->temp, RPM.
-// after get this val,need to convert by MR
+// after get this ipmbVal, need convert by MR if want to get human val
 BOOLEAN api_sensorConvertIPMBValBySensorNum(INT8U destMode, UINT16 sensorNum, UINT16 rawAdc, INT8U *ipmbVal)
 {
     uint8_t unitType;
@@ -62,7 +62,7 @@ BOOLEAN api_sensorConvertIPMBValBySensorNum(INT8U destMode, UINT16 sensorNum, UI
         *ipmbVal = (float)adc_sampleVal2Temp1(rawAdc); //转换成真实值 ，并对其进行MR 编码.后续 IPMI 只需要用MR就能解码
         return true;
         //}
-    case IPMI_UNIT_AMPS:
+    case IPMI_UNIT_AMPS:   //current is read from IC, not from ADC,so this statement is unreachable
     default:
         return false;
     }

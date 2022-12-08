@@ -82,7 +82,7 @@
           <AfterMake>
             <RunUserProg1>0</RunUserProg1>
             <RunUserProg2>1</RunUserProg2>
-            <UserProg1Name>"P:\4proj\8NS304 chaoYue\BMCproject\gd32\bmc_gd32f303\projectGD32F103\output\autoMerge.bat"</UserProg1Name>
+            <UserProg1Name>"P:\4proj\8NS304 chaoYue\BMCproject\gd32\bmc_gd32f303\projectGD32F303\output\autoMerge.bat"</UserProg1Name>
             <UserProg2Name>D:\Keil_v5\ARM\ARMCLANG\bin\fromelf --bin --output .\output\bmc_app.bin .\output\temp\bmc_app.axf</UserProg2Name>
             <UserProg1Dos16Mode>0</UserProg1Dos16Mode>
             <UserProg2Dos16Mode>0</UserProg2Dos16Mode>

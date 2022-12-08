@@ -64,20 +64,19 @@ typedef struct
     SUB_DEVICE_MODE mode;
     uint8_t isMain : 1;
     uint8_t isOnLine : 1;
+    uint8_t busUsed : 2;
     uint8_t     i2c0SlaveAddr; //8bit
     uint8_t     i2c1SlaveAddr; //8bit
     const char     *name;
-} SubDeviceMODE_T;
+} SubDeviceModeStatus_T;
 
 void SubDevice_commuTask(void *pvParameters);
 bool SubDevice_CheckAndPrintMode(void);
 bool SubDevice_IsSelfMaster(void);
-bool SubDevice_IsOnLine(void);
 uint8_t SubDevice_GetMySlaveAddress(uint32_t bus);
-bool SubDevice_Management(uint8_t addr);
-uint32_t SubDevice_GetBus(void);
+uint32_t SubDevice_GetBus(SUB_DEVICE_MODE mode);
 SUB_DEVICE_MODE SubDevice_GetMyMode(void);
-SubDeviceMODE_T *SubDevice_GetSelf(void);
+SubDeviceModeStatus_T *SubDevice_GetSelf(void);
 
 #ifdef __cplusplus
 }

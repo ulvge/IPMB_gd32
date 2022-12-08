@@ -42,8 +42,8 @@ BOOLEAN userShellRead(char *data)
 {
     if (UART_getByte(DEBUG_UART_PERIPH, (INT8U *)data) == false) {  
         return false;
-    } else {  
-		return true;
+    } else {
+        return true;
     }
 }
 

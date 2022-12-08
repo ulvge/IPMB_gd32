@@ -21,12 +21,13 @@
 #define SUB_DEVICES_ADDR_DEFAULT 0xFF
 #define SUB_DEVICES_ADDR_PRIFIXED 0x80
 
-#define SUB_DEVICES_FAILED_MAX_COUNT 10
+#define SUB_DEVICES_FAILED_MAX_COUNT 3
 #define SUB_DEVICES_SENDMSG_WAIT_TIMEOUT_XMS 20
 
 #define SUB_DEVICES_TASK_DELAY_MS 500
 #define SUB_DEVICES_TIMER_SAMPLE_PERIOD_XMS 2000
 #define SUB_DEVICES_TIMER_UPLOAD_PERIOD_XMS 2000
+#define SUB_DEVICES_TIMER_SWITCH_IPMB_BUS_XMS 10000
 
 typedef enum
 {
@@ -49,19 +50,16 @@ static  SENSOR_UNITTYPECODE_EXIST g_sensorUnitTypeExist[] = {
 };
 typedef struct
 {
-    uint8_t busUsed;
     uint8_t sensorUnitTypeCount;
-
     SENSOR_UNITTYPECODE_EXIST *sensorUnitTypeExist;
-} SubDeviceHandler_T;
+} SubDeviceTpyeExist_T;
 
-static SubDeviceHandler_T g_subDeviceHandler = {
-    .busUsed = NM_SECONDARY_IPMB_BUS,
+static SubDeviceTpyeExist_T g_subDeviceTypeExist = {
     .sensorUnitTypeCount = ARRARY_SIZE(g_sensorUnitTypeExist),
     .sensorUnitTypeExist = g_sensorUnitTypeExist,
 };
 
-static SubDeviceMODE_T *pSubDeviceSelf = NULL;
+static SubDeviceModeStatus_T *pSubDeviceSelf = NULL;
 
 static const SubDeviceName_T g_SubDeviceConfigName[] = {
     {SUB_DEVICE_MODE_MAIN, "main"},
@@ -87,16 +85,16 @@ static char *SubDevice_GetModeName(SUB_DEVICE_MODE mode)
     }
     return "\n";
 }
-static SubDeviceMODE_T g_AllModes[SUB_DEVICE_MODE_MAX];
+static SubDeviceModeStatus_T g_AllModesStatus[SUB_DEVICE_MODE_MAX];
 
 static void SubDevice_InitAllMode(void)
 {
     for (uint8_t i = 0; i < SUB_DEVICE_MODE_MAX; i++)
     {
-        SubDeviceMODE_T *obj = &g_AllModes[i];
+        SubDeviceModeStatus_T *obj = &g_AllModesStatus[i];
         obj->isMain = false;
         obj->isOnLine = false;
-        obj->mode = SUB_DEVICE_MODE_MAX;
+        obj->mode = (SUB_DEVICE_MODE)i;
         obj->name = g_SubDeviceConfigName[i].name;
         obj->i2c0SlaveAddr = obj->i2c1SlaveAddr = SUB_DEVICES_ADDR_DEFAULT;
     }
@@ -106,7 +104,7 @@ static uint8_t SubDevice_modeConvertSlaveAddr(SUB_DEVICE_MODE mode)
 {
     return SUB_DEVICES_ADDR_PRIFIXED | (mode << 1);
 }
-static void SubDevice_InsertMode(SubDeviceMODE_T *obj, SUB_DEVICE_MODE mode)
+static void SubDevice_InsertMode(SubDeviceModeStatus_T *obj, SUB_DEVICE_MODE mode)
 {
     if (mode == SUB_DEVICE_MODE_MAIN)
     {
@@ -116,6 +114,7 @@ static void SubDevice_InsertMode(SubDeviceMODE_T *obj, SUB_DEVICE_MODE mode)
     obj->mode = mode;
     obj->name = g_SubDeviceConfigName[mode].name;
     obj->i2c0SlaveAddr = obj->i2c1SlaveAddr = SubDevice_modeConvertSlaveAddr(mode);
+    obj->busUsed = NM_SECONDARY_IPMB_BUS;
 }
 bool SubDevice_CheckAndPrintMode(void)
 {
@@ -139,8 +138,8 @@ bool SubDevice_CheckAndPrintMode(void)
     EEP_WriteDataCheckFirst(EEP_ADDR_SAVE_MODE, (uint8_t *)buff, strlen(buff));
     SubDevice_InitAllMode();
 
-    SubDevice_InsertMode(&g_AllModes[mode], mode);
-    pSubDeviceSelf = &g_AllModes[mode];
+    SubDevice_InsertMode(&g_AllModesStatus[mode], mode);
+    pSubDeviceSelf = &g_AllModesStatus[mode];
     return true;
 }
 
@@ -172,9 +171,9 @@ static bool SubDevice_isExistSensorUnit(uint8_t queryUnitType)
 }
 static void SubDevice_readAllSensorUnit(void)
 {
-    for (uint8_t idx = 0; idx < g_subDeviceHandler.sensorUnitTypeCount; idx++)
+    for (uint8_t idx = 0; idx < g_subDeviceTypeExist.sensorUnitTypeCount; idx++)
     {
-        SENSOR_UNITTYPECODE_EXIST *pTypeCode = &g_subDeviceHandler.sensorUnitTypeExist[idx];
+        SENSOR_UNITTYPECODE_EXIST *pTypeCode = &g_subDeviceTypeExist.sensorUnitTypeExist[idx];
         if (SubDevice_isExistSensorUnit(pTypeCode->sensorUnitTypeCode))
         {
             pTypeCode->isExist = true;
@@ -192,7 +191,6 @@ static void SubDevice_Init(void)
     hooks.free_fn = vPortFree;
     cJSON_InitHooks(&hooks);
 
-    g_subDeviceHandler.busUsed = NM_SECONDARY_IPMB_BUS;
     SubDevice_readAllSensorUnit();
 }
 
@@ -211,14 +209,6 @@ SUB_DEVICE_MODE SubDevice_GetMyMode(void)
         return SUB_DEVICE_MODE_MAX;
     }
     return pSubDeviceSelf->mode;
-}
-bool SubDevice_IsOnLine(void)
-{
-    if (pSubDeviceSelf == NULL)
-    {
-        return false;
-    }
-    return pSubDeviceSelf->isOnLine;
 }
 /// @brief master and slave i2c init will be called
 /// @param bus
@@ -241,18 +231,29 @@ uint8_t SubDevice_GetMySlaveAddress(uint32_t bus)
         return 0;
     }
 }
-SubDeviceMODE_T *SubDevice_GetSelf(void)
+SubDeviceModeStatus_T *SubDevice_GetSelf(void)
 {
     return pSubDeviceSelf;
 }
 // master called only
-__attribute__((unused)) static void SubDevice_SetOnLine(SUB_DEVICE_MODE mode, bool isOnline)
+static bool SubDevice_IsOnLine(SUB_DEVICE_MODE mode)
 {
     for (uint8_t i = 0; i < SUB_DEVICE_MODE_MAX; i++)
     {
-        if (g_AllModes[i].mode == mode)
+        if (g_AllModesStatus[i].mode == mode)
         {
-            pSubDeviceSelf->isOnLine = isOnline;
+            return g_AllModesStatus[i].isOnLine;
+        }
+    }
+    return false;
+}
+static void SubDevice_SetOnLine(SUB_DEVICE_MODE mode, bool isOnline)
+{
+    for (uint8_t i = 0; i < SUB_DEVICE_MODE_MAX; i++)
+    {
+        if (g_AllModesStatus[i].mode == mode)
+        {
+            g_AllModesStatus[i].isOnLine = isOnline;
             return;
         }
     }
@@ -275,31 +276,32 @@ static bool SubDevice_QueryModeByAddr(uint8_t addrBit8, SUB_DEVICE_MODE *mode)
     *mode = (SUB_DEVICE_MODE)addrLow;
     return true;
 }
-bool SubDevice_Management(uint8_t addr)
+uint32_t SubDevice_GetBus(SUB_DEVICE_MODE mode)
 {
-    SUB_DEVICE_MODE newMode;
-    if (SubDevice_QueryModeByAddr(addr, &newMode) == false)
+    for (uint8_t i = 0; i < SUB_DEVICE_MODE_MAX; i++)
     {
-        return false;
-    }
-    uint8_t i = 0;
-    for (i = 0; i < SUB_DEVICE_MODE_MAX; i++)
-    {
-        if (g_AllModes[i].mode == newMode)
+        if (g_AllModesStatus[i].mode == mode)
         {
-            return false; // already exist
-        }
-        if (g_AllModes[i].mode == SUB_DEVICE_MODE_MAX)
-        { // get a new buff
-            SubDevice_InsertMode(&g_AllModes[i], newMode);
-            return true;
+            return g_AllModesStatus[i].busUsed;
         }
     }
-    return false; // full
+    return NM_SECONDARY_IPMB_BUS;
 }
-uint32_t SubDevice_GetBus(void)
+
+static void SubDevice_SwitchBus(SUB_DEVICE_MODE mode)
 {
-    return g_subDeviceHandler.busUsed;
+    for (uint8_t i = 0; i < SUB_DEVICE_MODE_MAX; i++)
+    {
+        if (g_AllModesStatus[i].mode == mode)
+        {
+            if (g_AllModesStatus[i].busUsed == NM_SECONDARY_IPMB_BUS) {
+                g_AllModesStatus[i].busUsed = NM_PRIMARY_IPMB_BUS;
+            } else {
+                g_AllModesStatus[i].busUsed = NM_SECONDARY_IPMB_BUS;
+            }
+            return;
+        }
+    }
 }
 static void SubDevice_SendDataSpilt(char *pstr)
 {
@@ -342,9 +344,9 @@ static void SubDevice_Upload()
     char *pstr;
 
     LOG_D("\t\tSubDevice_Upload, free byte = %d\n", xPortGetFreeHeapSize());
-    for (uint8_t idx = 0; idx < g_subDeviceHandler.sensorUnitTypeCount; idx++)
+    for (uint8_t idx = 0; idx < g_subDeviceTypeExist.sensorUnitTypeCount; idx++)
     {
-        SENSOR_UNITTYPECODE_EXIST *pTypeCode = &g_subDeviceHandler.sensorUnitTypeExist[idx];
+        SENSOR_UNITTYPECODE_EXIST *pTypeCode = &g_subDeviceTypeExist.sensorUnitTypeExist[idx];
         if (pTypeCode->isExist == false)
         {
             continue;
@@ -445,13 +447,14 @@ static bool SubDevice_readingSensorForeach(SUB_DEVICE_MODE dev, uint8_t sensorNu
     }
     return false;
 }
+/// @brief Sample All ipmb val, and convert to human
 static void SubDevice_SampleAll()
 {
     MsgPkt_T requestPkt;
     IPMIMsgHdr_T *hdr = (IPMIMsgHdr_T *)&(requestPkt.Data);
     requestPkt.Param = IPMB_SUB_DEVICE_HEARTBEAT_REQUEST;
-    requestPkt.Channel = SubDevice_GetBus();
     uint8_t sensorNum;
+    bool isDevOnline;
 
     for (SUB_DEVICE_MODE dev = (SUB_DEVICE_MODE)0; dev < SUB_DEVICE_MODE_MAX; dev++)
     {
@@ -460,6 +463,7 @@ static void SubDevice_SampleAll()
         {
             continue;
         }
+        requestPkt.Channel = SubDevice_GetBus(dev);
         // hdr->ResAddr = 0x20;      //  main ipmb
         hdr->ResAddr = SubDevice_modeConvertSlaveAddr(dev);
         hdr->NetFnLUN = NETFN_SENSOR << 2; // RAW
@@ -468,36 +472,53 @@ static void SubDevice_SampleAll()
         hdr->ReqAddr = SubDevice_GetMySlaveAddress(requestPkt.Channel);
         hdr->RqSeqLUN = 0x01;
         hdr->Cmd = CMD_GET_SENSOR_READING;
-
+        isDevOnline = false;
         for (uint8_t numIdex = 0; numIdex < pHandler->sensorCfgSize; numIdex++)
         {
-            SubDevice_Reading_T *pDeviceReading = &pHandler->val[numIdex];
+            SubDevice_Reading_T *pDeviceReading = &pHandler->val[numIdex]; 
             // sensorNum = 0x23;     // P1V8 standby
             sensorNum = api_sensorGetSensorNumByIdex(dev, numIdex);
             if (SubDevice_readingSensorForeach(dev, sensorNum, &requestPkt, pDeviceReading))
             {
+                isDevOnline = true;
                 if (api_sensorConvert2HumanVal(dev, sensorNum, pDeviceReading->rawIPMB, &pDeviceReading->human) == true)
                 {
                     pDeviceReading->errCnt = 0;
                     continue; // success
                 }
             }
-            if (pDeviceReading->errCnt++ > SUB_DEVICES_FAILED_MAX_COUNT)
+            if (pDeviceReading->errCnt++ >= SUB_DEVICES_FAILED_MAX_COUNT)
             {
-                pDeviceReading->errCnt = 0;
+                pDeviceReading->errCnt = SUB_DEVICES_FAILED_MAX_COUNT;
                 pDeviceReading->rawIPMB = 0;
                 pDeviceReading->human = 0;
+                isDevOnline = false;
+            }else{
+                isDevOnline = true;
             }
+        }
+        SubDevice_SetOnLine(dev , isDevOnline);
+    }
+}
+static void SubDevice_staticOnlineSwitchBus(void)
+{
+    for (SUB_DEVICE_MODE dev = (SUB_DEVICE_MODE)0; dev < SUB_DEVICE_MODE_MAX; dev++)
+    {
+        if (!SubDevice_IsOnLine(dev)) {
+            SubDevice_SwitchBus(dev);
+            LOG_W("[ %d : %s ] is offline, switch ipmb bus to %d\r\n", dev, SubDevice_GetModeName(dev), SubDevice_GetBus(dev));
+        } else {
+            LOG_D("[ %d : %s ] is online\r\n", dev, SubDevice_GetModeName(dev));
         }
     }
 }
-
 /// @brief sample & upload
 /// @param pvParameters 
 void SubDevice_commuTask(void *pvParameters)
 {
     uint32_t sampleCount = 0;
     uint32_t uploadCount = 0;
+    uint32_t switchBusCount = 0;
     cJSON_Hooks hooks;
     hooks.malloc_fn = pvPortMalloc;
     hooks.free_fn = vPortFree;
@@ -507,16 +528,20 @@ void SubDevice_commuTask(void *pvParameters)
     while (1)
     {
         vTaskDelay(SUB_DEVICES_TASK_DELAY_MS);
-        if (sampleCount >= SUB_DEVICES_TIMER_SAMPLE_PERIOD_XMS / SUB_DEVICES_TASK_DELAY_MS){
-            SubDevice_SampleAll();
+        if (sampleCount++ >= SUB_DEVICES_TIMER_SAMPLE_PERIOD_XMS / SUB_DEVICES_TASK_DELAY_MS){
             sampleCount = 0;
+            SubDevice_SampleAll();
         }
-        if (uploadCount >= SUB_DEVICES_TIMER_UPLOAD_PERIOD_XMS / SUB_DEVICES_TASK_DELAY_MS){
-            SubDevice_Upload();
+
+        if (uploadCount++ >= SUB_DEVICES_TIMER_UPLOAD_PERIOD_XMS / SUB_DEVICES_TASK_DELAY_MS){
             uploadCount = 0;
+            SubDevice_Upload();
         }
-        sampleCount++;
-        uploadCount++;
+
+        if (switchBusCount++ >= SUB_DEVICES_TIMER_SWITCH_IPMB_BUS_XMS / SUB_DEVICES_TASK_DELAY_MS){
+            switchBusCount = 0;
+            SubDevice_staticOnlineSwitchBus();
+        }
     }
 }
 

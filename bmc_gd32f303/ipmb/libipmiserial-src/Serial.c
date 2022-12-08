@@ -63,7 +63,7 @@ INT16U
 ProcessSerialMessage (MsgPkt_T* pReq, MsgPkt_T* pRes,int BMCInst)
 {
     IPMIMsgHdr_T *pIPMIReqHdr = (IPMIMsgHdr_T *)pReq->Data;  
-	pRes->Channel = pReq->Channel = SubDevice_GetBus();
+	pRes->Channel = pReq->Channel = SubDevice_GetBus(SubDevice_GetMyMode());
     if (pIPMIReqHdr->ResAddr == SubDevice_GetMySlaveAddress(pReq->Channel)) { // self msg. Process it
         // pRes->Param = SERIAL_REQUEST; // if you want: serial in /serial out,not serial in /I2C out
         pRes->Param = IPMI_REQUEST;
