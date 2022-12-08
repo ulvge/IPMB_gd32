@@ -1095,6 +1095,11 @@
               <FileType>1</FileType>
               <FilePath>..\api\shell\shell_port.c</FilePath>
             </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>cm_backtrace</GroupName>
+          <Files>
             <File>
               <FileName>cm_backtrace.c</FileName>
               <FileType>1</FileType>
@@ -1106,9 +1111,6 @@
               <FilePath>..\api\cm_backtrace\cmb_fault.S</FilePath>
             </File>
           </Files>
-        </Group>
-        <Group>
-          <GroupName>cm_backtrace</GroupName>
         </Group>
       </Groups>
     </Target>

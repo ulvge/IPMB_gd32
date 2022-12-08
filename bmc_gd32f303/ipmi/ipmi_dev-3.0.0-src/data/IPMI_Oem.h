@@ -100,14 +100,6 @@ typedef struct
     INT32U BMCFirmwareTime;
     INT32U BMCRunTime;
     INT8U CPUStatus;
-    INT8U Eth0Status;
-    INT8U Eth1Status;
-    INT8U Eth2Status;
-    INT8U Eth3Status;
-    INT8U Eth4Status;
-    INT8U Eth5Status;
-    INT32U CPUstartupTime;
-
 } GetBMCInfoRes_T;
 
 #pragma pack( )

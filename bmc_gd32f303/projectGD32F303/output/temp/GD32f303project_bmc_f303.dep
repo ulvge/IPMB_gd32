@@ -42,7 +42,7 @@ I (..\firmware\GD32F30x\GD32F30x_standard_peripheral\Include\gd32f30x_enet.h)(0x
 I (..\firmware\GD32F30x\GD32F30x_standard_peripheral\Include\gd32f30x_exmc.h)(0x61CC215C)
 I (d:\Keil_v5\ARM\ARMCC\include\stdbool.h)(0x6025237C)
 I (..\api\net_print/net_print.h)(0x604ABF58)
-I (..\user\main.h)(0x6385CB13)
+I (..\user\main.h)(0x6391CDB0)
 F (..\firmware\GD32F30x\GD32F30x_standard_peripheral\Source\gd32f30x_it.c)(0x6385A92C)(--c99 -c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O0 --apcs=interwork -I ..\firmware -I ..\firmware\GD32F30x\GD32F30x_standard_peripheral\Include -I ..\firmware\GD32F30x\CMSIS\GD\GD32F30x\Include -I ..\firmware\GD32F30x\CMSIS -I ..\user -I ..\bsp -I ..\ipmi -I ..\ipmi\data -I ..\ipmi\ipmi_dev-3.0.0-src -I ..\ipmi\ipmi_dev-3.0.0-src\data -I ..\ipmi\ipmi_common -I ..\ipmi\libipmi-3.1.0-src\data\include -I ..\ipmi\libipmi-3.1.0-src\data -I ..\ipmb -I ..\api -I ..\api\adc -I ..\api\flash -I ..\api\shell -I ..\api\tools -I ..\api\cpu -I ..\sub_devices -I ..\api\sensor -I ..\api\update -I ..\api\fan -I ..\freertos\include -I ..\freertos\portable -I ..\freertos\portable\RVDS\ARM_CM4F -I ..\ff10 -I ..\api\cm_backtrace-Id:\Users\Arm\Packs\GigaDevice\GD32F30x_DFP\2.2.1\Device\Include-Id:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="535" -DGD32F30X_XD -DARM_MATH_CM4 -D__CC_ARM -DGD32F3x-o .\output\temp\gd32f30x_it.o --omf_browse .\output\temp\gd32f30x_it.crf --depend .\output\temp\gd32f30x_it.d)
 I (d:\Keil_v5\ARM\ARMCC\include\string.h)(0x6025237E)
 I (..\firmware\GD32F30x\GD32F30x_standard_peripheral\Include\gd32f30x_it.h)(0x63154ED0)
@@ -78,11 +78,11 @@ I (..\firmware\GD32F30x\GD32F30x_standard_peripheral\Include\gd32f30x_wwdgt.h)(0
 I (..\firmware\GD32F30x\GD32F30x_standard_peripheral\Include\gd32f30x_misc.h)(0x61CC215B)
 I (..\firmware\GD32F30x\GD32F30x_standard_peripheral\Include\gd32f30x_enet.h)(0x62A6E3C7)
 I (..\firmware\GD32F30x\GD32F30x_standard_peripheral\Include\gd32f30x_exmc.h)(0x61CC215C)
-I (..\user\main.h)(0x6385CB13)
+I (..\user\main.h)(0x6391CDB0)
 I (..\user\systick.h)(0x632D1846)
 I (..\freertos\include\FreeRTOS.h)(0x604ABF58)
 I (d:\Keil_v5\ARM\ARMCC\include\stddef.h)(0x630C7EAD)
-I (..\freertos\include\FreeRTOSConfig.h)(0x638D46CC)
+I (..\freertos\include\FreeRTOSConfig.h)(0x6391AC49)
 I (..\bsp\bsp_usart1.h)(0x6385A4E8)
 I (..\firmware\project_select.h)(0x638DB039)
 I (d:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x60252374)
@@ -98,10 +98,10 @@ I (..\api\cpu\api_cpu.h)(0x6331027D)
 I (..\ipmi\ipmi_common\Types.h)(0x6371948D)
 I (..\bsp\bsp_uartcomm.h)(0x63686EEF)
 I (..\api\tools\FIFO.h)(0x6375CA14)
-F (..\user\main.c)(0x638D45D0)(--c99 -c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O0 --apcs=interwork -I ..\firmware -I ..\firmware\GD32F30x\GD32F30x_standard_peripheral\Include -I ..\firmware\GD32F30x\CMSIS\GD\GD32F30x\Include -I ..\firmware\GD32F30x\CMSIS -I ..\user -I ..\bsp -I ..\ipmi -I ..\ipmi\data -I ..\ipmi\ipmi_dev-3.0.0-src -I ..\ipmi\ipmi_dev-3.0.0-src\data -I ..\ipmi\ipmi_common -I ..\ipmi\libipmi-3.1.0-src\data\include -I ..\ipmi\libipmi-3.1.0-src\data -I ..\ipmb -I ..\api -I ..\api\adc -I ..\api\flash -I ..\api\shell -I ..\api\tools -I ..\api\cpu -I ..\sub_devices -I ..\api\sensor -I ..\api\update -I ..\api\fan -I ..\freertos\include -I ..\freertos\portable -I ..\freertos\portable\RVDS\ARM_CM4F -I ..\ff10 -I ..\api\cm_backtrace-Id:\Users\Arm\Packs\GigaDevice\GD32F30x_DFP\2.2.1\Device\Include-Id:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="535" -DGD32F30X_XD -DARM_MATH_CM4 -D__CC_ARM -DGD32F3x-o .\output\temp\main.o --omf_browse .\output\temp\main.crf --depend .\output\temp\main.d)
+F (..\user\main.c)(0x6391D439)(--c99 -c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O0 --apcs=interwork -I ..\firmware -I ..\firmware\GD32F30x\GD32F30x_standard_peripheral\Include -I ..\firmware\GD32F30x\CMSIS\GD\GD32F30x\Include -I ..\firmware\GD32F30x\CMSIS -I ..\user -I ..\bsp -I ..\ipmi -I ..\ipmi\data -I ..\ipmi\ipmi_dev-3.0.0-src -I ..\ipmi\ipmi_dev-3.0.0-src\data -I ..\ipmi\ipmi_common -I ..\ipmi\libipmi-3.1.0-src\data\include -I ..\ipmi\libipmi-3.1.0-src\data -I ..\ipmb -I ..\api -I ..\api\adc -I ..\api\flash -I ..\api\shell -I ..\api\tools -I ..\api\cpu -I ..\sub_devices -I ..\api\sensor -I ..\api\update -I ..\api\fan -I ..\freertos\include -I ..\freertos\portable -I ..\freertos\portable\RVDS\ARM_CM4F -I ..\ff10 -I ..\api\cm_backtrace-Id:\Users\Arm\Packs\GigaDevice\GD32F30x_DFP\2.2.1\Device\Include-Id:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="535" -DGD32F30X_XD -DARM_MATH_CM4 -D__CC_ARM -DGD32F3x-o .\output\temp\main.o --omf_browse .\output\temp\main.crf --depend .\output\temp\main.d)
 I (d:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x60252374)
 I (d:\Keil_v5\ARM\ARMCC\include\stdbool.h)(0x6025237C)
-I (..\user\main.h)(0x6385CB13)
+I (..\user\main.h)(0x6391CDB0)
 I (..\ipmi\ipmi_dev-3.0.0-src\data\OSPort.h)(0x604ABF59)
 I (d:\Keil_v5\ARM\ARMCC\include\stdlib.h)(0x60252374)
 I (d:\Keil_v5\ARM\ARMCC\include\string.h)(0x6025237E)
@@ -109,7 +109,7 @@ I (..\ipmi\ipmi_common\Types.h)(0x6371948D)
 I (..\freertos\include\FreeRTOS.h)(0x604ABF58)
 I (d:\Keil_v5\ARM\ARMCC\include\stddef.h)(0x630C7EAD)
 I (d:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x636DF059)
-I (..\freertos\include\FreeRTOSConfig.h)(0x638D46CC)
+I (..\freertos\include\FreeRTOSConfig.h)(0x6391AC49)
 I (..\bsp\bsp_usart1.h)(0x6385A4E8)
 I (..\firmware\project_select.h)(0x638DB039)
 I (..\firmware\GD32F30x\GD32F30x_standard_peripheral\Include\gd32f30x_it.h)(0x63154ED0)
@@ -161,11 +161,11 @@ I (..\user\systick.h)(0x632D1846)
 I (..\bsp\bsp_uartcomm.h)(0x63686EEF)
 I (..\api\tools\FIFO.h)(0x6375CA14)
 I (..\bsp\bsp_i2c.h)(0x6375FD7F)
-I (..\bsp\bsp_gpio.h)(0x638EF4DE)
-I (..\sub_devices\api_subdevices.h)(0x638EFD10)
+I (..\bsp\bsp_gpio.h)(0x638F0360)
+I (..\sub_devices\api_subdevices.h)(0x6391A5B4)
 I (..\api\fan/api_fan.h)(0x634FC0FF)
 I (..\bsp\bsp_pwm.h)(0x634FC6FF)
-I (..\api\sensor\api_sensor.h)(0x638EF981)
+I (..\api\sensor\api_sensor.h)(0x638F0347)
 I (..\bsp\bsp_adc.h)(0x636C5395)
 I (..\ipmi\ipmi_dev-3.0.0-src\data\IPMI_SDRRecord.h)(0x6358E03B)
 I (..\api\sensor\mac5023.h)(0x6375E24B)
@@ -185,7 +185,7 @@ I (..\ipmi\ipmi_dev-3.0.0-src\data\IPMIDefs.h)(0x604ABF59)
 I (..\api\update/jump.h)(0x638D5826)
 I (..\bsp\bsp_timer.h)(0x632D21BC)
 I (..\ipmi\ipmi_dev-3.0.0-src\data\ChassisCtrl.h)(0x6335112D)
-I (..\api\cm_backtrace\cm_backtrace.h)(0x601A61DB)
+I (..\api\cm_backtrace\cm_backtrace.h)(0x6391C3E2)
 I (..\api\cm_backtrace\cmb_def.h)(0x63858354)
 I (..\api\cm_backtrace\cmb_cfg.h)(0x63858348)
 F (..\user\systick.c)(0x638427A7)(--c99 -c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O0 --apcs=interwork -I ..\firmware -I ..\firmware\GD32F30x\GD32F30x_standard_peripheral\Include -I ..\firmware\GD32F30x\CMSIS\GD\GD32F30x\Include -I ..\firmware\GD32F30x\CMSIS -I ..\user -I ..\bsp -I ..\ipmi -I ..\ipmi\data -I ..\ipmi\ipmi_dev-3.0.0-src -I ..\ipmi\ipmi_dev-3.0.0-src\data -I ..\ipmi\ipmi_common -I ..\ipmi\libipmi-3.1.0-src\data\include -I ..\ipmi\libipmi-3.1.0-src\data -I ..\ipmb -I ..\api -I ..\api\adc -I ..\api\flash -I ..\api\shell -I ..\api\tools -I ..\api\cpu -I ..\sub_devices -I ..\api\sensor -I ..\api\update -I ..\api\fan -I ..\freertos\include -I ..\freertos\portable -I ..\freertos\portable\RVDS\ARM_CM4F -I ..\ff10 -I ..\api\cm_backtrace-Id:\Users\Arm\Packs\GigaDevice\GD32F30x_DFP\2.2.1\Device\Include-Id:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="535" -DGD32F30X_XD -DARM_MATH_CM4 -D__CC_ARM -DGD32F3x-o .\output\temp\systick.o --omf_browse .\output\temp\systick.crf --depend .\output\temp\systick.d)
@@ -232,7 +232,7 @@ I (..\ipmi\ipmi_common\Types.h)(0x6371948D)
 I (d:\Keil_v5\ARM\ARMCC\include\stdbool.h)(0x6025237C)
 I (..\freertos\include\FreeRTOS.h)(0x604ABF58)
 I (d:\Keil_v5\ARM\ARMCC\include\stddef.h)(0x630C7EAD)
-I (..\freertos\include\FreeRTOSConfig.h)(0x638D46CC)
+I (..\freertos\include\FreeRTOSConfig.h)(0x6391AC49)
 I (..\bsp\bsp_usart1.h)(0x6385A4E8)
 I (..\freertos\include\projdefs.h)(0x604ABF58)
 I (..\freertos\include\portable.h)(0x604ABF58)
@@ -247,7 +247,7 @@ I (..\freertos\include\event_groups.h)(0x604ABF58)
 I (..\freertos\include\timers.h)(0x604ABF58)
 I (..\ipmi\ipmi_common\debug_print.h)(0x636C99CA)
 I (..\api\net_print/net_print.h)(0x604ABF58)
-I (..\user\main.h)(0x6385CB13)
+I (..\user\main.h)(0x6391CDB0)
 F (..\firmware\GD32F30x\gd32f30x_platform.c)(0x63155C0E)(--c99 -c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O0 --apcs=interwork -I ..\firmware -I ..\firmware\GD32F30x\GD32F30x_standard_peripheral\Include -I ..\firmware\GD32F30x\CMSIS\GD\GD32F30x\Include -I ..\firmware\GD32F30x\CMSIS -I ..\user -I ..\bsp -I ..\ipmi -I ..\ipmi\data -I ..\ipmi\ipmi_dev-3.0.0-src -I ..\ipmi\ipmi_dev-3.0.0-src\data -I ..\ipmi\ipmi_common -I ..\ipmi\libipmi-3.1.0-src\data\include -I ..\ipmi\libipmi-3.1.0-src\data -I ..\ipmb -I ..\api -I ..\api\adc -I ..\api\flash -I ..\api\shell -I ..\api\tools -I ..\api\cpu -I ..\sub_devices -I ..\api\sensor -I ..\api\update -I ..\api\fan -I ..\freertos\include -I ..\freertos\portable -I ..\freertos\portable\RVDS\ARM_CM4F -I ..\ff10 -I ..\api\cm_backtrace-Id:\Users\Arm\Packs\GigaDevice\GD32F30x_DFP\2.2.1\Device\Include-Id:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="535" -DGD32F30X_XD -DARM_MATH_CM4 -D__CC_ARM -DGD32F3x-o .\output\temp\gd32f30x_platform.o --omf_browse .\output\temp\gd32f30x_platform.crf --depend .\output\temp\gd32f30x_platform.d)
 I (..\firmware\project_select.h)(0x638DB039)
 I (..\firmware\GD32F30x\GD32F30x_standard_peripheral\Include\gd32f30x_it.h)(0x63154ED0)
@@ -283,7 +283,7 @@ I (..\firmware\GD32F30x\GD32F30x_standard_peripheral\Include\gd32f30x_wwdgt.h)(0
 I (..\firmware\GD32F30x\GD32F30x_standard_peripheral\Include\gd32f30x_misc.h)(0x61CC215B)
 I (..\firmware\GD32F30x\GD32F30x_standard_peripheral\Include\gd32f30x_enet.h)(0x62A6E3C7)
 I (..\firmware\GD32F30x\GD32F30x_standard_peripheral\Include\gd32f30x_exmc.h)(0x61CC215C)
-F (..\sub_devices\api_subdevices.c)(0x638EFD44)(--c99 -c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O0 --apcs=interwork -I ..\firmware -I ..\firmware\GD32F30x\GD32F30x_standard_peripheral\Include -I ..\firmware\GD32F30x\CMSIS\GD\GD32F30x\Include -I ..\firmware\GD32F30x\CMSIS -I ..\user -I ..\bsp -I ..\ipmi -I ..\ipmi\data -I ..\ipmi\ipmi_dev-3.0.0-src -I ..\ipmi\ipmi_dev-3.0.0-src\data -I ..\ipmi\ipmi_common -I ..\ipmi\libipmi-3.1.0-src\data\include -I ..\ipmi\libipmi-3.1.0-src\data -I ..\ipmb -I ..\api -I ..\api\adc -I ..\api\flash -I ..\api\shell -I ..\api\tools -I ..\api\cpu -I ..\sub_devices -I ..\api\sensor -I ..\api\update -I ..\api\fan -I ..\freertos\include -I ..\freertos\portable -I ..\freertos\portable\RVDS\ARM_CM4F -I ..\ff10 -I ..\api\cm_backtrace-Id:\Users\Arm\Packs\GigaDevice\GD32F30x_DFP\2.2.1\Device\Include-Id:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="535" -DGD32F30X_XD -DARM_MATH_CM4 -D__CC_ARM -DGD32F3x-o .\output\temp\api_subdevices.o --omf_browse .\output\temp\api_subdevices.crf --depend .\output\temp\api_subdevices.d)
+F (..\sub_devices\api_subdevices.c)(0x6391C484)(--c99 -c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O0 --apcs=interwork -I ..\firmware -I ..\firmware\GD32F30x\GD32F30x_standard_peripheral\Include -I ..\firmware\GD32F30x\CMSIS\GD\GD32F30x\Include -I ..\firmware\GD32F30x\CMSIS -I ..\user -I ..\bsp -I ..\ipmi -I ..\ipmi\data -I ..\ipmi\ipmi_dev-3.0.0-src -I ..\ipmi\ipmi_dev-3.0.0-src\data -I ..\ipmi\ipmi_common -I ..\ipmi\libipmi-3.1.0-src\data\include -I ..\ipmi\libipmi-3.1.0-src\data -I ..\ipmb -I ..\api -I ..\api\adc -I ..\api\flash -I ..\api\shell -I ..\api\tools -I ..\api\cpu -I ..\sub_devices -I ..\api\sensor -I ..\api\update -I ..\api\fan -I ..\freertos\include -I ..\freertos\portable -I ..\freertos\portable\RVDS\ARM_CM4F -I ..\ff10 -I ..\api\cm_backtrace-Id:\Users\Arm\Packs\GigaDevice\GD32F30x_DFP\2.2.1\Device\Include-Id:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="535" -DGD32F30X_XD -DARM_MATH_CM4 -D__CC_ARM -DGD32F3x-o .\output\temp\api_subdevices.o --omf_browse .\output\temp\api_subdevices.crf --depend .\output\temp\api_subdevices.d)
 I (d:\Keil_v5\ARM\ARMCC\include\string.h)(0x6025237E)
 I (d:\Keil_v5\ARM\ARMCC\include\stdlib.h)(0x60252374)
 I (..\ipmi\ipmi_common\debug_print.h)(0x636C99CA)
@@ -325,16 +325,16 @@ I (..\firmware\GD32F30x\GD32F30x_standard_peripheral\Include\gd32f30x_exmc.h)(0x
 I (d:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x60252374)
 I (d:\Keil_v5\ARM\ARMCC\include\stdbool.h)(0x6025237C)
 I (..\api\net_print/net_print.h)(0x604ABF58)
-I (..\user\main.h)(0x6385CB13)
-I (..\sub_devices\api_subdevices.h)(0x638EFD10)
-I (..\bsp\bsp_gpio.h)(0x638EF4DE)
+I (..\user\main.h)(0x6391CDB0)
+I (..\sub_devices\api_subdevices.h)(0x6391A5B4)
+I (..\bsp\bsp_gpio.h)(0x638F0360)
 I (..\bsp\bsp_i2c.h)(0x6375FD7F)
 I (..\ipmi\ipmi_dev-3.0.0-src\data\IPMIConf.h)(0x6375A6E0)
 I (..\ipmi\ipmi_common\Types.h)(0x6371948D)
 I (..\ipmi\ipmi_dev-3.0.0-src\data\OSPort.h)(0x604ABF59)
 I (..\freertos\include\FreeRTOS.h)(0x604ABF58)
 I (d:\Keil_v5\ARM\ARMCC\include\stddef.h)(0x630C7EAD)
-I (..\freertos\include\FreeRTOSConfig.h)(0x638D46CC)
+I (..\freertos\include\FreeRTOSConfig.h)(0x6391AC49)
 I (..\freertos\include\projdefs.h)(0x604ABF58)
 I (..\freertos\include\portable.h)(0x604ABF58)
 I (..\freertos\include\deprecated_definitions.h)(0x604ABF58)
@@ -405,7 +405,7 @@ I (..\ipmi\ipmi_dev-3.0.0-src\data\sensor.h)(0x6360FF07)
 I (..\bsp\bsp_adc.h)(0x636C5395)
 I (..\user\systick.h)(0x632D1846)
 I (..\api\adc\api_adc.h)(0x636DB205)
-I (..\api\sensor\api_sensor.h)(0x638EF981)
+I (..\api\sensor\api_sensor.h)(0x638F0347)
 I (..\api\sensor\mac5023.h)(0x6375E24B)
 I (..\api\sensor\pmbus.h)(0x6375E3AE)
 I (..\api\tools\cJSON.h)(0x6242AF23)
@@ -413,7 +413,7 @@ I (..\api\sensor\eeprom.h)(0x63762E64)
 F (..\sub_devices\dev_main.c)(0x638D48B1)(--c99 -c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O0 --apcs=interwork -I ..\firmware -I ..\firmware\GD32F30x\GD32F30x_standard_peripheral\Include -I ..\firmware\GD32F30x\CMSIS\GD\GD32F30x\Include -I ..\firmware\GD32F30x\CMSIS -I ..\user -I ..\bsp -I ..\ipmi -I ..\ipmi\data -I ..\ipmi\ipmi_dev-3.0.0-src -I ..\ipmi\ipmi_dev-3.0.0-src\data -I ..\ipmi\ipmi_common -I ..\ipmi\libipmi-3.1.0-src\data\include -I ..\ipmi\libipmi-3.1.0-src\data -I ..\ipmb -I ..\api -I ..\api\adc -I ..\api\flash -I ..\api\shell -I ..\api\tools -I ..\api\cpu -I ..\sub_devices -I ..\api\sensor -I ..\api\update -I ..\api\fan -I ..\freertos\include -I ..\freertos\portable -I ..\freertos\portable\RVDS\ARM_CM4F -I ..\ff10 -I ..\api\cm_backtrace-Id:\Users\Arm\Packs\GigaDevice\GD32F30x_DFP\2.2.1\Device\Include-Id:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="535" -DGD32F30X_XD -DARM_MATH_CM4 -D__CC_ARM -DGD32F3x-o .\output\temp\dev_main.o --omf_browse .\output\temp\dev_main.crf --depend .\output\temp\dev_main.d)
 I (d:\Keil_v5\ARM\ARMCC\include\string.h)(0x6025237E)
 I (d:\Keil_v5\ARM\ARMCC\include\stdlib.h)(0x60252374)
-I (..\bsp\bsp_gpio.h)(0x638EF4DE)
+I (..\bsp\bsp_gpio.h)(0x638F0360)
 I (..\firmware\project_select.h)(0x638DB039)
 I (..\firmware\GD32F30x\GD32F30x_standard_peripheral\Include\gd32f30x_it.h)(0x63154ED0)
 I (..\firmware\GD32F30x\CMSIS\GD\GD32F30x\Include\gd32f30x.h)(0x61CC215C)
@@ -449,8 +449,8 @@ I (..\firmware\GD32F30x\GD32F30x_standard_peripheral\Include\gd32f30x_misc.h)(0x
 I (..\firmware\GD32F30x\GD32F30x_standard_peripheral\Include\gd32f30x_enet.h)(0x62A6E3C7)
 I (..\firmware\GD32F30x\GD32F30x_standard_peripheral\Include\gd32f30x_exmc.h)(0x61CC215C)
 I (d:\Keil_v5\ARM\ARMCC\include\stdbool.h)(0x6025237C)
-I (..\user\main.h)(0x6385CB13)
-I (..\sub_devices\api_subdevices.h)(0x638EFD10)
+I (..\user\main.h)(0x6391CDB0)
+I (..\sub_devices\api_subdevices.h)(0x6391A5B4)
 I (..\ipmi\ipmi_dev-3.0.0-src\data\sensor.h)(0x6360FF07)
 I (..\ipmi\ipmi_common\Types.h)(0x6371948D)
 I (..\ipmi\ipmi_dev-3.0.0-src\data\IPMI_Sensor.h)(0x6359F141)
@@ -460,14 +460,14 @@ I (..\ipmi\ipmi_dev-3.0.0-src\data\IPMI_IPM.h)(0x63450D1A)
 I (..\ipmi\ipmi_dev-3.0.0-src\data\SensorMonitor.h)(0x6348C46B)
 I (..\bsp\bsp_adc.h)(0x636C5395)
 I (..\user\systick.h)(0x632D1846)
-I (..\api\sensor\api_sensor.h)(0x638EF981)
+I (..\api\sensor\api_sensor.h)(0x638F0347)
 I (..\ipmi\ipmi_common\debug_print.h)(0x636C99CA)
 I (..\bsp\bsp_usart1.h)(0x6385A4E8)
 I (d:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x60252374)
 I (..\api\net_print/net_print.h)(0x604ABF58)
 I (..\freertos\include\FreeRTOS.h)(0x604ABF58)
 I (d:\Keil_v5\ARM\ARMCC\include\stddef.h)(0x630C7EAD)
-I (..\freertos\include\FreeRTOSConfig.h)(0x638D46CC)
+I (..\freertos\include\FreeRTOSConfig.h)(0x6391AC49)
 I (..\freertos\include\projdefs.h)(0x604ABF58)
 I (..\freertos\include\portable.h)(0x604ABF58)
 I (..\freertos\include\deprecated_definitions.h)(0x604ABF58)
@@ -490,7 +490,7 @@ I (..\ipmi\ipmi_common\ipmi_common.h)(0x6358FB7E)
 F (..\sub_devices\dev_net.c)(0x638569AC)(--c99 -c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O0 --apcs=interwork -I ..\firmware -I ..\firmware\GD32F30x\GD32F30x_standard_peripheral\Include -I ..\firmware\GD32F30x\CMSIS\GD\GD32F30x\Include -I ..\firmware\GD32F30x\CMSIS -I ..\user -I ..\bsp -I ..\ipmi -I ..\ipmi\data -I ..\ipmi\ipmi_dev-3.0.0-src -I ..\ipmi\ipmi_dev-3.0.0-src\data -I ..\ipmi\ipmi_common -I ..\ipmi\libipmi-3.1.0-src\data\include -I ..\ipmi\libipmi-3.1.0-src\data -I ..\ipmb -I ..\api -I ..\api\adc -I ..\api\flash -I ..\api\shell -I ..\api\tools -I ..\api\cpu -I ..\sub_devices -I ..\api\sensor -I ..\api\update -I ..\api\fan -I ..\freertos\include -I ..\freertos\portable -I ..\freertos\portable\RVDS\ARM_CM4F -I ..\ff10 -I ..\api\cm_backtrace-Id:\Users\Arm\Packs\GigaDevice\GD32F30x_DFP\2.2.1\Device\Include-Id:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="535" -DGD32F30X_XD -DARM_MATH_CM4 -D__CC_ARM -DGD32F3x-o .\output\temp\dev_net.o --omf_browse .\output\temp\dev_net.crf --depend .\output\temp\dev_net.d)
 I (d:\Keil_v5\ARM\ARMCC\include\string.h)(0x6025237E)
 I (d:\Keil_v5\ARM\ARMCC\include\stdlib.h)(0x60252374)
-I (..\bsp\bsp_gpio.h)(0x638EF4DE)
+I (..\bsp\bsp_gpio.h)(0x638F0360)
 I (..\firmware\project_select.h)(0x638DB039)
 I (..\firmware\GD32F30x\GD32F30x_standard_peripheral\Include\gd32f30x_it.h)(0x63154ED0)
 I (..\firmware\GD32F30x\CMSIS\GD\GD32F30x\Include\gd32f30x.h)(0x61CC215C)
@@ -526,8 +526,8 @@ I (..\firmware\GD32F30x\GD32F30x_standard_peripheral\Include\gd32f30x_misc.h)(0x
 I (..\firmware\GD32F30x\GD32F30x_standard_peripheral\Include\gd32f30x_enet.h)(0x62A6E3C7)
 I (..\firmware\GD32F30x\GD32F30x_standard_peripheral\Include\gd32f30x_exmc.h)(0x61CC215C)
 I (d:\Keil_v5\ARM\ARMCC\include\stdbool.h)(0x6025237C)
-I (..\user\main.h)(0x6385CB13)
-I (..\sub_devices\api_subdevices.h)(0x638EFD10)
+I (..\user\main.h)(0x6391CDB0)
+I (..\sub_devices\api_subdevices.h)(0x6391A5B4)
 I (..\ipmi\ipmi_dev-3.0.0-src\data\sensor.h)(0x6360FF07)
 I (..\ipmi\ipmi_common\Types.h)(0x6371948D)
 I (..\ipmi\ipmi_dev-3.0.0-src\data\IPMI_Sensor.h)(0x6359F141)
@@ -537,14 +537,14 @@ I (..\ipmi\ipmi_dev-3.0.0-src\data\IPMI_IPM.h)(0x63450D1A)
 I (..\ipmi\ipmi_dev-3.0.0-src\data\SensorMonitor.h)(0x6348C46B)
 I (..\bsp\bsp_adc.h)(0x636C5395)
 I (..\user\systick.h)(0x632D1846)
-I (..\api\sensor\api_sensor.h)(0x638EF981)
+I (..\api\sensor\api_sensor.h)(0x638F0347)
 I (..\ipmi\ipmi_common\debug_print.h)(0x636C99CA)
 I (..\bsp\bsp_usart1.h)(0x6385A4E8)
 I (d:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x60252374)
 I (..\api\net_print/net_print.h)(0x604ABF58)
 I (..\freertos\include\FreeRTOS.h)(0x604ABF58)
 I (d:\Keil_v5\ARM\ARMCC\include\stddef.h)(0x630C7EAD)
-I (..\freertos\include\FreeRTOSConfig.h)(0x638D46CC)
+I (..\freertos\include\FreeRTOSConfig.h)(0x6391AC49)
 I (..\freertos\include\projdefs.h)(0x604ABF58)
 I (..\freertos\include\portable.h)(0x604ABF58)
 I (..\freertos\include\deprecated_definitions.h)(0x604ABF58)
@@ -557,7 +557,7 @@ I (..\api\sensor\pmbus.h)(0x6375E3AE)
 F (..\sub_devices\dev_power.c)(0x638EFD2B)(--c99 -c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O0 --apcs=interwork -I ..\firmware -I ..\firmware\GD32F30x\GD32F30x_standard_peripheral\Include -I ..\firmware\GD32F30x\CMSIS\GD\GD32F30x\Include -I ..\firmware\GD32F30x\CMSIS -I ..\user -I ..\bsp -I ..\ipmi -I ..\ipmi\data -I ..\ipmi\ipmi_dev-3.0.0-src -I ..\ipmi\ipmi_dev-3.0.0-src\data -I ..\ipmi\ipmi_common -I ..\ipmi\libipmi-3.1.0-src\data\include -I ..\ipmi\libipmi-3.1.0-src\data -I ..\ipmb -I ..\api -I ..\api\adc -I ..\api\flash -I ..\api\shell -I ..\api\tools -I ..\api\cpu -I ..\sub_devices -I ..\api\sensor -I ..\api\update -I ..\api\fan -I ..\freertos\include -I ..\freertos\portable -I ..\freertos\portable\RVDS\ARM_CM4F -I ..\ff10 -I ..\api\cm_backtrace-Id:\Users\Arm\Packs\GigaDevice\GD32F30x_DFP\2.2.1\Device\Include-Id:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="535" -DGD32F30X_XD -DARM_MATH_CM4 -D__CC_ARM -DGD32F3x-o .\output\temp\dev_power.o --omf_browse .\output\temp\dev_power.crf --depend .\output\temp\dev_power.d)
 I (d:\Keil_v5\ARM\ARMCC\include\string.h)(0x6025237E)
 I (d:\Keil_v5\ARM\ARMCC\include\stdlib.h)(0x60252374)
-I (..\bsp\bsp_gpio.h)(0x638EF4DE)
+I (..\bsp\bsp_gpio.h)(0x638F0360)
 I (..\firmware\project_select.h)(0x638DB039)
 I (..\firmware\GD32F30x\GD32F30x_standard_peripheral\Include\gd32f30x_it.h)(0x63154ED0)
 I (..\firmware\GD32F30x\CMSIS\GD\GD32F30x\Include\gd32f30x.h)(0x61CC215C)
@@ -593,8 +593,8 @@ I (..\firmware\GD32F30x\GD32F30x_standard_peripheral\Include\gd32f30x_misc.h)(0x
 I (..\firmware\GD32F30x\GD32F30x_standard_peripheral\Include\gd32f30x_enet.h)(0x62A6E3C7)
 I (..\firmware\GD32F30x\GD32F30x_standard_peripheral\Include\gd32f30x_exmc.h)(0x61CC215C)
 I (d:\Keil_v5\ARM\ARMCC\include\stdbool.h)(0x6025237C)
-I (..\user\main.h)(0x6385CB13)
-I (..\sub_devices\api_subdevices.h)(0x638EFD10)
+I (..\user\main.h)(0x6391CDB0)
+I (..\sub_devices\api_subdevices.h)(0x6391A5B4)
 I (..\ipmi\ipmi_dev-3.0.0-src\data\sensor.h)(0x6360FF07)
 I (..\ipmi\ipmi_common\Types.h)(0x6371948D)
 I (..\ipmi\ipmi_dev-3.0.0-src\data\IPMI_Sensor.h)(0x6359F141)
@@ -604,14 +604,14 @@ I (..\ipmi\ipmi_dev-3.0.0-src\data\IPMI_IPM.h)(0x63450D1A)
 I (..\ipmi\ipmi_dev-3.0.0-src\data\SensorMonitor.h)(0x6348C46B)
 I (..\bsp\bsp_adc.h)(0x636C5395)
 I (..\user\systick.h)(0x632D1846)
-I (..\api\sensor\api_sensor.h)(0x638EF981)
+I (..\api\sensor\api_sensor.h)(0x638F0347)
 I (..\ipmi\ipmi_common\debug_print.h)(0x636C99CA)
 I (..\bsp\bsp_usart1.h)(0x6385A4E8)
 I (d:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x60252374)
 I (..\api\net_print/net_print.h)(0x604ABF58)
 I (..\freertos\include\FreeRTOS.h)(0x604ABF58)
 I (d:\Keil_v5\ARM\ARMCC\include\stddef.h)(0x630C7EAD)
-I (..\freertos\include\FreeRTOSConfig.h)(0x638D46CC)
+I (..\freertos\include\FreeRTOSConfig.h)(0x6391AC49)
 I (..\freertos\include\projdefs.h)(0x604ABF58)
 I (..\freertos\include\portable.h)(0x604ABF58)
 I (..\freertos\include\deprecated_definitions.h)(0x604ABF58)
@@ -629,7 +629,7 @@ I (..\api\shell\shell_port.h)(0x604ABF58)
 F (..\sub_devices\dev_storage0.c)(0x63856996)(--c99 -c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O0 --apcs=interwork -I ..\firmware -I ..\firmware\GD32F30x\GD32F30x_standard_peripheral\Include -I ..\firmware\GD32F30x\CMSIS\GD\GD32F30x\Include -I ..\firmware\GD32F30x\CMSIS -I ..\user -I ..\bsp -I ..\ipmi -I ..\ipmi\data -I ..\ipmi\ipmi_dev-3.0.0-src -I ..\ipmi\ipmi_dev-3.0.0-src\data -I ..\ipmi\ipmi_common -I ..\ipmi\libipmi-3.1.0-src\data\include -I ..\ipmi\libipmi-3.1.0-src\data -I ..\ipmb -I ..\api -I ..\api\adc -I ..\api\flash -I ..\api\shell -I ..\api\tools -I ..\api\cpu -I ..\sub_devices -I ..\api\sensor -I ..\api\update -I ..\api\fan -I ..\freertos\include -I ..\freertos\portable -I ..\freertos\portable\RVDS\ARM_CM4F -I ..\ff10 -I ..\api\cm_backtrace-Id:\Users\Arm\Packs\GigaDevice\GD32F30x_DFP\2.2.1\Device\Include-Id:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="535" -DGD32F30X_XD -DARM_MATH_CM4 -D__CC_ARM -DGD32F3x-o .\output\temp\dev_storage0.o --omf_browse .\output\temp\dev_storage0.crf --depend .\output\temp\dev_storage0.d)
 I (d:\Keil_v5\ARM\ARMCC\include\string.h)(0x6025237E)
 I (d:\Keil_v5\ARM\ARMCC\include\stdlib.h)(0x60252374)
-I (..\bsp\bsp_gpio.h)(0x638EF4DE)
+I (..\bsp\bsp_gpio.h)(0x638F0360)
 I (..\firmware\project_select.h)(0x638DB039)
 I (..\firmware\GD32F30x\GD32F30x_standard_peripheral\Include\gd32f30x_it.h)(0x63154ED0)
 I (..\firmware\GD32F30x\CMSIS\GD\GD32F30x\Include\gd32f30x.h)(0x61CC215C)
@@ -665,8 +665,8 @@ I (..\firmware\GD32F30x\GD32F30x_standard_peripheral\Include\gd32f30x_misc.h)(0x
 I (..\firmware\GD32F30x\GD32F30x_standard_peripheral\Include\gd32f30x_enet.h)(0x62A6E3C7)
 I (..\firmware\GD32F30x\GD32F30x_standard_peripheral\Include\gd32f30x_exmc.h)(0x61CC215C)
 I (d:\Keil_v5\ARM\ARMCC\include\stdbool.h)(0x6025237C)
-I (..\user\main.h)(0x6385CB13)
-I (..\sub_devices\api_subdevices.h)(0x638EFD10)
+I (..\user\main.h)(0x6391CDB0)
+I (..\sub_devices\api_subdevices.h)(0x6391A5B4)
 I (..\ipmi\ipmi_dev-3.0.0-src\data\sensor.h)(0x6360FF07)
 I (..\ipmi\ipmi_common\Types.h)(0x6371948D)
 I (..\ipmi\ipmi_dev-3.0.0-src\data\IPMI_Sensor.h)(0x6359F141)
@@ -676,14 +676,14 @@ I (..\ipmi\ipmi_dev-3.0.0-src\data\IPMI_IPM.h)(0x63450D1A)
 I (..\ipmi\ipmi_dev-3.0.0-src\data\SensorMonitor.h)(0x6348C46B)
 I (..\bsp\bsp_adc.h)(0x636C5395)
 I (..\user\systick.h)(0x632D1846)
-I (..\api\sensor\api_sensor.h)(0x638EF981)
+I (..\api\sensor\api_sensor.h)(0x638F0347)
 I (..\ipmi\ipmi_common\debug_print.h)(0x636C99CA)
 I (..\bsp\bsp_usart1.h)(0x6385A4E8)
 I (d:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x60252374)
 I (..\api\net_print/net_print.h)(0x604ABF58)
 I (..\freertos\include\FreeRTOS.h)(0x604ABF58)
 I (d:\Keil_v5\ARM\ARMCC\include\stddef.h)(0x630C7EAD)
-I (..\freertos\include\FreeRTOSConfig.h)(0x638D46CC)
+I (..\freertos\include\FreeRTOSConfig.h)(0x6391AC49)
 I (..\freertos\include\projdefs.h)(0x604ABF58)
 I (..\freertos\include\portable.h)(0x604ABF58)
 I (..\freertos\include\deprecated_definitions.h)(0x604ABF58)
@@ -696,7 +696,7 @@ I (..\api\sensor\pmbus.h)(0x6375E3AE)
 F (..\sub_devices\dev_switch.c)(0x63856992)(--c99 -c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O0 --apcs=interwork -I ..\firmware -I ..\firmware\GD32F30x\GD32F30x_standard_peripheral\Include -I ..\firmware\GD32F30x\CMSIS\GD\GD32F30x\Include -I ..\firmware\GD32F30x\CMSIS -I ..\user -I ..\bsp -I ..\ipmi -I ..\ipmi\data -I ..\ipmi\ipmi_dev-3.0.0-src -I ..\ipmi\ipmi_dev-3.0.0-src\data -I ..\ipmi\ipmi_common -I ..\ipmi\libipmi-3.1.0-src\data\include -I ..\ipmi\libipmi-3.1.0-src\data -I ..\ipmb -I ..\api -I ..\api\adc -I ..\api\flash -I ..\api\shell -I ..\api\tools -I ..\api\cpu -I ..\sub_devices -I ..\api\sensor -I ..\api\update -I ..\api\fan -I ..\freertos\include -I ..\freertos\portable -I ..\freertos\portable\RVDS\ARM_CM4F -I ..\ff10 -I ..\api\cm_backtrace-Id:\Users\Arm\Packs\GigaDevice\GD32F30x_DFP\2.2.1\Device\Include-Id:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="535" -DGD32F30X_XD -DARM_MATH_CM4 -D__CC_ARM -DGD32F3x-o .\output\temp\dev_switch.o --omf_browse .\output\temp\dev_switch.crf --depend .\output\temp\dev_switch.d)
 I (d:\Keil_v5\ARM\ARMCC\include\string.h)(0x6025237E)
 I (d:\Keil_v5\ARM\ARMCC\include\stdlib.h)(0x60252374)
-I (..\bsp\bsp_gpio.h)(0x638EF4DE)
+I (..\bsp\bsp_gpio.h)(0x638F0360)
 I (..\firmware\project_select.h)(0x638DB039)
 I (..\firmware\GD32F30x\GD32F30x_standard_peripheral\Include\gd32f30x_it.h)(0x63154ED0)
 I (..\firmware\GD32F30x\CMSIS\GD\GD32F30x\Include\gd32f30x.h)(0x61CC215C)
@@ -732,8 +732,8 @@ I (..\firmware\GD32F30x\GD32F30x_standard_peripheral\Include\gd32f30x_misc.h)(0x
 I (..\firmware\GD32F30x\GD32F30x_standard_peripheral\Include\gd32f30x_enet.h)(0x62A6E3C7)
 I (..\firmware\GD32F30x\GD32F30x_standard_peripheral\Include\gd32f30x_exmc.h)(0x61CC215C)
 I (d:\Keil_v5\ARM\ARMCC\include\stdbool.h)(0x6025237C)
-I (..\user\main.h)(0x6385CB13)
-I (..\sub_devices\api_subdevices.h)(0x638EFD10)
+I (..\user\main.h)(0x6391CDB0)
+I (..\sub_devices\api_subdevices.h)(0x6391A5B4)
 I (..\ipmi\ipmi_dev-3.0.0-src\data\sensor.h)(0x6360FF07)
 I (..\ipmi\ipmi_common\Types.h)(0x6371948D)
 I (..\ipmi\ipmi_dev-3.0.0-src\data\IPMI_Sensor.h)(0x6359F141)
@@ -743,14 +743,14 @@ I (..\ipmi\ipmi_dev-3.0.0-src\data\IPMI_IPM.h)(0x63450D1A)
 I (..\ipmi\ipmi_dev-3.0.0-src\data\SensorMonitor.h)(0x6348C46B)
 I (..\bsp\bsp_adc.h)(0x636C5395)
 I (..\user\systick.h)(0x632D1846)
-I (..\api\sensor\api_sensor.h)(0x638EF981)
+I (..\api\sensor\api_sensor.h)(0x638F0347)
 I (..\ipmi\ipmi_common\debug_print.h)(0x636C99CA)
 I (..\bsp\bsp_usart1.h)(0x6385A4E8)
 I (d:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x60252374)
 I (..\api\net_print/net_print.h)(0x604ABF58)
 I (..\freertos\include\FreeRTOS.h)(0x604ABF58)
 I (d:\Keil_v5\ARM\ARMCC\include\stddef.h)(0x630C7EAD)
-I (..\freertos\include\FreeRTOSConfig.h)(0x638D46CC)
+I (..\freertos\include\FreeRTOSConfig.h)(0x6391AC49)
 I (..\freertos\include\projdefs.h)(0x604ABF58)
 I (..\freertos\include\portable.h)(0x604ABF58)
 I (..\freertos\include\deprecated_definitions.h)(0x604ABF58)
@@ -761,7 +761,7 @@ I (..\freertos\include\list.h)(0x604ABF58)
 I (..\api\sensor\mac5023.h)(0x6375E24B)
 I (..\api\sensor\pmbus.h)(0x6375E3AE)
 F (..\sub_devices\dev_fsm.c)(0x6389A246)(--c99 -c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O0 --apcs=interwork -I ..\firmware -I ..\firmware\GD32F30x\GD32F30x_standard_peripheral\Include -I ..\firmware\GD32F30x\CMSIS\GD\GD32F30x\Include -I ..\firmware\GD32F30x\CMSIS -I ..\user -I ..\bsp -I ..\ipmi -I ..\ipmi\data -I ..\ipmi\ipmi_dev-3.0.0-src -I ..\ipmi\ipmi_dev-3.0.0-src\data -I ..\ipmi\ipmi_common -I ..\ipmi\libipmi-3.1.0-src\data\include -I ..\ipmi\libipmi-3.1.0-src\data -I ..\ipmb -I ..\api -I ..\api\adc -I ..\api\flash -I ..\api\shell -I ..\api\tools -I ..\api\cpu -I ..\sub_devices -I ..\api\sensor -I ..\api\update -I ..\api\fan -I ..\freertos\include -I ..\freertos\portable -I ..\freertos\portable\RVDS\ARM_CM4F -I ..\ff10 -I ..\api\cm_backtrace-Id:\Users\Arm\Packs\GigaDevice\GD32F30x_DFP\2.2.1\Device\Include-Id:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="535" -DGD32F30X_XD -DARM_MATH_CM4 -D__CC_ARM -DGD32F3x-o .\output\temp\dev_fsm.o --omf_browse .\output\temp\dev_fsm.crf --depend .\output\temp\dev_fsm.d)
-I (..\api\sensor\api_sensor.h)(0x638EF981)
+I (..\api\sensor\api_sensor.h)(0x638F0347)
 I (d:\Keil_v5\ARM\ARMCC\include\stdbool.h)(0x6025237C)
 I (..\ipmi\ipmi_common\Types.h)(0x6371948D)
 I (..\bsp\bsp_adc.h)(0x636C5395)
@@ -800,8 +800,8 @@ I (..\firmware\GD32F30x\GD32F30x_standard_peripheral\Include\gd32f30x_misc.h)(0x
 I (..\firmware\GD32F30x\GD32F30x_standard_peripheral\Include\gd32f30x_enet.h)(0x62A6E3C7)
 I (..\firmware\GD32F30x\GD32F30x_standard_peripheral\Include\gd32f30x_exmc.h)(0x61CC215C)
 I (..\user\systick.h)(0x632D1846)
-I (..\user\main.h)(0x6385CB13)
-I (..\sub_devices\api_subdevices.h)(0x638EFD10)
+I (..\user\main.h)(0x6391CDB0)
+I (..\sub_devices\api_subdevices.h)(0x6391A5B4)
 I (..\ipmi\ipmi_dev-3.0.0-src\data\IPMI_SDRRecord.h)(0x6358E03B)
 I (..\ipmi\ipmi_common\debug_print.h)(0x636C99CA)
 I (..\bsp\bsp_usart1.h)(0x6385A4E8)
@@ -809,7 +809,7 @@ I (d:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x60252374)
 I (..\api\net_print/net_print.h)(0x604ABF58)
 I (..\freertos\include\FreeRTOS.h)(0x604ABF58)
 I (d:\Keil_v5\ARM\ARMCC\include\stddef.h)(0x630C7EAD)
-I (..\freertos\include\FreeRTOSConfig.h)(0x638D46CC)
+I (..\freertos\include\FreeRTOSConfig.h)(0x6391AC49)
 I (..\freertos\include\projdefs.h)(0x604ABF58)
 I (..\freertos\include\portable.h)(0x604ABF58)
 I (..\freertos\include\deprecated_definitions.h)(0x604ABF58)
@@ -819,7 +819,7 @@ I (..\freertos\include\task.h)(0x636AF79C)
 I (..\freertos\include\list.h)(0x604ABF58)
 I (..\api\sensor\mac5023.h)(0x6375E24B)
 I (..\api\sensor\pmbus.h)(0x6375E3AE)
-I (..\bsp\bsp_gpio.h)(0x638EF4DE)
+I (..\bsp\bsp_gpio.h)(0x638F0360)
 I (..\ipmi\ipmi_dev-3.0.0-src\data\sensor.h)(0x6360FF07)
 I (..\ipmi\ipmi_dev-3.0.0-src\data\IPMI_Sensor.h)(0x6359F141)
 I (..\ipmi\ipmi_dev-3.0.0-src\data\SDRRecord.h)(0x604ABF5B)
@@ -867,18 +867,18 @@ I (..\firmware\GD32F30x\GD32F30x_standard_peripheral\Include\gd32f30x_misc.h)(0x
 I (..\firmware\GD32F30x\GD32F30x_standard_peripheral\Include\gd32f30x_enet.h)(0x62A6E3C7)
 I (..\firmware\GD32F30x\GD32F30x_standard_peripheral\Include\gd32f30x_exmc.h)(0x61CC215C)
 I (..\user\systick.h)(0x632D1846)
-I (..\user\main.h)(0x6385CB13)
+I (..\user\main.h)(0x6391CDB0)
 I (..\ipmi\ipmi_common\Types.h)(0x6371948D)
-I (..\sub_devices\api_subdevices.h)(0x638EFD10)
+I (..\sub_devices\api_subdevices.h)(0x6391A5B4)
 I (..\ipmi\ipmi_dev-3.0.0-src\data\IPMI_SDRRecord.h)(0x6358E03B)
-I (..\api\sensor\api_sensor.h)(0x638EF981)
+I (..\api\sensor\api_sensor.h)(0x638F0347)
 I (..\ipmi\ipmi_common\debug_print.h)(0x636C99CA)
 I (..\bsp\bsp_usart1.h)(0x6385A4E8)
 I (d:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x60252374)
 I (..\api\net_print/net_print.h)(0x604ABF58)
 I (..\freertos\include\FreeRTOS.h)(0x604ABF58)
 I (d:\Keil_v5\ARM\ARMCC\include\stddef.h)(0x630C7EAD)
-I (..\freertos\include\FreeRTOSConfig.h)(0x638D46CC)
+I (..\freertos\include\FreeRTOSConfig.h)(0x6391AC49)
 I (..\freertos\include\projdefs.h)(0x604ABF58)
 I (..\freertos\include\portable.h)(0x604ABF58)
 I (..\freertos\include\deprecated_definitions.h)(0x604ABF58)
@@ -936,19 +936,19 @@ I (..\firmware\GD32F30x\GD32F30x_standard_peripheral\Include\gd32f30x_exmc.h)(0x
 I (d:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x60252374)
 I (d:\Keil_v5\ARM\ARMCC\include\stdbool.h)(0x6025237C)
 I (..\bsp\bsp_pwm.h)(0x634FC6FF)
-I (..\api\sensor\api_sensor.h)(0x638EF981)
+I (..\api\sensor\api_sensor.h)(0x638F0347)
 I (..\ipmi\ipmi_common\Types.h)(0x6371948D)
 I (..\bsp\bsp_adc.h)(0x636C5395)
 I (..\user\systick.h)(0x632D1846)
-I (..\user\main.h)(0x6385CB13)
-I (..\sub_devices\api_subdevices.h)(0x638EFD10)
+I (..\user\main.h)(0x6391CDB0)
+I (..\sub_devices\api_subdevices.h)(0x6391A5B4)
 I (..\ipmi\ipmi_dev-3.0.0-src\data\IPMI_SDRRecord.h)(0x6358E03B)
 I (..\ipmi\ipmi_common\debug_print.h)(0x636C99CA)
 I (..\bsp\bsp_usart1.h)(0x6385A4E8)
 I (..\api\net_print/net_print.h)(0x604ABF58)
 I (..\freertos\include\FreeRTOS.h)(0x604ABF58)
 I (d:\Keil_v5\ARM\ARMCC\include\stddef.h)(0x630C7EAD)
-I (..\freertos\include\FreeRTOSConfig.h)(0x638D46CC)
+I (..\freertos\include\FreeRTOSConfig.h)(0x6391AC49)
 I (..\freertos\include\projdefs.h)(0x604ABF58)
 I (..\freertos\include\portable.h)(0x604ABF58)
 I (..\freertos\include\deprecated_definitions.h)(0x604ABF58)
@@ -969,18 +969,20 @@ F (..\api\pid\pid.c)(0x604ABF58)(--c99 -c --cpu Cortex-M4.fp.sp -D__MICROLIB -g 
 I (..\api\pid/pid.h)(0x604ABF58)
 I (d:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x636DF059)
 I (d:\Keil_v5\ARM\ARMCC\include\stdbool.h)(0x6025237C)
-F (..\api\cpu\api_cpu.c)(0x63772122)(--c99 -c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O0 --apcs=interwork -I ..\firmware -I ..\firmware\GD32F30x\GD32F30x_standard_peripheral\Include -I ..\firmware\GD32F30x\CMSIS\GD\GD32F30x\Include -I ..\firmware\GD32F30x\CMSIS -I ..\user -I ..\bsp -I ..\ipmi -I ..\ipmi\data -I ..\ipmi\ipmi_dev-3.0.0-src -I ..\ipmi\ipmi_dev-3.0.0-src\data -I ..\ipmi\ipmi_common -I ..\ipmi\libipmi-3.1.0-src\data\include -I ..\ipmi\libipmi-3.1.0-src\data -I ..\ipmb -I ..\api -I ..\api\adc -I ..\api\flash -I ..\api\shell -I ..\api\tools -I ..\api\cpu -I ..\sub_devices -I ..\api\sensor -I ..\api\update -I ..\api\fan -I ..\freertos\include -I ..\freertos\portable -I ..\freertos\portable\RVDS\ARM_CM4F -I ..\ff10 -I ..\api\cm_backtrace-Id:\Users\Arm\Packs\GigaDevice\GD32F30x_DFP\2.2.1\Device\Include-Id:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="535" -DGD32F30X_XD -DARM_MATH_CM4 -D__CC_ARM -DGD32F3x-o .\output\temp\api_cpu.o --omf_browse .\output\temp\api_cpu.crf --depend .\output\temp\api_cpu.d)
+F (..\api\cpu\api_cpu.c)(0x6391D356)(--c99 -c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O0 --apcs=interwork -I ..\firmware -I ..\firmware\GD32F30x\GD32F30x_standard_peripheral\Include -I ..\firmware\GD32F30x\CMSIS\GD\GD32F30x\Include -I ..\firmware\GD32F30x\CMSIS -I ..\user -I ..\bsp -I ..\ipmi -I ..\ipmi\data -I ..\ipmi\ipmi_dev-3.0.0-src -I ..\ipmi\ipmi_dev-3.0.0-src\data -I ..\ipmi\ipmi_common -I ..\ipmi\libipmi-3.1.0-src\data\include -I ..\ipmi\libipmi-3.1.0-src\data -I ..\ipmb -I ..\api -I ..\api\adc -I ..\api\flash -I ..\api\shell -I ..\api\tools -I ..\api\cpu -I ..\sub_devices -I ..\api\sensor -I ..\api\update -I ..\api\fan -I ..\freertos\include -I ..\freertos\portable -I ..\freertos\portable\RVDS\ARM_CM4F -I ..\ff10 -I ..\api\cm_backtrace-Id:\Users\Arm\Packs\GigaDevice\GD32F30x_DFP\2.2.1\Device\Include-Id:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="535" -DGD32F30X_XD -DARM_MATH_CM4 -D__CC_ARM -DGD32F3x-o .\output\temp\api_cpu.o --omf_browse .\output\temp\api_cpu.crf --depend .\output\temp\api_cpu.d)
 I (..\api\cpu/api_cpu.h)(0x6331027D)
 I (d:\Keil_v5\ARM\ARMCC\include\stdbool.h)(0x6025237C)
 I (d:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x636DF059)
 I (..\ipmi\ipmi_common\Types.h)(0x6371948D)
+I (..\ipmi\ipmi_dev-3.0.0-src\data\Message.h)(0x636B06EA)
+I (..\ipmi\libipmi-3.1.0-src\data\include\libipmi.h)(0x6369B2F6)
 I (..\ipmi\ipmi_dev-3.0.0-src\data\OSPort.h)(0x604ABF59)
 I (d:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x60252374)
 I (d:\Keil_v5\ARM\ARMCC\include\stdlib.h)(0x60252374)
 I (d:\Keil_v5\ARM\ARMCC\include\string.h)(0x6025237E)
 I (..\freertos\include\FreeRTOS.h)(0x604ABF58)
 I (d:\Keil_v5\ARM\ARMCC\include\stddef.h)(0x630C7EAD)
-I (..\freertos\include\FreeRTOSConfig.h)(0x638D46CC)
+I (..\freertos\include\FreeRTOSConfig.h)(0x6391AC49)
 I (..\bsp\bsp_usart1.h)(0x6385A4E8)
 I (..\firmware\project_select.h)(0x638DB039)
 I (..\firmware\GD32F30x\GD32F30x_standard_peripheral\Include\gd32f30x_it.h)(0x63154ED0)
@@ -1028,9 +1030,7 @@ I (..\freertos\include\event_groups.h)(0x604ABF58)
 I (..\freertos\include\timers.h)(0x604ABF58)
 I (..\ipmi\ipmi_common\debug_print.h)(0x636C99CA)
 I (..\api\net_print/net_print.h)(0x604ABF58)
-I (..\user\main.h)(0x6385CB13)
-I (..\ipmi\ipmi_dev-3.0.0-src\data\Message.h)(0x636B06EA)
-I (..\ipmi\libipmi-3.1.0-src\data\include\libipmi.h)(0x6369B2F6)
+I (..\user\main.h)(0x6391CDB0)
 I (..\ipmi\ipmi_common\ipmi_common.h)(0x6358FB7E)
 I (..\ipmi\ipmi_dev-3.0.0-src\data\IPMIDefs.h)(0x604ABF59)
 I (..\api\utc/api_utc.h)(0x604ABF58)
@@ -1077,7 +1077,7 @@ I (..\firmware\GD32F30x\GD32F30x_standard_peripheral\Include\gd32f30x_enet.h)(0x
 I (..\firmware\GD32F30x\GD32F30x_standard_peripheral\Include\gd32f30x_exmc.h)(0x61CC215C)
 I (d:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x60252374)
 I (..\api\net_print/net_print.h)(0x604ABF58)
-I (..\user\main.h)(0x6385CB13)
+I (..\user\main.h)(0x6391CDB0)
 F (..\api\tools\tools.c)(0x638F01B8)(--c99 -c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O0 --apcs=interwork -I ..\firmware -I ..\firmware\GD32F30x\GD32F30x_standard_peripheral\Include -I ..\firmware\GD32F30x\CMSIS\GD\GD32F30x\Include -I ..\firmware\GD32F30x\CMSIS -I ..\user -I ..\bsp -I ..\ipmi -I ..\ipmi\data -I ..\ipmi\ipmi_dev-3.0.0-src -I ..\ipmi\ipmi_dev-3.0.0-src\data -I ..\ipmi\ipmi_common -I ..\ipmi\libipmi-3.1.0-src\data\include -I ..\ipmi\libipmi-3.1.0-src\data -I ..\ipmb -I ..\api -I ..\api\adc -I ..\api\flash -I ..\api\shell -I ..\api\tools -I ..\api\cpu -I ..\sub_devices -I ..\api\sensor -I ..\api\update -I ..\api\fan -I ..\freertos\include -I ..\freertos\portable -I ..\freertos\portable\RVDS\ARM_CM4F -I ..\ff10 -I ..\api\cm_backtrace-Id:\Users\Arm\Packs\GigaDevice\GD32F30x_DFP\2.2.1\Device\Include-Id:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="535" -DGD32F30X_XD -DARM_MATH_CM4 -D__CC_ARM -DGD32F3x-o .\output\temp\tools.o --omf_browse .\output\temp\tools.crf --depend .\output\temp\tools.d)
 I (..\api\tools\tools.h)(0x636C9920)
 I (..\api\shell\shell_cfg.h)(0x632413CC)
@@ -1127,16 +1127,16 @@ I (..\firmware\GD32F30x\GD32F30x_standard_peripheral\Include\gd32f30x_exmc.h)(0x
 I (..\ipmi\ipmi_common\debug_print.h)(0x636C99CA)
 I (..\bsp\bsp_usart1.h)(0x6385A4E8)
 I (..\api\net_print/net_print.h)(0x604ABF58)
-I (..\user\main.h)(0x6385CB13)
+I (..\user\main.h)(0x6391CDB0)
 I (..\bsp\bsp_i2c.h)(0x6375FD7F)
 I (..\api\adc/api_adc.h)(0x636DB205)
 I (..\bsp\bsp_adc.h)(0x636C5395)
-I (..\sub_devices\api_subdevices.h)(0x638EFD10)
+I (..\sub_devices\api_subdevices.h)(0x6391A5B4)
 I (..\ipmi\ipmi_dev-3.0.0-src\data\IPMI_SDRRecord.h)(0x6358E03B)
-I (..\api\sensor\api_sensor.h)(0x638EF981)
+I (..\api\sensor\api_sensor.h)(0x638F0347)
 I (..\freertos\include\FreeRTOS.h)(0x604ABF58)
 I (d:\Keil_v5\ARM\ARMCC\include\stddef.h)(0x630C7EAD)
-I (..\freertos\include\FreeRTOSConfig.h)(0x638D46CC)
+I (..\freertos\include\FreeRTOSConfig.h)(0x6391AC49)
 I (..\freertos\include\projdefs.h)(0x604ABF58)
 I (..\freertos\include\portable.h)(0x604ABF58)
 I (..\freertos\include\deprecated_definitions.h)(0x604ABF58)
@@ -1161,7 +1161,7 @@ I (d:\Keil_v5\ARM\ARMCC\include\stdbool.h)(0x6025237C)
 I (d:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x636DF059)
 I (..\freertos\include\FreeRTOS.h)(0x604ABF58)
 I (d:\Keil_v5\ARM\ARMCC\include\stddef.h)(0x630C7EAD)
-I (..\freertos\include\FreeRTOSConfig.h)(0x638D46CC)
+I (..\freertos\include\FreeRTOSConfig.h)(0x6391AC49)
 I (..\bsp\bsp_usart1.h)(0x6385A4E8)
 I (..\firmware\project_select.h)(0x638DB039)
 I (..\firmware\GD32F30x\GD32F30x_standard_peripheral\Include\gd32f30x_it.h)(0x63154ED0)
@@ -1211,7 +1211,7 @@ I (d:\Keil_v5\ARM\ARMCC\include\stdbool.h)(0x6025237C)
 I (d:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x636DF059)
 I (..\freertos\include\FreeRTOS.h)(0x604ABF58)
 I (d:\Keil_v5\ARM\ARMCC\include\stddef.h)(0x630C7EAD)
-I (..\freertos\include\FreeRTOSConfig.h)(0x638D46CC)
+I (..\freertos\include\FreeRTOSConfig.h)(0x6391AC49)
 I (..\bsp\bsp_usart1.h)(0x6385A4E8)
 I (..\firmware\project_select.h)(0x638DB039)
 I (..\firmware\GD32F30x\GD32F30x_standard_peripheral\Include\gd32f30x_it.h)(0x63154ED0)
@@ -1254,7 +1254,7 @@ I (..\freertos\portable\RVDS\ARM_CM4F\portmacro.h)(0x604ABF58)
 I (..\freertos\include\mpu_wrappers.h)(0x604ABF58)
 I (..\freertos\include\task.h)(0x636AF79C)
 I (..\freertos\include\list.h)(0x604ABF58)
-F (..\api\sensor\api_sensor.c)(0x638EFD63)(--c99 -c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O0 --apcs=interwork -I ..\firmware -I ..\firmware\GD32F30x\GD32F30x_standard_peripheral\Include -I ..\firmware\GD32F30x\CMSIS\GD\GD32F30x\Include -I ..\firmware\GD32F30x\CMSIS -I ..\user -I ..\bsp -I ..\ipmi -I ..\ipmi\data -I ..\ipmi\ipmi_dev-3.0.0-src -I ..\ipmi\ipmi_dev-3.0.0-src\data -I ..\ipmi\ipmi_common -I ..\ipmi\libipmi-3.1.0-src\data\include -I ..\ipmi\libipmi-3.1.0-src\data -I ..\ipmb -I ..\api -I ..\api\adc -I ..\api\flash -I ..\api\shell -I ..\api\tools -I ..\api\cpu -I ..\sub_devices -I ..\api\sensor -I ..\api\update -I ..\api\fan -I ..\freertos\include -I ..\freertos\portable -I ..\freertos\portable\RVDS\ARM_CM4F -I ..\ff10 -I ..\api\cm_backtrace-Id:\Users\Arm\Packs\GigaDevice\GD32F30x_DFP\2.2.1\Device\Include-Id:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="535" -DGD32F30X_XD -DARM_MATH_CM4 -D__CC_ARM -DGD32F3x-o .\output\temp\api_sensor.o --omf_browse .\output\temp\api_sensor.crf --depend .\output\temp\api_sensor.d)
+F (..\api\sensor\api_sensor.c)(0x63915ADB)(--c99 -c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O0 --apcs=interwork -I ..\firmware -I ..\firmware\GD32F30x\GD32F30x_standard_peripheral\Include -I ..\firmware\GD32F30x\CMSIS\GD\GD32F30x\Include -I ..\firmware\GD32F30x\CMSIS -I ..\user -I ..\bsp -I ..\ipmi -I ..\ipmi\data -I ..\ipmi\ipmi_dev-3.0.0-src -I ..\ipmi\ipmi_dev-3.0.0-src\data -I ..\ipmi\ipmi_common -I ..\ipmi\libipmi-3.1.0-src\data\include -I ..\ipmi\libipmi-3.1.0-src\data -I ..\ipmb -I ..\api -I ..\api\adc -I ..\api\flash -I ..\api\shell -I ..\api\tools -I ..\api\cpu -I ..\sub_devices -I ..\api\sensor -I ..\api\update -I ..\api\fan -I ..\freertos\include -I ..\freertos\portable -I ..\freertos\portable\RVDS\ARM_CM4F -I ..\ff10 -I ..\api\cm_backtrace-Id:\Users\Arm\Packs\GigaDevice\GD32F30x_DFP\2.2.1\Device\Include-Id:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="535" -DGD32F30X_XD -DARM_MATH_CM4 -D__CC_ARM -DGD32F3x-o .\output\temp\api_sensor.o --omf_browse .\output\temp\api_sensor.crf --depend .\output\temp\api_sensor.d)
 I (..\ipmi\libipmi-3.1.0-src\data\include\libipmi.h)(0x6369B2F6)
 I (..\ipmi\ipmi_common\Types.h)(0x6371948D)
 I (d:\Keil_v5\ARM\ARMCC\include\stdbool.h)(0x6025237C)
@@ -1265,7 +1265,7 @@ I (d:\Keil_v5\ARM\ARMCC\include\string.h)(0x6025237E)
 I (..\freertos\include\FreeRTOS.h)(0x604ABF58)
 I (d:\Keil_v5\ARM\ARMCC\include\stddef.h)(0x630C7EAD)
 I (d:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x636DF059)
-I (..\freertos\include\FreeRTOSConfig.h)(0x638D46CC)
+I (..\freertos\include\FreeRTOSConfig.h)(0x6391AC49)
 I (..\bsp\bsp_usart1.h)(0x6385A4E8)
 I (..\firmware\project_select.h)(0x638DB039)
 I (..\firmware\GD32F30x\GD32F30x_standard_peripheral\Include\gd32f30x_it.h)(0x63154ED0)
@@ -1313,12 +1313,12 @@ I (..\freertos\include\event_groups.h)(0x604ABF58)
 I (..\freertos\include\timers.h)(0x604ABF58)
 I (..\ipmi\ipmi_common\debug_print.h)(0x636C99CA)
 I (..\api\net_print/net_print.h)(0x604ABF58)
-I (..\user\main.h)(0x6385CB13)
+I (..\user\main.h)(0x6391CDB0)
 I (d:\Keil_v5\ARM\ARMCC\include\math.h)(0x60252378)
-I (..\api\sensor/api_sensor.h)(0x638EF981)
+I (..\api\sensor/api_sensor.h)(0x638F0347)
 I (..\bsp\bsp_adc.h)(0x636C5395)
 I (..\user\systick.h)(0x632D1846)
-I (..\sub_devices\api_subdevices.h)(0x638EFD10)
+I (..\sub_devices\api_subdevices.h)(0x6391A5B4)
 I (..\ipmi\ipmi_dev-3.0.0-src\data\IPMI_SDRRecord.h)(0x6358E03B)
 I (..\api\sensor/mac5023.h)(0x6375E24B)
 I (..\api\sensor/pmbus.h)(0x6375E3AE)
@@ -1362,7 +1362,7 @@ I (d:\Keil_v5\ARM\ARMCC\include\stdbool.h)(0x6025237C)
 I (..\freertos\include\FreeRTOS.h)(0x604ABF58)
 I (d:\Keil_v5\ARM\ARMCC\include\stddef.h)(0x630C7EAD)
 I (d:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x636DF059)
-I (..\freertos\include\FreeRTOSConfig.h)(0x638D46CC)
+I (..\freertos\include\FreeRTOSConfig.h)(0x6391AC49)
 I (..\bsp\bsp_usart1.h)(0x6385A4E8)
 I (..\firmware\project_select.h)(0x638DB039)
 I (..\firmware\GD32F30x\GD32F30x_standard_peripheral\Include\gd32f30x_it.h)(0x63154ED0)
@@ -1410,7 +1410,7 @@ I (..\freertos\include\event_groups.h)(0x604ABF58)
 I (..\freertos\include\timers.h)(0x604ABF58)
 I (..\ipmi\ipmi_common\debug_print.h)(0x636C99CA)
 I (..\api\net_print/net_print.h)(0x604ABF58)
-I (..\user\main.h)(0x6385CB13)
+I (..\user\main.h)(0x6391CDB0)
 I (..\api\tools\cJSON.h)(0x6242AF23)
 F (..\api\tools\log.c)(0x638853EE)(--c99 -c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O0 --apcs=interwork -I ..\firmware -I ..\firmware\GD32F30x\GD32F30x_standard_peripheral\Include -I ..\firmware\GD32F30x\CMSIS\GD\GD32F30x\Include -I ..\firmware\GD32F30x\CMSIS -I ..\user -I ..\bsp -I ..\ipmi -I ..\ipmi\data -I ..\ipmi\ipmi_dev-3.0.0-src -I ..\ipmi\ipmi_dev-3.0.0-src\data -I ..\ipmi\ipmi_common -I ..\ipmi\libipmi-3.1.0-src\data\include -I ..\ipmi\libipmi-3.1.0-src\data -I ..\ipmb -I ..\api -I ..\api\adc -I ..\api\flash -I ..\api\shell -I ..\api\tools -I ..\api\cpu -I ..\sub_devices -I ..\api\sensor -I ..\api\update -I ..\api\fan -I ..\freertos\include -I ..\freertos\portable -I ..\freertos\portable\RVDS\ARM_CM4F -I ..\ff10 -I ..\api\cm_backtrace-Id:\Users\Arm\Packs\GigaDevice\GD32F30x_DFP\2.2.1\Device\Include-Id:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="535" -DGD32F30X_XD -DARM_MATH_CM4 -D__CC_ARM -DGD32F3x-o .\output\temp\log.o --omf_browse .\output\temp\log.crf --depend .\output\temp\log.d)
 I (..\api\tools\tools.h)(0x636C9920)
@@ -1461,16 +1461,16 @@ I (..\firmware\GD32F30x\GD32F30x_standard_peripheral\Include\gd32f30x_exmc.h)(0x
 I (..\ipmi\ipmi_common\debug_print.h)(0x636C99CA)
 I (..\bsp\bsp_usart1.h)(0x6385A4E8)
 I (..\api\net_print/net_print.h)(0x604ABF58)
-I (..\user\main.h)(0x6385CB13)
+I (..\user\main.h)(0x6391CDB0)
 I (..\bsp\bsp_i2c.h)(0x6375FD7F)
 I (..\api\adc/api_adc.h)(0x636DB205)
 I (..\bsp\bsp_adc.h)(0x636C5395)
-I (..\sub_devices\api_subdevices.h)(0x638EFD10)
+I (..\sub_devices\api_subdevices.h)(0x6391A5B4)
 I (..\ipmi\ipmi_dev-3.0.0-src\data\IPMI_SDRRecord.h)(0x6358E03B)
-I (..\api\sensor\api_sensor.h)(0x638EF981)
+I (..\api\sensor\api_sensor.h)(0x638F0347)
 I (..\freertos\include\FreeRTOS.h)(0x604ABF58)
 I (d:\Keil_v5\ARM\ARMCC\include\stddef.h)(0x630C7EAD)
-I (..\freertos\include\FreeRTOSConfig.h)(0x638D46CC)
+I (..\freertos\include\FreeRTOSConfig.h)(0x6391AC49)
 I (..\freertos\include\projdefs.h)(0x604ABF58)
 I (..\freertos\include\portable.h)(0x604ABF58)
 I (..\freertos\include\deprecated_definitions.h)(0x604ABF58)
@@ -1531,13 +1531,13 @@ I (..\ipmi\ipmi_common\debug_print.h)(0x636C99CA)
 I (..\bsp\bsp_usart1.h)(0x6385A4E8)
 I (d:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x60252374)
 I (..\api\net_print/net_print.h)(0x604ABF58)
-I (..\user\main.h)(0x6385CB13)
+I (..\user\main.h)(0x6391CDB0)
 I (..\bsp\bsp_i2c_gpio.h)(0x63772D62)
 I (d:\Keil_v5\ARM\ARMCC\include\inttypes.h)(0x6025237E)
 I (..\bsp\bsp_i2c.h)(0x6375FD7F)
 I (..\freertos\include\FreeRTOS.h)(0x604ABF58)
 I (d:\Keil_v5\ARM\ARMCC\include\stddef.h)(0x630C7EAD)
-I (..\freertos\include\FreeRTOSConfig.h)(0x638D46CC)
+I (..\freertos\include\FreeRTOSConfig.h)(0x6391AC49)
 I (..\freertos\include\projdefs.h)(0x604ABF58)
 I (..\freertos\include\portable.h)(0x604ABF58)
 I (..\freertos\include\deprecated_definitions.h)(0x604ABF58)
@@ -1589,7 +1589,7 @@ I (..\firmware\GD32F30x\GD32F30x_standard_peripheral\Include\gd32f30x_misc.h)(0x
 I (..\firmware\GD32F30x\GD32F30x_standard_peripheral\Include\gd32f30x_enet.h)(0x62A6E3C7)
 I (..\firmware\GD32F30x\GD32F30x_standard_peripheral\Include\gd32f30x_exmc.h)(0x61CC215C)
 I (..\api\net_print/net_print.h)(0x604ABF58)
-I (..\user\main.h)(0x6385CB13)
+I (..\user\main.h)(0x6391CDB0)
 I (..\bsp\bsp_i2c.h)(0x6375FD7F)
 F (..\api\sensor\eeprom.c)(0x6376F451)(--c99 -c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O0 --apcs=interwork -I ..\firmware -I ..\firmware\GD32F30x\GD32F30x_standard_peripheral\Include -I ..\firmware\GD32F30x\CMSIS\GD\GD32F30x\Include -I ..\firmware\GD32F30x\CMSIS -I ..\user -I ..\bsp -I ..\ipmi -I ..\ipmi\data -I ..\ipmi\ipmi_dev-3.0.0-src -I ..\ipmi\ipmi_dev-3.0.0-src\data -I ..\ipmi\ipmi_common -I ..\ipmi\libipmi-3.1.0-src\data\include -I ..\ipmi\libipmi-3.1.0-src\data -I ..\ipmb -I ..\api -I ..\api\adc -I ..\api\flash -I ..\api\shell -I ..\api\tools -I ..\api\cpu -I ..\sub_devices -I ..\api\sensor -I ..\api\update -I ..\api\fan -I ..\freertos\include -I ..\freertos\portable -I ..\freertos\portable\RVDS\ARM_CM4F -I ..\ff10 -I ..\api\cm_backtrace-Id:\Users\Arm\Packs\GigaDevice\GD32F30x_DFP\2.2.1\Device\Include-Id:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="535" -DGD32F30X_XD -DARM_MATH_CM4 -D__CC_ARM -DGD32F3x-o .\output\temp\eeprom.o --omf_browse .\output\temp\eeprom.crf --depend .\output\temp\eeprom.d)
 I (..\api\sensor\eeprom.h)(0x63762E64)
@@ -1598,7 +1598,7 @@ I (..\ipmi\ipmi_common\Types.h)(0x6371948D)
 I (..\freertos\include\FreeRTOS.h)(0x604ABF58)
 I (d:\Keil_v5\ARM\ARMCC\include\stddef.h)(0x630C7EAD)
 I (d:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x636DF059)
-I (..\freertos\include\FreeRTOSConfig.h)(0x638D46CC)
+I (..\freertos\include\FreeRTOSConfig.h)(0x6391AC49)
 I (..\bsp\bsp_usart1.h)(0x6385A4E8)
 I (..\firmware\project_select.h)(0x638DB039)
 I (..\firmware\GD32F30x\GD32F30x_standard_peripheral\Include\gd32f30x_it.h)(0x63154ED0)
@@ -1640,7 +1640,7 @@ I (..\freertos\include\deprecated_definitions.h)(0x604ABF58)
 I (..\freertos\portable\RVDS\ARM_CM4F\portmacro.h)(0x604ABF58)
 I (..\freertos\include\mpu_wrappers.h)(0x604ABF58)
 I (..\bsp\bsp_i2c.h)(0x6375FD7F)
-I (..\user\main.h)(0x6385CB13)
+I (..\user\main.h)(0x6391CDB0)
 I (..\bsp\bsp_i2c_gpio.h)(0x63772D62)
 I (d:\Keil_v5\ARM\ARMCC\include\inttypes.h)(0x6025237E)
 I (d:\Keil_v5\ARM\ARMCC\include\string.h)(0x6025237E)
@@ -1669,7 +1669,7 @@ I (d:\Keil_v5\ARM\ARMCC\include\stdlib.h)(0x60252374)
 I (d:\Keil_v5\ARM\ARMCC\include\string.h)(0x6025237E)
 I (..\freertos\include\FreeRTOS.h)(0x604ABF58)
 I (d:\Keil_v5\ARM\ARMCC\include\stddef.h)(0x630C7EAD)
-I (..\freertos\include\FreeRTOSConfig.h)(0x638D46CC)
+I (..\freertos\include\FreeRTOSConfig.h)(0x6391AC49)
 I (..\bsp\bsp_usart1.h)(0x6385A4E8)
 I (..\firmware\project_select.h)(0x638DB039)
 I (..\firmware\GD32F30x\GD32F30x_standard_peripheral\Include\gd32f30x_it.h)(0x63154ED0)
@@ -1717,7 +1717,7 @@ I (..\freertos\include\event_groups.h)(0x604ABF58)
 I (..\freertos\include\timers.h)(0x604ABF58)
 I (..\ipmi\ipmi_common\debug_print.h)(0x636C99CA)
 I (..\api\net_print/net_print.h)(0x604ABF58)
-I (..\user\main.h)(0x6385CB13)
+I (..\user\main.h)(0x6391CDB0)
 I (..\ipmi\ipmi_dev-3.0.0-src\data\IPMI_App.h)(0x63477870)
 I (..\ipmi\ipmi_dev-3.0.0-src\data\AMI.h)(0x604ABF59)
 I (..\ipmi\ipmi_dev-3.0.0-src\data\App.h)(0x604ABF59)
@@ -1809,7 +1809,7 @@ I (..\firmware\GD32F30x\GD32F30x_standard_peripheral\Include\gd32f30x_enet.h)(0x
 I (..\firmware\GD32F30x\GD32F30x_standard_peripheral\Include\gd32f30x_exmc.h)(0x61CC215C)
 I (d:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x60252374)
 I (..\api\net_print/net_print.h)(0x604ABF58)
-I (..\user\main.h)(0x6385CB13)
+I (..\user\main.h)(0x6391CDB0)
 I (..\ipmi\ipmi_dev-3.0.0-src\data\Support.h)(0x634F7143)
 I (..\ipmi\ipmi_dev-3.0.0-src\data\IPMDevice.h)(0x6347791C)
 I (..\ipmi\ipmi_dev-3.0.0-src\data\MsgHndlr.h)(0x6359EFF8)
@@ -1821,7 +1821,7 @@ I (d:\Keil_v5\ARM\ARMCC\include\stdlib.h)(0x60252374)
 I (d:\Keil_v5\ARM\ARMCC\include\string.h)(0x6025237E)
 I (..\freertos\include\FreeRTOS.h)(0x604ABF58)
 I (d:\Keil_v5\ARM\ARMCC\include\stddef.h)(0x630C7EAD)
-I (..\freertos\include\FreeRTOSConfig.h)(0x638D46CC)
+I (..\freertos\include\FreeRTOSConfig.h)(0x6391AC49)
 I (..\freertos\include\projdefs.h)(0x604ABF58)
 I (..\freertos\include\portable.h)(0x604ABF58)
 I (..\freertos\include\deprecated_definitions.h)(0x604ABF58)
@@ -1872,7 +1872,7 @@ I (..\ipmi\ipmi_dev-3.0.0-src\data\Terminal.h)(0x63415785)
 I (..\ipmi\ipmi_dev-3.0.0-src\data\SDRRecord.h)(0x604ABF5B)
 I (..\ipmi\ipmi_dev-3.0.0-src\data\IPMI_IPM.h)(0x63450D1A)
 I (..\ipmi\ipmi_dev-3.0.0-src\data\MBMCInfo.h)(0x604ABF5B)
-F (..\ipmb\libipmiserial-src\Serial.c)(0x6357DB85)(--c99 -c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O0 --apcs=interwork -I ..\firmware -I ..\firmware\GD32F30x\GD32F30x_standard_peripheral\Include -I ..\firmware\GD32F30x\CMSIS\GD\GD32F30x\Include -I ..\firmware\GD32F30x\CMSIS -I ..\user -I ..\bsp -I ..\ipmi -I ..\ipmi\data -I ..\ipmi\ipmi_dev-3.0.0-src -I ..\ipmi\ipmi_dev-3.0.0-src\data -I ..\ipmi\ipmi_common -I ..\ipmi\libipmi-3.1.0-src\data\include -I ..\ipmi\libipmi-3.1.0-src\data -I ..\ipmb -I ..\api -I ..\api\adc -I ..\api\flash -I ..\api\shell -I ..\api\tools -I ..\api\cpu -I ..\sub_devices -I ..\api\sensor -I ..\api\update -I ..\api\fan -I ..\freertos\include -I ..\freertos\portable -I ..\freertos\portable\RVDS\ARM_CM4F -I ..\ff10 -I ..\api\cm_backtrace --diag_suppress=177-Id:\Users\Arm\Packs\GigaDevice\GD32F30x_DFP\2.2.1\Device\Include-Id:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="535" -DGD32F30X_XD -DARM_MATH_CM4 -D__CC_ARM -DGD32F3x-o .\output\temp\serial.o --omf_browse .\output\temp\serial.crf --depend .\output\temp\serial.d)
+F (..\ipmb\libipmiserial-src\Serial.c)(0x63918CC8)(--c99 -c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O0 --apcs=interwork -I ..\firmware -I ..\firmware\GD32F30x\GD32F30x_standard_peripheral\Include -I ..\firmware\GD32F30x\CMSIS\GD\GD32F30x\Include -I ..\firmware\GD32F30x\CMSIS -I ..\user -I ..\bsp -I ..\ipmi -I ..\ipmi\data -I ..\ipmi\ipmi_dev-3.0.0-src -I ..\ipmi\ipmi_dev-3.0.0-src\data -I ..\ipmi\ipmi_common -I ..\ipmi\libipmi-3.1.0-src\data\include -I ..\ipmi\libipmi-3.1.0-src\data -I ..\ipmb -I ..\api -I ..\api\adc -I ..\api\flash -I ..\api\shell -I ..\api\tools -I ..\api\cpu -I ..\sub_devices -I ..\api\sensor -I ..\api\update -I ..\api\fan -I ..\freertos\include -I ..\freertos\portable -I ..\freertos\portable\RVDS\ARM_CM4F -I ..\ff10 -I ..\api\cm_backtrace --diag_suppress=177-Id:\Users\Arm\Packs\GigaDevice\GD32F30x_DFP\2.2.1\Device\Include-Id:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="535" -DGD32F30X_XD -DARM_MATH_CM4 -D__CC_ARM -DGD32F3x-o .\output\temp\serial.o --omf_browse .\output\temp\serial.crf --depend .\output\temp\serial.d)
 I (..\ipmi\ipmi_common\Types.h)(0x6371948D)
 I (d:\Keil_v5\ARM\ARMCC\include\stdbool.h)(0x6025237C)
 I (..\ipmi\ipmi_dev-3.0.0-src\data\Serial.h)(0x6344E8FF)
@@ -1889,7 +1889,7 @@ I (d:\Keil_v5\ARM\ARMCC\include\string.h)(0x6025237E)
 I (..\freertos\include\FreeRTOS.h)(0x604ABF58)
 I (d:\Keil_v5\ARM\ARMCC\include\stddef.h)(0x630C7EAD)
 I (d:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x636DF059)
-I (..\freertos\include\FreeRTOSConfig.h)(0x638D46CC)
+I (..\freertos\include\FreeRTOSConfig.h)(0x6391AC49)
 I (..\bsp\bsp_usart1.h)(0x6385A4E8)
 I (..\firmware\project_select.h)(0x638DB039)
 I (..\firmware\GD32F30x\GD32F30x_standard_peripheral\Include\gd32f30x_it.h)(0x63154ED0)
@@ -1937,7 +1937,7 @@ I (..\freertos\include\event_groups.h)(0x604ABF58)
 I (..\freertos\include\timers.h)(0x604ABF58)
 I (..\ipmi\ipmi_common\debug_print.h)(0x636C99CA)
 I (..\api\net_print/net_print.h)(0x604ABF58)
-I (..\user\main.h)(0x6385CB13)
+I (..\user\main.h)(0x6391CDB0)
 I (..\ipmi\ipmi_dev-3.0.0-src\data\Session.h)(0x63415785)
 I (..\ipmi\ipmi_dev-3.0.0-src\data\PMConfig.h)(0x604ABF5B)
 I (..\ipmi\ipmi_dev-3.0.0-src\data\IPMI_AppDevice.h)(0x604ABF59)
@@ -1980,7 +1980,7 @@ I (..\ipmi\ipmi_dev-3.0.0-src\data\IPMI_IPM.h)(0x63450D1A)
 I (..\ipmi\ipmi_dev-3.0.0-src\data\MBMCInfo.h)(0x604ABF5B)
 I (..\bsp\bsp_i2c.h)(0x6375FD7F)
 I (..\ipmi\ipmi_common\ipmi_common.h)(0x6358FB7E)
-I (..\sub_devices\api_subdevices.h)(0x638EFD10)
+I (..\sub_devices\api_subdevices.h)(0x6391A5B4)
 F (..\ipmb\libipmilan-src\RMCP.c)(0x63415785)(--c99 -c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O0 --apcs=interwork -I ..\firmware -I ..\firmware\GD32F30x\GD32F30x_standard_peripheral\Include -I ..\firmware\GD32F30x\CMSIS\GD\GD32F30x\Include -I ..\firmware\GD32F30x\CMSIS -I ..\user -I ..\bsp -I ..\ipmi -I ..\ipmi\data -I ..\ipmi\ipmi_dev-3.0.0-src -I ..\ipmi\ipmi_dev-3.0.0-src\data -I ..\ipmi\ipmi_common -I ..\ipmi\libipmi-3.1.0-src\data\include -I ..\ipmi\libipmi-3.1.0-src\data -I ..\ipmb -I ..\api -I ..\api\adc -I ..\api\flash -I ..\api\shell -I ..\api\tools -I ..\api\cpu -I ..\sub_devices -I ..\api\sensor -I ..\api\update -I ..\api\fan -I ..\freertos\include -I ..\freertos\portable -I ..\freertos\portable\RVDS\ARM_CM4F -I ..\ff10 -I ..\api\cm_backtrace --diag_suppress=177-Id:\Users\Arm\Packs\GigaDevice\GD32F30x_DFP\2.2.1\Device\Include-Id:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="535" -DGD32F30X_XD -DARM_MATH_CM4 -D__CC_ARM -DGD32F3x-o .\output\temp\rmcp.o --omf_browse .\output\temp\rmcp.crf --depend .\output\temp\rmcp.d)
 I (..\ipmi\ipmi_dev-3.0.0-src\data\MsgHndlr.h)(0x6359EFF8)
 I (..\ipmi\ipmi_common\Types.h)(0x6371948D)
@@ -1995,7 +1995,7 @@ I (d:\Keil_v5\ARM\ARMCC\include\string.h)(0x6025237E)
 I (..\freertos\include\FreeRTOS.h)(0x604ABF58)
 I (d:\Keil_v5\ARM\ARMCC\include\stddef.h)(0x630C7EAD)
 I (d:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x636DF059)
-I (..\freertos\include\FreeRTOSConfig.h)(0x638D46CC)
+I (..\freertos\include\FreeRTOSConfig.h)(0x6391AC49)
 I (..\bsp\bsp_usart1.h)(0x6385A4E8)
 I (..\firmware\project_select.h)(0x638DB039)
 I (..\firmware\GD32F30x\GD32F30x_standard_peripheral\Include\gd32f30x_it.h)(0x63154ED0)
@@ -2043,7 +2043,7 @@ I (..\freertos\include\event_groups.h)(0x604ABF58)
 I (..\freertos\include\timers.h)(0x604ABF58)
 I (..\ipmi\ipmi_common\debug_print.h)(0x636C99CA)
 I (..\api\net_print/net_print.h)(0x604ABF58)
-I (..\user\main.h)(0x6385CB13)
+I (..\user\main.h)(0x6391CDB0)
 I (..\ipmi\ipmi_dev-3.0.0-src\data\Support.h)(0x634F7143)
 I (..\ipmi\ipmi_dev-3.0.0-src\data\IPMDevice.h)(0x6347791C)
 I (..\ipmi\ipmi_dev-3.0.0-src\data\Debug.h)(0x63415768)
@@ -2101,12 +2101,12 @@ I (..\ipmi\ipmi_dev-3.0.0-src\data\AMIDevice.h)(0x63415785)
 F (..\ipmi\libipmimsghndlr-3.0.0-src\data\App\AppDevice\ChassisCtrl.c)(0x636E1894)(--c99 -c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O0 --apcs=interwork -I ..\firmware -I ..\firmware\GD32F30x\GD32F30x_standard_peripheral\Include -I ..\firmware\GD32F30x\CMSIS\GD\GD32F30x\Include -I ..\firmware\GD32F30x\CMSIS -I ..\user -I ..\bsp -I ..\ipmi -I ..\ipmi\data -I ..\ipmi\ipmi_dev-3.0.0-src -I ..\ipmi\ipmi_dev-3.0.0-src\data -I ..\ipmi\ipmi_common -I ..\ipmi\libipmi-3.1.0-src\data\include -I ..\ipmi\libipmi-3.1.0-src\data -I ..\ipmb -I ..\api -I ..\api\adc -I ..\api\flash -I ..\api\shell -I ..\api\tools -I ..\api\cpu -I ..\sub_devices -I ..\api\sensor -I ..\api\update -I ..\api\fan -I ..\freertos\include -I ..\freertos\portable -I ..\freertos\portable\RVDS\ARM_CM4F -I ..\ff10 -I ..\api\cm_backtrace --diag_suppress=177-Id:\Users\Arm\Packs\GigaDevice\GD32F30x_DFP\2.2.1\Device\Include-Id:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="535" -DGD32F30X_XD -DARM_MATH_CM4 -D__CC_ARM -DGD32F3x-o .\output\temp\chassisctrl.o --omf_browse .\output\temp\chassisctrl.crf --depend .\output\temp\chassisctrl.d)
 I (d:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x60252374)
 I (d:\Keil_v5\ARM\ARMCC\include\stdbool.h)(0x6025237C)
-I (..\user\main.h)(0x6385CB13)
+I (..\user\main.h)(0x6391CDB0)
 I (..\ipmi\ipmi_dev-3.0.0-src\data\Message.h)(0x636B06EA)
 I (..\ipmi\ipmi_common\Types.h)(0x6371948D)
 I (..\ipmi\libipmi-3.1.0-src\data\include\libipmi.h)(0x6369B2F6)
 I (..\ipmi\ipmi_dev-3.0.0-src\data\ChassisDevice.h)(0x63415785)
-I (..\bsp\bsp_gpio.h)(0x638EF4DE)
+I (..\bsp\bsp_gpio.h)(0x638F0360)
 I (..\firmware\project_select.h)(0x638DB039)
 I (..\firmware\GD32F30x\GD32F30x_standard_peripheral\Include\gd32f30x_it.h)(0x63154ED0)
 I (..\firmware\GD32F30x\CMSIS\GD\GD32F30x\Include\gd32f30x.h)(0x61CC215C)
@@ -2141,10 +2141,10 @@ I (..\firmware\GD32F30x\GD32F30x_standard_peripheral\Include\gd32f30x_wwdgt.h)(0
 I (..\firmware\GD32F30x\GD32F30x_standard_peripheral\Include\gd32f30x_misc.h)(0x61CC215B)
 I (..\firmware\GD32F30x\GD32F30x_standard_peripheral\Include\gd32f30x_enet.h)(0x62A6E3C7)
 I (..\firmware\GD32F30x\GD32F30x_standard_peripheral\Include\gd32f30x_exmc.h)(0x61CC215C)
-I (..\sub_devices\api_subdevices.h)(0x638EFD10)
+I (..\sub_devices\api_subdevices.h)(0x6391A5B4)
 I (..\freertos\include\freertos.h)(0x604ABF58)
 I (d:\Keil_v5\ARM\ARMCC\include\stddef.h)(0x630C7EAD)
-I (..\freertos\include\FreeRTOSConfig.h)(0x638D46CC)
+I (..\freertos\include\FreeRTOSConfig.h)(0x6391AC49)
 I (..\bsp\bsp_usart1.h)(0x6385A4E8)
 I (..\freertos\include\projdefs.h)(0x604ABF58)
 I (..\freertos\include\portable.h)(0x604ABF58)
@@ -2174,7 +2174,7 @@ I (d:\Keil_v5\ARM\ARMCC\include\stdlib.h)(0x60252374)
 I (..\freertos\include\FreeRTOS.h)(0x604ABF58)
 I (d:\Keil_v5\ARM\ARMCC\include\stddef.h)(0x630C7EAD)
 I (d:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x636DF059)
-I (..\freertos\include\FreeRTOSConfig.h)(0x638D46CC)
+I (..\freertos\include\FreeRTOSConfig.h)(0x6391AC49)
 I (..\bsp\bsp_usart1.h)(0x6385A4E8)
 I (..\firmware\project_select.h)(0x638DB039)
 I (..\firmware\GD32F30x\GD32F30x_standard_peripheral\Include\gd32f30x_it.h)(0x63154ED0)
@@ -2222,7 +2222,7 @@ I (..\freertos\include\event_groups.h)(0x604ABF58)
 I (..\freertos\include\timers.h)(0x604ABF58)
 I (..\ipmi\ipmi_common\debug_print.h)(0x636C99CA)
 I (..\api\net_print/net_print.h)(0x604ABF58)
-I (..\user\main.h)(0x6385CB13)
+I (..\user\main.h)(0x6391CDB0)
 I (..\ipmi\ipmi_dev-3.0.0-src\data\IPMI_App.h)(0x63477870)
 I (..\ipmi\ipmi_dev-3.0.0-src\data\AMI.h)(0x604ABF59)
 I (..\ipmi\ipmi_dev-3.0.0-src\data\App.h)(0x604ABF59)
@@ -2278,8 +2278,8 @@ I (..\ipmi\ipmi_dev-3.0.0-src\data\MBMCInfo.h)(0x604ABF5B)
 I (..\ipmi\ipmi_dev-3.0.0-src\data\LANIfc.h)(0x63415785)
 I (..\ipmi\ipmi_dev-3.0.0-src\data\IPMI_LANIfc.h)(0x604ABF59)
 I (..\bsp\bsp_i2c.h)(0x6375FD7F)
-I (..\bsp\bsp_gpio.h)(0x638EF4DE)
-I (..\sub_devices\api_subdevices.h)(0x638EFD10)
+I (..\bsp\bsp_gpio.h)(0x638F0360)
+I (..\sub_devices\api_subdevices.h)(0x6391A5B4)
 F (..\ipmi\libipmimsghndlr-3.0.0-src\data\App\App.c)(0x634778B8)(--c99 -c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O0 --apcs=interwork -I ..\firmware -I ..\firmware\GD32F30x\GD32F30x_standard_peripheral\Include -I ..\firmware\GD32F30x\CMSIS\GD\GD32F30x\Include -I ..\firmware\GD32F30x\CMSIS -I ..\user -I ..\bsp -I ..\ipmi -I ..\ipmi\data -I ..\ipmi\ipmi_dev-3.0.0-src -I ..\ipmi\ipmi_dev-3.0.0-src\data -I ..\ipmi\ipmi_common -I ..\ipmi\libipmi-3.1.0-src\data\include -I ..\ipmi\libipmi-3.1.0-src\data -I ..\ipmb -I ..\api -I ..\api\adc -I ..\api\flash -I ..\api\shell -I ..\api\tools -I ..\api\cpu -I ..\sub_devices -I ..\api\sensor -I ..\api\update -I ..\api\fan -I ..\freertos\include -I ..\freertos\portable -I ..\freertos\portable\RVDS\ARM_CM4F -I ..\ff10 -I ..\api\cm_backtrace --diag_suppress=177-Id:\Users\Arm\Packs\GigaDevice\GD32F30x_DFP\2.2.1\Device\Include-Id:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="535" -DGD32F30X_XD -DARM_MATH_CM4 -D__CC_ARM -DGD32F3x-o .\output\temp\app.o --omf_browse .\output\temp\app.crf --depend .\output\temp\app.d)
 I (..\ipmi\ipmi_common\Types.h)(0x6371948D)
 I (d:\Keil_v5\ARM\ARMCC\include\stdbool.h)(0x6025237C)
@@ -2294,7 +2294,7 @@ I (d:\Keil_v5\ARM\ARMCC\include\string.h)(0x6025237E)
 I (..\freertos\include\FreeRTOS.h)(0x604ABF58)
 I (d:\Keil_v5\ARM\ARMCC\include\stddef.h)(0x630C7EAD)
 I (d:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x636DF059)
-I (..\freertos\include\FreeRTOSConfig.h)(0x638D46CC)
+I (..\freertos\include\FreeRTOSConfig.h)(0x6391AC49)
 I (..\bsp\bsp_usart1.h)(0x6385A4E8)
 I (..\firmware\project_select.h)(0x638DB039)
 I (..\firmware\GD32F30x\GD32F30x_standard_peripheral\Include\gd32f30x_it.h)(0x63154ED0)
@@ -2342,7 +2342,7 @@ I (..\freertos\include\event_groups.h)(0x604ABF58)
 I (..\freertos\include\timers.h)(0x604ABF58)
 I (..\ipmi\ipmi_common\debug_print.h)(0x636C99CA)
 I (..\api\net_print/net_print.h)(0x604ABF58)
-I (..\user\main.h)(0x6385CB13)
+I (..\user\main.h)(0x6391CDB0)
 I (..\ipmi\ipmi_dev-3.0.0-src\data\Support.h)(0x634F7143)
 I (..\ipmi\ipmi_dev-3.0.0-src\data\IPMDevice.h)(0x6347791C)
 I (..\ipmi\ipmi_dev-3.0.0-src\data\App.h)(0x604ABF59)
@@ -2367,7 +2367,7 @@ I (d:\Keil_v5\ARM\ARMCC\include\string.h)(0x6025237E)
 I (..\freertos\include\FreeRTOS.h)(0x604ABF58)
 I (d:\Keil_v5\ARM\ARMCC\include\stddef.h)(0x630C7EAD)
 I (d:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x636DF059)
-I (..\freertos\include\FreeRTOSConfig.h)(0x638D46CC)
+I (..\freertos\include\FreeRTOSConfig.h)(0x6391AC49)
 I (..\bsp\bsp_usart1.h)(0x6385A4E8)
 I (..\firmware\project_select.h)(0x638DB039)
 I (..\firmware\GD32F30x\GD32F30x_standard_peripheral\Include\gd32f30x_it.h)(0x63154ED0)
@@ -2415,7 +2415,7 @@ I (..\freertos\include\event_groups.h)(0x604ABF58)
 I (..\freertos\include\timers.h)(0x604ABF58)
 I (..\ipmi\ipmi_common\debug_print.h)(0x636C99CA)
 I (..\api\net_print/net_print.h)(0x604ABF58)
-I (..\user\main.h)(0x6385CB13)
+I (..\user\main.h)(0x6391CDB0)
 I (..\ipmi\ipmi_dev-3.0.0-src\data\Message.h)(0x636B06EA)
 I (..\ipmi\libipmi-3.1.0-src\data\include\libipmi.h)(0x6369B2F6)
 I (..\ipmi\ipmi_dev-3.0.0-src\data\IPMIDefs.h)(0x604ABF59)
@@ -2477,7 +2477,7 @@ I (d:\Keil_v5\ARM\ARMCC\include\string.h)(0x6025237E)
 I (..\freertos\include\FreeRTOS.h)(0x604ABF58)
 I (d:\Keil_v5\ARM\ARMCC\include\stddef.h)(0x630C7EAD)
 I (d:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x636DF059)
-I (..\freertos\include\FreeRTOSConfig.h)(0x638D46CC)
+I (..\freertos\include\FreeRTOSConfig.h)(0x6391AC49)
 I (..\bsp\bsp_usart1.h)(0x6385A4E8)
 I (..\firmware\project_select.h)(0x638DB039)
 I (..\firmware\GD32F30x\GD32F30x_standard_peripheral\Include\gd32f30x_it.h)(0x63154ED0)
@@ -2525,13 +2525,13 @@ I (..\freertos\include\event_groups.h)(0x604ABF58)
 I (..\freertos\include\timers.h)(0x604ABF58)
 I (..\ipmi\ipmi_common\debug_print.h)(0x636C99CA)
 I (..\api\net_print/net_print.h)(0x604ABF58)
-I (..\user\main.h)(0x6385CB13)
+I (..\user\main.h)(0x6391CDB0)
 I (..\ipmi\ipmi_dev-3.0.0-src\data\IPMI_Chassis.h)(0x604ABF59)
 I (..\ipmi\ipmi_dev-3.0.0-src\data\IPMI_ChassisDevice.h)(0x604ABF59)
 I (..\ipmi\ipmi_dev-3.0.0-src\data\ChassisDevice.h)(0x63415785)
 I (..\ipmi\ipmi_dev-3.0.0-src\data\Support.h)(0x634F7143)
 I (..\ipmi\ipmi_dev-3.0.0-src\data\IPMDevice.h)(0x6347791C)
-F (..\ipmi\libipmimsghndlr-3.0.0-src\data\Oem\Oem.c)(0x636B0E78)(--c99 -c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O0 --apcs=interwork -I ..\firmware -I ..\firmware\GD32F30x\GD32F30x_standard_peripheral\Include -I ..\firmware\GD32F30x\CMSIS\GD\GD32F30x\Include -I ..\firmware\GD32F30x\CMSIS -I ..\user -I ..\bsp -I ..\ipmi -I ..\ipmi\data -I ..\ipmi\ipmi_dev-3.0.0-src -I ..\ipmi\ipmi_dev-3.0.0-src\data -I ..\ipmi\ipmi_common -I ..\ipmi\libipmi-3.1.0-src\data\include -I ..\ipmi\libipmi-3.1.0-src\data -I ..\ipmb -I ..\api -I ..\api\adc -I ..\api\flash -I ..\api\shell -I ..\api\tools -I ..\api\cpu -I ..\sub_devices -I ..\api\sensor -I ..\api\update -I ..\api\fan -I ..\freertos\include -I ..\freertos\portable -I ..\freertos\portable\RVDS\ARM_CM4F -I ..\ff10 -I ..\api\cm_backtrace --diag_suppress=177-Id:\Users\Arm\Packs\GigaDevice\GD32F30x_DFP\2.2.1\Device\Include-Id:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="535" -DGD32F30X_XD -DARM_MATH_CM4 -D__CC_ARM -DGD32F3x-o .\output\temp\oem.o --omf_browse .\output\temp\oem.crf --depend .\output\temp\oem.d)
+F (..\ipmi\libipmimsghndlr-3.0.0-src\data\Oem\Oem.c)(0x6391D432)(--c99 -c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O0 --apcs=interwork -I ..\firmware -I ..\firmware\GD32F30x\GD32F30x_standard_peripheral\Include -I ..\firmware\GD32F30x\CMSIS\GD\GD32F30x\Include -I ..\firmware\GD32F30x\CMSIS -I ..\user -I ..\bsp -I ..\ipmi -I ..\ipmi\data -I ..\ipmi\ipmi_dev-3.0.0-src -I ..\ipmi\ipmi_dev-3.0.0-src\data -I ..\ipmi\ipmi_common -I ..\ipmi\libipmi-3.1.0-src\data\include -I ..\ipmi\libipmi-3.1.0-src\data -I ..\ipmb -I ..\api -I ..\api\adc -I ..\api\flash -I ..\api\shell -I ..\api\tools -I ..\api\cpu -I ..\sub_devices -I ..\api\sensor -I ..\api\update -I ..\api\fan -I ..\freertos\include -I ..\freertos\portable -I ..\freertos\portable\RVDS\ARM_CM4F -I ..\ff10 -I ..\api\cm_backtrace --diag_suppress=177-Id:\Users\Arm\Packs\GigaDevice\GD32F30x_DFP\2.2.1\Device\Include-Id:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="535" -DGD32F30X_XD -DARM_MATH_CM4 -D__CC_ARM -DGD32F3x-o .\output\temp\oem.o --omf_browse .\output\temp\oem.crf --depend .\output\temp\oem.d)
 I (..\ipmi\ipmi_dev-3.0.0-src\data\Oem.h)(0x634F7146)
 I (..\ipmi\ipmi_common\Types.h)(0x6371948D)
 I (d:\Keil_v5\ARM\ARMCC\include\stdbool.h)(0x6025237C)
@@ -2546,7 +2546,7 @@ I (d:\Keil_v5\ARM\ARMCC\include\string.h)(0x6025237E)
 I (..\freertos\include\FreeRTOS.h)(0x604ABF58)
 I (d:\Keil_v5\ARM\ARMCC\include\stddef.h)(0x630C7EAD)
 I (d:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x636DF059)
-I (..\freertos\include\FreeRTOSConfig.h)(0x638D46CC)
+I (..\freertos\include\FreeRTOSConfig.h)(0x6391AC49)
 I (..\bsp\bsp_usart1.h)(0x6385A4E8)
 I (..\firmware\project_select.h)(0x638DB039)
 I (..\firmware\GD32F30x\GD32F30x_standard_peripheral\Include\gd32f30x_it.h)(0x63154ED0)
@@ -2594,17 +2594,17 @@ I (..\freertos\include\event_groups.h)(0x604ABF58)
 I (..\freertos\include\timers.h)(0x604ABF58)
 I (..\ipmi\ipmi_common\debug_print.h)(0x636C99CA)
 I (..\api\net_print/net_print.h)(0x604ABF58)
-I (..\user\main.h)(0x6385CB13)
+I (..\user\main.h)(0x6391CDB0)
 I (..\ipmi\ipmi_dev-3.0.0-src\data\IPMI_Oem.h)(0x6357DF5D)
 I (..\ipmi\ipmi_dev-3.0.0-src\data\Support.h)(0x634F7143)
 I (..\ipmi\ipmi_dev-3.0.0-src\data\IPMDevice.h)(0x6347791C)
 I (..\ipmi\ipmi_dev-3.0.0-src\data\IPMI_Sensor.h)(0x6359F141)
 I (..\api\fan/api_fan.h)(0x634FC0FF)
 I (..\bsp\bsp_pwm.h)(0x634FC6FF)
-I (..\api\sensor\api_sensor.h)(0x638EF981)
+I (..\api\sensor\api_sensor.h)(0x638F0347)
 I (..\bsp\bsp_adc.h)(0x636C5395)
 I (..\user\systick.h)(0x632D1846)
-I (..\sub_devices\api_subdevices.h)(0x638EFD10)
+I (..\sub_devices\api_subdevices.h)(0x6391A5B4)
 I (..\ipmi\ipmi_dev-3.0.0-src\data\IPMI_SDRRecord.h)(0x6358E03B)
 I (..\api\sensor\mac5023.h)(0x6375E24B)
 I (..\api\sensor\pmbus.h)(0x6375E3AE)
@@ -2615,7 +2615,7 @@ I (..\ipmi\ipmi_dev-3.0.0-src\data\SDRRecord.h)(0x604ABF5B)
 I (..\ipmi\ipmi_dev-3.0.0-src\data\IPMI_IPM.h)(0x63450D1A)
 I (..\ipmi\ipmi_dev-3.0.0-src\data\SensorMonitor.h)(0x6348C46B)
 I (..\api\cpu/api_cpu.h)(0x6331027D)
-I (..\bsp\bsp_gpio.h)(0x638EF4DE)
+I (..\bsp\bsp_gpio.h)(0x638F0360)
 F (..\ipmi\libipmimsghndlr-3.0.0-src\data\SensorEvent\SensorEvent.c)(0x604ABF5B)(--c99 -c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O0 --apcs=interwork -I ..\firmware -I ..\firmware\GD32F30x\GD32F30x_standard_peripheral\Include -I ..\firmware\GD32F30x\CMSIS\GD\GD32F30x\Include -I ..\firmware\GD32F30x\CMSIS -I ..\user -I ..\bsp -I ..\ipmi -I ..\ipmi\data -I ..\ipmi\ipmi_dev-3.0.0-src -I ..\ipmi\ipmi_dev-3.0.0-src\data -I ..\ipmi\ipmi_common -I ..\ipmi\libipmi-3.1.0-src\data\include -I ..\ipmi\libipmi-3.1.0-src\data -I ..\ipmb -I ..\api -I ..\api\adc -I ..\api\flash -I ..\api\shell -I ..\api\tools -I ..\api\cpu -I ..\sub_devices -I ..\api\sensor -I ..\api\update -I ..\api\fan -I ..\freertos\include -I ..\freertos\portable -I ..\freertos\portable\RVDS\ARM_CM4F -I ..\ff10 -I ..\api\cm_backtrace --diag_suppress=177-Id:\Users\Arm\Packs\GigaDevice\GD32F30x_DFP\2.2.1\Device\Include-Id:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="535" -DGD32F30X_XD -DARM_MATH_CM4 -D__CC_ARM -DGD32F3x-o .\output\temp\sensorevent.o --omf_browse .\output\temp\sensorevent.crf --depend .\output\temp\sensorevent.d)
 I (..\ipmi\ipmi_dev-3.0.0-src\data\MsgHndlr.h)(0x6359EFF8)
 I (..\ipmi\ipmi_common\Types.h)(0x6371948D)
@@ -2630,7 +2630,7 @@ I (d:\Keil_v5\ARM\ARMCC\include\string.h)(0x6025237E)
 I (..\freertos\include\FreeRTOS.h)(0x604ABF58)
 I (d:\Keil_v5\ARM\ARMCC\include\stddef.h)(0x630C7EAD)
 I (d:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x636DF059)
-I (..\freertos\include\FreeRTOSConfig.h)(0x638D46CC)
+I (..\freertos\include\FreeRTOSConfig.h)(0x6391AC49)
 I (..\bsp\bsp_usart1.h)(0x6385A4E8)
 I (..\firmware\project_select.h)(0x638DB039)
 I (..\firmware\GD32F30x\GD32F30x_standard_peripheral\Include\gd32f30x_it.h)(0x63154ED0)
@@ -2678,7 +2678,7 @@ I (..\freertos\include\event_groups.h)(0x604ABF58)
 I (..\freertos\include\timers.h)(0x604ABF58)
 I (..\ipmi\ipmi_common\debug_print.h)(0x636C99CA)
 I (..\api\net_print/net_print.h)(0x604ABF58)
-I (..\user\main.h)(0x6385CB13)
+I (..\user\main.h)(0x6391CDB0)
 I (..\ipmi\ipmi_dev-3.0.0-src\data\Support.h)(0x634F7143)
 I (..\ipmi\ipmi_dev-3.0.0-src\data\IPMDevice.h)(0x6347791C)
 I (..\ipmi\ipmi_dev-3.0.0-src\data\SensorEvent.h)(0x604ABF5B)
@@ -2693,7 +2693,7 @@ I (..\ipmi\ipmi_dev-3.0.0-src\data\IPMI_IPM.h)(0x63450D1A)
 I (..\ipmi\ipmi_dev-3.0.0-src\data\SensorMonitor.h)(0x6348C46B)
 I (..\bsp\bsp_adc.h)(0x636C5395)
 I (..\user\systick.h)(0x632D1846)
-I (..\sub_devices\api_subdevices.h)(0x638EFD10)
+I (..\sub_devices\api_subdevices.h)(0x6391A5B4)
 I (..\ipmi\ipmi_dev-3.0.0-src\data\IPMI_Events.h)(0x604ABF59)
 I (..\ipmi\ipmi_dev-3.0.0-src\data\IPMI_PEF.h)(0x604ABF59)
 F (..\ipmi\libipmimsghndlr-3.0.0-src\data\SensorEvent\SensorDevice\Sensor.c)(0x637589DC)(--c99 -c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O0 --apcs=interwork -I ..\firmware -I ..\firmware\GD32F30x\GD32F30x_standard_peripheral\Include -I ..\firmware\GD32F30x\CMSIS\GD\GD32F30x\Include -I ..\firmware\GD32F30x\CMSIS -I ..\user -I ..\bsp -I ..\ipmi -I ..\ipmi\data -I ..\ipmi\ipmi_dev-3.0.0-src -I ..\ipmi\ipmi_dev-3.0.0-src\data -I ..\ipmi\ipmi_common -I ..\ipmi\libipmi-3.1.0-src\data\include -I ..\ipmi\libipmi-3.1.0-src\data -I ..\ipmb -I ..\api -I ..\api\adc -I ..\api\flash -I ..\api\shell -I ..\api\tools -I ..\api\cpu -I ..\sub_devices -I ..\api\sensor -I ..\api\update -I ..\api\fan -I ..\freertos\include -I ..\freertos\portable -I ..\freertos\portable\RVDS\ARM_CM4F -I ..\ff10 -I ..\api\cm_backtrace --diag_suppress=177-Id:\Users\Arm\Packs\GigaDevice\GD32F30x_DFP\2.2.1\Device\Include-Id:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="535" -DGD32F30X_XD -DARM_MATH_CM4 -D__CC_ARM -DGD32F3x-o .\output\temp\sensor.o --omf_browse .\output\temp\sensor.crf --depend .\output\temp\sensor.d)
@@ -2737,7 +2737,7 @@ I (..\firmware\GD32F30x\GD32F30x_standard_peripheral\Include\gd32f30x_enet.h)(0x
 I (..\firmware\GD32F30x\GD32F30x_standard_peripheral\Include\gd32f30x_exmc.h)(0x61CC215C)
 I (d:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x60252374)
 I (..\api\net_print/net_print.h)(0x604ABF58)
-I (..\user\main.h)(0x6385CB13)
+I (..\user\main.h)(0x6391CDB0)
 I (..\ipmi\ipmi_dev-3.0.0-src\data\MsgHndlr.h)(0x6359EFF8)
 I (..\ipmi\ipmi_dev-3.0.0-src\data\Message.h)(0x636B06EA)
 I (..\ipmi\libipmi-3.1.0-src\data\include\libipmi.h)(0x6369B2F6)
@@ -2747,7 +2747,7 @@ I (d:\Keil_v5\ARM\ARMCC\include\stdlib.h)(0x60252374)
 I (d:\Keil_v5\ARM\ARMCC\include\string.h)(0x6025237E)
 I (..\freertos\include\FreeRTOS.h)(0x604ABF58)
 I (d:\Keil_v5\ARM\ARMCC\include\stddef.h)(0x630C7EAD)
-I (..\freertos\include\FreeRTOSConfig.h)(0x638D46CC)
+I (..\freertos\include\FreeRTOSConfig.h)(0x6391AC49)
 I (..\freertos\include\projdefs.h)(0x604ABF58)
 I (..\freertos\include\portable.h)(0x604ABF58)
 I (..\freertos\include\deprecated_definitions.h)(0x604ABF58)
@@ -2767,7 +2767,7 @@ I (..\ipmi\ipmi_dev-3.0.0-src\data\IPMI_IPM.h)(0x63450D1A)
 I (..\ipmi\ipmi_dev-3.0.0-src\data\SensorMonitor.h)(0x6348C46B)
 I (..\bsp\bsp_adc.h)(0x636C5395)
 I (..\user\systick.h)(0x632D1846)
-I (..\sub_devices\api_subdevices.h)(0x638EFD10)
+I (..\sub_devices\api_subdevices.h)(0x6391A5B4)
 I (..\ipmi\ipmi_dev-3.0.0-src\data\Support.h)(0x634F7143)
 I (..\ipmi\ipmi_dev-3.0.0-src\data\IPMDevice.h)(0x6347791C)
 I (..\ipmi\ipmi_dev-3.0.0-src\data\SDRFunc.h)(0x63415768)
@@ -2826,7 +2826,7 @@ I (..\ipmi\libipmi-3.1.0-src\data\include\libsensor.h)(0x604ABF5C)
 I (..\ipmi\ipmi_dev-3.0.0-src\data\IPMI_SensorEvent.h)(0x604ABF59)
 I (..\api\fan/api_fan.h)(0x634FC0FF)
 I (..\bsp\bsp_pwm.h)(0x634FC6FF)
-I (..\api\sensor\api_sensor.h)(0x638EF981)
+I (..\api\sensor\api_sensor.h)(0x638F0347)
 I (..\api\sensor\mac5023.h)(0x6375E24B)
 I (..\api\sensor\pmbus.h)(0x6375E3AE)
 I (..\bsp\bsp_capture.h)(0x637585AA)
@@ -2846,7 +2846,7 @@ I (d:\Keil_v5\ARM\ARMCC\include\string.h)(0x6025237E)
 I (..\freertos\include\FreeRTOS.h)(0x604ABF58)
 I (d:\Keil_v5\ARM\ARMCC\include\stddef.h)(0x630C7EAD)
 I (d:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x636DF059)
-I (..\freertos\include\FreeRTOSConfig.h)(0x638D46CC)
+I (..\freertos\include\FreeRTOSConfig.h)(0x6391AC49)
 I (..\bsp\bsp_usart1.h)(0x6385A4E8)
 I (..\firmware\project_select.h)(0x638DB039)
 I (..\firmware\GD32F30x\GD32F30x_standard_peripheral\Include\gd32f30x_it.h)(0x63154ED0)
@@ -2894,7 +2894,7 @@ I (..\freertos\include\event_groups.h)(0x604ABF58)
 I (..\freertos\include\timers.h)(0x604ABF58)
 I (..\ipmi\ipmi_common\debug_print.h)(0x636C99CA)
 I (..\api\net_print/net_print.h)(0x604ABF58)
-I (..\user\main.h)(0x6385CB13)
+I (..\user\main.h)(0x6391CDB0)
 I (..\ipmi\ipmi_dev-3.0.0-src\data\Support.h)(0x634F7143)
 I (..\ipmi\ipmi_dev-3.0.0-src\data\IPMDevice.h)(0x6347791C)
 I (..\ipmi\ipmi_dev-3.0.0-src\data\Storage.h)(0x604ABF5B)
@@ -2950,7 +2950,7 @@ I (..\firmware\GD32F30x\GD32F30x_standard_peripheral\Include\gd32f30x_enet.h)(0x
 I (..\firmware\GD32F30x\GD32F30x_standard_peripheral\Include\gd32f30x_exmc.h)(0x61CC215C)
 I (d:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x60252374)
 I (..\api\net_print/net_print.h)(0x604ABF58)
-I (..\user\main.h)(0x6385CB13)
+I (..\user\main.h)(0x6391CDB0)
 I (..\ipmi\ipmi_dev-3.0.0-src\data\MsgHndlr.h)(0x6359EFF8)
 I (..\ipmi\ipmi_dev-3.0.0-src\data\Message.h)(0x636B06EA)
 I (..\ipmi\libipmi-3.1.0-src\data\include\libipmi.h)(0x6369B2F6)
@@ -2960,7 +2960,7 @@ I (d:\Keil_v5\ARM\ARMCC\include\stdlib.h)(0x60252374)
 I (d:\Keil_v5\ARM\ARMCC\include\string.h)(0x6025237E)
 I (..\freertos\include\FreeRTOS.h)(0x604ABF58)
 I (d:\Keil_v5\ARM\ARMCC\include\stddef.h)(0x630C7EAD)
-I (..\freertos\include\FreeRTOSConfig.h)(0x638D46CC)
+I (..\freertos\include\FreeRTOSConfig.h)(0x6391AC49)
 I (..\freertos\include\projdefs.h)(0x604ABF58)
 I (..\freertos\include\portable.h)(0x604ABF58)
 I (..\freertos\include\deprecated_definitions.h)(0x604ABF58)
@@ -2988,7 +2988,7 @@ I (..\ipmi\ipmi_dev-3.0.0-src\data\IPMI_Sensor.h)(0x6359F141)
 I (..\ipmi\ipmi_dev-3.0.0-src\data\SensorMonitor.h)(0x6348C46B)
 I (..\bsp\bsp_adc.h)(0x636C5395)
 I (..\user\systick.h)(0x632D1846)
-I (..\sub_devices\api_subdevices.h)(0x638EFD10)
+I (..\sub_devices\api_subdevices.h)(0x6391A5B4)
 I (..\ipmi\ipmi_dev-3.0.0-src\data\NVRAccess.h)(0x63415768)
 I (..\ipmi\ipmi_dev-3.0.0-src\data\IPMI_Main.h)(0x63415768)
 I (..\ipmi\ipmi_dev-3.0.0-src\data\NVRData.h)(0x63415768)
@@ -3030,7 +3030,7 @@ I (..\bsp\bsp_uart3.h)(0x6334EDDF)
 I (..\bsp\bsp_uart7.h)(0x6334F04A)
 I (..\ipmi\ipmi_dev-3.0.0-src\data\MBMCInfo.h)(0x604ABF5B)
 I (..\ipmi\ipmi_dev-3.0.0-src\data\IPMI_Storage.h)(0x604ABF59)
-I (..\api\sensor/api_sensor.h)(0x638EF981)
+I (..\api\sensor/api_sensor.h)(0x638F0347)
 I (..\api\sensor/mac5023.h)(0x6375E24B)
 I (..\api\sensor/pmbus.h)(0x6375E3AE)
 I (..\api\adc\api_adc.h)(0x636DB205)
@@ -3049,7 +3049,7 @@ I (d:\Keil_v5\ARM\ARMCC\include\stdlib.h)(0x60252374)
 I (..\freertos\include\FreeRTOS.h)(0x604ABF58)
 I (d:\Keil_v5\ARM\ARMCC\include\stddef.h)(0x630C7EAD)
 I (d:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x636DF059)
-I (..\freertos\include\FreeRTOSConfig.h)(0x638D46CC)
+I (..\freertos\include\FreeRTOSConfig.h)(0x6391AC49)
 I (..\bsp\bsp_usart1.h)(0x6385A4E8)
 I (..\firmware\project_select.h)(0x638DB039)
 I (..\firmware\GD32F30x\GD32F30x_standard_peripheral\Include\gd32f30x_it.h)(0x63154ED0)
@@ -3097,7 +3097,7 @@ I (..\freertos\include\event_groups.h)(0x604ABF58)
 I (..\freertos\include\timers.h)(0x604ABF58)
 I (..\ipmi\ipmi_common\debug_print.h)(0x636C99CA)
 I (..\api\net_print/net_print.h)(0x604ABF58)
-I (..\user\main.h)(0x6385CB13)
+I (..\user\main.h)(0x6391CDB0)
 I (..\ipmi\ipmi_dev-3.0.0-src\data\Support.h)(0x634F7143)
 I (..\ipmi\ipmi_dev-3.0.0-src\data\IPMI_IPM.h)(0x63450D1A)
 I (..\ipmi\ipmi_dev-3.0.0-src\data\Util.h)(0x604ABF5B)
@@ -3143,8 +3143,8 @@ I (..\ipmi\ipmi_dev-3.0.0-src\data\Sensor.h)(0x6360FF07)
 I (..\ipmi\ipmi_dev-3.0.0-src\data\IPMI_Sensor.h)(0x6359F141)
 I (..\bsp\bsp_adc.h)(0x636C5395)
 I (..\user\systick.h)(0x632D1846)
-I (..\sub_devices\api_subdevices.h)(0x638EFD10)
-I (..\bsp\bsp_gpio.h)(0x638EF4DE)
+I (..\sub_devices\api_subdevices.h)(0x6391A5B4)
+I (..\bsp\bsp_gpio.h)(0x638F0360)
 F (..\ipmi\libipmimsghndlr-3.0.0-src\data\Bridge\Bridge.c)(0x604ABF5B)(--c99 -c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O0 --apcs=interwork -I ..\firmware -I ..\firmware\GD32F30x\GD32F30x_standard_peripheral\Include -I ..\firmware\GD32F30x\CMSIS\GD\GD32F30x\Include -I ..\firmware\GD32F30x\CMSIS -I ..\user -I ..\bsp -I ..\ipmi -I ..\ipmi\data -I ..\ipmi\ipmi_dev-3.0.0-src -I ..\ipmi\ipmi_dev-3.0.0-src\data -I ..\ipmi\ipmi_common -I ..\ipmi\libipmi-3.1.0-src\data\include -I ..\ipmi\libipmi-3.1.0-src\data -I ..\ipmb -I ..\api -I ..\api\adc -I ..\api\flash -I ..\api\shell -I ..\api\tools -I ..\api\cpu -I ..\sub_devices -I ..\api\sensor -I ..\api\update -I ..\api\fan -I ..\freertos\include -I ..\freertos\portable -I ..\freertos\portable\RVDS\ARM_CM4F -I ..\ff10 -I ..\api\cm_backtrace --diag_suppress=177-Id:\Users\Arm\Packs\GigaDevice\GD32F30x_DFP\2.2.1\Device\Include-Id:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="535" -DGD32F30X_XD -DARM_MATH_CM4 -D__CC_ARM -DGD32F3x-o .\output\temp\bridge.o --omf_browse .\output\temp\bridge.crf --depend .\output\temp\bridge.d)
 I (..\ipmi\ipmi_dev-3.0.0-src\data\MsgHndlr.h)(0x6359EFF8)
 I (..\ipmi\ipmi_common\Types.h)(0x6371948D)
@@ -3159,7 +3159,7 @@ I (d:\Keil_v5\ARM\ARMCC\include\string.h)(0x6025237E)
 I (..\freertos\include\FreeRTOS.h)(0x604ABF58)
 I (d:\Keil_v5\ARM\ARMCC\include\stddef.h)(0x630C7EAD)
 I (d:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x636DF059)
-I (..\freertos\include\FreeRTOSConfig.h)(0x638D46CC)
+I (..\freertos\include\FreeRTOSConfig.h)(0x6391AC49)
 I (..\bsp\bsp_usart1.h)(0x6385A4E8)
 I (..\firmware\project_select.h)(0x638DB039)
 I (..\firmware\GD32F30x\GD32F30x_standard_peripheral\Include\gd32f30x_it.h)(0x63154ED0)
@@ -3207,7 +3207,7 @@ I (..\freertos\include\event_groups.h)(0x604ABF58)
 I (..\freertos\include\timers.h)(0x604ABF58)
 I (..\ipmi\ipmi_common\debug_print.h)(0x636C99CA)
 I (..\api\net_print/net_print.h)(0x604ABF58)
-I (..\user\main.h)(0x6385CB13)
+I (..\user\main.h)(0x6391CDB0)
 I (..\ipmi\ipmi_dev-3.0.0-src\data\Bridge.h)(0x604ABF59)
 I (..\ipmi\ipmi_dev-3.0.0-src\data\IPMI_Bridge.h)(0x604ABF59)
 I (..\ipmi\ipmi_dev-3.0.0-src\data\BridgeMgmt.h)(0x63415785)
@@ -3233,7 +3233,7 @@ I (d:\Keil_v5\ARM\ARMCC\include\string.h)(0x6025237E)
 I (..\freertos\include\FreeRTOS.h)(0x604ABF58)
 I (d:\Keil_v5\ARM\ARMCC\include\stddef.h)(0x630C7EAD)
 I (d:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x636DF059)
-I (..\freertos\include\FreeRTOSConfig.h)(0x638D46CC)
+I (..\freertos\include\FreeRTOSConfig.h)(0x6391AC49)
 I (..\bsp\bsp_usart1.h)(0x6385A4E8)
 I (..\firmware\project_select.h)(0x638DB039)
 I (..\firmware\GD32F30x\GD32F30x_standard_peripheral\Include\gd32f30x_it.h)(0x63154ED0)
@@ -3281,7 +3281,7 @@ I (..\freertos\include\event_groups.h)(0x604ABF58)
 I (..\freertos\include\timers.h)(0x604ABF58)
 I (..\ipmi\ipmi_common\debug_print.h)(0x636C99CA)
 I (..\api\net_print/net_print.h)(0x604ABF58)
-I (..\user\main.h)(0x6385CB13)
+I (..\user\main.h)(0x6391CDB0)
 I (..\ipmi\ipmi_dev-3.0.0-src\data\Util.h)(0x604ABF5B)
 I (..\ipmi\ipmi_dev-3.0.0-src\data\Platform.h)(0x604ABF5B)
 I (..\ipmi\ipmi_dev-3.0.0-src\data\NVRAccess.h)(0x63415768)
@@ -3370,7 +3370,7 @@ I (..\firmware\GD32F30x\GD32F30x_standard_peripheral\Include\gd32f30x_misc.h)(0x
 I (..\firmware\GD32F30x\GD32F30x_standard_peripheral\Include\gd32f30x_enet.h)(0x62A6E3C7)
 I (..\firmware\GD32F30x\GD32F30x_standard_peripheral\Include\gd32f30x_exmc.h)(0x61CC215C)
 I (..\api\net_print/net_print.h)(0x604ABF58)
-I (..\user\main.h)(0x6385CB13)
+I (..\user\main.h)(0x6391CDB0)
 I (..\ipmi\ipmi_dev-3.0.0-src\data\IPMI_SDRRecord.h)(0x6358E03B)
 I (..\ipmi\ipmi_common\Types.h)(0x6371948D)
 I (..\ipmi\ipmi_dev-3.0.0-src\data\IPMI_SDR.h)(0x604ABF59)
@@ -3429,10 +3429,10 @@ I (..\firmware\GD32F30x\GD32F30x_standard_peripheral\Include\gd32f30x_misc.h)(0x
 I (..\firmware\GD32F30x\GD32F30x_standard_peripheral\Include\gd32f30x_enet.h)(0x62A6E3C7)
 I (..\firmware\GD32F30x\GD32F30x_standard_peripheral\Include\gd32f30x_exmc.h)(0x61CC215C)
 I (..\user\systick.h)(0x632D1846)
-I (..\user\main.h)(0x6385CB13)
+I (..\user\main.h)(0x6391CDB0)
 I (..\ipmi\ipmi_common\Types.h)(0x6371948D)
 I (d:\Keil_v5\ARM\ARMCC\include\stdbool.h)(0x6025237C)
-I (..\sub_devices\api_subdevices.h)(0x638EFD10)
+I (..\sub_devices\api_subdevices.h)(0x6391A5B4)
 I (..\ipmi\ipmi_dev-3.0.0-src\data\IPMI_SDRRecord.h)(0x6358E03B)
 I (..\ipmi\ipmi_dev-3.0.0-src\data\OSPort.h)(0x604ABF59)
 I (d:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x60252374)
@@ -3440,7 +3440,7 @@ I (d:\Keil_v5\ARM\ARMCC\include\stdlib.h)(0x60252374)
 I (d:\Keil_v5\ARM\ARMCC\include\string.h)(0x6025237E)
 I (..\freertos\include\FreeRTOS.h)(0x604ABF58)
 I (d:\Keil_v5\ARM\ARMCC\include\stddef.h)(0x630C7EAD)
-I (..\freertos\include\FreeRTOSConfig.h)(0x638D46CC)
+I (..\freertos\include\FreeRTOSConfig.h)(0x6391AC49)
 I (..\bsp\bsp_usart1.h)(0x6385A4E8)
 I (..\freertos\include\projdefs.h)(0x604ABF58)
 I (..\freertos\include\portable.h)(0x604ABF58)
@@ -3493,19 +3493,19 @@ I (..\firmware\GD32F30x\GD32F30x_standard_peripheral\Include\gd32f30x_enet.h)(0x
 I (..\firmware\GD32F30x\GD32F30x_standard_peripheral\Include\gd32f30x_exmc.h)(0x61CC215C)
 I (d:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x60252374)
 I (d:\Keil_v5\ARM\ARMCC\include\stdbool.h)(0x6025237C)
-I (..\api\sensor\api_sensor.h)(0x638EF981)
+I (..\api\sensor\api_sensor.h)(0x638F0347)
 I (..\ipmi\ipmi_common\Types.h)(0x6371948D)
 I (..\bsp\bsp_adc.h)(0x636C5395)
 I (..\user\systick.h)(0x632D1846)
-I (..\user\main.h)(0x6385CB13)
-I (..\sub_devices\api_subdevices.h)(0x638EFD10)
+I (..\user\main.h)(0x6391CDB0)
+I (..\sub_devices\api_subdevices.h)(0x6391A5B4)
 I (..\ipmi\ipmi_dev-3.0.0-src\data\IPMI_SDRRecord.h)(0x6358E03B)
 I (..\ipmi\ipmi_common\debug_print.h)(0x636C99CA)
 I (..\bsp\bsp_usart1.h)(0x6385A4E8)
 I (..\api\net_print/net_print.h)(0x604ABF58)
 I (..\freertos\include\FreeRTOS.h)(0x604ABF58)
 I (d:\Keil_v5\ARM\ARMCC\include\stddef.h)(0x630C7EAD)
-I (..\freertos\include\FreeRTOSConfig.h)(0x638D46CC)
+I (..\freertos\include\FreeRTOSConfig.h)(0x6391AC49)
 I (..\freertos\include\projdefs.h)(0x604ABF58)
 I (..\freertos\include\portable.h)(0x604ABF58)
 I (..\freertos\include\deprecated_definitions.h)(0x604ABF58)
@@ -3526,7 +3526,7 @@ F (..\bsp\bsp_i2c.c)(0x63856CF7)(--c99 -c --cpu Cortex-M4.fp.sp -D__MICROLIB -g 
 I (..\bsp\bsp_i2c.h)(0x6375FD7F)
 I (d:\Keil_v5\ARM\ARMCC\include\stdbool.h)(0x6025237C)
 I (d:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x636DF059)
-I (..\user\main.h)(0x6385CB13)
+I (..\user\main.h)(0x6391CDB0)
 I (..\firmware\project_select.h)(0x638DB039)
 I (..\firmware\GD32F30x\GD32F30x_standard_peripheral\Include\gd32f30x_it.h)(0x63154ED0)
 I (..\firmware\GD32F30x\CMSIS\GD\GD32F30x\Include\gd32f30x.h)(0x61CC215C)
@@ -3567,7 +3567,7 @@ I (d:\Keil_v5\ARM\ARMCC\include\stdlib.h)(0x60252374)
 I (..\ipmi\ipmi_common\Types.h)(0x6371948D)
 I (..\freertos\include\FreeRTOS.h)(0x604ABF58)
 I (d:\Keil_v5\ARM\ARMCC\include\stddef.h)(0x630C7EAD)
-I (..\freertos\include\FreeRTOSConfig.h)(0x638D46CC)
+I (..\freertos\include\FreeRTOSConfig.h)(0x6391AC49)
 I (..\bsp\bsp_usart1.h)(0x6385A4E8)
 I (..\freertos\include\projdefs.h)(0x604ABF58)
 I (..\freertos\include\portable.h)(0x604ABF58)
@@ -3625,7 +3625,7 @@ I (..\bsp\bsp_uart7.h)(0x6334F04A)
 I (..\ipmi\ipmi_dev-3.0.0-src\data\SDRRecord.h)(0x604ABF5B)
 I (..\ipmi\ipmi_dev-3.0.0-src\data\IPMI_IPM.h)(0x63450D1A)
 I (..\ipmi\ipmi_dev-3.0.0-src\data\MBMCInfo.h)(0x604ABF5B)
-I (..\sub_devices\api_subdevices.h)(0x638EFD10)
+I (..\sub_devices\api_subdevices.h)(0x6391A5B4)
 I (..\bsp\bsp_i2c_gpio.h)(0x63772D62)
 I (d:\Keil_v5\ARM\ARMCC\include\inttypes.h)(0x6025237E)
 F (..\bsp\bsp_i2c_gpio.c)(0x6376E504)(--c99 -c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O0 --apcs=interwork -I ..\firmware -I ..\firmware\GD32F30x\GD32F30x_standard_peripheral\Include -I ..\firmware\GD32F30x\CMSIS\GD\GD32F30x\Include -I ..\firmware\GD32F30x\CMSIS -I ..\user -I ..\bsp -I ..\ipmi -I ..\ipmi\data -I ..\ipmi\ipmi_dev-3.0.0-src -I ..\ipmi\ipmi_dev-3.0.0-src\data -I ..\ipmi\ipmi_common -I ..\ipmi\libipmi-3.1.0-src\data\include -I ..\ipmi\libipmi-3.1.0-src\data -I ..\ipmb -I ..\api -I ..\api\adc -I ..\api\flash -I ..\api\shell -I ..\api\tools -I ..\api\cpu -I ..\sub_devices -I ..\api\sensor -I ..\api\update -I ..\api\fan -I ..\freertos\include -I ..\freertos\portable -I ..\freertos\portable\RVDS\ARM_CM4F -I ..\ff10 -I ..\api\cm_backtrace-Id:\Users\Arm\Packs\GigaDevice\GD32F30x_DFP\2.2.1\Device\Include-Id:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="535" -DGD32F30X_XD -DARM_MATH_CM4 -D__CC_ARM -DGD32F3x-o .\output\temp\bsp_i2c_gpio.o --omf_browse .\output\temp\bsp_i2c_gpio.crf --depend .\output\temp\bsp_i2c_gpio.d)
@@ -3676,7 +3676,7 @@ I (d:\Keil_v5\ARM\ARMCC\include\string.h)(0x6025237E)
 I (..\ipmi\ipmi_common\Types.h)(0x6371948D)
 I (..\freertos\include\FreeRTOS.h)(0x604ABF58)
 I (d:\Keil_v5\ARM\ARMCC\include\stddef.h)(0x630C7EAD)
-I (..\freertos\include\FreeRTOSConfig.h)(0x638D46CC)
+I (..\freertos\include\FreeRTOSConfig.h)(0x6391AC49)
 I (..\bsp\bsp_usart1.h)(0x6385A4E8)
 I (..\freertos\include\projdefs.h)(0x604ABF58)
 I (..\freertos\include\portable.h)(0x604ABF58)
@@ -3691,7 +3691,7 @@ I (..\freertos\include\event_groups.h)(0x604ABF58)
 I (..\freertos\include\timers.h)(0x604ABF58)
 I (..\ipmi\ipmi_common\debug_print.h)(0x636C99CA)
 I (..\api\net_print/net_print.h)(0x604ABF58)
-I (..\user\main.h)(0x6385CB13)
+I (..\user\main.h)(0x6391CDB0)
 F (..\bsp\bsp_led.c)(0x604ABF58)(--c99 -c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O0 --apcs=interwork -I ..\firmware -I ..\firmware\GD32F30x\GD32F30x_standard_peripheral\Include -I ..\firmware\GD32F30x\CMSIS\GD\GD32F30x\Include -I ..\firmware\GD32F30x\CMSIS -I ..\user -I ..\bsp -I ..\ipmi -I ..\ipmi\data -I ..\ipmi\ipmi_dev-3.0.0-src -I ..\ipmi\ipmi_dev-3.0.0-src\data -I ..\ipmi\ipmi_common -I ..\ipmi\libipmi-3.1.0-src\data\include -I ..\ipmi\libipmi-3.1.0-src\data -I ..\ipmb -I ..\api -I ..\api\adc -I ..\api\flash -I ..\api\shell -I ..\api\tools -I ..\api\cpu -I ..\sub_devices -I ..\api\sensor -I ..\api\update -I ..\api\fan -I ..\freertos\include -I ..\freertos\portable -I ..\freertos\portable\RVDS\ARM_CM4F -I ..\ff10 -I ..\api\cm_backtrace-Id:\Users\Arm\Packs\GigaDevice\GD32F30x_DFP\2.2.1\Device\Include-Id:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="535" -DGD32F30X_XD -DARM_MATH_CM4 -D__CC_ARM -DGD32F3x-o .\output\temp\bsp_led.o --omf_browse .\output\temp\bsp_led.crf --depend .\output\temp\bsp_led.d)
 I (..\bsp\bsp_led.h)(0x632314FE)
 I (..\firmware\project_select.h)(0x638DB039)
@@ -3729,7 +3729,7 @@ I (..\firmware\GD32F30x\GD32F30x_standard_peripheral\Include\gd32f30x_misc.h)(0x
 I (..\firmware\GD32F30x\GD32F30x_standard_peripheral\Include\gd32f30x_enet.h)(0x62A6E3C7)
 I (..\firmware\GD32F30x\GD32F30x_standard_peripheral\Include\gd32f30x_exmc.h)(0x61CC215C)
 I (d:\Keil_v5\ARM\ARMCC\include\stdbool.h)(0x6025237C)
-I (..\user\main.h)(0x6385CB13)
+I (..\user\main.h)(0x6391CDB0)
 F (..\bsp\bsp_pwm.c)(0x634FC67F)(--c99 -c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O0 --apcs=interwork -I ..\firmware -I ..\firmware\GD32F30x\GD32F30x_standard_peripheral\Include -I ..\firmware\GD32F30x\CMSIS\GD\GD32F30x\Include -I ..\firmware\GD32F30x\CMSIS -I ..\user -I ..\bsp -I ..\ipmi -I ..\ipmi\data -I ..\ipmi\ipmi_dev-3.0.0-src -I ..\ipmi\ipmi_dev-3.0.0-src\data -I ..\ipmi\ipmi_common -I ..\ipmi\libipmi-3.1.0-src\data\include -I ..\ipmi\libipmi-3.1.0-src\data -I ..\ipmb -I ..\api -I ..\api\adc -I ..\api\flash -I ..\api\shell -I ..\api\tools -I ..\api\cpu -I ..\sub_devices -I ..\api\sensor -I ..\api\update -I ..\api\fan -I ..\freertos\include -I ..\freertos\portable -I ..\freertos\portable\RVDS\ARM_CM4F -I ..\ff10 -I ..\api\cm_backtrace-Id:\Users\Arm\Packs\GigaDevice\GD32F30x_DFP\2.2.1\Device\Include-Id:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="535" -DGD32F30X_XD -DARM_MATH_CM4 -D__CC_ARM -DGD32F3x-o .\output\temp\bsp_pwm.o --omf_browse .\output\temp\bsp_pwm.crf --depend .\output\temp\bsp_pwm.d)
 I (..\bsp\bsp_pwm.h)(0x634FC6FF)
 I (..\firmware\project_select.h)(0x638DB039)
@@ -3767,20 +3767,20 @@ I (..\firmware\GD32F30x\GD32F30x_standard_peripheral\Include\gd32f30x_misc.h)(0x
 I (..\firmware\GD32F30x\GD32F30x_standard_peripheral\Include\gd32f30x_enet.h)(0x62A6E3C7)
 I (..\firmware\GD32F30x\GD32F30x_standard_peripheral\Include\gd32f30x_exmc.h)(0x61CC215C)
 I (d:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x60252374)
-I (..\api\sensor\api_sensor.h)(0x638EF981)
+I (..\api\sensor\api_sensor.h)(0x638F0347)
 I (d:\Keil_v5\ARM\ARMCC\include\stdbool.h)(0x6025237C)
 I (..\ipmi\ipmi_common\Types.h)(0x6371948D)
 I (..\bsp\bsp_adc.h)(0x636C5395)
 I (..\user\systick.h)(0x632D1846)
-I (..\user\main.h)(0x6385CB13)
-I (..\sub_devices\api_subdevices.h)(0x638EFD10)
+I (..\user\main.h)(0x6391CDB0)
+I (..\sub_devices\api_subdevices.h)(0x6391A5B4)
 I (..\ipmi\ipmi_dev-3.0.0-src\data\IPMI_SDRRecord.h)(0x6358E03B)
 I (..\ipmi\ipmi_common\debug_print.h)(0x636C99CA)
 I (..\bsp\bsp_usart1.h)(0x6385A4E8)
 I (..\api\net_print/net_print.h)(0x604ABF58)
 I (..\freertos\include\FreeRTOS.h)(0x604ABF58)
 I (d:\Keil_v5\ARM\ARMCC\include\stddef.h)(0x630C7EAD)
-I (..\freertos\include\FreeRTOSConfig.h)(0x638D46CC)
+I (..\freertos\include\FreeRTOSConfig.h)(0x6391AC49)
 I (..\freertos\include\projdefs.h)(0x604ABF58)
 I (..\freertos\include\portable.h)(0x604ABF58)
 I (..\freertos\include\deprecated_definitions.h)(0x604ABF58)
@@ -3829,14 +3829,14 @@ I (..\firmware\GD32F30x\GD32F30x_standard_peripheral\Include\gd32f30x_exmc.h)(0x
 I (d:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x60252374)
 I (d:\Keil_v5\ARM\ARMCC\include\stdbool.h)(0x6025237C)
 I (d:\Keil_v5\ARM\ARMCC\include\string.h)(0x6025237E)
-I (..\user\main.h)(0x6385CB13)
+I (..\user\main.h)(0x6391CDB0)
 I (..\ipmb\mcro_def.h)(0x604ABF5D)
 I (..\ipmi\ipmi_dev-3.0.0-src\data\OSPort.h)(0x604ABF59)
 I (d:\Keil_v5\ARM\ARMCC\include\stdlib.h)(0x60252374)
 I (..\ipmi\ipmi_common\Types.h)(0x6371948D)
 I (..\freertos\include\FreeRTOS.h)(0x604ABF58)
 I (d:\Keil_v5\ARM\ARMCC\include\stddef.h)(0x630C7EAD)
-I (..\freertos\include\FreeRTOSConfig.h)(0x638D46CC)
+I (..\freertos\include\FreeRTOSConfig.h)(0x6391AC49)
 I (..\bsp\bsp_usart1.h)(0x6385A4E8)
 I (..\freertos\include\projdefs.h)(0x604ABF58)
 I (..\freertos\include\portable.h)(0x604ABF58)
@@ -3900,13 +3900,13 @@ I (..\api\tools\FIFO.h)(0x6375CA14)
 I (..\ipmi\ipmi_common\Types.h)(0x6371948D)
 I (d:\Keil_v5\ARM\ARMCC\include\string.h)(0x6025237E)
 I (d:\Keil_v5\ARM\ARMCC\include\stdarg.h)(0x60252376)
-I (..\user\main.h)(0x6385CB13)
+I (..\user\main.h)(0x6391CDB0)
 I (..\ipmb\mcro_def.h)(0x604ABF5D)
 I (..\ipmi\ipmi_dev-3.0.0-src\data\OSPort.h)(0x604ABF59)
 I (d:\Keil_v5\ARM\ARMCC\include\stdlib.h)(0x60252374)
 I (..\freertos\include\FreeRTOS.h)(0x604ABF58)
 I (d:\Keil_v5\ARM\ARMCC\include\stddef.h)(0x630C7EAD)
-I (..\freertos\include\FreeRTOSConfig.h)(0x638D46CC)
+I (..\freertos\include\FreeRTOSConfig.h)(0x6391AC49)
 I (..\bsp\bsp_usart1.h)(0x6385A4E8)
 I (..\freertos\include\projdefs.h)(0x604ABF58)
 I (..\freertos\include\portable.h)(0x604ABF58)
@@ -3964,14 +3964,14 @@ I (..\firmware\GD32F30x\GD32F30x_standard_peripheral\Include\gd32f30x_exmc.h)(0x
 I (d:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x60252374)
 I (d:\Keil_v5\ARM\ARMCC\include\stdbool.h)(0x6025237C)
 I (d:\Keil_v5\ARM\ARMCC\include\string.h)(0x6025237E)
-I (..\user\main.h)(0x6385CB13)
+I (..\user\main.h)(0x6391CDB0)
 I (..\ipmb\mcro_def.h)(0x604ABF5D)
 I (..\ipmi\ipmi_dev-3.0.0-src\data\OSPort.h)(0x604ABF59)
 I (d:\Keil_v5\ARM\ARMCC\include\stdlib.h)(0x60252374)
 I (..\ipmi\ipmi_common\Types.h)(0x6371948D)
 I (..\freertos\include\FreeRTOS.h)(0x604ABF58)
 I (d:\Keil_v5\ARM\ARMCC\include\stddef.h)(0x630C7EAD)
-I (..\freertos\include\FreeRTOSConfig.h)(0x638D46CC)
+I (..\freertos\include\FreeRTOSConfig.h)(0x6391AC49)
 I (..\freertos\include\projdefs.h)(0x604ABF58)
 I (..\freertos\include\portable.h)(0x604ABF58)
 I (..\freertos\include\deprecated_definitions.h)(0x604ABF58)
@@ -3992,7 +3992,7 @@ I (..\ipmi\ipmi_dev-3.0.0-src\data\IPMIDefs.h)(0x604ABF59)
 I (..\api\tools\FIFO.h)(0x6375CA14)
 I (..\bsp\bsp_uartcomm.h)(0x63686EEF)
 F (..\bsp\bsp_gpio.c)(0x638D48BB)(--c99 -c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O0 --apcs=interwork -I ..\firmware -I ..\firmware\GD32F30x\GD32F30x_standard_peripheral\Include -I ..\firmware\GD32F30x\CMSIS\GD\GD32F30x\Include -I ..\firmware\GD32F30x\CMSIS -I ..\user -I ..\bsp -I ..\ipmi -I ..\ipmi\data -I ..\ipmi\ipmi_dev-3.0.0-src -I ..\ipmi\ipmi_dev-3.0.0-src\data -I ..\ipmi\ipmi_common -I ..\ipmi\libipmi-3.1.0-src\data\include -I ..\ipmi\libipmi-3.1.0-src\data -I ..\ipmb -I ..\api -I ..\api\adc -I ..\api\flash -I ..\api\shell -I ..\api\tools -I ..\api\cpu -I ..\sub_devices -I ..\api\sensor -I ..\api\update -I ..\api\fan -I ..\freertos\include -I ..\freertos\portable -I ..\freertos\portable\RVDS\ARM_CM4F -I ..\ff10 -I ..\api\cm_backtrace-Id:\Users\Arm\Packs\GigaDevice\GD32F30x_DFP\2.2.1\Device\Include-Id:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="535" -DGD32F30X_XD -DARM_MATH_CM4 -D__CC_ARM -DGD32F3x-o .\output\temp\bsp_gpio.o --omf_browse .\output\temp\bsp_gpio.crf --depend .\output\temp\bsp_gpio.d)
-I (..\bsp\bsp_gpio.h)(0x638EF4DE)
+I (..\bsp\bsp_gpio.h)(0x638F0360)
 I (..\firmware\project_select.h)(0x638DB039)
 I (..\firmware\GD32F30x\GD32F30x_standard_peripheral\Include\gd32f30x_it.h)(0x63154ED0)
 I (..\firmware\GD32F30x\CMSIS\GD\GD32F30x\Include\gd32f30x.h)(0x61CC215C)
@@ -4028,8 +4028,8 @@ I (..\firmware\GD32F30x\GD32F30x_standard_peripheral\Include\gd32f30x_misc.h)(0x
 I (..\firmware\GD32F30x\GD32F30x_standard_peripheral\Include\gd32f30x_enet.h)(0x62A6E3C7)
 I (..\firmware\GD32F30x\GD32F30x_standard_peripheral\Include\gd32f30x_exmc.h)(0x61CC215C)
 I (d:\Keil_v5\ARM\ARMCC\include\stdbool.h)(0x6025237C)
-I (..\user\main.h)(0x6385CB13)
-I (..\sub_devices\api_subdevices.h)(0x638EFD10)
+I (..\user\main.h)(0x6391CDB0)
+I (..\sub_devices\api_subdevices.h)(0x6391A5B4)
 I (..\bsp\bsp_i2c.h)(0x6375FD7F)
 I (..\ipmi\ipmi_common\Types.h)(0x6371948D)
 I (..\ipmi\ipmi_common\debug_print.h)(0x636C99CA)
@@ -4075,7 +4075,7 @@ I (..\firmware\GD32F30x\GD32F30x_standard_peripheral\Include\gd32f30x_misc.h)(0x
 I (..\firmware\GD32F30x\GD32F30x_standard_peripheral\Include\gd32f30x_enet.h)(0x62A6E3C7)
 I (..\firmware\GD32F30x\GD32F30x_standard_peripheral\Include\gd32f30x_exmc.h)(0x61CC215C)
 I (d:\Keil_v5\ARM\ARMCC\include\stdbool.h)(0x6025237C)
-I (..\user\main.h)(0x6385CB13)
+I (..\user\main.h)(0x6391CDB0)
 F (..\bsp\bsp_timer.c)(0x636C646A)(--c99 -c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O0 --apcs=interwork -I ..\firmware -I ..\firmware\GD32F30x\GD32F30x_standard_peripheral\Include -I ..\firmware\GD32F30x\CMSIS\GD\GD32F30x\Include -I ..\firmware\GD32F30x\CMSIS -I ..\user -I ..\bsp -I ..\ipmi -I ..\ipmi\data -I ..\ipmi\ipmi_dev-3.0.0-src -I ..\ipmi\ipmi_dev-3.0.0-src\data -I ..\ipmi\ipmi_common -I ..\ipmi\libipmi-3.1.0-src\data\include -I ..\ipmi\libipmi-3.1.0-src\data -I ..\ipmb -I ..\api -I ..\api\adc -I ..\api\flash -I ..\api\shell -I ..\api\tools -I ..\api\cpu -I ..\sub_devices -I ..\api\sensor -I ..\api\update -I ..\api\fan -I ..\freertos\include -I ..\freertos\portable -I ..\freertos\portable\RVDS\ARM_CM4F -I ..\ff10 -I ..\api\cm_backtrace-Id:\Users\Arm\Packs\GigaDevice\GD32F30x_DFP\2.2.1\Device\Include-Id:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="535" -DGD32F30X_XD -DARM_MATH_CM4 -D__CC_ARM -DGD32F3x-o .\output\temp\bsp_timer.o --omf_browse .\output\temp\bsp_timer.crf --depend .\output\temp\bsp_timer.d)
 I (..\bsp\bsp_timer.h)(0x632D21BC)
 I (..\firmware\project_select.h)(0x638DB039)
@@ -4117,7 +4117,7 @@ I (d:\Keil_v5\ARM\ARMCC\include\stdbool.h)(0x6025237C)
 I (..\ipmi\ipmi_common\debug_print.h)(0x636C99CA)
 I (..\bsp\bsp_usart1.h)(0x6385A4E8)
 I (..\api\net_print/net_print.h)(0x604ABF58)
-I (..\user\main.h)(0x6385CB13)
+I (..\user\main.h)(0x6391CDB0)
 F (..\bsp\bsp_uartcomm.c)(0x6386B558)(--c99 -c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O0 --apcs=interwork -I ..\firmware -I ..\firmware\GD32F30x\GD32F30x_standard_peripheral\Include -I ..\firmware\GD32F30x\CMSIS\GD\GD32F30x\Include -I ..\firmware\GD32F30x\CMSIS -I ..\user -I ..\bsp -I ..\ipmi -I ..\ipmi\data -I ..\ipmi\ipmi_dev-3.0.0-src -I ..\ipmi\ipmi_dev-3.0.0-src\data -I ..\ipmi\ipmi_common -I ..\ipmi\libipmi-3.1.0-src\data\include -I ..\ipmi\libipmi-3.1.0-src\data -I ..\ipmb -I ..\api -I ..\api\adc -I ..\api\flash -I ..\api\shell -I ..\api\tools -I ..\api\cpu -I ..\sub_devices -I ..\api\sensor -I ..\api\update -I ..\api\fan -I ..\freertos\include -I ..\freertos\portable -I ..\freertos\portable\RVDS\ARM_CM4F -I ..\ff10 -I ..\api\cm_backtrace-Id:\Users\Arm\Packs\GigaDevice\GD32F30x_DFP\2.2.1\Device\Include-Id:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="535" -DGD32F30X_XD -DARM_MATH_CM4 -D__CC_ARM -DGD32F3x-o .\output\temp\bsp_uartcomm.o --omf_browse .\output\temp\bsp_uartcomm.crf --depend .\output\temp\bsp_uartcomm.d)
 I (..\bsp\bsp_uart3.h)(0x6334EDDF)
 I (..\firmware\project_select.h)(0x638DB039)
@@ -4157,14 +4157,14 @@ I (..\firmware\GD32F30x\GD32F30x_standard_peripheral\Include\gd32f30x_exmc.h)(0x
 I (d:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x60252374)
 I (d:\Keil_v5\ARM\ARMCC\include\stdbool.h)(0x6025237C)
 I (d:\Keil_v5\ARM\ARMCC\include\string.h)(0x6025237E)
-I (..\user\main.h)(0x6385CB13)
+I (..\user\main.h)(0x6391CDB0)
 I (..\ipmb\mcro_def.h)(0x604ABF5D)
 I (..\ipmi\ipmi_dev-3.0.0-src\data\OSPort.h)(0x604ABF59)
 I (d:\Keil_v5\ARM\ARMCC\include\stdlib.h)(0x60252374)
 I (..\ipmi\ipmi_common\Types.h)(0x6371948D)
 I (..\freertos\include\FreeRTOS.h)(0x604ABF58)
 I (d:\Keil_v5\ARM\ARMCC\include\stddef.h)(0x630C7EAD)
-I (..\freertos\include\FreeRTOSConfig.h)(0x638D46CC)
+I (..\freertos\include\FreeRTOSConfig.h)(0x6391AC49)
 I (..\bsp\bsp_usart1.h)(0x6385A4E8)
 I (..\freertos\include\projdefs.h)(0x604ABF58)
 I (..\freertos\include\portable.h)(0x604ABF58)
@@ -4753,7 +4753,7 @@ F (..\freertos\croutine.c)(0x604ABF59)(--c99 -c --cpu Cortex-M4.fp.sp -D__MICROL
 I (..\freertos\include\FreeRTOS.h)(0x604ABF58)
 I (d:\Keil_v5\ARM\ARMCC\include\stddef.h)(0x630C7EAD)
 I (d:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x636DF059)
-I (..\freertos\include\FreeRTOSConfig.h)(0x638D46CC)
+I (..\freertos\include\FreeRTOSConfig.h)(0x6391AC49)
 I (..\bsp\bsp_usart1.h)(0x6385A4E8)
 I (..\firmware\project_select.h)(0x638DB039)
 I (..\firmware\GD32F30x\GD32F30x_standard_peripheral\Include\gd32f30x_it.h)(0x63154ED0)
@@ -4803,7 +4803,7 @@ I (d:\Keil_v5\ARM\ARMCC\include\stdlib.h)(0x60252374)
 I (..\freertos\include\FreeRTOS.h)(0x604ABF58)
 I (d:\Keil_v5\ARM\ARMCC\include\stddef.h)(0x630C7EAD)
 I (d:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x636DF059)
-I (..\freertos\include\FreeRTOSConfig.h)(0x638D46CC)
+I (..\freertos\include\FreeRTOSConfig.h)(0x6391AC49)
 I (..\bsp\bsp_usart1.h)(0x6385A4E8)
 I (..\firmware\project_select.h)(0x638DB039)
 I (..\firmware\GD32F30x\GD32F30x_standard_peripheral\Include\gd32f30x_it.h)(0x63154ED0)
@@ -4854,7 +4854,7 @@ I (d:\Keil_v5\ARM\ARMCC\include\stdlib.h)(0x60252374)
 I (..\freertos\include\FreeRTOS.h)(0x604ABF58)
 I (d:\Keil_v5\ARM\ARMCC\include\stddef.h)(0x630C7EAD)
 I (d:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x636DF059)
-I (..\freertos\include\FreeRTOSConfig.h)(0x638D46CC)
+I (..\freertos\include\FreeRTOSConfig.h)(0x6391AC49)
 I (..\bsp\bsp_usart1.h)(0x6385A4E8)
 I (..\firmware\project_select.h)(0x638DB039)
 I (..\firmware\GD32F30x\GD32F30x_standard_peripheral\Include\gd32f30x_it.h)(0x63154ED0)
@@ -4903,7 +4903,7 @@ I (d:\Keil_v5\ARM\ARMCC\include\string.h)(0x6025237E)
 I (..\freertos\include\FreeRTOS.h)(0x604ABF58)
 I (d:\Keil_v5\ARM\ARMCC\include\stddef.h)(0x630C7EAD)
 I (d:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x636DF059)
-I (..\freertos\include\FreeRTOSConfig.h)(0x638D46CC)
+I (..\freertos\include\FreeRTOSConfig.h)(0x6391AC49)
 I (..\bsp\bsp_usart1.h)(0x6385A4E8)
 I (..\firmware\project_select.h)(0x638DB039)
 I (..\firmware\GD32F30x\GD32F30x_standard_peripheral\Include\gd32f30x_it.h)(0x63154ED0)
@@ -4948,13 +4948,13 @@ I (..\freertos\include\mpu_wrappers.h)(0x604ABF58)
 I (..\freertos\include\task.h)(0x636AF79C)
 I (..\freertos\include\list.h)(0x604ABF58)
 I (..\freertos\include\queue.h)(0x604ABF58)
-F (..\freertos\tasks.c)(0x63859E5A)(--c99 -c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O0 --apcs=interwork -I ..\firmware -I ..\firmware\GD32F30x\GD32F30x_standard_peripheral\Include -I ..\firmware\GD32F30x\CMSIS\GD\GD32F30x\Include -I ..\firmware\GD32F30x\CMSIS -I ..\user -I ..\bsp -I ..\ipmi -I ..\ipmi\data -I ..\ipmi\ipmi_dev-3.0.0-src -I ..\ipmi\ipmi_dev-3.0.0-src\data -I ..\ipmi\ipmi_common -I ..\ipmi\libipmi-3.1.0-src\data\include -I ..\ipmi\libipmi-3.1.0-src\data -I ..\ipmb -I ..\api -I ..\api\adc -I ..\api\flash -I ..\api\shell -I ..\api\tools -I ..\api\cpu -I ..\sub_devices -I ..\api\sensor -I ..\api\update -I ..\api\fan -I ..\freertos\include -I ..\freertos\portable -I ..\freertos\portable\RVDS\ARM_CM4F -I ..\ff10 -I ..\api\cm_backtrace-Id:\Users\Arm\Packs\GigaDevice\GD32F30x_DFP\2.2.1\Device\Include-Id:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="535" -DGD32F30X_XD -DARM_MATH_CM4 -D__CC_ARM -DGD32F3x-o .\output\temp\tasks.o --omf_browse .\output\temp\tasks.crf --depend .\output\temp\tasks.d)
+F (..\freertos\tasks.c)(0x6391AC93)(--c99 -c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O0 --apcs=interwork -I ..\firmware -I ..\firmware\GD32F30x\GD32F30x_standard_peripheral\Include -I ..\firmware\GD32F30x\CMSIS\GD\GD32F30x\Include -I ..\firmware\GD32F30x\CMSIS -I ..\user -I ..\bsp -I ..\ipmi -I ..\ipmi\data -I ..\ipmi\ipmi_dev-3.0.0-src -I ..\ipmi\ipmi_dev-3.0.0-src\data -I ..\ipmi\ipmi_common -I ..\ipmi\libipmi-3.1.0-src\data\include -I ..\ipmi\libipmi-3.1.0-src\data -I ..\ipmb -I ..\api -I ..\api\adc -I ..\api\flash -I ..\api\shell -I ..\api\tools -I ..\api\cpu -I ..\sub_devices -I ..\api\sensor -I ..\api\update -I ..\api\fan -I ..\freertos\include -I ..\freertos\portable -I ..\freertos\portable\RVDS\ARM_CM4F -I ..\ff10 -I ..\api\cm_backtrace-Id:\Users\Arm\Packs\GigaDevice\GD32F30x_DFP\2.2.1\Device\Include-Id:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="535" -DGD32F30X_XD -DARM_MATH_CM4 -D__CC_ARM -DGD32F3x-o .\output\temp\tasks.o --omf_browse .\output\temp\tasks.crf --depend .\output\temp\tasks.d)
 I (d:\Keil_v5\ARM\ARMCC\include\stdlib.h)(0x60252374)
 I (d:\Keil_v5\ARM\ARMCC\include\string.h)(0x6025237E)
 I (..\freertos\include\FreeRTOS.h)(0x604ABF58)
 I (d:\Keil_v5\ARM\ARMCC\include\stddef.h)(0x630C7EAD)
 I (d:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x636DF059)
-I (..\freertos\include\FreeRTOSConfig.h)(0x638D46CC)
+I (..\freertos\include\FreeRTOSConfig.h)(0x6391AC49)
 I (..\bsp\bsp_usart1.h)(0x6385A4E8)
 I (..\firmware\project_select.h)(0x638DB039)
 I (..\firmware\GD32F30x\GD32F30x_standard_peripheral\Include\gd32f30x_it.h)(0x63154ED0)
@@ -5000,9 +5000,9 @@ I (..\freertos\include\task.h)(0x636AF79C)
 I (..\freertos\include\list.h)(0x604ABF58)
 I (..\freertos\include\timers.h)(0x604ABF58)
 I (..\freertos\include\stack_macros.h)(0x604ABF58)
-I (..\bsp\bsp_gpio.h)(0x638EF4DE)
-I (..\user\main.h)(0x6385CB13)
-I (..\sub_devices\api_subdevices.h)(0x638EFD10)
+I (..\bsp\bsp_gpio.h)(0x638F0360)
+I (..\user\main.h)(0x6391CDB0)
+I (..\sub_devices\api_subdevices.h)(0x6391A5B4)
 I (..\ipmi\ipmi_common\debug_print.h)(0x636C99CA)
 I (..\api\net_print/net_print.h)(0x604ABF58)
 I (..\bsp\bsp_uartcomm.h)(0x63686EEF)
@@ -5013,7 +5013,7 @@ I (d:\Keil_v5\ARM\ARMCC\include\stdlib.h)(0x60252374)
 I (..\freertos\include\FreeRTOS.h)(0x604ABF58)
 I (d:\Keil_v5\ARM\ARMCC\include\stddef.h)(0x630C7EAD)
 I (d:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x636DF059)
-I (..\freertos\include\FreeRTOSConfig.h)(0x638D46CC)
+I (..\freertos\include\FreeRTOSConfig.h)(0x6391AC49)
 I (..\bsp\bsp_usart1.h)(0x6385A4E8)
 I (..\firmware\project_select.h)(0x638DB039)
 I (..\firmware\GD32F30x\GD32F30x_standard_peripheral\Include\gd32f30x_it.h)(0x63154ED0)
@@ -5064,7 +5064,7 @@ I (d:\Keil_v5\ARM\ARMCC\include\stdlib.h)(0x60252374)
 I (..\freertos\include\FreeRTOS.h)(0x604ABF58)
 I (d:\Keil_v5\ARM\ARMCC\include\stddef.h)(0x630C7EAD)
 I (d:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x636DF059)
-I (..\freertos\include\FreeRTOSConfig.h)(0x638D46CC)
+I (..\freertos\include\FreeRTOSConfig.h)(0x6391AC49)
 I (..\bsp\bsp_usart1.h)(0x6385A4E8)
 I (..\firmware\project_select.h)(0x638DB039)
 I (..\firmware\GD32F30x\GD32F30x_standard_peripheral\Include\gd32f30x_it.h)(0x63154ED0)
@@ -5112,7 +5112,7 @@ F (..\freertos\portable\RVDS\ARM_CM3\port.c)(0x604ABF58)(--c99 -c --cpu Cortex-M
 I (..\freertos\include\FreeRTOS.h)(0x604ABF58)
 I (d:\Keil_v5\ARM\ARMCC\include\stddef.h)(0x630C7EAD)
 I (d:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x636DF059)
-I (..\freertos\include\FreeRTOSConfig.h)(0x638D46CC)
+I (..\freertos\include\FreeRTOSConfig.h)(0x6391AC49)
 I (..\bsp\bsp_usart1.h)(0x6385A4E8)
 I (..\firmware\project_select.h)(0x638DB039)
 I (..\firmware\GD32F30x\GD32F30x_standard_peripheral\Include\gd32f30x_it.h)(0x63154ED0)
@@ -5169,7 +5169,7 @@ I (d:\Keil_v5\ARM\ARMCC\include\stdarg.h)(0x60252376)
 I (..\api\shell\shell_ext.h)(0x604ABF58)
 I (..\freertos\include\FreeRTOS.h)(0x604ABF58)
 I (d:\Keil_v5\ARM\ARMCC\include\stddef.h)(0x630C7EAD)
-I (..\freertos\include\FreeRTOSConfig.h)(0x638D46CC)
+I (..\freertos\include\FreeRTOSConfig.h)(0x6391AC49)
 I (..\bsp\bsp_usart1.h)(0x6385A4E8)
 I (..\firmware\project_select.h)(0x638DB039)
 I (..\firmware\GD32F30x\GD32F30x_standard_peripheral\Include\gd32f30x_it.h)(0x63154ED0)
@@ -5236,7 +5236,7 @@ I (..\api\shell\shell.h)(0x636DEBD2)
 I (..\ipmi\ipmi_common\Types.h)(0x6371948D)
 I (d:\Keil_v5\ARM\ARMCC\include\stdbool.h)(0x6025237C)
 I (..\api\shell\shell_ext.h)(0x604ABF58)
-F (..\api\shell\shell_port.c)(0x6375A387)(--c99 -c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O0 --apcs=interwork -I ..\firmware -I ..\firmware\GD32F30x\GD32F30x_standard_peripheral\Include -I ..\firmware\GD32F30x\CMSIS\GD\GD32F30x\Include -I ..\firmware\GD32F30x\CMSIS -I ..\user -I ..\bsp -I ..\ipmi -I ..\ipmi\data -I ..\ipmi\ipmi_dev-3.0.0-src -I ..\ipmi\ipmi_dev-3.0.0-src\data -I ..\ipmi\ipmi_common -I ..\ipmi\libipmi-3.1.0-src\data\include -I ..\ipmi\libipmi-3.1.0-src\data -I ..\ipmb -I ..\api -I ..\api\adc -I ..\api\flash -I ..\api\shell -I ..\api\tools -I ..\api\cpu -I ..\sub_devices -I ..\api\sensor -I ..\api\update -I ..\api\fan -I ..\freertos\include -I ..\freertos\portable -I ..\freertos\portable\RVDS\ARM_CM4F -I ..\ff10 -I ..\api\cm_backtrace-Id:\Users\Arm\Packs\GigaDevice\GD32F30x_DFP\2.2.1\Device\Include-Id:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="535" -DGD32F30X_XD -DARM_MATH_CM4 -D__CC_ARM -DGD32F3x-o .\output\temp\shell_port.o --omf_browse .\output\temp\shell_port.crf --depend .\output\temp\shell_port.d)
+F (..\api\shell\shell_port.c)(0x639156E3)(--c99 -c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O0 --apcs=interwork -I ..\firmware -I ..\firmware\GD32F30x\GD32F30x_standard_peripheral\Include -I ..\firmware\GD32F30x\CMSIS\GD\GD32F30x\Include -I ..\firmware\GD32F30x\CMSIS -I ..\user -I ..\bsp -I ..\ipmi -I ..\ipmi\data -I ..\ipmi\ipmi_dev-3.0.0-src -I ..\ipmi\ipmi_dev-3.0.0-src\data -I ..\ipmi\ipmi_common -I ..\ipmi\libipmi-3.1.0-src\data\include -I ..\ipmi\libipmi-3.1.0-src\data -I ..\ipmb -I ..\api -I ..\api\adc -I ..\api\flash -I ..\api\shell -I ..\api\tools -I ..\api\cpu -I ..\sub_devices -I ..\api\sensor -I ..\api\update -I ..\api\fan -I ..\freertos\include -I ..\freertos\portable -I ..\freertos\portable\RVDS\ARM_CM4F -I ..\ff10 -I ..\api\cm_backtrace-Id:\Users\Arm\Packs\GigaDevice\GD32F30x_DFP\2.2.1\Device\Include-Id:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="535" -DGD32F30X_XD -DARM_MATH_CM4 -D__CC_ARM -DGD32F3x-o .\output\temp\shell_port.o --omf_browse .\output\temp\shell_port.crf --depend .\output\temp\shell_port.d)
 I (..\api\shell\shell.h)(0x636DEBD2)
 I (..\api\shell\shell_cfg.h)(0x632413CC)
 I (..\user\systick.h)(0x632D1846)
@@ -5282,7 +5282,7 @@ I (..\bsp\bsp_uartcomm.h)(0x63686EEF)
 I (..\api\tools\FIFO.h)(0x6375CA14)
 I (..\freertos\include\FreeRTOS.h)(0x604ABF58)
 I (d:\Keil_v5\ARM\ARMCC\include\stddef.h)(0x630C7EAD)
-I (..\freertos\include\FreeRTOSConfig.h)(0x638D46CC)
+I (..\freertos\include\FreeRTOSConfig.h)(0x6391AC49)
 I (..\bsp\bsp_usart1.h)(0x6385A4E8)
 I (..\freertos\include\projdefs.h)(0x604ABF58)
 I (..\freertos\include\portable.h)(0x604ABF58)
@@ -5292,16 +5292,16 @@ I (..\freertos\include\mpu_wrappers.h)(0x604ABF58)
 I (..\freertos\include\queue.h)(0x604ABF58)
 I (..\freertos\include\task.h)(0x636AF79C)
 I (..\freertos\include\list.h)(0x604ABF58)
-I (..\user\main.h)(0x6385CB13)
-F (..\api\cm_backtrace\cm_backtrace.c)(0x6385C214)(--c99 -c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O0 --apcs=interwork -I ..\firmware -I ..\firmware\GD32F30x\GD32F30x_standard_peripheral\Include -I ..\firmware\GD32F30x\CMSIS\GD\GD32F30x\Include -I ..\firmware\GD32F30x\CMSIS -I ..\user -I ..\bsp -I ..\ipmi -I ..\ipmi\data -I ..\ipmi\ipmi_dev-3.0.0-src -I ..\ipmi\ipmi_dev-3.0.0-src\data -I ..\ipmi\ipmi_common -I ..\ipmi\libipmi-3.1.0-src\data\include -I ..\ipmi\libipmi-3.1.0-src\data -I ..\ipmb -I ..\api -I ..\api\adc -I ..\api\flash -I ..\api\shell -I ..\api\tools -I ..\api\cpu -I ..\sub_devices -I ..\api\sensor -I ..\api\update -I ..\api\fan -I ..\freertos\include -I ..\freertos\portable -I ..\freertos\portable\RVDS\ARM_CM4F -I ..\ff10 -I ..\api\cm_backtrace-Id:\Users\Arm\Packs\GigaDevice\GD32F30x_DFP\2.2.1\Device\Include-Id:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="535" -DGD32F30X_XD -DARM_MATH_CM4 -D__CC_ARM -DGD32F3x-o .\output\temp\cm_backtrace.o --omf_browse .\output\temp\cm_backtrace.crf --depend .\output\temp\cm_backtrace.d)
-I (..\api\cm_backtrace\cm_backtrace.h)(0x601A61DB)
+I (..\user\main.h)(0x6391CDB0)
+F (..\api\cm_backtrace\cm_backtrace.c)(0x6391C6BA)(--c99 -c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O0 --apcs=interwork -I ..\firmware -I ..\firmware\GD32F30x\GD32F30x_standard_peripheral\Include -I ..\firmware\GD32F30x\CMSIS\GD\GD32F30x\Include -I ..\firmware\GD32F30x\CMSIS -I ..\user -I ..\bsp -I ..\ipmi -I ..\ipmi\data -I ..\ipmi\ipmi_dev-3.0.0-src -I ..\ipmi\ipmi_dev-3.0.0-src\data -I ..\ipmi\ipmi_common -I ..\ipmi\libipmi-3.1.0-src\data\include -I ..\ipmi\libipmi-3.1.0-src\data -I ..\ipmb -I ..\api -I ..\api\adc -I ..\api\flash -I ..\api\shell -I ..\api\tools -I ..\api\cpu -I ..\sub_devices -I ..\api\sensor -I ..\api\update -I ..\api\fan -I ..\freertos\include -I ..\freertos\portable -I ..\freertos\portable\RVDS\ARM_CM4F -I ..\ff10 -I ..\api\cm_backtrace-Id:\Users\Arm\Packs\GigaDevice\GD32F30x_DFP\2.2.1\Device\Include-Id:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="535" -DGD32F30X_XD -DARM_MATH_CM4 -D__CC_ARM -DGD32F3x-o .\output\temp\cm_backtrace.o --omf_browse .\output\temp\cm_backtrace.crf --depend .\output\temp\cm_backtrace.d)
+I (..\api\cm_backtrace\cm_backtrace.h)(0x6391C3E2)
 I (..\api\cm_backtrace\cmb_def.h)(0x63858354)
 I (..\api\cm_backtrace\cmb_cfg.h)(0x63858348)
 I (d:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x636DF059)
 I (d:\Keil_v5\ARM\ARMCC\include\stdlib.h)(0x60252374)
 I (..\freertos\include\FreeRTOS.h)(0x604ABF58)
 I (d:\Keil_v5\ARM\ARMCC\include\stddef.h)(0x630C7EAD)
-I (..\freertos\include\FreeRTOSConfig.h)(0x638D46CC)
+I (..\freertos\include\FreeRTOSConfig.h)(0x6391AC49)
 I (..\bsp\bsp_usart1.h)(0x6385A4E8)
 I (..\firmware\project_select.h)(0x638DB039)
 I (..\firmware\GD32F30x\GD32F30x_standard_peripheral\Include\gd32f30x_it.h)(0x63154ED0)
@@ -5345,4 +5345,4 @@ I (..\freertos\portable\RVDS\ARM_CM4F\portmacro.h)(0x604ABF58)
 I (..\freertos\include\mpu_wrappers.h)(0x604ABF58)
 I (d:\Keil_v5\ARM\ARMCC\include\string.h)(0x6025237E)
 I (..\api\cm_backtrace\Languages/en-US/cmb_en_US.h)(0x601A61DB)
-F (..\api\cm_backtrace\cmb_fault.S)(0x6385C1E4)(--cpu Cortex-M4.fp.sp -g --apcs=interwork --pd "__MICROLIB SETA 1"-Id:\Users\Arm\Packs\GigaDevice\GD32F30x_DFP\2.2.1\Device\Include-Id:\Keil_v5\ARM\CMSIS\Include--pd "__UVISION_VERSION SETA 535" --pd "GD32F30X_XD SETA 1"--list .\output\cmb_fault.lst --xref -o .\output\temp\cmb_fault.o --depend .\output\temp\cmb_fault.d)
+F (..\api\cm_backtrace\cmb_fault.S)(0x6391C665)(--cpu Cortex-M4.fp.sp -g --apcs=interwork --pd "__MICROLIB SETA 1"-Id:\Users\Arm\Packs\GigaDevice\GD32F30x_DFP\2.2.1\Device\Include-Id:\Keil_v5\ARM\CMSIS\Include--pd "__UVISION_VERSION SETA 535" --pd "GD32F30X_XD SETA 1"--list .\output\cmb_fault.lst --xref -o .\output\temp\cmb_fault.o --depend .\output\temp\cmb_fault.d)

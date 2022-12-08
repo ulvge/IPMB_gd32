@@ -259,7 +259,7 @@ static void SubDevice_SetOnLine(SUB_DEVICE_MODE mode, bool isOnline)
     }
 }
 
-static bool SubDevice_QueryModeByAddr(uint8_t addrBit8, SUB_DEVICE_MODE *mode)
+__attribute__((unused)) static bool SubDevice_QueryModeByAddr(uint8_t addrBit8, SUB_DEVICE_MODE *mode)
 {
     uint8_t addrHi = addrBit8 & 0xF0;
     uint8_t addrLow = (addrBit8 & 0x0F) >> 1;

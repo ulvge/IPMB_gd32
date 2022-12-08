@@ -22,7 +22,6 @@
 
 //extern VariableCPUParam g_CPUVariableParam;
 //extern FixedCPUParam g_CPUFixedParam;
-//extern __IO bool g_CPUStatus;
 
 const CmdHndlrMap_T g_Oem_CmdHndlr[] =
 {
@@ -187,7 +186,6 @@ int GetCPUInfo(INT8U *pReq, INT8U ReqLen, INT8U *pRes, int BMCInst)
 }
 
 extern uint64_t g_utc_time_bmc_firmware_build;
-extern uint16_t g_bmc_firmware_version;
 
 int GetBMCInfo(INT8U *pReq, INT8U ReqLen, INT8U *pRes, int BMCInst)
 {
@@ -195,11 +193,9 @@ int GetBMCInfo(INT8U *pReq, INT8U ReqLen, INT8U *pRes, int BMCInst)
 
     bmc_res->CompletionCode  = CC_NORMAL;
 
-    bmc_res->BMCFirmwareVersion = g_bmc_firmware_version;
+    bmc_res->BMCFirmwareVersion = GetBmcFirmwareVersion(BMC_VERSION);
     bmc_res->BMCFirmwareTime = g_utc_time_bmc_firmware_build;
 	  bmc_res->BMCRunTime  = GetBmcRunTime();
-    //bmc_res->CPUStatus = g_CPUStatus;
-    //bmc_res->CPUstartupTime = g_CPUFixedParam.CPUStartTime;
 
     return sizeof(GetBMCInfoRes_T);
 }

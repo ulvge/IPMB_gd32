@@ -43,8 +43,8 @@ OF SUCH DAMAGE.
  extern "C" {
 #endif
 					  
-#define    HARDWARE_VERSION    	"1.0.0"
-#define    BMC_VERSION    		"1.0.1"
+#define    HARDWARE_VERSION    	"1.0"
+#define    BMC_VERSION    		"1.1"
 								   
 #ifdef BOOTLOADER
 extern unsigned int g_bootDebugUartPeriph;

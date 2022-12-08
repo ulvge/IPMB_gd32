@@ -1586,7 +1586,7 @@ Removing Unused input sections from the image.
     Removing tasks.o(i.vTaskName), (12 bytes).
     Removing tasks.o(i.vTaskNotifyGiveFromISR), (256 bytes).
     Removing tasks.o(i.vTaskPlaceOnUnorderedEventList), (124 bytes).
-    Removing tasks.o(i.vTaskPrintThreadStatus), (212 bytes).
+    Removing tasks.o(i.vTaskPrintThreadStatus), (208 bytes).
     Removing tasks.o(i.vTaskPriorityDisinheritAfterTimeout), (260 bytes).
     Removing tasks.o(i.vTaskPrioritySet), (304 bytes).
     Removing tasks.o(i.vTaskRemoveFromUnorderedEventList), (180 bytes).
@@ -1632,7 +1632,7 @@ Removing Unused input sections from the image.
     Removing cdrcmple.o(.text), (48 bytes).
     Removing depilogue.o(.text), (186 bytes).
 
-537 unused section(s) (total 25670 bytes) removed from the image.
+537 unused section(s) (total 25666 bytes) removed from the image.
 
 ==============================================================================
 
@@ -2744,11 +2744,11 @@ Image component sizes
         36          8        304          0        512        884   startup_gd32f10x_hd.o
        304         30          0          4          0       2003   system_gd32f10x.o
        136         18          0          8          0      26864   systick.o
-      3616        994          0         60        740      29687   tasks.o
+      3616        994          0         60        740      29707   tasks.o
       1306        312          0         20         40      11051   timers.o
 
     ----------------------------------------------------------------------
-     17842       3762       1132        288      13148     280733   Object Totals
+     17842       3762       1132        288      13148     280753   Object Totals
          0          0         32          0          0          0   (incl. Generated)
         30          0          8          6          7          0   (incl. Padding)
 
@@ -2803,8 +2803,8 @@ Image component sizes
 
       Code (inc. data)   RO Data    RW Data    ZI Data      Debug   
 
-     19696       3840       1268        296      13148     273165   Grand Totals
-     19696       3840       1268        296      13148     273165   ELF Image Totals
+     19696       3840       1268        296      13148     273185   Grand Totals
+     19696       3840       1268        296      13148     273185   ELF Image Totals
      19696       3840       1268        296          0          0   ROM Totals
 
 ==============================================================================

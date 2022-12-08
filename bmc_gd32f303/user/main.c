@@ -72,7 +72,6 @@ static void debug_config(void);
 int g_debugLevel = DBG_LOG;
 
 __IO uint64_t g_utc_time_bmc_firmware_build = 0;
-__IO uint16_t g_bmc_firmware_version = 0;
 
 const char *projectInfo =
     "\r\n"
@@ -112,7 +111,6 @@ int main(void)
     cm_backtrace_init("CmBacktrace", HARDWARE_VERSION, BMC_VERSION);
 
     g_utc_time_bmc_firmware_build = currentSecsSinceEpoch(__DATE__, __TIME__);
-    g_bmc_firmware_version = GetBmcFirmwareVersion(BMC_VERSION);
 
     xTaskCreate(start_task, "start", configMINIMAL_STACK_SIZE * 2, NULL, 1, NULL);
     watch_dog_init();

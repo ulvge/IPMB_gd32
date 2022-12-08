@@ -55,7 +55,7 @@ ARM Macro Assembler    Page 1
    33 00000000         
    34 00000000         ; NOTE: If use this file's HardFault_Handler, please com
                        ments the HardFault_Handler code on other file.
-   35 00000000                 IMPORT           cm_backtrace_fault
+   35 00000000                 IMPORT           HardFault_Handler_bt
    36 00000000                 EXPORT           HardFault_Handler
    37 00000000         
    38 00000000         HardFault_Handler
@@ -69,7 +69,7 @@ ARM Macro Assembler    Page 1
 ARM Macro Assembler    Page 2 
 
 
-   41 00000004 F7FF FFFE       BL               cm_backtrace_fault
+   41 00000004 F7FF FFFE       BL               HardFault_Handler_bt
    42 00000008         
    43 00000008         Fault_Loop
    44 00000008 F7FF FFFE       BL               Fault_Loop  ;while(1)
@@ -119,13 +119,13 @@ Comment: HardFault_Handler used once
 ARM Macro Assembler    Page 1 Alphabetic symbol ordering
 External symbols
 
-cm_backtrace_fault 00000000
+HardFault_Handler_bt 00000000
 
-Symbol: cm_backtrace_fault
+Symbol: HardFault_Handler_bt
    Definitions
       At line 35 in file ..\api\cm_backtrace\cmb_fault.S
    Uses
       At line 41 in file ..\api\cm_backtrace\cmb_fault.S
-Comment: cm_backtrace_fault used once
+Comment: HardFault_Handler_bt used once
 1 symbol
 338 symbols in table
