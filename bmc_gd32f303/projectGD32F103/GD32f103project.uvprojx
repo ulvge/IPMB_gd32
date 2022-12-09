@@ -399,11 +399,6 @@
               <FilePath>..\firmware\GD32F10x\GD32F10x_standard_peripheral\Source\gd32f10x_it.c</FilePath>
             </File>
             <File>
-              <FileName>jump2Bootloader.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\api\update\jump2Bootloader.c</FilePath>
-            </File>
-            <File>
               <FileName>gd32f10x_platform.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\firmware\GD32F10x\gd32f10x_platform.c</FilePath>
@@ -453,6 +448,11 @@
         <Group>
           <GroupName>api</GroupName>
           <Files>
+            <File>
+              <FileName>jump.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\api\update\jump.c</FilePath>
+            </File>
             <File>
               <FileName>api_adc.c</FileName>
               <FileType>1</FileType>
@@ -989,6 +989,11 @@
               <FileName>gd32f10x_dbg.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\firmware\GD32F10x\GD32F10x_standard_peripheral\Source\gd32f10x_dbg.c</FilePath>
+            </File>
+            <File>
+              <FileName>gd32f10x_pmu.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\firmware\GD32F10x\GD32F10x_standard_peripheral\Source\gd32f10x_pmu.c</FilePath>
             </File>
           </Files>
         </Group>

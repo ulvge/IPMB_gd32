@@ -20,62 +20,6 @@ UPDATE_SM g_UpdatingSM = UPDATE_SM_INIT;
 volatile UINT32 g_resendCount = 0;
 bool g_xmodemIsCheckTpyeCrc = false;
 
-void JumpToAPP(void)
-{
-    /* 关闭全局中断 */
-    CPU_IntDisable();
-
-    /* 关闭滴答定时器，复位到默认值 */
-    NVIC_DisableIRQ(SysTick_IRQn);
-
-    /* 设置所有时钟到默认状态， 使用 HSI 时钟 */
-    rcu_deinit();
-    // fwdgt_write_disable();
-
-    rcu_periph_clock_disable(RCU_TIMER0);
-    rcu_periph_clock_disable(RCU_TIMER1);
-    rcu_periph_clock_disable(RCU_TIMER2);
-    rcu_periph_clock_disable(RCU_TIMER3);
-    rcu_periph_clock_disable(RCU_TIMER4);
-    // rcu_periph_clock_disable(RCU_USART0);
-    rcu_periph_clock_disable(RCU_USART1);
-    rcu_periph_clock_disable(RCU_USART2);
-    rcu_periph_clock_disable(RCU_I2C0);
-    rcu_periph_clock_disable(RCU_I2C1);
-    rcu_periph_clock_disable(RCU_GPIOA);
-    rcu_periph_clock_disable(RCU_GPIOB);
-    rcu_periph_clock_disable(RCU_GPIOC);
-    rcu_periph_clock_disable(RCU_GPIOD);
-    rcu_periph_clock_disable(RCU_GPIOE);
-    rcu_periph_clock_disable(RCU_GPIOF);
-    rcu_periph_clock_disable(RCU_GPIOG);
-    rcu_periph_clock_disable(RCU_ADC0);
-    rcu_periph_clock_disable(RCU_ADC1);
-    rcu_periph_clock_disable(RCU_ADC2);
-    /* 关闭所有中断，清除所有中断挂起标志 */
-    for (uint32_t i = 0; i < 8; i++) {
-        NVIC->ICER[i] = 0xFFFFFFFF;
-        NVIC->ICPR[i] = 0xFFFFFFFF;
-    }
-
-    /* 跳转到系统 BootLoader，首地址是 MSP，地址+4 是复位中断服务程序地址 */
-    uint32_t appJumpAddress = *(volatile uint32_t *)(ADDRESS_START_APP + 4);
-    pFunction appJump = (pFunction)appJumpAddress;
-
-    nvic_vector_table_set(ADDRESS_START_APP, 0);
-    /* 设置主堆栈指针 */
-    __set_CONTROL(0);
-    __set_MSP(*(volatile uint32_t *)ADDRESS_START_APP);
-
-    CPU_IntEnable();
-    /* 跳转到系统 BootLoader */
-    appJump();
-    /* 跳转成功的话，不会执行到这里，用户可以在这里添加代码 */
-    while (1) {
-        ;
-    }
-}
-
 void updateTask(void *arg)
 {
     BootPkt_T reqMsg;

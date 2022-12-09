@@ -384,11 +384,6 @@
           <GroupName>app</GroupName>
           <Files>
             <File>
-              <FileName>jump2Bootloader.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\api\update\jump2Bootloader.c</FilePath>
-            </File>
-            <File>
               <FileName>gd32f30x_it.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\firmware\GD32F30x\GD32F30x_standard_peripheral\Source\gd32f30x_it.c</FilePath>
@@ -522,6 +517,11 @@
               <FileName>eeprom.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\api\sensor\eeprom.c</FilePath>
+            </File>
+            <File>
+              <FileName>jump.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\api\update\jump.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -1009,6 +1009,11 @@
               <FileName>gd32f30x_dbg.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\firmware\GD32F30x\GD32F30x_standard_peripheral\Source\gd32f30x_dbg.c</FilePath>
+            </File>
+            <File>
+              <FileName>gd32f30x_pmu.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\firmware\GD32F30x\GD32F30x_standard_peripheral\Source\gd32f30x_pmu.c</FilePath>
             </File>
           </Files>
         </Group>

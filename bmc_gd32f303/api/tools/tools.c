@@ -291,15 +291,14 @@ static int do_get_host(uint8_t bus)
     return 0;
 }
 
-__attribute__((unused)) static UINT32 g_AppWantToUpdateKeys __attribute__((at(APP_WANTTO_UPDATE_KEYS_ADDR)));
 // tool 2******************************************************
 int reboot(int argc, char *argv[])
 {
     if (argc == 2){
         if (strcmp(argv[1], UPDATING_CMD_SYS_BOOT) == 0)
         {
-            g_AppWantToUpdateKeys = APP_WANTTO_UPDATE_KEYS;
-            JumpToBootloader();
+            BkpDateWrite(APP_WANTTO_UPDATE_KEYS_ADDR, APP_WANTTO_UPDATE_KEYS);
+            JumpToRun(ADDRESS_START_BOOTLOADER);
         }
     }
     NVIC_SystemReset();

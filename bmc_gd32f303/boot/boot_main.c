@@ -92,12 +92,11 @@ void boot_setPrintUartPeriph(UINT32 periph)
     g_bootDebugUartPeriph = periph;
 }
 
-static UINT32 g_AppWantToUpdateKeys __attribute__((at(APP_WANTTO_UPDATE_KEYS_ADDR)));
 void updateMonitor(void *pvParameters)
 {
     UINT32 jumpToAPPMaxDelay = BOOT_DELAY_DEFAULT;
 
-    if (g_AppWantToUpdateKeys == APP_WANTTO_UPDATE_KEYS) {
+    if (BkpDateRead(APP_WANTTO_UPDATE_KEYS_ADDR) == APP_WANTTO_UPDATE_KEYS) {
         jumpToAPPMaxDelay = BOOT_DELAY_RESET_FROM_APP;
     }
     vTaskDelay(100);
@@ -110,9 +109,9 @@ void updateMonitor(void *pvParameters)
         switch (g_UpdatingSM) {
             case UPDATE_SM_INIT:
                 if ((g_resendCount * MONITOR_TASK_DELAY_ms) >= jumpToAPPMaxDelay) {
-				    g_AppWantToUpdateKeys = 0;
                     LOG_I("jump to APP \r\n");
-                    JumpToAPP();
+                    BkpDateWrite(APP_WANTTO_UPDATE_KEYS_ADDR, 0);
+                    JumpToRun(ADDRESS_START_APP);
                 }else {
                     LOG_I("jump to APP :countdown = %d s\r\n", 
                         (jumpToAPPMaxDelay - (g_resendCount * MONITOR_TASK_DELAY_ms)) / 1000);
@@ -143,8 +142,8 @@ void updateMonitor(void *pvParameters)
                 break;
             case UPDATE_SM_FINISHED:
                 vTaskDelay(2); // print over
-				g_AppWantToUpdateKeys = 0;
-                JumpToAPP();
+                BkpDateWrite(APP_WANTTO_UPDATE_KEYS_ADDR, 0);
+                JumpToRun(ADDRESS_START_APP);
                 break;
             case UPDATE_SM_CANCEL:
                 NVIC_SystemReset();

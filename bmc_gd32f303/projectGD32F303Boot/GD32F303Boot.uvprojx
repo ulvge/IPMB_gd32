@@ -138,7 +138,7 @@
           </Flash1>
           <bUseTDR>1</bUseTDR>
           <Flash2>BIN\UL2CM3.DLL</Flash2>
-          <Flash3></Flash3>
+          <Flash3>"" ()</Flash3>
           <Flash4></Flash4>
           <pFcarmOut></pFcarmOut>
           <pFcarmGrp></pFcarmGrp>
@@ -201,7 +201,7 @@
             <NoZi2>0</NoZi2>
             <NoZi3>0</NoZi3>
             <NoZi4>0</NoZi4>
-            <NoZi5>1</NoZi5>
+            <NoZi5>0</NoZi5>
             <Ro1Chk>0</Ro1Chk>
             <Ro2Chk>0</Ro2Chk>
             <Ro3Chk>0</Ro3Chk>
@@ -211,7 +211,7 @@
             <Ra2Chk>0</Ra2Chk>
             <Ra3Chk>0</Ra3Chk>
             <Im1Chk>1</Im1Chk>
-            <Im2Chk>1</Im2Chk>
+            <Im2Chk>0</Im2Chk>
             <OnChipMemories>
               <Ocm1>
                 <Type>0</Type>
@@ -301,12 +301,12 @@
               <OCR_RVCT9>
                 <Type>0</Type>
                 <StartAddress>0x20000000</StartAddress>
-                <Size>0x17ff0</Size>
+                <Size>0x18000</Size>
               </OCR_RVCT9>
               <OCR_RVCT10>
                 <Type>0</Type>
-                <StartAddress>0x20017ff0</StartAddress>
-                <Size>0x10</Size>
+                <StartAddress>0x0</StartAddress>
+                <Size>0x0</Size>
               </OCR_RVCT10>
             </OnChipMemories>
             <RvctStartVector></RvctStartVector>
@@ -427,6 +427,11 @@
               <FileName>log.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\api\tools\log.c</FilePath>
+            </File>
+            <File>
+              <FileName>jump.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\api\update\jump.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -552,6 +557,11 @@
               <FileName>gd32f30x_dbg.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\firmware\GD32F30x\GD32F30x_standard_peripheral\Source\gd32f30x_dbg.c</FilePath>
+            </File>
+            <File>
+              <FileName>gd32f30x_pmu.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\firmware\GD32F30x\GD32F30x_standard_peripheral\Source\gd32f30x_pmu.c</FilePath>
             </File>
           </Files>
         </Group>

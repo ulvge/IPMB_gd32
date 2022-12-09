@@ -6,7 +6,7 @@
 
 typedef void (*pFunction)(void);
 
-void JumpToBootloader(void)
+void JumpToRun(uint32_t jumpCodeAddr)
 {
     /* 关闭全局中断 */
     CPU_IntDisable();
@@ -48,13 +48,13 @@ void JumpToBootloader(void)
 
     /* 跳转到系统 BootLoader，首地址是 MSP，地址+4 是复位中断服务程序地址 */
 	
-	uint32_t JumpAddress = *(volatile uint32_t *)(ADDRESS_START_BOOTLOADER + 4);
+	uint32_t JumpAddress = *(volatile uint32_t *)(jumpCodeAddr + 4);
     pFunction SysMemBootJump = (pFunction)JumpAddress;
 								
-    nvic_vector_table_set(ADDRESS_START_BOOTLOADER, 0);
+    nvic_vector_table_set(jumpCodeAddr, 0);
     /* 设置主堆栈指针 */
     __set_CONTROL(0);
-    __set_MSP(*(volatile uint32_t *)ADDRESS_START_BOOTLOADER);
+    __set_MSP(*(volatile uint32_t *)jumpCodeAddr);
 
 	CPU_IntEnable();
     /* 跳转到系统 BootLoader */

@@ -69,7 +69,7 @@ void adc_sample_task(void *pvParameters);
 static void watch_dog_init(void);  
 static void debug_config(void);
 
-int g_debugLevel = DBG_LOG;
+int g_debugLevel = DBG_INFO;
 
 __IO uint64_t g_utc_time_bmc_firmware_build = 0;
 

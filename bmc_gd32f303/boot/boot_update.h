@@ -89,7 +89,6 @@ extern UPDATE_SM g_UpdatingSM;
 extern volatile UINT32 g_resendCount;
 extern bool g_xmodemIsCheckTpyeCrc;
 
-void JumpToAPP(void);
 void updateTask(void *arg);
 
 #ifdef __cplusplus
