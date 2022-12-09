@@ -77,8 +77,8 @@ static bool boot_xmodeCheck(bool type, const UINT8 *buf, UINT8 len, UINT16 recCr
 }
 static bool boot_eraseAllPage()
 {
-    UINT32 startPageNum = (ADDRESS_START_APP - FLASH_BASE + 1) / FMC_PAGE_SIZE;
-    UINT32 erasePageNum = (ADDRESS_END_APP - ADDRESS_START_APP + 1) / FMC_PAGE_SIZE;
+    UINT32 startPageNum = (ADDRESS_APP_START - FLASH_BASE + 1) / FMC_PAGE_SIZE;
+    UINT32 erasePageNum = (ADDRESS_APP_END - ADDRESS_APP_START + 1) / FMC_PAGE_SIZE;
 
     erase_page(startPageNum, erasePageNum);
     return true;
@@ -120,16 +120,15 @@ static UPDATE_SM boot_ProcessUpdateReq(const BootPkt_T *pReq)
             if (msg->pn == 0) {
                 pnPage += 256;
             }
-            startAddr = ADDRESS_START_APP + (pnPage + msg->pn - 1) * XMODEM_PAKGE_LENGTH;
+            startAddr = ADDRESS_APP_START + (pnPage + msg->pn - 1) * XMODEM_PAKGE_LENGTH;
 
             LOG_D("update addr = %#X, page Num = %d \r\n", startAddr, pnPage + msg->pn);
-            if ((startAddr + XMODEM_PAKGE_LENGTH) > ADDRESS_END_APP) {
+            if ((startAddr + XMODEM_PAKGE_LENGTH) > ADDRESS_APP_END) {
                 boot_UartSendByte(XMODEM_NAK);
                 return UPDATE_SM_ERROR_TRYAGAIN;
             }
-            FLASH_Program(startAddr, (uint32_t *)(&msg->data), sizeof(msg->data));
-            vTaskDelay(1);
             boot_UartSendByte(XMODEM_ACK);
+            FLASH_Program(startAddr, (uint32_t *)(&msg->data), sizeof(msg->data));
             return UPDATE_SM_PROGRAMING;
         case XMODEM_EOT:
             boot_UartSendByte(XMODEM_ACK);

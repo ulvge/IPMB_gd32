@@ -13,8 +13,12 @@
 static INT8U g_buffSend[50];
 static INT8U g_buffRec[UART1_BUFF_SIZE];
 
-static const UART_CONFIG_STRUCT g_uart1Config= {
+static const UART_CONFIG_STRUCT g_uart1Config= {      
+#ifdef BOOTLOADER
+    .baud = 921600U,
+#else
     .baud = 115200U,
+#endif
     .irqN = USART1_IRQn,
     .prePriority = 10,
     .subPriority = 0,

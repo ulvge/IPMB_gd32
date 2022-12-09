@@ -298,7 +298,7 @@ int reboot(int argc, char *argv[])
         if (strcmp(argv[1], UPDATING_CMD_SYS_BOOT) == 0)
         {
             BkpDateWrite(APP_WANTTO_UPDATE_KEYS_ADDR, APP_WANTTO_UPDATE_KEYS);
-            JumpToRun(ADDRESS_START_BOOTLOADER);
+            JumpToRun(ADDRESS_BOOTLOADER_START);
         }
     }
     NVIC_SystemReset();

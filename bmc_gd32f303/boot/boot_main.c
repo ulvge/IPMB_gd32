@@ -111,7 +111,7 @@ void updateMonitor(void *pvParameters)
                 if ((g_resendCount * MONITOR_TASK_DELAY_ms) >= jumpToAPPMaxDelay) {
                     LOG_I("jump to APP \r\n");
                     BkpDateWrite(APP_WANTTO_UPDATE_KEYS_ADDR, 0);
-                    JumpToRun(ADDRESS_START_APP);
+                    JumpToRun(ADDRESS_APP_START);
                 }else {
                     LOG_I("jump to APP :countdown = %d s\r\n", 
                         (jumpToAPPMaxDelay - (g_resendCount * MONITOR_TASK_DELAY_ms)) / 1000);
@@ -143,7 +143,7 @@ void updateMonitor(void *pvParameters)
             case UPDATE_SM_FINISHED:
                 vTaskDelay(2); // print over
                 BkpDateWrite(APP_WANTTO_UPDATE_KEYS_ADDR, 0);
-                JumpToRun(ADDRESS_START_APP);
+                JumpToRun(ADDRESS_APP_START);
                 break;
             case UPDATE_SM_CANCEL:
                 NVIC_SystemReset();
@@ -189,7 +189,6 @@ int main(void)
 
     watch_dog_init();
     debug_config();
-
     xTaskCreate(updateMonitor, "updateMonitor", configMINIMAL_STACK_SIZE * 2, NULL, 25, &updateMonitorHandle);
     xTaskCreate(updateTask, "update", configMINIMAL_STACK_SIZE * 2, NULL, 20, NULL);
     vTaskStartScheduler();

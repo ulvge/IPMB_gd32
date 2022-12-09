@@ -26,9 +26,7 @@
 TestStatus FLASH_Program(uint32_t WRITE_START_ADDR, uint32_t * data, uint16_t Size)
 {
     uint32_t Address;
-    TestStatus TransferStatus = FAILED;
     uint32_t i;
-    TransferStatus = PASSED;
     /* Unlock the Flash Bank1 Program Erase controller */
     fmc_unlock();
     
@@ -56,7 +54,7 @@ TestStatus FLASH_Program(uint32_t WRITE_START_ADDR, uint32_t * data, uint16_t Si
     
     fmc_lock();
     
-    return TransferStatus;
+    return PASSED;
 }
 
 TestStatus CRC_FLASH(uint32_t START_ADDR,uint32_t Size,uint16_t CRC_Value) 
@@ -116,7 +114,7 @@ void erase_page(uint16_t startPageNum, uint16_t page_num)
 {
     uint16_t i;
 
-    uint32_t base_address = 0x08000000;
+    uint32_t base_address = FLASH_BASE;
     uint32_t page_address = base_address + (FMC_PAGE_SIZE * startPageNum);
     fmc_unlock();
     fmc_flag_clear(FMC_FLAG_BANK0_END);

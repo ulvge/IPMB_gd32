@@ -7,10 +7,10 @@
 #include <stdint.h>
 #include <debug_print.h>
 
-#define ADDRESS_START_BOOTLOADER  0x08000000
+#define ADDRESS_BOOTLOADER_START  0x08000000
 
-#define ADDRESS_START_APP         0x08008000
-#define ADDRESS_END_APP           0x08020000
+#define ADDRESS_APP_START         0x08008000
+#define ADDRESS_APP_END           0x08020000
 
 
 #define ENTRY_UPDATE_MODE_CMD   0x01

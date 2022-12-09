@@ -39,7 +39,7 @@
 ".\output\temp\timers.o"
 ".\output\temp\heap_4.o"
 ".\output\temp\port.o"
---library_type=microlib --strict --scatter ".\output\temp\bmc_boot.sct"
+--library_type=microlib --strict --scatter ".\bmc_boot.sct"
 --summary_stderr --info summarysizes --map --load_addr_map_info --xref --callgraph --symbols
 --info sizes --info totals --info unused --info veneers
 --list ".\output\bmc_boot.map" -o .\output\temp\bmc_boot.axf

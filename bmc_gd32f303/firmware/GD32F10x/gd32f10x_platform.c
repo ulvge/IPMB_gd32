@@ -1,6 +1,5 @@
 
 #include "project_select.h"
-#include "bsp_gpio.h"
 
 void platform_init(void)
 {
