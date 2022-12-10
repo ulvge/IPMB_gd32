@@ -170,22 +170,6 @@
           <ExecCommand></ExecCommand>
           <Expression>\\bmc_app\../api/cm_backtrace/cm_backtrace.c\567</Expression>
         </Bp>
-        <Bp>
-          <Number>1</Number>
-          <Type>0</Type>
-          <LineNumber>317</LineNumber>
-          <EnabledFlag>1</EnabledFlag>
-          <Address>134317300</Address>
-          <ByteObject>0</ByteObject>
-          <HtxType>0</HtxType>
-          <ManyObjects>0</ManyObjects>
-          <SizeOfObject>0</SizeOfObject>
-          <BreakByAccess>0</BreakByAccess>
-          <BreakIfRCount>1</BreakIfRCount>
-          <Filename>&lt;2&gt;..\api\tools\tools.c</Filename>
-          <ExecCommand></ExecCommand>
-          <Expression>\\bmc_app\../api/tools/tools.c\317</Expression>
-        </Bp>
       </Breakpoint>
       <WatchWindow1>
         <Ww>

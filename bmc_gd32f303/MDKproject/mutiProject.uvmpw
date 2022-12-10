@@ -9,6 +9,7 @@
 
   <project>
     <PathAndName>..\projectGD32F103Boot\GD32F103Boot.uvprojx</PathAndName>
+    <NodeIsActive>1</NodeIsActive>
     <NodeIsExpanded>1</NodeIsExpanded>
   </project>
 
@@ -22,8 +23,6 @@
 
   <project>
     <PathAndName>..\projectGD32F303\GD32f303project.uvprojx</PathAndName>
-    <NodeIsActive>1</NodeIsActive>
-    <NodeIsExpanded>1</NodeIsExpanded>
   </project>
 
 </ProjectWorkspace>
