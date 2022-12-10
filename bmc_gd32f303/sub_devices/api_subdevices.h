@@ -10,6 +10,7 @@
 
 //计算 存储 网络 通讯 刀片
 typedef enum {
+    SUB_DEVICE_MODE_MIN         = 0,
     SUB_DEVICE_MODE_MAIN        = 0,
     SUB_DEVICE_MODE_NET         = 1,
     SUB_DEVICE_MODE_SWITCH      = 2,
@@ -70,7 +71,7 @@ typedef struct
     const char     *name;
 } SubDeviceModeStatus_T;
 
-void SubDevice_commuTask(void *pvParameters);
+void SubDevice_uploadTask(void *pvParameters);
 bool SubDevice_CheckAndPrintMode(void);
 bool SubDevice_IsSelfMaster(void);
 uint8_t SubDevice_GetMySlaveAddress(uint32_t bus);

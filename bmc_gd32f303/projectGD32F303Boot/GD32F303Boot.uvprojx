@@ -408,6 +408,11 @@
               <FileType>1</FileType>
               <FilePath>..\firmware\GD32F30x\GD32F30x_standard_peripheral\Source\gd32f30x_it.c</FilePath>
             </File>
+            <File>
+              <FileName>boot_i2cForward.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\boot\boot_i2cForward.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -439,11 +444,6 @@
           <GroupName>bsp</GroupName>
           <Files>
             <File>
-              <FileName>flash.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\api\update\flash.c</FilePath>
-            </File>
-            <File>
               <FileName>bsp_timer.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\bsp\bsp_timer.c</FilePath>
@@ -462,6 +462,16 @@
               <FileName>bsp_usart1.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\bsp\bsp_usart1.c</FilePath>
+            </File>
+            <File>
+              <FileName>bsp_i2c.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\bsp\bsp_i2c.c</FilePath>
+            </File>
+            <File>
+              <FileName>flash.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\boot\flash.c</FilePath>
             </File>
           </Files>
         </Group>

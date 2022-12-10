@@ -50,20 +50,16 @@ OF SUCH DAMAGE.
 #include "shell_port.h"
 #include "MsgHndlr.h"
 
-#include "update/jump.h"
+#include "jump.h"
 #include "bsp_timer.h"
 #include "ChassisCtrl.h"
 #include "cm_backtrace.h"
 
-#define SHELL_TASK_PRIO 10
-#define ADC_SAMPLE_TASK_PRIO 10
-#define COM_TASK_PRIO 21
-#define DEV_TASK_PRIO 25
 
 void start_task(void *pvParameters);
 void fan_task(void *pvParameters);
 TaskHandle_t ComTask_Handler;
-void com_task(void *pvParameters);
+void msg_handle_task(void *pvParameters);
 void adc_sample_task(void *pvParameters);
 
 static void watch_dog_init(void);  
@@ -114,7 +110,7 @@ int main(void)
 
     xTaskCreate(start_task, "start", configMINIMAL_STACK_SIZE * 2, NULL, 1, NULL);
     watch_dog_init();
-	debug_config();
+    debug_config();
     vTaskStartScheduler();      //prvIdleTask
     while (1)
     {
@@ -130,19 +126,19 @@ void start_task(void *pvParameters)
     taskENTER_CRITICAL();
 
    if (errCOULD_NOT_ALLOCATE_REQUIRED_MEMORY == 
-       xTaskCreate(Dev_Task, "dev_task", configMINIMAL_STACK_SIZE, NULL, DEV_TASK_PRIO, NULL)) {
+       xTaskCreate(Dev_Task, "dev_task", configMINIMAL_STACK_SIZE, NULL, TASK_PRIO_DEV_HANDLE, NULL)) {
        errCreateTask |= 1;
    }
    if (errCOULD_NOT_ALLOCATE_REQUIRED_MEMORY == 
-       xTaskCreate(com_task, "com", configMINIMAL_STACK_SIZE * 2, NULL, COM_TASK_PRIO, (TaskHandle_t *)&ComTask_Handler)) {
+       xTaskCreate(msg_handle_task, "com", configMINIMAL_STACK_SIZE * 2, NULL, TASK_PRIO_MSG_HANDLE, (TaskHandle_t *)&ComTask_Handler)) {
        errCreateTask |= 2;
    }
     if (errCOULD_NOT_ALLOCATE_REQUIRED_MEMORY == 
-        xTaskCreate(adc_sample_task, "adc_sample", configMINIMAL_STACK_SIZE, NULL, ADC_SAMPLE_TASK_PRIO, NULL)) {
+        xTaskCreate(adc_sample_task, "adc_sample", configMINIMAL_STACK_SIZE, NULL, TASK_PRIO_ADC_SAMPLE, NULL)) {
         errCreateTask |= 4;
     }
     if (errCOULD_NOT_ALLOCATE_REQUIRED_MEMORY == 
-        xTaskCreate(shellTask, "shellTask", 200, &shell, SHELL_TASK_PRIO, NULL)) {
+        xTaskCreate(shellTask, "shellTask", 200, &shell, TASK_PRIO_SHELL, NULL)) {
         errCreateTask |= 8;
     }
 	if (errCreateTask == 0){
@@ -169,7 +165,7 @@ void adc_sample_task(void *pvParameters)
     }
 }
 
-void com_task(void *pvParameters)
+void msg_handle_task(void *pvParameters)
 {
     MsgCoreHndlr(pvParameters);
 }

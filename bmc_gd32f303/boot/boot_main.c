@@ -42,7 +42,7 @@ OF SUCH DAMAGE.
 
 #include "boot_update.h"
 #include "bsp_timer.h"
-#include "update/jump.h" 
+#include "jump.h" 
 
 
 #define MONITOR_TASK_DELAY_ms 1000
@@ -189,6 +189,7 @@ int main(void)
 
     watch_dog_init();
     debug_config();
+	boot_i2c_int();
     xTaskCreate(updateMonitor, "updateMonitor", configMINIMAL_STACK_SIZE * 2, NULL, 25, &updateMonitorHandle);
     xTaskCreate(updateTask, "update", configMINIMAL_STACK_SIZE * 2, NULL, 20, NULL);
     vTaskStartScheduler();

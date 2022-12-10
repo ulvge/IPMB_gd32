@@ -75,7 +75,7 @@ static char *SubDevice_GetModeName(SUB_DEVICE_MODE mode)
 {
     if (mode < SUB_DEVICE_MODE_MAX)
     {
-        for (uint8_t i = 0; i < SUB_DEVICE_MODE_MAX; i++)
+        for (uint8_t i = SUB_DEVICE_MODE_MIN; i < SUB_DEVICE_MODE_MAX; i++)
         {
             if (mode == g_SubDeviceConfigName[i].mode)
             {
@@ -89,7 +89,7 @@ static SubDeviceModeStatus_T g_AllModesStatus[SUB_DEVICE_MODE_MAX];
 
 static void SubDevice_InitAllMode(void)
 {
-    for (uint8_t i = 0; i < SUB_DEVICE_MODE_MAX; i++)
+    for (uint8_t i = SUB_DEVICE_MODE_MIN; i < SUB_DEVICE_MODE_MAX; i++)
     {
         SubDeviceModeStatus_T *obj = &g_AllModesStatus[i];
         obj->isMain = false;
@@ -115,6 +115,7 @@ static void SubDevice_InsertMode(SubDeviceModeStatus_T *obj, SUB_DEVICE_MODE mod
     obj->name = g_SubDeviceConfigName[mode].name;
     obj->i2c0SlaveAddr = obj->i2c1SlaveAddr = SubDevice_modeConvertSlaveAddr(mode);
     obj->busUsed = NM_SECONDARY_IPMB_BUS;
+    SetDevAddr(obj->i2c0SlaveAddr);
 }
 bool SubDevice_CheckAndPrintMode(void)
 {
@@ -147,7 +148,7 @@ static bool SubDevice_isExistSensorUnit(uint8_t queryUnitType)
 {
     uint8_t sensorNum;
     uint8_t unitType;
-    for (SUB_DEVICE_MODE dev = (SUB_DEVICE_MODE)0; dev < SUB_DEVICE_MODE_MAX; dev++)
+    for (SUB_DEVICE_MODE dev = SUB_DEVICE_MODE_MIN; dev < SUB_DEVICE_MODE_MAX; dev++)
     {
         const Dev_Handler *pHandler = api_getDevHandler(dev);
         if (pHandler == NULL)
@@ -353,7 +354,7 @@ static void SubDevice_Upload()
         }
 
         cJSON_AddItemToObject(pCJType, pTypeCode->typeName, pCJData = cJSON_CreateObject());
-        for (SUB_DEVICE_MODE dev = (SUB_DEVICE_MODE)0; dev < SUB_DEVICE_MODE_MAX; dev++)
+        for (SUB_DEVICE_MODE dev = SUB_DEVICE_MODE_MIN; dev < SUB_DEVICE_MODE_MAX; dev++)
         {
             char *modeName = SubDevice_GetModeName(dev);
             memset(nameBuf, 0, sizeof(nameBuf));
@@ -456,7 +457,7 @@ static void SubDevice_SampleAll()
     uint8_t sensorNum;
     bool isDevOnline;
 
-    for (SUB_DEVICE_MODE dev = (SUB_DEVICE_MODE)0; dev < SUB_DEVICE_MODE_MAX; dev++)
+    for (SUB_DEVICE_MODE dev = SUB_DEVICE_MODE_MIN; dev < SUB_DEVICE_MODE_MAX; dev++)
     {
         const Dev_Handler *pHandler = api_getDevHandler(dev);
         if (pHandler == NULL)
@@ -502,7 +503,7 @@ static void SubDevice_SampleAll()
 }
 static void SubDevice_staticOnlineSwitchBus(void)
 {
-    for (SUB_DEVICE_MODE dev = (SUB_DEVICE_MODE)0; dev < SUB_DEVICE_MODE_MAX; dev++)
+    for (SUB_DEVICE_MODE dev = SUB_DEVICE_MODE_MIN; dev < SUB_DEVICE_MODE_MAX; dev++)
     {
         if (!SubDevice_IsOnLine(dev)) {
             SubDevice_SwitchBus(dev);
@@ -514,7 +515,7 @@ static void SubDevice_staticOnlineSwitchBus(void)
 }
 /// @brief sample & upload
 /// @param pvParameters 
-void SubDevice_commuTask(void *pvParameters)
+void SubDevice_uploadTask(void *pvParameters)
 {
     uint32_t sampleCount = 0;
     uint32_t uploadCount = 0;

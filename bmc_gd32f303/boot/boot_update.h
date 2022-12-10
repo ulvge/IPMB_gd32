@@ -63,6 +63,7 @@ typedef enum {
 
 typedef __packed struct
 {
+    INT8U Channel;   /* Compatible with IPMB */
     INT8U Size;      /* Command that needs to be processed*/
     INT8U Data[150]; /* Data */
 } BootPkt_T;
@@ -90,6 +91,8 @@ extern volatile UINT32 g_resendCount;
 extern bool g_xmodemIsCheckTpyeCrc;
 
 void updateTask(void *arg);
+void boot_i2c_int(void);
+uint8_t SubDevice_GetMySlaveAddress(uint32_t bus);
 
 #ifdef __cplusplus
 }

@@ -9,6 +9,8 @@
 #include "project_select.h"
 #include <stdbool.h>
 #include <stdio.h>
+#include "bsp_i2c.h" 
+#include "IPMIConf.h"
 
 #define XMODEM_PAKGE_LENGTH 128
 
@@ -161,3 +163,25 @@ static UPDATE_SM boot_ProcessUpdateReq(const BootPkt_T *pReq)
     }
     return g_UpdatingSM;
 }
+#define BOOT_I2C_SPECIAL_IDENTIFICATION  0x5A
+#define BOOT_I2C_BUS  I2C0
+static UINT32 g_updateChannleBak = SERIAL_CHANNEL_TYPE;
+void boot_sendAckMsg(UINT32 channle, UINT8 msg)
+{
+    g_updateChannleBak = channle;
+    if(g_updateChannleBak == SERIAL_CHANNEL_TYPE){
+        boot_UartSendByte(msg);
+    } else {
+        uint8_t sendbuff[10];
+        uint8_t idx = 0;
+        sendbuff[idx++] = SubDevice_GetMySlaveAddress(BOOT_I2C_BUS);
+        sendbuff[idx++] = BOOT_I2C_SPECIAL_IDENTIFICATION;
+        sendbuff[idx++] = msg;
+        i2c_write(BOOT_I2C_BUS, sendbuff, idx);
+    }
+}
+void boot_reSendAckMsg(UINT8 msg)
+{
+    boot_sendAckMsg(g_updateChannleBak, msg);
+}
+

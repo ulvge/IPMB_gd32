@@ -449,11 +449,6 @@
           <GroupName>api</GroupName>
           <Files>
             <File>
-              <FileName>jump.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\api\update\jump.c</FilePath>
-            </File>
-            <File>
               <FileName>api_adc.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\api\adc\api_adc.c</FilePath>
@@ -522,6 +517,16 @@
               <FileName>eeprom.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\api\sensor\eeprom.c</FilePath>
+            </File>
+            <File>
+              <FileName>jump.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\api\update\jump.c</FilePath>
+            </File>
+            <File>
+              <FileName>update_devs.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\api\update\update_devs.c</FilePath>
             </File>
           </Files>
         </Group>

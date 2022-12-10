@@ -75,6 +75,11 @@ typedef enum
     I2C_BUS_2,
     I2C_BUS_S0 = 3,
 } I2C_BUS_NUM;
+
+#ifndef BOOTLOADER
+#define I2C_S0
+#endif
+
 void i2c_channel_init(uint32_t i2cx);
 void i2c_int(void);
 bool i2c_write(uint32_t bus, const uint8_t *p_buffer, uint16_t len);

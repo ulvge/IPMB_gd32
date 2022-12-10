@@ -42,21 +42,30 @@ OF SUCH DAMAGE.
 #ifdef __cplusplus
  extern "C" {
 #endif
-					  
+
 #define    HARDWARE_VERSION    	"1.0"
 #define    BMC_VERSION    		"1.1"
-								   
+
 #ifdef BOOTLOADER
 extern unsigned int g_bootDebugUartPeriph;
 #define DEBUG_UART_PERIPH    g_bootDebugUartPeriph
-#else                  
+#else
 #define DEBUG_UART_PERIPH    USART0
 #endif
 
 #define IPMI_UART_PERIPH    USART0
 
 #define CPU_UART_PERIPH    USART1
-	
+
+#define TASK_PRIO_ADC_SAMPLE            5
+#define TASK_PRIO_SHELL                 13
+#define TASK_PRIO_DEV_HANDLE            15
+#define TASK_PRIO_UPLOAD                20
+#define TASK_PRIO_UPDATE_DEV            21
+
+#define TASK_PRIO_MSG_HANDLE            22
+#define TASK_PRIO_MSG_RESPONSE_HANDLE   24
+
 
 #define  CPU_IntDisable()           { __set_PRIMASK(0xFFFF); }	/* Interrupt Disable */
 #define  CPU_IntEnable()            { __set_PRIMASK(0x0000); }	/* Interrupt Enable  */

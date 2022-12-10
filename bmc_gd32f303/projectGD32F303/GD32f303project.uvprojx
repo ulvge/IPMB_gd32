@@ -523,6 +523,11 @@
               <FileType>1</FileType>
               <FilePath>..\api\update\jump.c</FilePath>
             </File>
+            <File>
+              <FileName>update_devs.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\api\update\update_devs.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>

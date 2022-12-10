@@ -408,16 +408,16 @@
               <FileType>1</FileType>
               <FilePath>..\boot\boot_update.c</FilePath>
             </File>
+            <File>
+              <FileName>boot_i2cForward.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\boot\boot_i2cForward.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
           <GroupName>api</GroupName>
           <Files>
-            <File>
-              <FileName>jump.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\api\update\jump.c</FilePath>
-            </File>
             <File>
               <FileName>FIFO.c</FileName>
               <FileType>1</FileType>
@@ -433,16 +433,16 @@
               <FileType>1</FileType>
               <FilePath>..\api\tools\log.c</FilePath>
             </File>
+            <File>
+              <FileName>jump.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\api\update\jump.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
           <GroupName>bsp</GroupName>
           <Files>
-            <File>
-              <FileName>flash.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\api\update\flash.c</FilePath>
-            </File>
             <File>
               <FileName>bsp_timer.c</FileName>
               <FileType>1</FileType>
@@ -462,6 +462,16 @@
               <FileName>bsp_usart1.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\bsp\bsp_usart1.c</FilePath>
+            </File>
+            <File>
+              <FileName>bsp_i2c.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\bsp\bsp_i2c.c</FilePath>
+            </File>
+            <File>
+              <FileName>flash.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\boot\flash.c</FilePath>
             </File>
           </Files>
         </Group>

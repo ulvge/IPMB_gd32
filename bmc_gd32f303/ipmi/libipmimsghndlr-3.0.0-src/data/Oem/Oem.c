@@ -30,7 +30,7 @@ const CmdHndlrMap_T g_Oem_CmdHndlr[] =
         { CMD_GET_BLADE_ID,           PRIV_OEM,      GET_BLADE_ID,             0x00,   0xAAAA ,0xFFFF},
         { CMD_GET_FAN_RPM,           PRIV_OEM,      GET_FAN_RPM,             0x00,   0xAAAA ,0xFFFF},
         { CMD_SET_FAN_PWM,           PRIV_OEM,      SET_FAN_RPM,             0x00,   0xAAAA ,0xFFFF},
-        // { CMD_UPDATE_FIRMWARE,   PRIV_OEM,      UPDATE_FIRMWARE,     0x00,   0xAAAA ,0xFFFF},
+        { CMD_UPDATE_FIRMWARE,   PRIV_OEM,      UPDATE_FIRMWARE,     0x00,   0xAAAA ,0xFFFF},
         {CMD_CPU_INFO, PRIV_OEM, CPU_INFO, 0x00, 0xAAAA, 0xFFFF},
         {CMD_BMC_INFO, PRIV_OEM, BMC_INFO, 0x00, 0xAAAA, 0xFFFF},
 

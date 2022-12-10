@@ -108,24 +108,23 @@ static void CPU_MsgCoreHndlr(void)
     }
 }
 
-#define COMMU_TASK_PRIO 15
 static void DevTaskHandler(void *pArg)
-{                                   
+{
     uint32_t errCreate = 0;
     LOG_D("filename = %s, line = %d", __FILE__, __LINE__);
     if (!CPU_MsgCoreInit()) {
         LOG_E("CPU_MsgCoreInit create ERR!");
-		errCreate++;
-    }                       
-    if (errCOULD_NOT_ALLOCATE_REQUIRED_MEMORY == 
-		xTaskCreate(SubDevice_commuTask, "commu", configMINIMAL_STACK_SIZE * 1, NULL, COMMU_TASK_PRIO, NULL)) {
-        LOG_E("SubDevice_commuTask create ERR!"); 
-		errCreate++;
+        errCreate++;
     }
-	if (errCreate != 0){       
-        LOG_E("DevTaskHandler init error DevTaskHandler"); 
-		vTaskDelete(NULL);
-	}
+    if (errCOULD_NOT_ALLOCATE_REQUIRED_MEMORY ==
+        xTaskCreate(SubDevice_uploadTask, "upload", configMINIMAL_STACK_SIZE * 1, NULL, TASK_PRIO_UPLOAD, NULL)) {
+        LOG_E("SubDevice_uploadTask create ERR!");
+        errCreate++;
+    }
+    if (errCreate != 0) {
+        LOG_E("DevTaskHandler init error DevTaskHandler");
+        vTaskDelete(NULL);
+    }
 
     while (1) {
         vTaskDelay(500);

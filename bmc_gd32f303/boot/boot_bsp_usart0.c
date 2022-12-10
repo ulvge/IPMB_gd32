@@ -6,6 +6,7 @@
 #include "OSPort.h"
 #include "Message.h"
 #include "MsgHndlr.h"  
+#include "IPMIConf.h"
 #include "FIFO.h"
 #include "bsp_uartcomm.h"
 #include "boot_update.h"
@@ -61,6 +62,7 @@ void USART0_IRQHandler(void)
 		usart_interrupt_enable(g_UARTPara.usart_periph, USART_INT_IDLE);
         usart_interrupt_flag_clear(COM_NUM, USART_INT_FLAG_RBNE);
         /* receive data */
+        g_uart_Req.Channel = SERIAL_CHANNEL_TYPE;
         g_uart_Req.Data[g_uart_Req.Size++] = res;
         if (g_uart_Req.Size > sizeof(g_uart_Req.Data) - 3)
         {
@@ -74,7 +76,7 @@ void USART0_IRQHandler(void)
 		if (g_uart_Req.Size != 0) {
 			if (updateDatMsg_Queue != NULL)
 			{                          
-				err = xQueueSendFromISR(updateDatMsg_Queue, (char*)&g_uart_Req.Size, &xHigherPriorityTaskWoken);
+				err = xQueueSendFromISR(updateDatMsg_Queue, (char*)&g_uart_Req, &xHigherPriorityTaskWoken);
 				portYIELD_FROM_ISR(xHigherPriorityTaskWoken);
 				if (err == pdFAIL)
 				{

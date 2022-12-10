@@ -292,20 +292,56 @@ static int do_get_host(uint8_t bus)
 }
 
 // tool 2******************************************************
-int reboot(int argc, char *argv[])
+static int reboot(int argc, char *argv[])
 {
-    if (argc == 2){
-        if (strcmp(argv[1], UPDATING_CMD_SYS_BOOT) == 0)
-        {
-            BkpDateWrite(APP_WANTTO_UPDATE_KEYS_ADDR, APP_WANTTO_UPDATE_KEYS);
-            JumpToRun(ADDRESS_BOOTLOADER_START);
-        }
-    }
     NVIC_SystemReset();
     return 0;
 }
 
 SHELL_EXPORT_CMD(SHELL_CMD_PERMISSION(0) | SHELL_CMD_TYPE(SHELL_TYPE_CMD_MAIN) | SHELL_CMD_DISABLE_RETURN, reboot, reboot, reboot the mcu);
+// tool 2******************************************************
+#define UPDATING_CMD_ALL   "all"
+static char* strToLower(char* src)
+{
+	char *string = src;
+    while (*string != '\0') {
+        if (*string > 'A' && *string <= 'Z') {
+            *string += 0x20;
+        }
+        string++;
+    }
+    return src;
+}
+extern void updateDev_task(void *arg);
+static int update(int argc, char *argv[])
+{
+    if (argc == 1) { //default update self
+        BkpDateWrite(APP_WANTTO_UPDATE_KEYS_ADDR, APP_WANTTO_UPDATE_KEYS);
+        JumpToRun(ADDRESS_BOOTLOADER_START);
+        return 0; // unreachable
+    }
+    if (argc == 2) {
+        char *strLow = strToLower(argv[1]);
+        uint32_t mode;
+        if (!strcmp(strLow, UPDATING_CMD_ALL)) //update all
+        {
+            mode = SUB_DEVICE_MODE_MAX;
+        }else { // update others mode
+            uint32_t tmp = strtod((const char*)strLow, NULL);
+            if (tmp >= SUB_DEVICE_MODE_MAX) {
+                return 0; // invalid
+            }
+            mode = tmp;
+        }
+        if (errCOULD_NOT_ALLOCATE_REQUIRED_MEMORY ==
+            xTaskCreate(updateDev_task, "updateDev_task", configMINIMAL_STACK_SIZE * 1, &mode, TASK_PRIO_UPDATE_DEV, NULL)) {
+            LOG_E("updateDev_task create failed, no memory left\r\n");
+        }
+    }
+    return 0;
+}
+
+SHELL_EXPORT_CMD(SHELL_CMD_PERMISSION(0) | SHELL_CMD_TYPE(SHELL_TYPE_CMD_MAIN) | SHELL_CMD_DISABLE_RETURN, update, update, update the app);
 
 // tool 3******************************************************
 int version(int argc, char *argv[])
