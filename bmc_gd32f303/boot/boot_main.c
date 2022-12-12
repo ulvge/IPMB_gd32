@@ -96,7 +96,7 @@ void updateMonitor(void *pvParameters)
 {
     UINT32 jumpToAPPMaxDelay = BOOT_DELAY_DEFAULT;
 
-    if (BkpDateRead(APP_WANTTO_UPDATE_KEYS_ADDR) == APP_WANTTO_UPDATE_KEYS) {
+    if (update_BkpDateRead(APP_WANTTO_UPDATE_KEYS_ADDR) == APP_WANTTO_UPDATE_KEYS) {
         jumpToAPPMaxDelay = BOOT_DELAY_RESET_FROM_APP;
     }
     vTaskDelay(100);
@@ -110,8 +110,8 @@ void updateMonitor(void *pvParameters)
             case UPDATE_SM_INIT:
                 if ((g_resendCount * MONITOR_TASK_DELAY_ms) >= jumpToAPPMaxDelay) {
                     LOG_I("jump to APP \r\n");
-                    BkpDateWrite(APP_WANTTO_UPDATE_KEYS_ADDR, 0);
-                    JumpToRun(ADDRESS_APP_START);
+                    update_BkpDateWrite(APP_WANTTO_UPDATE_KEYS_ADDR, 0);
+                    update_JumpToRun(ADDRESS_APP_START);
                 }else {
                     LOG_I("jump to APP :countdown = %d s\r\n", 
                         (jumpToAPPMaxDelay - (g_resendCount * MONITOR_TASK_DELAY_ms)) / 1000);
@@ -142,8 +142,8 @@ void updateMonitor(void *pvParameters)
                 break;
             case UPDATE_SM_FINISHED:
                 vTaskDelay(2); // print over
-                BkpDateWrite(APP_WANTTO_UPDATE_KEYS_ADDR, 0);
-                JumpToRun(ADDRESS_APP_START);
+                update_BkpDateWrite(APP_WANTTO_UPDATE_KEYS_ADDR, 0);
+                update_JumpToRun(ADDRESS_APP_START);
                 break;
             case UPDATE_SM_CANCEL:
                 NVIC_SystemReset();

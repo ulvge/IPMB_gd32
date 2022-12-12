@@ -301,6 +301,7 @@ static int reboot(int argc, char *argv[])
 SHELL_EXPORT_CMD(SHELL_CMD_PERMISSION(0) | SHELL_CMD_TYPE(SHELL_TYPE_CMD_MAIN) | SHELL_CMD_DISABLE_RETURN, reboot, reboot, reboot the mcu);
 // tool 2******************************************************
 #define UPDATING_CMD_ALL   "all"
+#define UPDATING_CMD_FORCE   "-f"
 static char* strToLower(char* src)
 {
 	char *string = src;
@@ -313,30 +314,59 @@ static char* strToLower(char* src)
     return src;
 }
 extern void updateDev_task(void *arg);
+
+static void updateUsage(void)
+{
+    LOG_RAW("update ----------default; update self\r\n");
+    LOG_RAW("update 1 --------Specifies the module number\r\n");
+    LOG_RAW("update all ------update others mode if the version of mode is lower, not include self\r\n");
+    LOG_RAW("update all -f ---update others mode, not include self\r\n");
+    
+    
+    SubDevice_PrintModeName();
+}
 static int update(int argc, char *argv[])
 {
-    if (argc == 1) { //default update self
-        BkpDateWrite(APP_WANTTO_UPDATE_KEYS_ADDR, APP_WANTTO_UPDATE_KEYS);
-        JumpToRun(ADDRESS_BOOTLOADER_START);
-        return 0; // unreachable
-    }
-    if (argc == 2) {
-        char *strLow = strToLower(argv[1]);
-        uint32_t mode;
-        if (!strcmp(strLow, UPDATING_CMD_ALL)) //update all
-        {
-            mode = SUB_DEVICE_MODE_MAX;
-        }else { // update others mode
-            uint32_t tmp = strtod((const char*)strLow, NULL);
-            if (tmp >= SUB_DEVICE_MODE_MAX) {
-                return 0; // invalid
+    uint32_t paras;
+    uint8_t mode;
+    uint8_t isForceUpdate = false;
+    char *strLow;
+    switch (argc - 1)
+    {
+        case 0: //default; update self
+            update_BkpDateWrite(APP_WANTTO_UPDATE_KEYS_ADDR, APP_WANTTO_UPDATE_KEYS);
+            update_JumpToRun(ADDRESS_BOOTLOADER_START);
+            return 0; // unreachable
+        case 2:
+            strLow = strToLower(argv[2]);
+            if (!strcmp(strLow, UPDATING_CMD_FORCE)) //update all
+            {
+                isForceUpdate = true;
             }
-            mode = tmp;
-        }
-        if (errCOULD_NOT_ALLOCATE_REQUIRED_MEMORY ==
-            xTaskCreate(updateDev_task, "updateDev_task", configMINIMAL_STACK_SIZE * 1, &mode, TASK_PRIO_UPDATE_DEV, NULL)) {
-            LOG_E("updateDev_task create failed, no memory left\r\n");
-        }
+        case 1:
+            strLow = strToLower(argv[1]);
+            if (!strcmp(strLow, "?")) //update help
+            {
+                updateUsage();
+                return 0;
+            }
+            if (!strcmp(strLow, UPDATING_CMD_ALL)) //update all
+            {
+                mode = SUB_DEVICE_MODE_MAX;
+            }else { // update others mode
+                uint32_t tmp = strtod((const char*)strLow, NULL);
+                if ((tmp > SUB_DEVICE_MODE_MAX) || (tmp == SubDevice_GetMyMode())) {
+                    return 0; // invalid
+                }
+                mode = tmp;
+            }
+            paras = isForceUpdate << 8 | mode;
+            if (errCOULD_NOT_ALLOCATE_REQUIRED_MEMORY ==
+                xTaskCreate(updateDev_task, "updateDev_task", configMINIMAL_STACK_SIZE * 1, &paras, TASK_PRIO_UPDATE_DEV, NULL)) {
+                LOG_E("updateDev_task create failed, no memory left\r\n");
+            }
+        default:
+            break;
     }
     return 0;
 }

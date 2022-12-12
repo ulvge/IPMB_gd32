@@ -1,4 +1,6 @@
-
+/*
+Code shared by app&bootloader
+*/
 #include "jump.h"
 #include "project_select.h"
 #include <stdio.h>
@@ -6,7 +8,7 @@
 
 typedef void (*pFunction)(void);
 
-void JumpToRun(uint32_t jumpCodeAddr)
+void update_JumpToRun(uint32_t jumpCodeAddr)
 {
     /* 关闭全局中断 */
     CPU_IntDisable();
@@ -65,3 +67,6 @@ void JumpToRun(uint32_t jumpCodeAddr)
         ;
     }
 }
+
+
+

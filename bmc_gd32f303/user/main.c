@@ -133,10 +133,10 @@ void start_task(void *pvParameters)
        xTaskCreate(msg_handle_task, "com", configMINIMAL_STACK_SIZE * 2, NULL, TASK_PRIO_MSG_HANDLE, (TaskHandle_t *)&ComTask_Handler)) {
        errCreateTask |= 2;
    }
-    if (errCOULD_NOT_ALLOCATE_REQUIRED_MEMORY == 
-        xTaskCreate(adc_sample_task, "adc_sample", configMINIMAL_STACK_SIZE, NULL, TASK_PRIO_ADC_SAMPLE, NULL)) {
-        errCreateTask |= 4;
-    }
+   if (errCOULD_NOT_ALLOCATE_REQUIRED_MEMORY == 
+       xTaskCreate(adc_sample_task, "adc_sample", configMINIMAL_STACK_SIZE, NULL, TASK_PRIO_ADC_SAMPLE, NULL)) {
+       errCreateTask |= 4;
+   }
     if (errCOULD_NOT_ALLOCATE_REQUIRED_MEMORY == 
         xTaskCreate(shellTask, "shellTask", 200, &shell, TASK_PRIO_SHELL, NULL)) {
         errCreateTask |= 8;
@@ -154,7 +154,7 @@ xQueueHandle g_chassisCtrl_Queue = NULL;
 void adc_sample_task(void *pvParameters)
 {                                 
 	SamllMsgPkt_T msg;
-    g_chassisCtrl_Queue = xQueueCreate(2, sizeof(SamllMsgPkt_T));
+    g_chassisCtrl_Queue = xQueueCreate(1, sizeof(SamllMsgPkt_T));
     while (1)
     {
         //LOG_D("abcde\r\n");

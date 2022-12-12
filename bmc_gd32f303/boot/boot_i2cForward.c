@@ -17,12 +17,12 @@ xQueueHandle RecvForwardI2CDatMsg_Queue = NULL;
 
 uint8_t SubDevice_GetMySlaveAddress(uint32_t bus)
 {
-    return BkpDateRead(BKP_DATA_1);
+    return update_BkpDateRead(BKP_DATA_1);
 }
 
 static void boot_I2cForwardTask1(void *arg)
 {
-    RecvDatMsg_Queue  = xQueueCreate(3, sizeof(MsgPkt_T));
+    RecvDatMsg_Queue = xQueueCreate(3, sizeof(MsgPkt_T));
     MsgPkt_T i2cMsg;
     BootPkt_T forwardMsg;
     BaseType_t err;

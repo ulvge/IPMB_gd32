@@ -12,8 +12,6 @@
 #include "bsp_i2c.h" 
 #include "IPMIConf.h"
 
-#define XMODEM_PAKGE_LENGTH 128
-
 typedef void (*pFunction)(void);
 static UPDATE_SM boot_ProcessUpdateReq(const BootPkt_T *pReq);
 
@@ -39,7 +37,7 @@ void updateTask(void *arg)
         vTaskResume(updateMonitorHandle);
     }
 }
-static bool boot_xmodeCheck(bool type, const UINT8 *buf, UINT8 len, UINT16 recCrc)
+static bool update_xmodeCheck(bool type, const UINT8 *buf, UINT8 len, UINT16 recCrc)
 {
     UINT8 i = 0;
 
@@ -88,7 +86,7 @@ static bool boot_eraseAllPage()
 
 static UPDATE_SM boot_ProcessUpdateReq(const BootPkt_T *pReq)
 {
-    xmodemMsg *msg = (xmodemMsg *)(&pReq->Data);
+    XMODEM_Msg *msg = (XMODEM_Msg *)(&pReq->Data);
     static UINT32 pnPage = 0;
     static UINT8 lastPn = 0;
     UINT32 startAddr;
@@ -98,9 +96,9 @@ static UPDATE_SM boot_ProcessUpdateReq(const BootPkt_T *pReq)
     switch (msg->head) // 128*256 =
     {
         case XMODEM_SOH:
-            isCrcOK = boot_xmodeCheck(g_xmodemIsCheckTpyeCrc, msg->data, sizeof(msg->data), msg->crc);
+            isCrcOK = update_xmodeCheck(g_xmodemIsCheckTpyeCrc, msg->data, sizeof(msg->data), msg->crc);
             if (!isCrcOK && (g_UpdatingSM == UPDATE_SM_START)) {
-                isCrcOK = boot_xmodeCheck(!g_xmodemIsCheckTpyeCrc, msg->data, sizeof(msg->data), msg->crc);
+                isCrcOK = update_xmodeCheck(!g_xmodemIsCheckTpyeCrc, msg->data, sizeof(msg->data), msg->crc);
                 if (!isCrcOK) {
                     break;
                 } else {
@@ -163,8 +161,6 @@ static UPDATE_SM boot_ProcessUpdateReq(const BootPkt_T *pReq)
     }
     return g_UpdatingSM;
 }
-#define BOOT_I2C_SPECIAL_IDENTIFICATION  0x5A
-#define BOOT_I2C_BUS  I2C0
 static UINT32 g_updateChannleBak = SERIAL_CHANNEL_TYPE;
 void boot_sendAckMsg(UINT32 channle, UINT8 msg)
 {
