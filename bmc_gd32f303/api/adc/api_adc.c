@@ -113,13 +113,13 @@ __attribute__((unused)) static void StackFlow(void)
 	{
 		a[i]=100/i;
 	}       
-	LOG_E("adc_test StackFlow = %d\n", a[0]);
+	LOG_E("adc_test StackFlow = %d\r\n", a[0]);
 }
 __attribute__((unused)) static void adc_test(void)
 {     
     float valHuman = api_sensorGetValHuman(ADC_CHANNEL_8);
     
-	LOG_D("adc_test humanVal = %.3f\n", valHuman);
+	LOG_D("adc_test humanVal = %.3f\r\n", valHuman);
     StackFlow();
 }
 #define ADC_SAMPLE_TIMES 3

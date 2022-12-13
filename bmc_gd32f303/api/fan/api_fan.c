@@ -113,10 +113,10 @@ static void fan_ctrl_task(void)
         }
 
 		isAlreadyPrint = true;
-		LOG_D("fan id = %d, curent_rpm = %d\n", i, curent_rpm);
+		LOG_D("fan id = %d, curent_rpm = %d\r\n", i, curent_rpm);
     } 
 	if (isAlreadyPrint) {
-		//LOG_D("\n");
+		//LOG_D("\r\n");
 	}
 }
 bool fan_get_rotate_rpm(unsigned char sensorNum, uint16_t *fan_rpm)

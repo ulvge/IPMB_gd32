@@ -99,7 +99,7 @@ static bool MAC5023_init(UINT8 bus, UINT8 slaveAddr)
         }
         else
         {
-            LOG_I("MAC5023_init error, mode %s is not support\n", MAC5023_getDevName(slaveAddr));
+            LOG_I("MAC5023_init error, mode %s is not support\r\n", MAC5023_getDevName(slaveAddr));
         }
     }
     else
@@ -161,7 +161,7 @@ bool MAC5023_Sample(UINT8 devIndex, UINT8 cmd, float *humanVal, UINT8 *ipmbVal)
             g_MAC5023_initSuccess[devIndex] = true;
         }
     }
-    LOG_D("MAC5023_Sample dev name=%-8s, cmd=%s, addr7=%#x, humanVal=%-5.2f %s\n",
+    LOG_D("MAC5023_Sample dev name=%-8s, cmd=%s, addr7=%#x, humanVal=%-5.2f %s\r\n",
            g_MAC5023DevsConfig[devIndex].name, MAC5023_getCmdName(cmd), slaveAddr >> 1, *humanVal, g_MAC5023CmdsConfig[devIndex].units);
 
     return MAC5023_ReadItem(MAC5023_I2C_BUS, slaveAddr, cmd, humanVal, ipmbVal);

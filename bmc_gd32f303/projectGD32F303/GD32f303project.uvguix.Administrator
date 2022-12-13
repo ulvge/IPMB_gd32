@@ -15,17 +15,17 @@
     <View>
       <WinId>38003</WinId>
       <ViewName>Registers</ViewName>
-      <TableColWidths>168 112</TableColWidths>
+      <TableColWidths>194 194</TableColWidths>
     </View>
     <View>
       <WinId>346</WinId>
       <ViewName>Code Coverage</ViewName>
-      <TableColWidths>770 366</TableColWidths>
+      <TableColWidths>770 160</TableColWidths>
     </View>
     <View>
       <WinId>204</WinId>
       <ViewName>Performance Analyzer</ViewName>
-      <TableColWidths>758 139 139 100</TableColWidths>
+      <TableColWidths>930</TableColWidths>
     </View>
   </SECTreeCtrl>
 
@@ -52,7 +52,7 @@
       <WinId>1937</WinId>
       <ViewName>Watch 2</ViewName>
       <UserString></UserString>
-      <TableColWidths>200 271 133</TableColWidths>
+      <TableColWidths>200 133 133</TableColWidths>
     </View>
     <View>
       <WinId>1935</WinId>
@@ -93,8 +93,8 @@
       <flags>2</flags>
       <showCmd>3</showCmd>
       <MinPosition>
-        <xPos>-32000</xPos>
-        <yPos>-32000</yPos>
+        <xPos>-1</xPos>
+        <yPos>-1</yPos>
       </MinPosition>
       <MaxPosition>
         <xPos>-1</xPos>

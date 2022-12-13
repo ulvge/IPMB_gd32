@@ -1228,7 +1228,7 @@ Removing Unused input sections from the image.
     Removing systick.o(i.GetTickMs), (12 bytes).
     Removing gd32f10x_it.o(.rev16_text), (4 bytes).
     Removing gd32f10x_it.o(.revsh_text), (4 bytes).
-    Removing gd32f10x_it.o(i.HardFault_Handler_UNUSED), (248 bytes).
+    Removing gd32f10x_it.o(i.HardFault_Handler_UNUSED), (256 bytes).
     Removing gd32f10x_it.o(.bss), (90 bytes).
     Removing gd32f10x_it.o(.data), (4 bytes).
     Removing gd32f10x_platform.o(.rev16_text), (4 bytes).
@@ -1760,7 +1760,7 @@ Removing Unused input sections from the image.
     Removing cdrcmple.o(.text), (48 bytes).
     Removing depilogue.o(.text), (186 bytes).
 
-541 unused section(s) (total 26076 bytes) removed from the image.
+541 unused section(s) (total 26084 bytes) removed from the image.
 
 ==============================================================================
 

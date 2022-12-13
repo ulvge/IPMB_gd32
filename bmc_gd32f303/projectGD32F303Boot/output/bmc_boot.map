@@ -1243,7 +1243,7 @@ Removing Unused input sections from the image.
     Removing gd32f30x_it.o(.rev16_text), (4 bytes).
     Removing gd32f30x_it.o(.revsh_text), (4 bytes).
     Removing gd32f30x_it.o(i.ENET_IRQHandler), (2 bytes).
-    Removing gd32f30x_it.o(i.HardFault_Handler_UNUSED), (248 bytes).
+    Removing gd32f30x_it.o(i.HardFault_Handler_UNUSED), (256 bytes).
     Removing gd32f30x_it.o(.bss), (90 bytes).
     Removing gd32f30x_it.o(.data), (4 bytes).
     Removing boot_i2cforward.o(.rev16_text), (4 bytes).
@@ -1827,7 +1827,7 @@ Removing Unused input sections from the image.
     Removing cdrcmple.o(.text), (48 bytes).
     Removing depilogue.o(.text), (186 bytes).
 
-598 unused section(s) (total 28634 bytes) removed from the image.
+598 unused section(s) (total 28642 bytes) removed from the image.
 
 ==============================================================================
 

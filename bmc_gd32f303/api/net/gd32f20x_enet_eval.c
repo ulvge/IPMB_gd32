@@ -232,8 +232,8 @@ uint8_t get_phy_addr(void)
         enet_phy_write_read(ENET_PHY_READ, i, 0x03, &id2);
         if(id1 != 0xffff)
         {
-            printf("id1:%02x, id2:%02x\n", id1, id2);
-            printf("type:%d  revison:%d  phy_addr:%02x\n",(id2>>4) & 0x3f, id2 & 0x0f, i);
+            printf("id1:%02x, id2:%02x\r\n", id1, id2);
+            printf("type:%d  revison:%d  phy_addr:%02x\r\n",(id2>>4) & 0x3f, id2 & 0x0f, i);
             return i;
         }
         vTaskDelay(5);

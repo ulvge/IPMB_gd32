@@ -281,7 +281,7 @@ int PMBUS_Verify_PEC(u8 slave, u8 *writebuf, u8 *readbuf, int readlen)
 
     if (crc != readbuf[readlen])
     {
-        LOG_E("Bad PEC 0x%02x vs. 0x%02x\n",
+        LOG_E("Bad PEC 0x%02x vs. 0x%02x\r\n",
               crc, readbuf[readlen]);
         return -1;
     }
@@ -385,7 +385,7 @@ int PMBus_I2CRead(INT8U i2cBus, u8 slave, u8 cmdCode, u8 *readbuf)
     {
         if (PMBUS_Verify_PEC(slave, &writebuf, readbuf, readlen - 1) < 0)
         {
-            LOG_E("\nVerify Failed for Packet Error Checking\n");
+            LOG_E("\nVerify Failed for Packet Error Checking\r\n");
             return -1;
         }
         readlen--; // FTSCHG_MC
@@ -459,7 +459,7 @@ int PMBus_I2CWrite(INT8U i2cBus, u8 slave, u8 cmdCode, u8 *Write_buf)
         ((pPMBusCmd->transType == I2C_SEND_BYTE) && (pPMBusCmd->dataBytes != 0)) ||
         ((pPMBusCmd->transType != I2C_SEND_BYTE) && (Write_buf == NULL)))
     {
-        LOG_E("\nInvalid Request for this Command 0x%02x\n", pPMBusCmd->cmdName);
+        LOG_E("\nInvalid Request for this Command 0x%02x\r\n", pPMBusCmd->cmdName);
         return -1;
     }
 	memset(writebuf, 0, sizeof(writebuf));
@@ -569,7 +569,7 @@ int PMBus_ReadFanSpeed(INT8U i2cBus, u8 slave, int Fan_num, u8 *read_buf)
     case 4:
         return PMBus_I2CRead(i2cBus, slave, PMBUS_READ_FAN_SPEED_4, read_buf);
     default:
-        LOG_E("\n Invalid Fan Number\n");
+        LOG_E("\n Invalid Fan Number\r\n");
         return -1;
     }
 }
@@ -584,7 +584,7 @@ int PMBus_ReadTemp(INT8U i2cBus, u8 slave, int Temp_num, u8 *read_buf)
     case 3:
         return PMBus_I2CRead(i2cBus, slave, PMBUS_READ_TEMPERATURE_3, read_buf);
     default:
-        LOG_E("\n Invalid Temperature Number\n");
+        LOG_E("\n Invalid Temperature Number\r\n");
         return -1;
     }
 }

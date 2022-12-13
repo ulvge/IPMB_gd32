@@ -72,11 +72,11 @@ void HardFault_Handler_UNUSED(void)
 	
 	//_lr = (unsigned long)sp[5];
 	//_pc = (unsigned long)sp[6];                                              
-	sprintf(faultBuf + strlen(faultBuf), "\n\n");                                 
-	sprintf(faultBuf + strlen(faultBuf), ">> HardFault !!!  prepare reset\n");
-	sprintf(faultBuf + strlen(faultBuf), ">> lr = 0x%08x\n", *(r_msp+5)); // seek behind
-	sprintf(faultBuf + strlen(faultBuf), ">> pc = 0x%08x\n", *(r_msp+6));                            
-	sprintf(faultBuf + strlen(faultBuf), "\n\n");     
+	sprintf(faultBuf + strlen(faultBuf), "\r\n");                                 
+	sprintf(faultBuf + strlen(faultBuf), ">> HardFault !!!  prepare reset\r\n");
+	sprintf(faultBuf + strlen(faultBuf), ">> lr = 0x%08x\r\n", *(r_msp+5)); // seek behind
+	sprintf(faultBuf + strlen(faultBuf), ">> pc = 0x%08x\r\n", *(r_msp+6));                            
+	sprintf(faultBuf + strlen(faultBuf), "\r\n");
 	
 	UART_sendDataBlock(DEBUG_UART_PERIPH, (uint8_t *)faultBuf, strlen(faultBuf));
 										
