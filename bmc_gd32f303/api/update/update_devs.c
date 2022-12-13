@@ -1,4 +1,6 @@
 
+#include <stdbool.h>
+#include <stdio.h>
 #include "IPMIConf.h"
 #include "IPMIDefs.h"
 #include "IPMI_Oem.h"
@@ -13,8 +15,7 @@
 #include "jump.h"
 #include "project_select.h"
 #include "shell.h"
-#include <stdbool.h>
-#include <stdio.h>
+#include "ChassisCtrl.h"
 
 /* import bin describle     */
 extern uint32_t Image$$ER_IROM1$$Base;
@@ -26,11 +27,13 @@ extern uint32_t Region$$Table$$Base;
 
 /* import task handler     */
 extern TaskHandle_t xHandleTaskResponseDatWrite;
+extern TaskHandle_t xHandleDevTask;
 extern TaskHandle_t ComTask_Handler;
 
 /* import Queue handler     */
 extern xQueueHandle RecvDatMsg_Queue;
 extern xQueueHandle RecvForwardI2CDatMsg_Queue;
+extern xQueueHandle ResponseDatMsg_Queue;
 
 static UINT8 xmodeCheckSum(const UINT8 *buf, UINT16 len)
 {
@@ -55,6 +58,36 @@ static bool updateDev_readMsg(UINT32 timetOut, MsgPkt_T *i2cMsg)
         }
         count++;
     } while ((count * PERIOD_OF_SCAN) < timetOut);
+    return false;
+}
+static bool updateDev_notifyDevBoot(SUB_DEVICE_MODE mode)
+{
+    uint32_t reSend;
+    MsgPkt_T requestDevBoot;
+    MsgPkt_T respDevBoot;
+    IPMIMsgHdr_T *hdr = (IPMIMsgHdr_T *)&(requestDevBoot.Data);
+    requestDevBoot.Channel = BOOT_I2C_BUS; // SubDevice_GetBus(dev); // 
+    hdr->ResAddr = SubDevice_modeConvertSlaveAddr(mode);
+    hdr->NetFnLUN = NETFN_OEM << 2;
+    hdr->ChkSum = CalculateCheckSum((INT8U *)hdr, 2);
+
+    hdr->ReqAddr = SubDevice_GetMySlaveAddress(requestDevBoot.Channel);
+    hdr->RqSeqLUN = 0x01;
+    hdr->Cmd = CMD_UPDATE_FIRMWARE; // UpdateFirmware
+
+    int len = sizeof(IPMIMsgHdr_T);
+    requestDevBoot.Data[len++] = CalculateCheckSum(requestDevBoot.Data, len);
+    requestDevBoot.Size = sizeof(IPMIMsgHdr_T);
+
+    do {
+        if (SendMsgAndWait(&requestDevBoot, &respDevBoot, 50)) {
+            if (respDevBoot.Data[0] == CC_NORMAL) {
+                return true;
+            }
+        }
+        vTaskDelay(100);
+    } while (reSend++ < 3);
+
     return false;
 }
 static bool updateDev_xmode(SUB_DEVICE_MODE mode)
@@ -84,8 +117,8 @@ static bool updateDev_xmode(SUB_DEVICE_MODE mode)
                 vTaskDelay(20);
                 continue;
             } else {
-                if (!updateDev_readMsg(5000, &i2cReadMsg)) {
-                    LOG_I("updateDev i2c_read timeout\r\n");
+                if (!updateDev_readMsg(5000, &i2cReadMsg)) { // timetOut
+                    LOG_I("updateDev i2c write ok, but read timeout\r\n");
                     return false;
                 } else { // decode boot_sendAckMsg()
                     if (i2cReadMsg.Data[0] != BOOT_I2C_SPECIAL_IDENTIFICATION) {
@@ -111,14 +144,23 @@ static bool updateDev_xmode(SUB_DEVICE_MODE mode)
             }
         } while (true);
     }
-    return true;
+    p_sendXmodeMsg->head = XMODEM_EOT;
+    reSend = 0;
+    do {
+        isWriteSuccess = i2c_write(BOOT_I2C_BUS, (uint8_t *)&sendXmodeMsg, 2); // 2: SlaveAddr + XMODEM_EOT
+        if (isWriteSuccess){
+            return true;
+        }
+        vTaskDelay(20);
+    } while (reSend++ < 3);
+    return false;
 }
 static bool updateDev_isModeVersionLower(SUB_DEVICE_MODE mode, INT16U destVer)
 {
     MsgPkt_T requestVersion;
     MsgPkt_T recvVer;
     IPMIMsgHdr_T *hdr = (IPMIMsgHdr_T *)&(requestVersion.Data);
-    requestVersion.Channel = NM_SECONDARY_IPMB_BUS; // SubDevice_GetBus(dev); // BOOT_I2C_BUS
+    requestVersion.Channel = BOOT_I2C_BUS; // SubDevice_GetBus(dev);
     hdr->ResAddr = SubDevice_modeConvertSlaveAddr(mode);
     hdr->NetFnLUN = NETFN_OEM << 2; // RAW
     hdr->ChkSum = CalculateCheckSum((INT8U *)hdr, 2);
@@ -132,6 +174,7 @@ static bool updateDev_isModeVersionLower(SUB_DEVICE_MODE mode, INT16U destVer)
     requestVersion.Size = sizeof(IPMIMsgHdr_T);
 
     if (SendMsgAndWait(&requestVersion, &recvVer, 50) == pdFALSE) {
+        LOG_I("updateDev check ver. mode[%d], name[%s], modeVer[failed]\r\n", mode, SubDevice_GetModeName(mode));
         return false;
     }
     GetBMCInfoRes_T *pBMCInfo = (GetBMCInfoRes_T *)(&recvVer.Data[sizeof(GetBMCInfoRes_T)]);
@@ -142,6 +185,15 @@ static bool updateDev_isModeVersionLower(SUB_DEVICE_MODE mode, INT16U destVer)
     return modeVer < destVer;
 }
 
+static bool updateDev_update(SUB_DEVICE_MODE mode)
+{
+    if (!updateDev_notifyDevBoot(mode)) {
+        LOG_I("updateDev notifyDevBoot mode[%d], name[%s] failed!!\r\n", mode, SubDevice_GetModeName(mode));
+        return false;
+    }
+    vTaskDelay(GPIO_ACTIVE_PULSE_TIME_MS + 200); // Wait for the mode enter to bootloader
+    return updateDev_xmode(mode);
+}
 static int modever(int argc, char *argv[])
 {
     INT16U destVer = GetBmcFirmwareVersion(BMC_VERSION);
@@ -149,11 +201,9 @@ static int modever(int argc, char *argv[])
         if (mode == SubDevice_GetMyMode()) {
             LOG_I("updateDev check ver. mode[%d], name[%s], modeVer[%d.%d]\r\n",
                   mode, SubDevice_GetModeName(mode), (destVer >> 8) & 0xff, destVer & 0xff);
+			continue;
         }
-        if(!updateDev_isModeVersionLower(mode, destVer)) {
-            LOG_I("updateDev check ver. mode[%d], name[%s], modeVer[failed]\r\n",
-                  mode, SubDevice_GetModeName(mode));
-        }
+        updateDev_isModeVersionLower(mode, destVer);
     }
     return 0;
 }
@@ -169,12 +219,15 @@ void updateDev_task(void *arg)
         vTaskDelete(NULL);
     }
 
+    if (SubDevice_IsSelfMaster()) {
+        vTaskSuspend(xHandleDevTask);
+    }
     vTaskSuspend(xHandleTaskResponseDatWrite);
     vTaskSuspend(ComTask_Handler);
 
-    if (cmdUpdateModes != SUB_DEVICE_MODE_MAX) { // update one devs
+    if (cmdUpdateModes != SUB_DEVICE_MODE_MAX) { // update Specified devs
         if (isForceUpdate || updateDev_isModeVersionLower(cmdUpdateModes, destVer)) {
-            if (!updateDev_xmode(cmdUpdateModes)) {
+            if (!updateDev_update(cmdUpdateModes)) {
                 LOG_W("updateDev mode[%d], name[%s] failed!!\r\n", cmdUpdateModes, SubDevice_GetModeName(cmdUpdateModes));
             }
         }
@@ -183,16 +236,23 @@ void updateDev_task(void *arg)
             if (mode == SubDevice_GetMyMode()) {
                 continue;
             }
-            if (isForceUpdate || updateDev_isModeVersionLower(cmdUpdateModes, destVer)) {
+            if (isForceUpdate || updateDev_isModeVersionLower(mode, destVer)) {
                 LOG_W("updateDev mode[%d], name[%s] start...\r\n", mode, SubDevice_GetModeName(mode));
-                if (!updateDev_xmode(mode)) {
+                if (!updateDev_update(mode)) {
                     LOG_W("updateDev mode[%d], name[%s] failed!!!\r\n", mode, SubDevice_GetModeName(mode));
+                } else {
+                    LOG_W("updateDev mode[%d], name[%s] success!!!\r\n", mode, SubDevice_GetModeName(mode));
                 }
             }
         }
     }
-    vTaskDelay(500);
+    vTaskDelay(100);
+    taskENTER_CRITICAL();         
+    if (SubDevice_IsSelfMaster()) {
+        vTaskResume(xHandleDevTask);
+    }                           
     vTaskResume(xHandleTaskResponseDatWrite);
     vTaskResume(ComTask_Handler);
+    taskEXIT_CRITICAL();
     vTaskDelete(NULL);
 }

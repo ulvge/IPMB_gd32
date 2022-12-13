@@ -203,6 +203,7 @@ ChassisControl ( INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst )
     err = xQueueSend(g_chassisCtrl_Queue, (char *)&Msg, 10);
     if (err == pdFALSE)
     {
+        pChassisControlRes->CompletionCode = CC_TIMEOUT;
         LOG_E("g_chassisCtrl_Queue send msg ERR!");
     }
 

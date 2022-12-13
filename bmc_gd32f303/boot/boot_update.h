@@ -55,9 +55,6 @@ typedef __packed struct
     INT8U Size;      /* Command that needs to be processed*/
     INT8U Data[sizeof(XMODEM_Msg)]; /* Data */
 } BootPkt_T;
-//#define boot_UartSendByte(dat) UART_sendByte(USART0, dat)
-
-#define boot_UartSendByte(dat)	usart_data_transmit(USART0, dat); while (RESET == usart_flag_get(USART0, USART_FLAG_TBE)) ;
 
 extern void boot_setPrintUartPeriph(UINT32 periph);
 extern TaskHandle_t updateMonitorHandle;
@@ -66,9 +63,10 @@ extern UPDATE_SM g_UpdatingSM;
 extern volatile UINT32 g_resendCount;
 extern bool g_xmodemIsCheckTpyeCrc;
 
-void updateTask(void *arg);
+void boot_updateTask(void *arg);
 void boot_i2c_int(void);
 uint8_t SubDevice_GetMySlaveAddress(uint32_t bus);
+void boot_sendMsg2Dev(UINT8 msg);
 
 #ifdef __cplusplus
 }

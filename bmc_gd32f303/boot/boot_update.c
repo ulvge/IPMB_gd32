@@ -14,13 +14,14 @@
 
 typedef void (*pFunction)(void);
 static UPDATE_SM boot_ProcessUpdateReq(const BootPkt_T *pReq);
+static UINT32 g_updateChannleBak = SERIAL_CHANNEL_TYPE;
+bool g_xmodemIsCheckTpyeCrc = false;
 
 xQueueHandle updateDatMsg_Queue = NULL;
 UPDATE_SM g_UpdatingSM = UPDATE_SM_INIT;
 volatile UINT32 g_resendCount = 0;
-bool g_xmodemIsCheckTpyeCrc = false;
 
-void updateTask(void *arg)
+void boot_updateTask(void *arg)
 {
     BootPkt_T reqMsg;
 
@@ -37,7 +38,7 @@ void updateTask(void *arg)
         vTaskResume(updateMonitorHandle);
     }
 }
-static bool update_xmodeCheck(bool type, const UINT8 *buf, UINT8 len, UINT16 recCrc)
+static bool boot_xmodeCheck(bool type, const UINT8 *buf, UINT8 len, UINT16 recCrc)
 {
     UINT8 i = 0;
 
@@ -96,20 +97,21 @@ static UPDATE_SM boot_ProcessUpdateReq(const BootPkt_T *pReq)
     switch (msg->head) // 128*256 =
     {
         case XMODEM_SOH:
-            isCrcOK = update_xmodeCheck(g_xmodemIsCheckTpyeCrc, msg->data, sizeof(msg->data), msg->crc);
+            isCrcOK = boot_xmodeCheck(g_xmodemIsCheckTpyeCrc, msg->data, sizeof(msg->data), msg->crc);
             if (!isCrcOK && (g_UpdatingSM == UPDATE_SM_START)) {
-                isCrcOK = update_xmodeCheck(!g_xmodemIsCheckTpyeCrc, msg->data, sizeof(msg->data), msg->crc);
-                if (!isCrcOK) {
+                isCrcOK = boot_xmodeCheck(!g_xmodemIsCheckTpyeCrc, msg->data, sizeof(msg->data), msg->crc);
+                if (!isCrcOK) { // Currently, the client does not know which transport protocol the master supports
                     break;
                 } else {
                     g_xmodemIsCheckTpyeCrc = !g_xmodemIsCheckTpyeCrc;
                 }
             }
             if (!isCrcOK) {
-                boot_UartSendByte(XMODEM_NAK);
+                boot_sendMsg2Dev(XMODEM_NAK);
                 return UPDATE_SM_ERROR_TRYAGAIN;
             }
             if (g_UpdatingSM == UPDATE_SM_START) {
+                g_updateChannleBak = pReq->Channel; // It will only be recorded once and will not be changed in the future
                 boot_setPrintUartPeriph(USART1);
                 boot_eraseAllPage();
             }
@@ -124,20 +126,20 @@ static UPDATE_SM boot_ProcessUpdateReq(const BootPkt_T *pReq)
 
             LOG_D("update addr = %#X, page Num = %d \r\n", startAddr, pnPage + msg->pn);
             if ((startAddr + XMODEM_PAKGE_LENGTH) > ADDRESS_APP_END) {
-                boot_UartSendByte(XMODEM_NAK);
+                boot_sendMsg2Dev(XMODEM_NAK);
                 return UPDATE_SM_ERROR_TRYAGAIN;
             }
-            boot_UartSendByte(XMODEM_ACK);
+            boot_sendMsg2Dev(XMODEM_ACK);
             FLASH_Program(startAddr, (uint32_t *)(&msg->data), sizeof(msg->data));
             return UPDATE_SM_PROGRAMING;
         case XMODEM_EOT:
-            boot_UartSendByte(XMODEM_ACK);
+            boot_sendMsg2Dev(XMODEM_ACK);
             pnPage = 0;
             return UPDATE_SM_FINISHED;
         case XMODEM_CANCEL:
         case 'q': // quit
         case 'Q':
-            boot_UartSendByte(XMODEM_ACK);
+            boot_sendMsg2Dev(XMODEM_ACK);
             pnPage = 0;
             return UPDATE_SM_CANCEL;
         case XMODEM_CTRLC: /* abandon startup ,and prepare to upload */
@@ -161,13 +163,11 @@ static UPDATE_SM boot_ProcessUpdateReq(const BootPkt_T *pReq)
     }
     return g_UpdatingSM;
 }
-static UINT32 g_updateChannleBak = SERIAL_CHANNEL_TYPE;
-void boot_sendAckMsg(UINT32 channle, UINT8 msg)
+void boot_sendMsg2Dev(UINT8 msg)
 {
-    g_updateChannleBak = channle;
     if(g_updateChannleBak == SERIAL_CHANNEL_TYPE){
-        boot_UartSendByte(msg);
-    } else {
+        usart_data_transmit(USART0, msg); while (RESET == usart_flag_get(USART0, USART_FLAG_TBE)) ;
+    } else {// NM_PRIMARY_IPMB_BUS || NM_SECONDARY_IPMB_BUS
         uint8_t sendbuff[10];
         uint8_t idx = 0;
         sendbuff[idx++] = SubDevice_GetMySlaveAddress(BOOT_I2C_BUS);
@@ -175,9 +175,5 @@ void boot_sendAckMsg(UINT32 channle, UINT8 msg)
         sendbuff[idx++] = msg;
         i2c_write(BOOT_I2C_BUS, sendbuff, idx);
     }
-}
-void boot_reSendAckMsg(UINT8 msg)
-{
-    boot_sendAckMsg(g_updateChannleBak, msg);
 }
 

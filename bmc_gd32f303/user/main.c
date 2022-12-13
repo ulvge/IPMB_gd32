@@ -77,7 +77,7 @@ const char *projectInfo =
     "Build:    "__DATE__
     "  "__TIME__
     "\r\n"
-    "Version:  " BMC_VERSION " \r\n"
+    "App Version:  " BMC_VERSION " \r\n"
     "Copyright: (c) HXZY\r\n"
     "********************************************\r\n"
     "\r\n";
@@ -121,31 +121,31 @@ void start_task(void *pvParameters)
 {
     uint32_t errCreateTask = 0;
     i2c_int();
-    //fan_init();
+    // fan_init();
 
     taskENTER_CRITICAL();
 
-   if (errCOULD_NOT_ALLOCATE_REQUIRED_MEMORY == 
-       xTaskCreate(Dev_Task, "dev_task", configMINIMAL_STACK_SIZE, NULL, TASK_PRIO_DEV_HANDLE, NULL)) {
-       errCreateTask |= 1;
-   }
-   if (errCOULD_NOT_ALLOCATE_REQUIRED_MEMORY == 
-       xTaskCreate(msg_handle_task, "com", configMINIMAL_STACK_SIZE * 2, NULL, TASK_PRIO_MSG_HANDLE, (TaskHandle_t *)&ComTask_Handler)) {
-       errCreateTask |= 2;
-   }
-   if (errCOULD_NOT_ALLOCATE_REQUIRED_MEMORY == 
-       xTaskCreate(adc_sample_task, "adc_sample", configMINIMAL_STACK_SIZE, NULL, TASK_PRIO_ADC_SAMPLE, NULL)) {
-       errCreateTask |= 4;
-   }
-    if (errCOULD_NOT_ALLOCATE_REQUIRED_MEMORY == 
+    if (errCOULD_NOT_ALLOCATE_REQUIRED_MEMORY ==
+        xTaskCreate(Dev_Task, "dev_task", configMINIMAL_STACK_SIZE, NULL, TASK_PRIO_DEV_HANDLE, NULL)) {
+        errCreateTask |= 1;
+    }
+    if (errCOULD_NOT_ALLOCATE_REQUIRED_MEMORY ==
+        xTaskCreate(msg_handle_task, "com", configMINIMAL_STACK_SIZE * 2, NULL, TASK_PRIO_MSG_HANDLE, (TaskHandle_t *)&ComTask_Handler)) {
+        errCreateTask |= 2;
+    }
+    if (errCOULD_NOT_ALLOCATE_REQUIRED_MEMORY ==
+        xTaskCreate(adc_sample_task, "adc_sample", configMINIMAL_STACK_SIZE, NULL, TASK_PRIO_ADC_SAMPLE, NULL)) {
+        errCreateTask |= 4;
+    }
+    if (errCOULD_NOT_ALLOCATE_REQUIRED_MEMORY ==
         xTaskCreate(shellTask, "shellTask", 200, &shell, TASK_PRIO_SHELL, NULL)) {
         errCreateTask |= 8;
     }
-	if (errCreateTask == 0){
-		LOG_I("create task finished : succeed\r\n");
-	} else {
-		LOG_I("create task finished : error = %d\r\n", errCreateTask);
-	}
+    if (errCreateTask == 0) {
+        LOG_I("create task finished : succeed\r\n");
+    } else {
+        LOG_I("create task finished : error = %d\r\n", errCreateTask);
+    }
     vTaskDelete(NULL);
     taskEXIT_CRITICAL();
 }

@@ -18,7 +18,9 @@
 #include "Sensor.h"
 #include "cpu/api_cpu.h"
 #include "bsp_gpio.h"
-
+#include "ChassisDevice.h"
+#include "IPMI_ChassisDevice.h"
+#include "jump.h"
 
 //extern VariableCPUParam g_CPUVariableParam;
 //extern FixedCPUParam g_CPUFixedParam;
@@ -127,9 +129,16 @@ int GetBladId(INT8U *pReq, INT8U ReqLen, INT8U *pRes, int BMCInst)
 }
 int UpdateFirmware(INT8U *pReq, INT8U ReqLen, INT8U *pRes, int BMCInst)
 {
+    ChassisControlReq_T*    pChassisControlReq = (ChassisControlReq_T*) pReq;
+    pChassisControlReq->ChassisControl = CHASSIS_POWER_RESET;
 
-
-	return 0;
+    ChassisControl(pReq, ReqLen, pRes, BMCInst); //send msg to reboot
+    ChassisControlRes_T* pChassisControlRes = (ChassisControlRes_T*) pRes;
+    if (pChassisControlRes->CompletionCode == CC_NORMAL) { // write backup data
+        update_BkpDateWrite(I2C_UPDATE_KEYS_ADDR, I2C_UPDATE_KEYS);
+        update_BkpDateWrite(I2C_UPDATE_MODE_ADDR, SubDevice_GetMyMode());
+    }
+    return sizeof (ChassisControlRes_T);
 }
 
 int GetCPUInfo(INT8U *pReq, INT8U ReqLen, INT8U *pRes, int BMCInst)

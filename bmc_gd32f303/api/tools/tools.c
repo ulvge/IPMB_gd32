@@ -317,12 +317,14 @@ extern void updateDev_task(void *arg);
 
 static void updateUsage(void)
 {
-    LOG_RAW("update ----------default; update self\r\n");
-    LOG_RAW("update 1 --------Specifies the module number\r\n");
+    SUB_DEVICE_MODE mode = SubDevice_GetMyMode();
+    LOG_RAW("current  --------mode[%d], name[%s]\r\n", mode, SubDevice_GetModeName(mode));
+    LOG_RAW("update ----------update self\r\n");
+    LOG_RAW("update num ------Specifies the module number\r\n");
     LOG_RAW("update all ------update others mode if the version of mode is lower, not include self\r\n");
     LOG_RAW("update all -f ---update others mode, not include self\r\n");
-    
-    
+ 
+    vTaskDelay(10);
     SubDevice_PrintModeName();
 }
 static int update(int argc, char *argv[])
@@ -355,14 +357,19 @@ static int update(int argc, char *argv[])
                 mode = SUB_DEVICE_MODE_MAX;
             }else { // update others mode
                 uint32_t tmp = strtod((const char*)strLow, NULL);
-                if ((tmp > SUB_DEVICE_MODE_MAX) || (tmp == SubDevice_GetMyMode())) {
+                if (tmp > SUB_DEVICE_MODE_MAX) {
+                    LOG_E("update cmd error, not a valid mode num, 'update ?' more Details\r\n");
+                    return 0; // invalid
+                }
+                if (tmp == SubDevice_GetMyMode()) {
+                    LOG_E("update cmd error, should't update self by i2c, 'update ?' more Details\r\n");
                     return 0; // invalid
                 }
                 mode = tmp;
             }
             paras = isForceUpdate << 8 | mode;
             if (errCOULD_NOT_ALLOCATE_REQUIRED_MEMORY ==
-                xTaskCreate(updateDev_task, "updateDev_task", configMINIMAL_STACK_SIZE * 1, &paras, TASK_PRIO_UPDATE_DEV, NULL)) {
+                xTaskCreate(updateDev_task, "updateDev_task", configMINIMAL_STACK_SIZE * 2, &paras, TASK_PRIO_UPDATE_DEV, NULL)) {
                 LOG_E("updateDev_task create failed, no memory left\r\n");
             }
         default:

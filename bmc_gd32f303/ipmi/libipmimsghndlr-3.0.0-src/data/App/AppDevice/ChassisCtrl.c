@@ -31,8 +31,7 @@
 #include "freertos.h"
 #include "timers.h"
 #include "debug_print.h"
-					 
-#define GPIO_ACTIVE_PULSE_TIME_MS 1500
+#include "ChassisCtrl.h"
 
 
 static void ChassisCtrlTimerCallBack(xTimerHandle pxTimer)

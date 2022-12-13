@@ -69,7 +69,8 @@ const char *projectInfo =
     "********************************************\r\n"
     "Build:    "__DATE__
     "  "__TIME__
-    "\r\n"
+    "\r\n"    
+    "boot Version:  " BOOT_VERSION " \r\n"
     "Copyright: (c) HXZY\r\n"
     "********************************************\r\n"
     "\r\n";
@@ -97,8 +98,13 @@ void updateMonitor(void *pvParameters)
     UINT32 jumpToAPPMaxDelay = BOOT_DELAY_DEFAULT;
 
     if (update_BkpDateRead(APP_WANTTO_UPDATE_KEYS_ADDR) == APP_WANTTO_UPDATE_KEYS) {
-        jumpToAPPMaxDelay = BOOT_DELAY_RESET_FROM_APP;
+        jumpToAPPMaxDelay = BOOT_DELAY_RESET_FROM_APP;  // Avoid misoperation, still need to manually start
     }
+    if (update_BkpDateRead(I2C_UPDATE_KEYS_ADDR) == I2C_UPDATE_KEYS) {
+        g_UpdatingSM = UPDATE_SM_START; // auto start
+        boot_i2c_int();
+    }
+
     vTaskDelay(100);
     while (1) {
         vTaskDelay(MONITOR_TASK_DELAY_ms);
@@ -120,13 +126,13 @@ void updateMonitor(void *pvParameters)
             case UPDATE_SM_ERROR_TRYAGAIN:
                 if ((g_resendCount * MONITOR_TASK_DELAY_ms) >= RESEND_TIMEOUT) {
                     g_resendCount = 0;
-                    boot_UartSendByte(XMODEM_NAK);
+                    boot_sendMsg2Dev(XMODEM_NAK);
                 }
                 break;
             case UPDATE_SM_PROGRAMING:
                 if ((g_resendCount * MONITOR_TASK_DELAY_ms) >= RESEND_TIMEOUT) {
                     g_resendCount = 0;
-                    boot_UartSendByte(XMODEM_ACK);
+                    boot_sendMsg2Dev(XMODEM_ACK);
                 }
                 break;
             case UPDATE_SM_START:
@@ -135,14 +141,15 @@ void updateMonitor(void *pvParameters)
                     g_xmodemIsCheckTpyeCrc = !g_xmodemIsCheckTpyeCrc;
                 }
                 if (g_xmodemIsCheckTpyeCrc) {
-                    boot_UartSendByte(XMODEM_HANDSHAKECRC);
+                    boot_sendMsg2Dev(XMODEM_HANDSHAKECRC);
                 } else  {
-                    boot_UartSendByte(XMODEM_NAK);
+                    boot_sendMsg2Dev(XMODEM_NAK);
                 }
                 break;
             case UPDATE_SM_FINISHED:
                 vTaskDelay(2); // print over
                 update_BkpDateWrite(APP_WANTTO_UPDATE_KEYS_ADDR, 0);
+                update_BkpDateWrite(I2C_UPDATE_KEYS_ADDR, 0);
                 update_JumpToRun(ADDRESS_APP_START);
                 break;
             case UPDATE_SM_CANCEL:
@@ -189,9 +196,8 @@ int main(void)
 
     watch_dog_init();
     debug_config();
-	boot_i2c_int();
     xTaskCreate(updateMonitor, "updateMonitor", configMINIMAL_STACK_SIZE * 2, NULL, 25, &updateMonitorHandle);
-    xTaskCreate(updateTask, "update", configMINIMAL_STACK_SIZE * 2, NULL, 20, NULL);
+    xTaskCreate(boot_updateTask, "update", configMINIMAL_STACK_SIZE * 2, NULL, 20, NULL);
     vTaskStartScheduler();
     while (1) {
         LOG_I("vTaskStartScheduler  error");

@@ -36,7 +36,7 @@ typedef enum {
     XMODEM_CHECK_CRC16,
 } XMODEM_CHECK_TYPE;
 
-#define BOOT_I2C_BUS  I2C0
+#define BOOT_I2C_BUS  I2C_BUS_0
 
 /*   **********   xmode   end   ***********/
 
@@ -53,8 +53,14 @@ typedef enum {
 #define UPDATING_CMD            0x04
 #define RESTART_BOARD_CMD       0x05
 
+#define APP_WANTTO_UPDATE_KEYS_ADDR     BKP_DATA_0
 #define APP_WANTTO_UPDATE_KEYS   0xA55A
-#define APP_WANTTO_UPDATE_KEYS_ADDR     BKP_DATA_0 //(SRAM_BASE + SRAM_BASE_LEN - 0x10)
+
+#define I2C_UPDATE_KEYS_ADDR    BKP_DATA_1
+#define I2C_UPDATE_KEYS         0x5F5F
+
+#define I2C_UPDATE_MODE_ADDR    BKP_DATA_2
+
 
 void update_JumpToRun(uint32_t jumpCodeAddr);
 void update_BkpDateWrite(bkp_data_register_enum register_number, uint16_t data);

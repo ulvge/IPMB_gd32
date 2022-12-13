@@ -121,7 +121,7 @@ void SubDevice_PrintModeName(void)
 {
     for (uint32_t i = 0; i < ARRARY_SIZE(g_SubDeviceConfigName); i++)
     {
-        LOG_E("\t\tid %d----- [%s]\n", i, SubDevice_GetModeName(g_SubDeviceConfigName[i].mode));
+        LOG_E("\t\tid %d----- [%s]\r\n", i, SubDevice_GetModeName(g_SubDeviceConfigName[i].mode));
     }
 }
 bool SubDevice_CheckAndPrintMode(void)
@@ -131,15 +131,15 @@ bool SubDevice_CheckAndPrintMode(void)
     SUB_DEVICE_MODE mode = (SUB_DEVICE_MODE)get_board_addr();
     if (mode >= SUB_DEVICE_MODE_MAX)
     {
-        LOG_E("This borad ID is not support, id=%d\n", mode);
-        LOG_E("\tBelow are supported\n");
-        sprintf(buff, "This borad ID is not support, id=%d\n", mode);
+        LOG_E("This borad ID is not support, id=%d\r\n", mode);
+        LOG_E("\tBelow are supported\r\n");
+        sprintf(buff, "This borad ID is not support, id=%d\r\n", mode);
         EEP_WriteDataCheckFirst(EEP_ADDR_SAVE_MODE, (uint8_t *)buff, strlen(buff));
         SubDevice_PrintModeName();
         return false;
     }
     LOG_I("\r\n\r\nThis borad as [%s]]\r\n", SubDevice_GetModeName(mode));
-    sprintf(buff, "This borad as [%s]\n", SubDevice_GetModeName(mode));
+    sprintf(buff, "This borad as [%s]\r\n", SubDevice_GetModeName(mode));
     EEP_WriteDataCheckFirst(EEP_ADDR_SAVE_MODE, (uint8_t *)buff, strlen(buff));
     SubDevice_InitAllMode();
 

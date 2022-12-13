@@ -17,7 +17,7 @@ xQueueHandle RecvForwardI2CDatMsg_Queue = NULL;
 
 uint8_t SubDevice_GetMySlaveAddress(uint32_t bus)
 {
-    return update_BkpDateRead(BKP_DATA_1);
+    return update_BkpDateRead(I2C_UPDATE_MODE_ADDR);
 }
 
 static void boot_I2cForwardTask1(void *arg)
@@ -59,7 +59,7 @@ static void boot_I2cForwardTask2(void *arg)
 
 void boot_i2c_int(void)
 {
-	i2c_int();
+    i2c_int();
     xTaskCreate(boot_I2cForwardTask1, "ForwardTask1", configMINIMAL_STACK_SIZE * 2, NULL, 15, NULL);
     xTaskCreate(boot_I2cForwardTask2, "ForwardTask2", configMINIMAL_STACK_SIZE * 2, NULL, 16, NULL);
 }

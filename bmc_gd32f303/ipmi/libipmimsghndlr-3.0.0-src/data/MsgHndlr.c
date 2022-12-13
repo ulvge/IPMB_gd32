@@ -162,7 +162,7 @@ static void vTaskResponseDatWrite(void *pvParameters)
             //SendLANPkt(ResMsg);
             break;
         default:
-            break;
+            continue;
         }
         if (g_debugLevel >= DBG_LOG){
             LOG_D("\r\nsend ack msg of hex for view para:%#x\r\n", ResMsg->Param);
