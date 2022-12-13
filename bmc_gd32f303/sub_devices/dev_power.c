@@ -161,7 +161,7 @@ static bool DevPowerSM_PowerOff(void *pSM, FSM_EventID eventId)
     return false;
 }
 static const FSM_StateST g_FSM_StateAlias[] = {
-    {.state = DEV_ST_POWEROFF,  .alias="Power off finised"},
+    {.state = DEV_ST_POWEROFF,  .alias="Power off finished"},
     {.state = DEV_ST_P12VEN,    .alias="P12V opened"},
     {.state = DEV_ST_P5V_P3VEN, .alias="P12V powerGD, P5V P3V3 opened"},
     {.state = DEV_ST_POWERON,   .alias="All power GD already"},

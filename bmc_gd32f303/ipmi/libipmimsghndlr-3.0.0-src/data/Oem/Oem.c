@@ -195,7 +195,7 @@ int GetBMCInfo(INT8U *pReq, INT8U ReqLen, INT8U *pRes, int BMCInst)
 
     bmc_res->BMCFirmwareVersion = GetBmcFirmwareVersion(BMC_VERSION);
     bmc_res->BMCFirmwareTime = g_utc_time_bmc_firmware_build;
-	  bmc_res->BMCRunTime  = GetBmcRunTime();
+    bmc_res->BMCRunTime  = GetBmcRunTime();
 
     return sizeof(GetBMCInfoRes_T);
 }

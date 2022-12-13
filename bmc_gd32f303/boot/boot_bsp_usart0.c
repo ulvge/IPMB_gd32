@@ -64,7 +64,7 @@ void USART0_IRQHandler(void)
         /* receive data */
         g_uart_Req.Channel = SERIAL_CHANNEL_TYPE;
         g_uart_Req.Data[g_uart_Req.Size++] = res;
-        if (g_uart_Req.Size > sizeof(g_uart_Req.Data) - 3)
+        if (g_uart_Req.Size > sizeof(g_uart_Req.Data))
         {
             g_uart_Req.Size = 0;
             //LOG_E("uart recv overlap!\n");

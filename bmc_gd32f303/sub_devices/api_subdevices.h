@@ -78,6 +78,9 @@ uint8_t SubDevice_GetMySlaveAddress(uint32_t bus);
 uint32_t SubDevice_GetBus(SUB_DEVICE_MODE mode);
 SUB_DEVICE_MODE SubDevice_GetMyMode(void);
 SubDeviceModeStatus_T *SubDevice_GetSelf(void);
+uint8_t SubDevice_modeConvertSlaveAddr(SUB_DEVICE_MODE mode);
+char *SubDevice_GetModeName(SUB_DEVICE_MODE mode);
+void SubDevice_PrintModeName(void);
 
 #ifdef __cplusplus
 }

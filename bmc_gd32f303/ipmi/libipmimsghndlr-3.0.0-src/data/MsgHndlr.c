@@ -81,7 +81,7 @@
 *--------------------------------------------------------------------*/
 BMCInfo_t g_BMCInfo;
 
-static TaskHandle_t xHandleTaskResponseDatWrite = NULL;
+TaskHandle_t xHandleTaskResponseDatWrite = NULL;
 xQueueHandle ResponseDatMsg_Queue = NULL;
 
 xQueueHandle RecvDatMsg_Queue = NULL;
@@ -195,15 +195,11 @@ void *MsgCoreHndlr(void *pArg)
     RecvDatMsg_Queue = xQueueCreate(2, sizeof(MsgPkt_T));  //10
     if (RecvDatMsg_Queue ==  NULL) {
         LOG_E("RecvDatMsg_Queue create ERR!");
+        vTaskDelete(NULL);
     }
 
     while (1)
     {
-        if (RecvDatMsg_Queue == NULL)
-        {
-            vTaskDelay(1000);
-            continue;
-        }
         memset(&recvPkt, 0, sizeof(recvPkt));
         err = xQueueReceive(RecvDatMsg_Queue, &recvPkt, portMAX_DELAY);
         if (err == pdFALSE)

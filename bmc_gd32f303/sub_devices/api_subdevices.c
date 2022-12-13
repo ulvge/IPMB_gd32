@@ -71,7 +71,7 @@ static const SubDeviceName_T g_SubDeviceConfigName[] = {
     {SUB_DEVICE_MODE_STORAGE2, "storage2"},
 };
 
-static char *SubDevice_GetModeName(SUB_DEVICE_MODE mode)
+char *SubDevice_GetModeName(SUB_DEVICE_MODE mode)
 {
     if (mode < SUB_DEVICE_MODE_MAX)
     {
@@ -100,7 +100,7 @@ static void SubDevice_InitAllMode(void)
     }
 }
 
-static uint8_t SubDevice_modeConvertSlaveAddr(SUB_DEVICE_MODE mode)
+uint8_t SubDevice_modeConvertSlaveAddr(SUB_DEVICE_MODE mode)
 {
     return SUB_DEVICES_ADDR_PRIFIXED | (mode << 1);
 }
@@ -117,6 +117,13 @@ static void SubDevice_InsertMode(SubDeviceModeStatus_T *obj, SUB_DEVICE_MODE mod
     obj->busUsed = NM_SECONDARY_IPMB_BUS;
     SetDevAddr(obj->i2c0SlaveAddr);
 }
+void SubDevice_PrintModeName(void)
+{
+    for (uint32_t i = 0; i < ARRARY_SIZE(g_SubDeviceConfigName); i++)
+    {
+        LOG_E("\t\tid %d----- [%s]\n", i, SubDevice_GetModeName(g_SubDeviceConfigName[i].mode));
+    }
+}
 bool SubDevice_CheckAndPrintMode(void)
 {
     char buff[100];
@@ -128,10 +135,7 @@ bool SubDevice_CheckAndPrintMode(void)
         LOG_E("\tBelow are supported\n");
         sprintf(buff, "This borad ID is not support, id=%d\n", mode);
         EEP_WriteDataCheckFirst(EEP_ADDR_SAVE_MODE, (uint8_t *)buff, strlen(buff));
-        for (uint32_t i = 0; i < ARRARY_SIZE(g_SubDeviceConfigName); i++)
-        {
-            LOG_E("\t\tid %d----- [%s]\n", i, SubDevice_GetModeName((SUB_DEVICE_MODE)i));
-        }
+        SubDevice_PrintModeName();
         return false;
     }
     LOG_I("\r\n\r\nThis borad as [%s]]\r\n", SubDevice_GetModeName(mode));
@@ -239,7 +243,7 @@ SubDeviceModeStatus_T *SubDevice_GetSelf(void)
 // master called only
 static bool SubDevice_IsOnLine(SUB_DEVICE_MODE mode)
 {
-    for (uint8_t i = 0; i < SUB_DEVICE_MODE_MAX; i++)
+    for (uint8_t i = SUB_DEVICE_MODE_MIN; i < SUB_DEVICE_MODE_MAX; i++)
     {
         if (g_AllModesStatus[i].mode == mode)
         {
@@ -250,7 +254,7 @@ static bool SubDevice_IsOnLine(SUB_DEVICE_MODE mode)
 }
 static void SubDevice_SetOnLine(SUB_DEVICE_MODE mode, bool isOnline)
 {
-    for (uint8_t i = 0; i < SUB_DEVICE_MODE_MAX; i++)
+    for (uint8_t i = SUB_DEVICE_MODE_MIN; i < SUB_DEVICE_MODE_MAX; i++)
     {
         if (g_AllModesStatus[i].mode == mode)
         {
@@ -279,7 +283,7 @@ __attribute__((unused)) static bool SubDevice_QueryModeByAddr(uint8_t addrBit8, 
 }
 uint32_t SubDevice_GetBus(SUB_DEVICE_MODE mode)
 {
-    for (uint8_t i = 0; i < SUB_DEVICE_MODE_MAX; i++)
+    for (uint8_t i = SUB_DEVICE_MODE_MIN; i < SUB_DEVICE_MODE_MAX; i++)
     {
         if (g_AllModesStatus[i].mode == mode)
         {
@@ -291,7 +295,7 @@ uint32_t SubDevice_GetBus(SUB_DEVICE_MODE mode)
 
 static void SubDevice_SwitchBus(SUB_DEVICE_MODE mode)
 {
-    for (uint8_t i = 0; i < SUB_DEVICE_MODE_MAX; i++)
+    for (uint8_t i = SUB_DEVICE_MODE_MIN; i < SUB_DEVICE_MODE_MAX; i++)
     {
         if (g_AllModesStatus[i].mode == mode)
         {

@@ -31,7 +31,7 @@ const GPIOConfig_Handler g_gpioConfigHandler_main = {
     CREATE_CONFIG_HANDLER(gpio, g_gpioConfig_main),
 };
 static const  ADCChannlesConfig g_adcChannlConfig_main[] = {
-#if 1
+#ifdef GD32F1x
     {ADC_CHANNEL_8,         ADC0, RCU_ADC0, GPIOB, RCU_GPIOB, GPIO_PIN_0},
     {ADC_CHANNEL_0,      	ADC0, RCU_ADC0, GPIOA, RCU_GPIOA, GPIO_PIN_0},
     {ADC_CHANNEL_10,        ADC0, RCU_ADC0, GPIOC, RCU_GPIOC, GPIO_PIN_0},
@@ -49,7 +49,7 @@ static const  ADCChannlesConfig g_adcChannlConfig_main[] = {
 };
 
 static const  SensorConfig g_sensor_main[] = {
-#if 1
+#ifdef GD32F1x
     {ADC_CHANNEL_8,         SUB_DEVICE_SDR_TEMP,        "X100_temp"},
     {ADC_CHANNEL_0,      	SUB_DEVICE_SDR_P1V8,        "P1V8_VCC"},
     {ADC_CHANNEL_10,        SUB_DEVICE_SDR_P12V_10_1,   "P12V_standby"},
