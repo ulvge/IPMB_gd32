@@ -2,7 +2,6 @@
 #include "OSPort.h"
 
 static void rcu_config(const ADCChannlesConfig *cfg);
-static void adc_config(uint32_t adc_periph);
 
 void adc_init_channle(const ADCChannlesConfig  *chanCfg)
 {
@@ -40,7 +39,7 @@ static void rcu_config(const ADCChannlesConfig *chanCfg)
     \param[out] none
     \retval     none
 */
-static void adc_config(uint32_t adc_periph)
+void adc_config(uint32_t adc_periph)
 {
     /* reset ADC */
     adc_deinit(adc_periph);
@@ -48,9 +47,13 @@ static void adc_config(uint32_t adc_periph)
     adc_mode_config(ADC_MODE_FREE);
     /* ADC data alignment config */
     adc_data_alignment_config(adc_periph, ADC_DATAALIGN_RIGHT);
-    /* ADC continous function enable */
-    // adc_special_function_config(adc_periph, ADC_CONTINUOUS_MODE, DISABLE);
-    // adc_special_function_config(adc_periph, ADC_SCAN_MODE, ENABLE);
+    if (adc_periph == ADC_WDG_GROUP) {
+        /* ADC continous function enable */
+        adc_special_function_config(adc_periph, ADC_CONTINUOUS_MODE, ENABLE);
+    } else {
+        /* ADC discontinuous mode */
+        adc_discontinuous_mode_config(adc_periph, ADC_REGULAR_CHANNEL, 1);
+    }
     /* ADC temperature and Vrefint enable */
     // adc_tempsensor_vrefint_enable();
     /* ADC channel length config */
@@ -60,8 +63,6 @@ static void adc_config(uint32_t adc_periph)
     adc_external_trigger_source_config(adc_periph, ADC_REGULAR_CHANNEL, ADC0_1_2_EXTTRIG_REGULAR_NONE);
     adc_external_trigger_config(adc_periph, ADC_REGULAR_CHANNEL, ENABLE);
 
-    /* ADC discontinuous mode */
-    adc_discontinuous_mode_config(adc_periph, ADC_REGULAR_CHANNEL, 1);
 
     /* enable ADC interface */
     adc_enable(adc_periph);
@@ -72,6 +73,7 @@ static void adc_config(uint32_t adc_periph)
 
 uint16_t adc_get_value(const ADCChannlesConfig *chanCfg)
 {
+    uint32_t startStamp = GetTickMs();
     if (chanCfg->adcChannl > ADC_CHANNEL_17) {
         return 0;
     }
@@ -82,6 +84,9 @@ uint16_t adc_get_value(const ADCChannlesConfig *chanCfg)
     adc_software_trigger_enable(chanCfg->adcPeriph, ADC_REGULAR_CHANNEL);
     adc_flag_clear(chanCfg->adcPeriph, ADC_FLAG_EOC);
     while(SET != adc_flag_get(chanCfg->adcPeriph, ADC_FLAG_EOC)){
+        if (GetTickMs() - startStamp >= 2) {
+            break;
+        }
     }
 
     /*read ADC regular group data register */

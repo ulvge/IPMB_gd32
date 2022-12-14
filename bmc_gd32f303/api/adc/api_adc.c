@@ -9,15 +9,46 @@
 //  GetSensorReading() call . master to calc the real val by M&R.
 // so, salve cant't calc the real val by self
 
-const static Dev_Handler *g_pADCConfig_Handler = NULL;
+#define BAT_LOW_THRESHOLD 3.1
+#define BAT_HIGH_THRESHOLD 3.45
+#define BAT_K_THRESHOLD 265/3.3
 
+const static Dev_Handler *g_pADCConfig_Handler = NULL;
 static float adc_sampleVal2Temp2(uint16 adcValue);
 static void adc_InitADCs(const Dev_Handler *config);
+static void adc_InitWDGBattery(void);
 
 void adc_init(const  Dev_Handler *pDev_Handler)
 {
     g_pADCConfig_Handler = pDev_Handler;
     adc_InitADCs(g_pADCConfig_Handler);
+    //adc_InitWDGBattery();
+}
+
+__attribute__((unused)) static void adc_InitWDGBattery(void)
+{
+    /* enable ADC clock */
+    rcu_periph_clock_enable(RCU_ADC0);  //ADC_WDG_GROUP
+    /* config ADC clock */
+    rcu_adc_clock_config(RCU_CKADC_CKAPB2_DIV6);
+    adc_config(ADC_WDG_GROUP);
+
+    uint16_t low_threshold = BAT_K_THRESHOLD * BAT_LOW_THRESHOLD;
+    uint16_t high_threshold = BAT_K_THRESHOLD * BAT_HIGH_THRESHOLD;
+    adc_watchdog_threshold_config(ADC_WDG_GROUP, low_threshold, high_threshold);
+    adc_watchdog_single_channel_enable(ADC_WDG_GROUP, ADC_CHANNEL_17);
+    adc_channel_length_config(ADC_WDG_GROUP, ADC_REGULAR_CHANNEL, 1);
+
+    /* ADC temperature and Vrefint enable */
+    adc_tempsensor_vrefint_enable();
+    // clear ADC int flag
+    adc_interrupt_flag_clear(ADC_WDG_GROUP, ADC_INT_FLAG_WDE | ADC_INT_FLAG_EOC);
+    // set ADC irq event
+    adc_interrupt_enable(ADC_WDG_GROUP, ADC_INT_WDE | ADC_INT_EOC);    
+    // enable ADC irq
+    nvic_irq_enable(ADC0_1_IRQn, 1, 0);  
+	/* ADC software trigger enable */
+    adc_software_trigger_enable(ADC_WDG_GROUP, ADC_REGULAR_CHANNEL);
 }
 static void adc_InitADCs(const Dev_Handler *config)
 {
@@ -68,6 +99,7 @@ BOOLEAN adc_getRawValBySensorNum(uint8_t sensorNum, uint16_t *rawAdc)
 /// @return 
 float adc_sampleVal2Temp1(uint16 adcValue)
 {
+    #define ZOOM_SCALE 2
     static const float resistanceInSeries = 10000.0; //ntc串联的分压电阻
     static const float ntcBvalue = 3500.0;  //B 值
     static const float ntcR25 = 10000.0; //25度时电阻ֵ
@@ -80,11 +112,14 @@ float adc_sampleVal2Temp1(uint16 adcValue)
     float ntcCurrent = (sysPowerVoltage - ntcVoltage)/ resistanceInSeries; //计算NTC的电流(A)
     float ntcResistance = ntcVoltage / ntcCurrent; //计算当前电阻值
     float temperature = (ntcBvalue * T25) / (T25 * (log(ntcResistance) - log(ntcR25)) + ntcBvalue);
-    temperature -= KelvinsZero; //计算最终温度
+    temperature -= KelvinsZero; //计算最终温度  
+	if (temperature > (0xff / ZOOM_SCALE)){
+		return temperature = 0xff;
+	}
     if (temperature < 0) { // If the temperature is below 0 ° C, set it to above 0 ° C to avoid errors caused by symbols
         temperature = 0.05;
     }
-	return temperature * 2;
+	return temperature * ZOOM_SCALE;
 }
 /// @brief convert methods 2 取近似值
 /// @param adcValue 
@@ -170,6 +205,24 @@ void adc_sample_all(void)
     //adc_test();
 }      
 
+/*!
+    \brief      this function handles ADC0 and ADC1 interrupt
+    \param[in]  none
+    \param[out] none
+    \retval     none
+*/
+void ADC0_1_IRQHandler(void)
+{
+    if (adc_interrupt_flag_get(ADC_WDG_GROUP, ADC_INT_FLAG_WDE)) {
+        adc_interrupt_flag_clear(ADC_WDG_GROUP, ADC_INT_FLAG_WDE);
+        //adc_watchdog_disable(ADC_WDG_GROUP);                        
+		uint16_t adcValue = adc_regular_data_read(ADC_WDG_GROUP);
+		LOG_E("battery is lower, prepare to power off!, adcValue = %#x\r\n", adcValue);
+    }
 
+    if (adc_interrupt_flag_get(ADC_WDG_GROUP, ADC_INT_FLAG_EOC)) {
+        adc_interrupt_flag_clear(ADC_WDG_GROUP, ADC_INT_FLAG_EOC); 
+    }
+}
 
 

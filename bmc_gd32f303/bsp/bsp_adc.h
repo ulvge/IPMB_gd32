@@ -9,6 +9,9 @@
 #include "Types.h"
 #include "api_subdevices.h"
 #include "IPMI_SDRRecord.h"
+							   
+#define ADC_WDG_GROUP ADC0
+#define ADC_CONFIG_GROUP_DEAULT   ADC1, RCU_ADC1
 
 typedef struct {
     uint8_t      			adcChannl;
@@ -22,6 +25,7 @@ typedef struct {
 void adc_init_channle(const ADCChannlesConfig  *chanCfg);
 /*get ADC channel value of average conversion*/
 uint16_t adc_get_value(const ADCChannlesConfig *chanCfg);
+void adc_config(uint32_t adc_periph);
 
 #endif /* __BSP_ADC_H */
 

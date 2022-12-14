@@ -17,7 +17,7 @@ const GPIOConfig_Handler g_gpioConfigHandler_net = {
 
 // config ADC
 static const  ADCChannlesConfig g_adcChannlConfig_net[] = {
-    {ADC_CHANNEL_10,        ADC0, RCU_ADC0, GPIOC, RCU_GPIOC, GPIO_PIN_0},
+    {ADC_CHANNEL_10,        ADC_CONFIG_GROUP_DEAULT, GPIOC, RCU_GPIOC, GPIO_PIN_0},
 };
 
 // config Sensor
