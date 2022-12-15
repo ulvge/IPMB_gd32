@@ -65,7 +65,7 @@ void adc_sample_task(void *pvParameters);
 static void watch_dog_init(void);  
 static void debug_config(void);
 
-int g_debugLevel = DBG_INFO;
+int g_debugLevel = DBG_LOG;
 
 __IO uint64_t g_utc_time_bmc_firmware_build = 0;
 
@@ -126,7 +126,7 @@ void start_task(void *pvParameters)
     taskENTER_CRITICAL();
 
     if (errCOULD_NOT_ALLOCATE_REQUIRED_MEMORY ==
-        xTaskCreate(Dev_Task, "dev_task", configMINIMAL_STACK_SIZE, NULL, TASK_PRIO_DEV_HANDLE, NULL)) {
+        xTaskCreate(Dev_Task, "dev_task", configMINIMAL_STACK_SIZE* 3, NULL, TASK_PRIO_DEV_HANDLE, NULL)) {
         errCreateTask |= 1;
     }
     if (errCOULD_NOT_ALLOCATE_REQUIRED_MEMORY ==
@@ -134,7 +134,7 @@ void start_task(void *pvParameters)
         errCreateTask |= 2;
     }
     if (errCOULD_NOT_ALLOCATE_REQUIRED_MEMORY ==
-        xTaskCreate(adc_sample_task, "adc_sample", configMINIMAL_STACK_SIZE, NULL, TASK_PRIO_ADC_SAMPLE, NULL)) {
+        xTaskCreate(adc_sample_task, "adc_sample", configMINIMAL_STACK_SIZE* 1, NULL, TASK_PRIO_ADC_SAMPLE, NULL)) {
         errCreateTask |= 4;
     }
     if (errCOULD_NOT_ALLOCATE_REQUIRED_MEMORY ==

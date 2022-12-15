@@ -498,6 +498,7 @@ __asm void xPortPendSVHandler( void )
 }
 /*-----------------------------------------------------------*/
 
+void time_update(void);
 void xPortSysTickHandler( void )
 {
 	/* The SysTick runs at the lowest interrupt priority, so when this interrupt
@@ -507,6 +508,7 @@ void xPortSysTickHandler( void )
 	in place of portSET_INTERRUPT_MASK_FROM_ISR(). */
 	vPortRaiseBASEPRI();
 	{
+		time_update();
 		/* Increment the RTOS tick. */
 		if( xTaskIncrementTick() != pdFALSE )
 		{

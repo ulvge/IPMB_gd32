@@ -119,7 +119,7 @@ bool GPIO_isPinActive(BMC_GPIO_enum alias)
         return false;
     }
     FlagStatus staus = gpio_input_bit_get(p_gpioCfg->gpioPort, p_gpioCfg->pin);
-    if (staus == p_gpioCfg->pinMode) {
+    if (staus == p_gpioCfg->activeMode) {
         return true;
     }
     return false;
@@ -172,7 +172,7 @@ uint8_t get_board_addr()
     addr |= GPIO_getPinStatus(GPIO_IN_GAP1) << 1;
     addr |= GPIO_getPinStatus(GPIO_IN_GAP2) << 2;
 
-    return SUB_DEVICE_MODE_MAIN;
+    return SUB_DEVICE_MODE_POWER;
 }
 
 

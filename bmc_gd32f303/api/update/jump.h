@@ -36,7 +36,7 @@ typedef enum {
     XMODEM_CHECK_CRC16,
 } XMODEM_CHECK_TYPE;
 
-#define BOOT_I2C_BUS  I2C_BUS_0
+#define BOOT_I2C_BUS  I2C_BUS_1
 
 /*   **********   xmode   end   ***********/
 

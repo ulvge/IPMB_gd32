@@ -18,7 +18,7 @@
 static void DevTaskHandler(void *pArg);
 // config GPIO
 const static GPIOConfig g_gpioConfig_power[] = {
-    {GPIO_OUT_VBAT_EN,      GPIOB, GPIO_PIN_12, RCU_GPIOB, GPIO_MODE_OUT_PP,      GPIO_OSPEED_10MHZ, 1},
+    {GPIO_OUT_VBAT_EN,      GPIOB, GPIO_PIN_12, RCU_GPIOB, GPIO_MODE_OUT_PP,      GPIO_OSPEED_10MHZ, 0},
     {GPIO_IN_R_GPIO0,       GPIOB, GPIO_PIN_15, RCU_GPIOB, GPIO_MODE_IN_FLOATING, GPIO_OSPEED_10MHZ, 0},
     {GPIO_OUT_R_FAIL_N,     GPIOD, GPIO_PIN_8,  RCU_GPIOD, GPIO_MODE_OUT_PP,      GPIO_OSPEED_10MHZ, 0},
 
@@ -211,7 +211,7 @@ static void DevPower_SampleMAC5023(void)
 {
     float humanVal;
     UINT8 ipmbVal = 0;
-    for (UINT8 i; i < ARRARY_SIZE(g_sensor_power); i++){
+    for (UINT8 i = 0; i < ARRARY_SIZE(g_sensor_power); i++){
         UINT8 sensorNum = g_sensor_power[i].sensorNum;
         if ((sensorNum > MAC5023_CHANNLE_START) && (sensorNum < MAC5023_CHANNLE_END)){
             if (MAC5023_Sample(0, sensorNum, &humanVal, &ipmbVal)){

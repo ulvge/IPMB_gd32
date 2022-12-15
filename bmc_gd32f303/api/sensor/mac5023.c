@@ -13,17 +13,11 @@
 #include "task.h"
 
 #define MAC5023_I2C_BUS I2C_BUS_S0
-
-#define MAC5023_I2C_SLAVE_ADDR_P0V9_1 (0x36 << 1) // 1      P0V9_VCORE
-#define MAC5023_I2C_SLAVE_ADDR_P0V9_2 (0x38 << 1) // 1.475  P0V9_VCORE
-#define MAC5023_I2C_SLAVE_ADDR_P0V885 (0x3E << 1) // 1.475  0.885 VDD_GPU 0x7C
-#define MAC5023_I2C_SLAVE_ADDR_P1V2 (0x31 << 1) // 2      P1V2_VDDQ
-#define MAC5023_I2C_SLAVE_ADDR_P5V  (0x30 << 1)    // 8.5    P5V
-#define MAC5023_I2C_SLAVE_ADDR_P12V  (0x40 << 1)
+#define MAC5023_I2C_SLAVE_ADDR  (0x40 << 1)
 
 #define MAC5023_PIN_M   1 // 1W /LSB
 #define MAC5023_IOUT_M  (62.5/1000) // 62.5mA/LSB
-#if 1
+#if 0
 #define MAC5023_VIN_M   (25.0/1000)    // 25mV /LSB
 #define MAC5023_VOUT_M  (1.25/1000) // 1.25mV /LSB
 #else
@@ -37,12 +31,7 @@ typedef struct
 } MAC5023_VOUT_CONFIG;
 
 static const MAC5023_VOUT_CONFIG g_MAC5023DevsConfig[] = {
-    //{MAC5023_I2C_SLAVE_ADDR_P0V9_1,  "P0V9_1"},
-    //{MAC5023_I2C_SLAVE_ADDR_P0V9_2,  "P0.9_2"},
-    //{MAC5023_I2C_SLAVE_ADDR_P0V885,  "P0V885"},
-    //{MAC5023_I2C_SLAVE_ADDR_P1V2,    "P1V2"},
-    {MAC5023_I2C_SLAVE_ADDR_P5V,     "P5V"},
-    //{MAC5023_I2C_SLAVE_ADDR_P12V,    "P12V"},
+    {MAC5023_I2C_SLAVE_ADDR,    "P12V"},
 };
 
 typedef struct
@@ -70,7 +59,7 @@ static const MAC5023_CMDS_CONFIG g_MAC5023CmdsConfig[] = {
 #define MAC5023_V_I_MASK 0x3FF
 #define MAC5023_TEMP_M 1
 
-static const char *MAC5023_MODE_NAME = "P5468Q";
+static const char *MAC5023_MODE_NAME = "3205PM";
 
 static bool g_MAC5023_initSuccess[ARRARY_SIZE(g_MAC5023DevsConfig)] = {false};
 
@@ -80,6 +69,16 @@ static char * MAC5023_getDevName(UINT8 dev)
     {
         if(g_MAC5023DevsConfig[i].dev == dev) {
             return g_MAC5023DevsConfig[i].name;
+        }
+    }
+    return "NULL";
+}
+static char * MAC5023_getCmdsUints(const MAC5023_CMDS_CONFIG *p_DevConfig, UINT8 configSize, UINT8 cmd)
+{
+	for (UINT8 i = 0; i < configSize; i++)
+    {
+        if(p_DevConfig[i].cmd == cmd) {
+            return p_DevConfig[i].units;
         }
     }
     return "NULL";
@@ -161,8 +160,11 @@ bool MAC5023_Sample(UINT8 devIndex, UINT8 cmd, float *humanVal, UINT8 *ipmbVal)
             g_MAC5023_initSuccess[devIndex] = true;
         }
     }
-    LOG_D("MAC5023_Sample dev name=%-8s, cmd=%s, addr7=%#x, humanVal=%-5.2f %s\r\n",
-           g_MAC5023DevsConfig[devIndex].name, MAC5023_getCmdName(cmd), slaveAddr >> 1, *humanVal, g_MAC5023CmdsConfig[devIndex].units);
 
-    return MAC5023_ReadItem(MAC5023_I2C_BUS, slaveAddr, cmd, humanVal, ipmbVal);
+    bool res = MAC5023_ReadItem(MAC5023_I2C_BUS, slaveAddr, cmd, humanVal, ipmbVal);
+	
+    LOG_D("MAC5023_Sample dev name=%-8s, cmd=%s, addr7=%#x, humanVal=%-5.2f %s\r\n",
+           g_MAC5023DevsConfig[devIndex].name, MAC5023_getCmdName(cmd), slaveAddr >> 1, *humanVal,
+           MAC5023_getCmdsUints(g_MAC5023CmdsConfig, ARRARY_SIZE(g_MAC5023CmdsConfig), cmd));
+	return res;
 }

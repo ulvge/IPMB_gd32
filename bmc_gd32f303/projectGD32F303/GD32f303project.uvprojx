@@ -80,7 +80,7 @@
             <nStopB2X>0</nStopB2X>
           </BeforeMake>
           <AfterMake>
-            <RunUserProg1>0</RunUserProg1>
+            <RunUserProg1>1</RunUserProg1>
             <RunUserProg2>1</RunUserProg2>
             <UserProg1Name>"P:\4proj\8NS304 chaoYue\BMCproject\gd32\bmc_gd32f303\projectGD32F303\output\autoMerge.bat"</UserProg1Name>
             <UserProg2Name>D:\Keil_v5\ARM\ARMCLANG\bin\fromelf --bin --output .\output\bmc_app.bin .\output\temp\bmc_app.axf</UserProg2Name>
@@ -367,7 +367,7 @@
             <noStLib>0</noStLib>
             <RepFail>1</RepFail>
             <useFile>0</useFile>
-            <TextAddressRange>0x08000000</TextAddressRange>
+            <TextAddressRange>0x08008000</TextAddressRange>
             <DataAddressRange>0x20000000</DataAddressRange>
             <pXoBase></pXoBase>
             <ScatterFile>.\bmc_app.sct</ScatterFile>
@@ -1073,7 +1073,7 @@
             <File>
               <FileName>port.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\freertos\portable\RVDS\ARM_CM3\port.c</FilePath>
+              <FilePath>..\freertos\portable\RVDS\ARM_CM4F\port.c</FilePath>
             </File>
           </Files>
         </Group>
