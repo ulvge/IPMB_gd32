@@ -53,12 +53,10 @@ BOOLEAN api_sensorConvertIPMBValBySensorNum(INT8U destMode, UINT16 sensorNum, UI
         return true;
         //}
     case IPMI_UNIT_VOLTS:
-        // if (adc_getRawValBySensorNum(sensorNum, &rawAdc)) {
         *ipmbVal = (INT8U)(((INT16U)rawAdc) >> 4);
         return true;
         // }
     case IPMI_UNIT_DEGREES_C:
-        // if (adc_getRawValBySensorNum(sensorNum, &rawAdc)) { //获取原始值
         *ipmbVal = (float)adc_sampleVal2Temp1(rawAdc); //转换成真实值 ，并对其进行MR 编码.后续 IPMI 只需要用MR就能解码
         return true;
         //}
@@ -138,7 +136,7 @@ BOOLEAN api_sensorConvert2HumanVal(SUB_DEVICE_MODE dev, uint8_t sensorNum, uint8
     }
     return false;
 }
-void api_sensorSetValRaw(uint8_t sensorNum, uint8_t ipmbVal)
+void api_sensorSetIpmbVal(uint8_t sensorNum, uint8_t ipmbVal)
 {
     SUB_DEVICE_MODE myMode = SubDevice_GetMyMode();
     const Dev_Handler *handler = api_getDevHandler(myMode);

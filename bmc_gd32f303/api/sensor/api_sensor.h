@@ -36,6 +36,8 @@ typedef struct {
     uint8_t      			sensorNum;
     SUB_DEVICE_SDR_IDX      sdrIdx;
     char *      			sensorAlias;
+    bool (*SampleHookBefore)    (void);
+    bool (*SampleHookAfter)    (void);
 } SensorConfig;
 
 typedef struct {          
@@ -58,7 +60,7 @@ uint8_t api_sensorGetSensorNumByIdex(SUB_DEVICE_MODE dev, uint8_t idx);
 BOOLEAN api_sensorConvertIPMBValBySensorNum(INT8U destMode, UINT16 sensorNum, UINT16 rawAdc, INT8U *ipmbVal);
 BOOLEAN api_sensorConvert2HumanVal(SUB_DEVICE_MODE dev, uint8_t sensorNum, uint8_t ipmiVal, float *humanVal);
 
-void api_sensorSetValRaw(uint8_t sensorNum, uint8_t ipmbVal);
+void api_sensorSetIpmbVal(uint8_t sensorNum, uint8_t ipmbVal);
 void api_sensorSetValHuman(uint8_t sensorNum, float humanVal);
 
 const Dev_Handler *api_getDevHandler(SUB_DEVICE_MODE destMode);

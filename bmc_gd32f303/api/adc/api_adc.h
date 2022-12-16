@@ -23,9 +23,6 @@ void adc_sample_all(void);
 float adc_sampleVal2Temp1(uint16 adcValue);
 float adc_sampleVal2Temp2(uint16 adcValue);
 
-uint8_t adc_getChannelSize(void); 
-BOOLEAN adc_getValByIndex(uint8_t idx, const ADCChannlesConfig **channlCfg, uint16_t *adcVal);
-BOOLEAN adc_getRawValBySensorNum(uint8_t sensorNum, uint16_t *rawAdc);
 #ifdef __cplusplus
 }
 #endif

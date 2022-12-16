@@ -106,7 +106,7 @@ static void fan_ctrl_task(void)
 
         if (api_sensorConvertIPMBValBySensorNum(SubDevice_GetMyMode(), sensorNum, curent_rpm, &ipmbVal))
         {
-            api_sensorSetValRaw(sensorNum, ipmbVal);
+            api_sensorSetIpmbVal(sensorNum, ipmbVal);
             if (api_sensorConvert2HumanVal(SubDevice_GetMyMode(), sensorNum, ipmbVal, &humanVal)) {
                 api_sensorSetValHuman(sensorNum, humanVal);
             }

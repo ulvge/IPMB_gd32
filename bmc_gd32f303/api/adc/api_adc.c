@@ -65,34 +65,22 @@ static void adc_InitADCs(const Dev_Handler *config)
         config->val[i].human = 0;
     }
 }
-uint8_t adc_getChannelSize(void)
+static uint8_t adc_getChannelSize(void)
 {
     if (g_pADCConfig_Handler == NULL) {
         return 0;
     }
     return g_pADCConfig_Handler->adcCfgSize;
 }
-
-BOOLEAN adc_getValByIndex(uint8_t idx, const ADCChannlesConfig **channlCfg, uint16_t *adcVal)
-{
-	if (idx > adc_getChannelSize())
-	{
-		return false;
-	}
-	*channlCfg = &g_pADCConfig_Handler->adcCfg[idx];
-    *adcVal = g_pADCConfig_Handler->val[idx].rawAdc;
-    return true;
-}
-BOOLEAN adc_getRawValBySensorNum(uint8_t sensorNum, uint16_t *rawAdc)
+static const ADCChannlesConfig *adc_getAdcConfigBySensorNum(uint8_t sensorNum)
 {
     for (uint8_t j = 0; j < adc_getChannelSize(); j++)
     {
         if (g_pADCConfig_Handler->adcCfg[j].adcChannl == sensorNum) {
-            *rawAdc = g_pADCConfig_Handler->val[j].rawAdc;
-            return true;
+            return &(g_pADCConfig_Handler->adcCfg[j]);
         }
     }
-    return false;
+    return NULL;
 }
 /// @brief convert methods 1 利用公式
 /// @param adcValue 
@@ -163,8 +151,10 @@ __attribute__((unused)) static void adc_test(void)
 void adc_sample_all(void)
 {
     uint8_t ipmbVal;
-    int channleSize = adc_getChannelSize();
-    if (channleSize == 0) {
+	uint8_t sensorNum;
+    const ADCChannlesConfig *pAdcCfg;
+    int sensorSize = g_pADCConfig_Handler->sensorCfgSize;
+    if (sensorSize == 0) {
         return;
     }
     uint16_t temp_vals[ADC_SAMPLE_TIMES][10] = {0};
@@ -172,19 +162,28 @@ void adc_sample_all(void)
     // sample
     for (UINT32 i = 0; i < ADC_SAMPLE_TIMES; i++)
     {
-        for (UINT32 j = 0; j < channleSize; j++)
+        for (UINT32 j = 0; j < sensorSize; j++)
         {
-            if (g_pADCConfig_Handler->adcCfg[j].adcChannl < ADC_CHANNEL_MAX) {
-                temp_vals[i][j] = adc_get_value(&g_pADCConfig_Handler->adcCfg[j]);
+			sensorNum = g_pADCConfig_Handler->sensorCfg[j].sensorNum;
+            if(sensorNum >= ADC_CHANNEL_MAX) {
+                continue;
+            }
+            if ((g_pADCConfig_Handler->sensorCfg[j].SampleHookBefore == NULL) || g_pADCConfig_Handler->sensorCfg[j].SampleHookBefore()) {
+                pAdcCfg = adc_getAdcConfigBySensorNum(sensorNum);
+                temp_vals[i][j] = adc_get_value(pAdcCfg);
+            } else {
+                temp_vals[i][j] = temp_vals[0][j] ? temp_vals[0][j] : g_pADCConfig_Handler->val[j].rawAdc; // Use the previous results
+            }
+            if (g_pADCConfig_Handler->sensorCfg[j].SampleHookAfter != NULL) {
+                g_pADCConfig_Handler->sensorCfg[j].SampleHookAfter();
             }
         }
         delay_ms(ADC_SAMPLE_DEALYTIMES);
     }
     // average
-    for (UINT32 j = 0; j < channleSize; j++)
+    for (UINT32 j = 0; j < sensorSize; j++)
     {
         uint16_t sum = 0;
-        uint8_t sensorNum;
         float humanVal;
         SUB_DEVICE_MODE dev = SubDevice_GetMyMode();
         for (UINT32 i = 0; i < ADC_SAMPLE_TIMES; i++)
@@ -192,11 +191,13 @@ void adc_sample_all(void)
             sum += temp_vals[i][j];
         }
         g_pADCConfig_Handler->val[j].rawAdc = sum / ADC_SAMPLE_TIMES;
-        sensorNum = g_pADCConfig_Handler->adcCfg[j].adcChannl;
-
+        sensorNum = g_pADCConfig_Handler->sensorCfg[j].sensorNum;
+        if(sensorNum >= ADC_CHANNEL_MAX) {
+            continue;
+        }
         if (api_sensorConvertIPMBValBySensorNum(dev, sensorNum, g_pADCConfig_Handler->val[j].rawAdc, &ipmbVal))
         {
-            api_sensorSetValRaw(sensorNum, ipmbVal);
+            api_sensorSetIpmbVal(sensorNum, ipmbVal);
             if (api_sensorConvert2HumanVal(dev, sensorNum, ipmbVal, &humanVal)) {
                 api_sensorSetValHuman(sensorNum, humanVal);
             }

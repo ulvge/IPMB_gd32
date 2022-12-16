@@ -15,10 +15,12 @@
 #define WAIT_POWERON_STABILIZE_XMS  100
 #define WAIT_POWERDOWN_STABILIZE_XMS  100
 
+#define BATTERY_SAMPLE_PERIOD   10 * 1000
+
 static void DevTaskHandler(void *pArg);
 // config GPIO
 const static GPIOConfig g_gpioConfig_power[] = {
-    {GPIO_OUT_VBAT_EN,      GPIOB, GPIO_PIN_12, RCU_GPIOB, GPIO_MODE_OUT_PP,      GPIO_OSPEED_10MHZ, 0},
+    {GPIO_OUT_VBAT_EN,      GPIOB, GPIO_PIN_12, RCU_GPIOB, GPIO_MODE_OUT_PP,      GPIO_OSPEED_10MHZ, 1},
     {GPIO_IN_R_GPIO0,       GPIOB, GPIO_PIN_15, RCU_GPIOB, GPIO_MODE_IN_FLOATING, GPIO_OSPEED_10MHZ, 0},
     {GPIO_OUT_R_FAIL_N,     GPIOD, GPIO_PIN_8,  RCU_GPIOD, GPIO_MODE_OUT_PP,      GPIO_OSPEED_10MHZ, 0},
 
@@ -51,12 +53,14 @@ static const  ADCChannlesConfig g_adcChannlConfig_power[] = {
     {ADC_CHANNEL_6,         ADC_CONFIG_GROUP_DEAULT, GPIOA, RCU_GPIOA, GPIO_PIN_6},
     {ADC_CHANNEL_7,         ADC_CONFIG_GROUP_DEAULT, GPIOA, RCU_GPIOA, GPIO_PIN_7},
 };
-
+											 
+static bool DevPower_VBATSampleHookBefore(void); 
+static bool DevPower_VBATSampleHookAfter(void);
 // config Sensor
 static const  SensorConfig g_sensor_power[] = {
     {ADC_CHANNEL_13,        SUB_DEVICE_SDR_P3V3,       "P3V3_AUX"},
     {ADC_CHANNEL_1,         SUB_DEVICE_SDR_P5V,        "P5V"},
-    {ADC_CHANNEL_2,         SUB_DEVICE_SDR_VBAT,       "VBAT"},
+    {ADC_CHANNEL_2,         SUB_DEVICE_SDR_VBAT,       "VBAT", DevPower_VBATSampleHookBefore, DevPower_VBATSampleHookAfter},
     {ADC_CHANNEL_5,         SUB_DEVICE_SDR_TEMP,       "WORKING_TEMP"},
     {ADC_CHANNEL_6,         SUB_DEVICE_SDR_P12V,       "P12V"},
     {ADC_CHANNEL_7,         SUB_DEVICE_SDR_P3V3,       "P3V3"},
@@ -76,6 +80,22 @@ const Dev_Handler g_devHandler_power = {
     CREATE_CONFIG_HANDLER(sensor, g_sensor_power),
     .TaskHandler = DevTaskHandler,
 };
+
+static bool DevPower_VBATSampleHookBefore(void)
+{                                                             
+    static UINT32 lastSampleTickBak = BATTERY_SAMPLE_PERIOD * 1000;
+    if (GetTickMs() - lastSampleTickBak >= BATTERY_SAMPLE_PERIOD) {
+        GPIO_setPinStatus(GPIO_OUT_VBAT_EN, ENABLE);
+        lastSampleTickBak = GetTickMs();
+        vTaskDelay(25);
+        return true;
+    }
+    return false;
+}
+static bool DevPower_VBATSampleHookAfter(void)
+{
+    return GPIO_setPinStatus(GPIO_OUT_VBAT_EN, DISABLE);
+}
 
 typedef struct {
     UINT32 isLastPressed:1; // May be invalid
@@ -193,8 +213,9 @@ static void DevPower_printStateAlias(FSM_State curState)
     for (int i = 0; i < ARRARY_SIZE(g_FSM_StateAlias); i++)
     {
         if (g_FSM_StateAlias[i].state == curState){
-            LOG_I("DevPower FSM: %s \r\n", g_FSM_StateAlias[i].alias);
-			break;
+            UINT32 elapse = GetTickMs() - g_powerSM.lastHandlerTimeStamp;
+            LOG_I("DevPower FSM: %s, elapse [%d] ms \r\n", g_FSM_StateAlias[i].alias, elapse);
+            break;
         }
     }
 }
@@ -215,9 +236,9 @@ static void DevPower_SampleMAC5023(void)
         UINT8 sensorNum = g_sensor_power[i].sensorNum;
         if ((sensorNum > MAC5023_CHANNLE_START) && (sensorNum < MAC5023_CHANNLE_END)){
             if (MAC5023_Sample(0, sensorNum, &humanVal, &ipmbVal)){
-                g_sensorVal_power[i].rawAdc = 0;
-                g_sensorVal_power[i].rawIPMB = ipmbVal;
+                g_sensorVal_power[i].rawAdc = 0;    // The API does not support raw values
                 g_sensorVal_power[i].errCnt = 0;
+                g_sensorVal_power[i].rawIPMB = ipmbVal;
                 g_sensorVal_power[i].human = humanVal;
                 continue;
             }

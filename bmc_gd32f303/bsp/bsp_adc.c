@@ -74,7 +74,7 @@ void adc_config(uint32_t adc_periph)
 uint16_t adc_get_value(const ADCChannlesConfig *chanCfg)
 {
     uint32_t startStamp = GetTickMs();
-    if (chanCfg->adcChannl > ADC_CHANNEL_17) {
+    if ((chanCfg == NULL) || (chanCfg->adcChannl > ADC_CHANNEL_17)) {
         return 0;
     }
 

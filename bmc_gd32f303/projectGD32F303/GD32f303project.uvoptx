@@ -159,7 +159,7 @@
           <Type>0</Type>
           <LineNumber>39</LineNumber>
           <EnabledFlag>1</EnabledFlag>
-          <Address>134351800</Address>
+          <Address>134351960</Address>
           <ByteObject>0</ByteObject>
           <HtxType>0</HtxType>
           <ManyObjects>0</ManyObjects>
@@ -169,6 +169,22 @@
           <Filename>&lt;2&gt;..\api\cm_backtrace\cmb_fault.S</Filename>
           <ExecCommand></ExecCommand>
           <Expression>\\bmc_app\../api/cm_backtrace/cmb_fault.S\39</Expression>
+        </Bp>
+        <Bp>
+          <Number>1</Number>
+          <Type>0</Type>
+          <LineNumber>205</LineNumber>
+          <EnabledFlag>1</EnabledFlag>
+          <Address>0</Address>
+          <ByteObject>0</ByteObject>
+          <HtxType>0</HtxType>
+          <ManyObjects>0</ManyObjects>
+          <SizeOfObject>0</SizeOfObject>
+          <BreakByAccess>0</BreakByAccess>
+          <BreakIfRCount>0</BreakIfRCount>
+          <Filename>&lt;2&gt;..\api\adc\api_adc.c</Filename>
+          <ExecCommand></ExecCommand>
+          <Expression></Expression>
         </Bp>
       </Breakpoint>
       <WatchWindow1>
@@ -187,27 +203,27 @@
         <Ww>
           <count>0</count>
           <WinNumber>2</WinNumber>
-          <ItemText>g_MAC5023CmdsConfig[devIndex].units</ItemText>
+          <ItemText>temp_vals</ItemText>
         </Ww>
         <Ww>
           <count>1</count>
           <WinNumber>2</WinNumber>
-          <ItemText>g_sensorVal_power[7]</ItemText>
+          <ItemText>g_pADCConfig_Handler-&gt;val[2]</ItemText>
         </Ww>
         <Ww>
           <count>2</count>
           <WinNumber>2</WinNumber>
-          <ItemText>cmd</ItemText>
+          <ItemText>g_pADCConfig_Handler-&gt;val[1]</ItemText>
         </Ww>
         <Ww>
           <count>3</count>
           <WinNumber>2</WinNumber>
-          <ItemText>g_pADCConfig_Handler-&gt;adcCfg[j].adcChannl</ItemText>
+          <ItemText>g_pADCConfig_Handler-&gt;val[0]</ItemText>
         </Ww>
         <Ww>
           <count>4</count>
           <WinNumber>2</WinNumber>
-          <ItemText>chanCfg-&gt;adcChannl</ItemText>
+          <ItemText>g_pADCConfig_Handler-&gt;val[3]</ItemText>
         </Ww>
       </WatchWindow2>
       <MemoryWindow1>
