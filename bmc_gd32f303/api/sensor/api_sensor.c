@@ -12,23 +12,24 @@
 #include "IPMI_SDRRecord.h"
 #include "sdr.h"
 #include "adc/api_adc.h"
-#include "fan/api_fan.h"    
+#include "fan/api_fan.h"
 #include "sensor_helpers.h"
 
 extern const Dev_Handler g_devHandler_main;
-extern const Dev_Handler g_devHandler_net;
 extern const Dev_Handler g_devHandler_switch;
 extern const Dev_Handler g_devHandler_power;
 extern const Dev_Handler g_devHandler_storage0;
-
+extern const Dev_Handler g_devHandler_storage1;
+extern const Dev_Handler g_devHandler_storage3;
 
 const static Dev_Handler *g_pDev_Handler = NULL;
 static const Dev_Handler *g_AllDevices[] = {
     &g_devHandler_main,
-    &g_devHandler_net,
     &g_devHandler_switch,
     &g_devHandler_power,
     &g_devHandler_storage0,
+    &g_devHandler_storage1,
+    &g_devHandler_storage3,
 };
 
 bool api_sensorGetUnitType(INT8U destMode, UINT32 sensorNum, uint8_t *unitType)

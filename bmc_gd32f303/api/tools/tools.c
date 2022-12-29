@@ -406,7 +406,7 @@ int sensor(int argc, char *argv[])
         char *name = pDev_Handler->sensorCfg[numIdex].sensorAlias;
         //humanVal = pDev_Handler->val[numIdex].human;
         humanVal = api_sensorGetValHuman(sensorNum);
-        LOG_I("sensor :idx = %d, name = %s, channel = %d, val = %f\r\n", 
+        LOG_I("sensor :idx = %d, name = %-15s, channel = %-2d, val = %.3f\r\n", 
                     numIdex, name, sensorNum, humanVal);
         if ((numIdex + 1) % 5) {
             vTaskDelay(5);

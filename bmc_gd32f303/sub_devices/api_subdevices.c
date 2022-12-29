@@ -64,11 +64,10 @@ static SubDeviceModeStatus_T *pSubDeviceSelf = NULL;
 static const SubDeviceName_T g_SubDeviceConfigName[] = {
     {SUB_DEVICE_MODE_MAIN, "main"},
     {SUB_DEVICE_MODE_POWER, "power"},
-    {SUB_DEVICE_MODE_NET, "net"},
     {SUB_DEVICE_MODE_SWITCH, "switch"},
     {SUB_DEVICE_MODE_STORAGE0, "storage0"},
     {SUB_DEVICE_MODE_STORAGE1, "storage1"},
-    {SUB_DEVICE_MODE_STORAGE2, "storage2"},
+    {SUB_DEVICE_MODE_STORAGE3, "storage3"},
 };
 
 char *SubDevice_GetModeName(SUB_DEVICE_MODE mode)

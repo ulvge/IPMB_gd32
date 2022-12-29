@@ -53,8 +53,8 @@ static const  ADCChannlesConfig g_adcChannlConfig_power[] = {
     {ADC_CHANNEL_6,         ADC_CONFIG_GROUP_DEAULT, GPIOA, RCU_GPIOA, GPIO_PIN_6},
     {ADC_CHANNEL_7,         ADC_CONFIG_GROUP_DEAULT, GPIOA, RCU_GPIOA, GPIO_PIN_7},
 };
-											 
-static bool DevPower_VBATSampleHookBefore(void); 
+
+static bool DevPower_VBATSampleHookBefore(void);
 static bool DevPower_VBATSampleHookAfter(void);
 // config Sensor
 static const  SensorConfig g_sensor_power[] = {

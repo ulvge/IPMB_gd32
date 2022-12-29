@@ -28,16 +28,20 @@ const static GPIOConfig g_gpioConfigComm[] = {
 const static GPIOConfig_Handler *g_pGpioConfig_Handler = NULL;
 const static GPIOConfig_Handler *g_gpioAllDevices[] = {
     &g_gpioConfigHandler_main,
-    &g_gpioConfigHandler_net,
     &g_gpioConfigHandler_switch,
     &g_gpioConfigHandler_power,
     &g_gpioConfigHandler_storage0,
+    &g_gpioConfigHandler_storage1,
+    &g_gpioConfigHandler_storage3,
 };
 
 
 static void GPIO_InitGPIOs(const GPIOConfig *config, UINT8 size)
 {
     const GPIOConfig *p_gpioCfg;
+    if (config == NULL) {
+        return;
+    }
     for (UINT8 i = 0; i < size; i++)
     {
         p_gpioCfg = &config[i];
@@ -172,7 +176,7 @@ uint8_t get_board_addr()
     addr |= GPIO_getPinStatus(GPIO_IN_GAP1) << 1;
     addr |= GPIO_getPinStatus(GPIO_IN_GAP2) << 2;
 
-    return SUB_DEVICE_MODE_POWER;
+    return addr;
 }
 
 
