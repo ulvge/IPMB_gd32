@@ -33,7 +33,12 @@
 /*-----------------------------------
  * Definitions
  *-----------------------------------*/
+
+#ifdef BOOTLOADER
+#define MSG_PAYLOAD_SIZE 	  135	//sizeof(BootPkt_T)
+#else
 #define MSG_PAYLOAD_SIZE 	  100
+#endif
 #define PIPE_NAME_LEN        10
 
 /*-----------------------------------

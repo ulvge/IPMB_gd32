@@ -581,7 +581,9 @@ void I2C0_EV_IRQHandler(void)
     else if (i2c_interrupt_flag_get(I2C0, I2C_INT_FLAG_RBNE))
     {
         /* if reception data register is not empty ,I2C0 will read a data from I2C_DATA */
-        g_i2c_Req.Data[g_i2c_Req.Size++] = i2c_data_receive(I2C0);
+        if (g_i2c_Req.Size + 1 <= sizeof(g_i2c_Req.Data)) {
+            g_i2c_Req.Data[g_i2c_Req.Size++] = i2c_data_receive(I2C0);
+        }
     }
     else if (i2c_interrupt_flag_get(I2C0, I2C_INT_FLAG_STPDET))
     {
@@ -715,14 +717,16 @@ void I2C1_EV_IRQHandler(void)
     else if (i2c_interrupt_flag_get(I2C1, I2C_INT_FLAG_RBNE))
     {
         /* if reception data register is not empty ,I2C0 will read a data from I2C_DATA */
-        g_i2c_Req.Data[g_i2c_Req.Size++] = i2c_data_receive(I2C1);
+        if (g_i2c_Req.Size + 1 <= sizeof(g_i2c_Req.Data)) {
+            g_i2c_Req.Data[g_i2c_Req.Size++] = i2c_data_receive(I2C1);
+        }
     }
     else if (i2c_interrupt_flag_get(I2C1, I2C_INT_FLAG_STPDET))
     {
         /* clear the STPDET bit */
         //i2c_interrupt_flag_clear(I2C1, I2C_INT_FLAG_STPDET);
         i2c_enable(I2C1);
-        if (g_i2c_Req.Size <= 1){
+        if (g_i2c_Req.Size <= 1) {
             g_i2c_Req.Size = 0; //too short, Not a complete package
             return;
         }
@@ -903,7 +907,9 @@ void I2C2_EV_IRQHandler(void)
     {
         /* if reception data register is not empty ,I2C0 will read a data from I2C_DATA */
         //*i2c_rxbuffer++ = i2c_data_receive(I2C0);
-        g_i2c_Req.Data[g_i2c_Req.Size++] = i2c_data_receive(I2C2);
+        if (g_i2c_Req.Size + 1 <= sizeof(g_i2c_Req.Data)) {
+            g_i2c_Req.Data[g_i2c_Req.Size++] = i2c_data_receive(I2C2);
+        }
     }
     else if (i2c_interrupt_flag_get(I2C2, I2C_INT_FLAG_STPDET))
     {

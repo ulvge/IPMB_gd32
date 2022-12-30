@@ -64,8 +64,9 @@ extern volatile UINT32 g_resendCount;
 extern bool g_xmodemIsCheckTpyeCrc;
 
 void boot_updateTask(void *arg);
-void boot_i2c_int(void);
+void boot_i2c_init(void);
 uint8_t SubDevice_GetMySlaveAddress(uint32_t bus);
+uint8_t SubDevice_GetDestAddress(void);
 void boot_sendMsg2Dev(UINT8 msg);
 
 #ifdef __cplusplus

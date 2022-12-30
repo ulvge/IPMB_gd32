@@ -159,7 +159,7 @@
           <Type>0</Type>
           <LineNumber>137</LineNumber>
           <EnabledFlag>1</EnabledFlag>
-          <Address>134283164</Address>
+          <Address>134284924</Address>
           <ByteObject>0</ByteObject>
           <HtxType>0</HtxType>
           <ManyObjects>0</ManyObjects>
@@ -169,6 +169,70 @@
           <Filename>&lt;2&gt;..\ipmi\libipmimsghndlr-3.0.0-src\data\Oem\Oem.c</Filename>
           <ExecCommand></ExecCommand>
           <Expression>\\bmc_app\../ipmi/libipmimsghndlr-3.0.0-src/data/Oem/Oem.c\137</Expression>
+        </Bp>
+        <Bp>
+          <Number>1</Number>
+          <Type>0</Type>
+          <LineNumber>235</LineNumber>
+          <EnabledFlag>1</EnabledFlag>
+          <Address>134319920</Address>
+          <ByteObject>0</ByteObject>
+          <HtxType>0</HtxType>
+          <ManyObjects>0</ManyObjects>
+          <SizeOfObject>0</SizeOfObject>
+          <BreakByAccess>0</BreakByAccess>
+          <BreakIfRCount>1</BreakIfRCount>
+          <Filename>&lt;2&gt;..\api\update\update_devs.c</Filename>
+          <ExecCommand></ExecCommand>
+          <Expression>\\bmc_app\../api/update/update_devs.c\235</Expression>
+        </Bp>
+        <Bp>
+          <Number>2</Number>
+          <Type>0</Type>
+          <LineNumber>373</LineNumber>
+          <EnabledFlag>1</EnabledFlag>
+          <Address>134318492</Address>
+          <ByteObject>0</ByteObject>
+          <HtxType>0</HtxType>
+          <ManyObjects>0</ManyObjects>
+          <SizeOfObject>0</SizeOfObject>
+          <BreakByAccess>0</BreakByAccess>
+          <BreakIfRCount>1</BreakIfRCount>
+          <Filename>&lt;2&gt;..\api\tools\tools.c</Filename>
+          <ExecCommand></ExecCommand>
+          <Expression>\\bmc_app\../api/tools/tools.c\373</Expression>
+        </Bp>
+        <Bp>
+          <Number>3</Number>
+          <Type>0</Type>
+          <LineNumber>230</LineNumber>
+          <EnabledFlag>1</EnabledFlag>
+          <Address>134319890</Address>
+          <ByteObject>0</ByteObject>
+          <HtxType>0</HtxType>
+          <ManyObjects>0</ManyObjects>
+          <SizeOfObject>0</SizeOfObject>
+          <BreakByAccess>0</BreakByAccess>
+          <BreakIfRCount>1</BreakIfRCount>
+          <Filename>&lt;2&gt;..\api\update\update_devs.c</Filename>
+          <ExecCommand></ExecCommand>
+          <Expression>\\bmc_app\../api/update/update_devs.c\230</Expression>
+        </Bp>
+        <Bp>
+          <Number>4</Number>
+          <Type>0</Type>
+          <LineNumber>370</LineNumber>
+          <EnabledFlag>1</EnabledFlag>
+          <Address>134318458</Address>
+          <ByteObject>0</ByteObject>
+          <HtxType>0</HtxType>
+          <ManyObjects>0</ManyObjects>
+          <SizeOfObject>0</SizeOfObject>
+          <BreakByAccess>0</BreakByAccess>
+          <BreakIfRCount>1</BreakIfRCount>
+          <Filename>&lt;2&gt;..\api\tools\tools.c</Filename>
+          <ExecCommand></ExecCommand>
+          <Expression>\\bmc_app\../api/tools/tools.c\370</Expression>
         </Bp>
       </Breakpoint>
       <WatchWindow1>

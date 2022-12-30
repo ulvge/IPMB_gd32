@@ -23,11 +23,10 @@ extern uint32_t Region$$Table$$Base;
 
 #define IMAGE_BIN_START ((uint32_t)&Image$$ER_IROM1$$Base)
 #define IMAGE_DESC ((uint32_t *)&Region$$Table$$Base)
-#define IMAGE_BIN_LENGTH (*(IMAGE_DESC + 4))
+#define IMAGE_BIN_LENGTH ((*(IMAGE_DESC + 4)) - IMAGE_BIN_START)
 
 /* import task handler     */
-extern TaskHandle_t xHandleTaskResponseDatWrite;
-extern TaskHandle_t xHandleDevTask;
+extern TaskHandle_t xHandleUploadTask;
 extern TaskHandle_t ComTask_Handler;
 
 /* import Queue handler     */
@@ -66,7 +65,9 @@ static bool updateDev_notifyDevBoot(SUB_DEVICE_MODE mode)
     MsgPkt_T requestDevBoot;
     MsgPkt_T respDevBoot;
     IPMIMsgHdr_T *hdr = (IPMIMsgHdr_T *)&(requestDevBoot.Data);
+    ChassisControlRes_T *pBMCInfo;
     requestDevBoot.Channel = BOOT_I2C_BUS; // SubDevice_GetBus(dev); // 
+    requestDevBoot.Param = IPMI_REQUEST;
     hdr->ResAddr = SubDevice_modeConvertSlaveAddr(mode);
     hdr->NetFnLUN = NETFN_OEM << 2;
     hdr->ChkSum = CalculateCheckSum((INT8U *)hdr, 2);
@@ -76,12 +77,14 @@ static bool updateDev_notifyDevBoot(SUB_DEVICE_MODE mode)
     hdr->Cmd = CMD_UPDATE_FIRMWARE; // UpdateFirmware
 
     int len = sizeof(IPMIMsgHdr_T);
+    requestDevBoot.Data[len++] = SubDevice_GetMySlaveAddress(requestDevBoot.Channel);
     requestDevBoot.Data[len++] = CalculateCheckSum(requestDevBoot.Data, len);
-    requestDevBoot.Size = sizeof(IPMIMsgHdr_T);
+    requestDevBoot.Size = len;
 
     do {
         if (SendMsgAndWait(&requestDevBoot, &respDevBoot, 50)) {
-            if (respDevBoot.Data[0] == CC_NORMAL) {
+            pBMCInfo = (ChassisControlRes_T *)(&respDevBoot.Data[sizeof(IPMIMsgHdr_T)]);
+            if (pBMCInfo->CompletionCode == CC_NORMAL) {
                 return true;
             }
         }
@@ -90,12 +93,47 @@ static bool updateDev_notifyDevBoot(SUB_DEVICE_MODE mode)
 
     return false;
 }
+static bool updateDev_decodeMsg(UINT32 timetOut)
+{
+    MsgPkt_T i2cReadMsg;
+    UINT32 startTime = GetTickMs();
+    while ((GetTickMs() - startTime) < timetOut)
+    {
+        if (!updateDev_readMsg(timetOut, &i2cReadMsg)) { // timetOut
+            LOG_I("updateDev i2c write ok, but read timeout\r\n");
+            return false;
+        } else { // decode boot_sendAckMsg()
+            xmodeClientAckProtocol_T *pAck = (xmodeClientAckProtocol_T *)&i2cReadMsg.Data[0];
+            if ((pAck->identification == BOOT_I2C_SPECIAL_IDENTIFICATION) && (i2cReadMsg.Size == sizeof(xmodeClientAckProtocol_T))) {
+                switch (pAck->msg) {
+                    case XMODEM_NAK:
+                    case XMODEM_HANDSHAKECRC:
+                        LOG_I("updateDev NAK\r\n");
+                        vTaskDelay(20);
+                        continue;
+                    case XMODEM_ACK: // client update pakge success
+                        return true;
+                    case XMODEM_CANCEL:
+                        return false;
+                    default:
+                        vTaskDelay(20);
+                        continue;
+                }
+            } else {
+                LOG_I("updateDev SPECIAL IDENTIFICATION error\r\n");
+                vTaskDelay(20);
+                continue;
+            }
+        }
+    }
+    return false;
+}
 static bool updateDev_xmode(SUB_DEVICE_MODE mode)
 {
     uint8_t reSend;
     bool isWriteSuccess;
     uint32_t codeAddr;
-    MsgPkt_T i2cReadMsg;
+    uint32_t dlyMs;
     uint8_t sendXmodeMsg[sizeof(XMODEM_Msg) + 1];
     XMODEM_Msg *p_sendXmodeMsg = (XMODEM_Msg *)&sendXmodeMsg[1];
     sendXmodeMsg[0] = SubDevice_modeConvertSlaveAddr(mode);
@@ -108,39 +146,22 @@ static bool updateDev_xmode(SUB_DEVICE_MODE mode)
         p_sendXmodeMsg->crc = xmodeCheckSum(p_sendXmodeMsg->data, XMODEM_PAKGE_LENGTH);
         reSend = 0;
         do {
-            isWriteSuccess = i2c_write(BOOT_I2C_BUS, (uint8_t *)&sendXmodeMsg, sizeof(XMODEM_Msg));
-            if (!isWriteSuccess) {
+            if (i2c_write(BOOT_I2C_BUS, (uint8_t *)&sendXmodeMsg, sizeof(XMODEM_Msg))) {
+                if (packNum == 0) {
+                    dlyMs = 2000;
+                } else {
+                    dlyMs = 200;
+                }
+                if(updateDev_decodeMsg(dlyMs)){
+                    break;
+                }
+            } else {
                 if (reSend++ > 100) {
                     LOG_I("updateDev i2c_write failed\r\n");
                     return false;
                 }
                 vTaskDelay(20);
                 continue;
-            } else {
-                if (!updateDev_readMsg(5000, &i2cReadMsg)) { // timetOut
-                    LOG_I("updateDev i2c write ok, but read timeout\r\n");
-                    return false;
-                } else { // decode boot_sendAckMsg()
-                    if (i2cReadMsg.Data[0] != BOOT_I2C_SPECIAL_IDENTIFICATION) {
-                        LOG_I("updateDev SPECIAL IDENTIFICATION error\r\n");
-                        vTaskDelay(20);
-                        continue;
-                    }
-                    uint8_t devAckMsg = i2cReadMsg.Data[1];
-                    switch (devAckMsg) {
-                    case XMODEM_NAK:
-                        LOG_I("updateDev NAK\r\n");
-                        vTaskDelay(20);
-                        continue;
-                    case XMODEM_ACK: // client update pakge success
-                        break;
-                    case XMODEM_CANCEL:
-                        return false;
-                    default:
-                        vTaskDelay(20);
-                        continue;
-                    }
-                }
             }
         } while (true);
     }
@@ -148,7 +169,7 @@ static bool updateDev_xmode(SUB_DEVICE_MODE mode)
     reSend = 0;
     do {
         isWriteSuccess = i2c_write(BOOT_I2C_BUS, (uint8_t *)&sendXmodeMsg, 2); // 2: SlaveAddr + XMODEM_EOT
-        if (isWriteSuccess){
+        if (isWriteSuccess) {
             return true;
         }
         vTaskDelay(20);
@@ -160,7 +181,8 @@ static bool updateDev_isModeVersionLower(SUB_DEVICE_MODE mode, INT16U destVer)
     MsgPkt_T requestVersion;
     MsgPkt_T recvVer;
     IPMIMsgHdr_T *hdr = (IPMIMsgHdr_T *)&(requestVersion.Data);
-    requestVersion.Channel = BOOT_I2C_BUS; // SubDevice_GetBus(dev);
+    requestVersion.Channel = BOOT_I2C_BUS; // SubDevice_GetBus(dev); 
+    requestVersion.Param = IPMI_REQUEST;
     hdr->ResAddr = SubDevice_modeConvertSlaveAddr(mode);
     hdr->NetFnLUN = NETFN_OEM << 2; // RAW
     hdr->ChkSum = CalculateCheckSum((INT8U *)hdr, 2);
@@ -171,13 +193,13 @@ static bool updateDev_isModeVersionLower(SUB_DEVICE_MODE mode, INT16U destVer)
 
     int len = sizeof(IPMIMsgHdr_T);
     requestVersion.Data[len++] = CalculateCheckSum(requestVersion.Data, len);
-    requestVersion.Size = sizeof(IPMIMsgHdr_T);
+    requestVersion.Size = len;
 
     if (SendMsgAndWait(&requestVersion, &recvVer, 50) == pdFALSE) {
         LOG_I("updateDev check ver. mode[%d], name[%s], modeVer[failed]\r\n", mode, SubDevice_GetModeName(mode));
         return false;
     }
-    GetBMCInfoRes_T *pBMCInfo = (GetBMCInfoRes_T *)(&recvVer.Data[sizeof(GetBMCInfoRes_T)]);
+    GetBMCInfoRes_T *pBMCInfo = (GetBMCInfoRes_T *)(&recvVer.Data[sizeof(IPMIMsgHdr_T)]);
 
     INT16U modeVer = pBMCInfo->BMCFirmwareVersion;
     LOG_I("updateDev check ver. mode[%d], name[%s], modeVer[%d.%d]\r\n",
@@ -220,9 +242,8 @@ void updateDev_task(void *arg)
     }
 
     if (SubDevice_IsSelfMaster()) {
-        vTaskSuspend(xHandleDevTask);
+        vTaskSuspend(xHandleUploadTask);
     }
-    vTaskSuspend(xHandleTaskResponseDatWrite);
     vTaskSuspend(ComTask_Handler);
 
     if (cmdUpdateModes != SUB_DEVICE_MODE_MAX) { // update Specified devs
@@ -249,9 +270,8 @@ void updateDev_task(void *arg)
     vTaskDelay(100);
     taskENTER_CRITICAL();         
     if (SubDevice_IsSelfMaster()) {
-        vTaskResume(xHandleDevTask);
-    }                           
-    vTaskResume(xHandleTaskResponseDatWrite);
+        vTaskResume(xHandleUploadTask);
+    }
     vTaskResume(ComTask_Handler);
     taskEXIT_CRITICAL();
     vTaskDelete(NULL);

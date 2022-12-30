@@ -21,6 +21,7 @@
 #include "ChassisDevice.h"
 #include "IPMI_ChassisDevice.h"
 #include "jump.h"
+#include "IPMIConf.h"
 
 //extern VariableCPUParam g_CPUVariableParam;
 //extern FixedCPUParam g_CPUFixedParam;
@@ -129,6 +130,10 @@ int GetBladId(INT8U *pReq, INT8U ReqLen, INT8U *pRes, int BMCInst)
 }
 int UpdateFirmware(INT8U *pReq, INT8U ReqLen, INT8U *pRes, int BMCInst)
 {
+    INT8U destAddr = SubDevice_modeConvertSlaveAddr(SUB_DEVICE_MODE_MAIN);
+    if (ReqLen >= 1) {
+        destAddr = pReq[0];
+    }
     ChassisControlReq_T*    pChassisControlReq = (ChassisControlReq_T*) pReq;
     pChassisControlReq->ChassisControl = CHASSIS_POWER_RESET;
 
@@ -136,7 +141,7 @@ int UpdateFirmware(INT8U *pReq, INT8U ReqLen, INT8U *pRes, int BMCInst)
     ChassisControlRes_T* pChassisControlRes = (ChassisControlRes_T*) pRes;
     if (pChassisControlRes->CompletionCode == CC_NORMAL) { // write backup data
         update_BkpDateWrite(I2C_UPDATE_KEYS_ADDR, I2C_UPDATE_KEYS);
-        update_BkpDateWrite(I2C_UPDATE_MODE_ADDR, SubDevice_GetMyMode());
+        update_BkpDateWrite(I2C_UPDATE_MODE_ADDR, (destAddr << 8) | SubDevice_GetMySlaveAddress(NM_PRIMARY_IPMB_BUS));
     }
     return sizeof (ChassisControlRes_T);
 }

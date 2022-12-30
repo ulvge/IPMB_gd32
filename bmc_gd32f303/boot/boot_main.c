@@ -102,7 +102,7 @@ void updateMonitor(void *pvParameters)
     }
     if (update_BkpDateRead(I2C_UPDATE_KEYS_ADDR) == I2C_UPDATE_KEYS) {
         g_UpdatingSM = UPDATE_SM_START; // auto start
-        boot_i2c_int();
+        boot_i2c_init();
     }
 
     vTaskDelay(100);
@@ -117,6 +117,7 @@ void updateMonitor(void *pvParameters)
                 if ((g_resendCount * MONITOR_TASK_DELAY_ms) >= jumpToAPPMaxDelay) {
                     LOG_I("jump to APP \r\n");
                     update_BkpDateWrite(APP_WANTTO_UPDATE_KEYS_ADDR, 0);
+                    update_BkpDateWrite(I2C_UPDATE_KEYS_ADDR, 0);
                     update_JumpToRun(ADDRESS_APP_START);
                 }else {
                     LOG_I("jump to APP :countdown = %d s\r\n", 

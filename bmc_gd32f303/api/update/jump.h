@@ -16,7 +16,10 @@
 #define XMODEM_NAK 0x15       /* 不认可响应 */
 #define XMODEM_CANCEL 0x18    /* 撤销传送 */
 #define XMODEM_CTRLZ 0x1A     /* 填充数据包 */
-#define XMODEM_HANDSHAKECRC 0x43 /* 握手 C  当接收方一开始启动传输时发送的是字符“C”，表示它希望以CRC方式校验*/
+
+ /* 握手 C  当接收方一开始启动传输时发送的是字符“C”，表示它希望以CRC方式校验*/
+ /* 握手 XMODEM_NAK  当接收方一开始启动传输时发送的是字符XMODEM_NAK，表示它希望以累加和方式校验*/
+#define XMODEM_HANDSHAKECRC 0x43
 
 #define XMODEM_CTRLC 0x03 /* abandon startup ,and prepare to upload */
 
@@ -36,14 +39,27 @@ typedef enum {
     XMODEM_CHECK_CRC16,
 } XMODEM_CHECK_TYPE;
 
+typedef __packed struct
+{
+    INT8U   destAddr;
+    INT8U   identification;
+    INT8U   msg;
+} xmodeClientAckProtocol_T;
+#ifdef GD32F1x  //@
 #define BOOT_I2C_BUS  I2C_BUS_1
+#else
+#define BOOT_I2C_BUS  I2C_BUS_0
+#endif
 
 /*   **********   xmode   end   ***********/
 
 #define ADDRESS_BOOTLOADER_START  0x08000000
+#define ADDRESS_BOOTLOADER_LEN    0x8000
 
-#define ADDRESS_APP_START         0x08008000
-#define ADDRESS_APP_END           0x08020000
+#define ADDRESS_APP_START         (ADDRESS_BOOTLOADER_START + ADDRESS_BOOTLOADER_LEN)
+#define FMC_TOTAL_SIZE            (FMC_SIZE * 1024)
+#define APP_MAX_LEN                 0x20000
+#define ADDRESS_APP_LEN           ((FMC_TOTAL_SIZE - ADDRESS_BOOTLOADER_LEN) > APP_MAX_LEN ? APP_MAX_LEN : (FMC_TOTAL_SIZE - ADDRESS_BOOTLOADER_LEN))
 
 #define XMODEM_PAKGE_LENGTH 128
 

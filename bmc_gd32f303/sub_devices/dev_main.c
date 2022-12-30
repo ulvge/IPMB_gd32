@@ -108,7 +108,7 @@ static void CPU_MsgCoreHndlr(void)
     }
 }
 
-TaskHandle_t xHandleDevTask = NULL;
+TaskHandle_t xHandleUploadTask = NULL;
 static void DevTaskHandler(void *pArg)
 {
     uint32_t errCreate = 0;
@@ -118,7 +118,7 @@ static void DevTaskHandler(void *pArg)
         errCreate++;
     }
     if (errCOULD_NOT_ALLOCATE_REQUIRED_MEMORY ==
-        xTaskCreate(SubDevice_uploadTask, "upload", configMINIMAL_STACK_SIZE * 1, NULL, TASK_PRIO_UPLOAD, &xHandleDevTask)) {
+        xTaskCreate(SubDevice_uploadTask, "uploadTask", configMINIMAL_STACK_SIZE * 2, NULL, TASK_PRIO_UPLOAD, &xHandleUploadTask)) {
         LOG_E("SubDevice_uploadTask create ERR!");
         errCreate++;
     }

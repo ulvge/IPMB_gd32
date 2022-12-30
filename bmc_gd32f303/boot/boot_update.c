@@ -12,15 +12,25 @@
 #include "bsp_i2c.h" 
 #include "IPMIConf.h"
 
+#define ADDRESS_APP2_START         ADDRESS_APP_START
+
 typedef void (*pFunction)(void);
 static UPDATE_SM boot_ProcessUpdateReq(const BootPkt_T *pReq);
-static UINT32 g_updateChannleBak = SERIAL_CHANNEL_TYPE;
 bool g_xmodemIsCheckTpyeCrc = false;
 
 xQueueHandle updateDatMsg_Queue = NULL;
 UPDATE_SM g_UpdatingSM = UPDATE_SM_INIT;
 volatile UINT32 g_resendCount = 0;
 
+typedef struct
+{
+    INT8U   channle;
+    INT8U   isChannleConfirmed;
+} TransferState_T;
+static TransferState_T g_transferState = {
+    .channle = SERIAL_CHANNEL_TYPE,
+    .isChannleConfirmed = false,
+};
 void boot_updateTask(void *arg)
 {
     BootPkt_T reqMsg;
@@ -35,6 +45,7 @@ void boot_updateTask(void *arg)
 
         vTaskSuspend(updateMonitorHandle);
         g_UpdatingSM = boot_ProcessUpdateReq(&reqMsg);
+		g_resendCount = 0;
         vTaskResume(updateMonitorHandle);
     }
 }
@@ -78,8 +89,8 @@ static bool boot_xmodeCheck(bool type, const UINT8 *buf, UINT8 len, UINT16 recCr
 }
 static bool boot_eraseAllPage()
 {
-    UINT32 startPageNum = (ADDRESS_APP_START - FLASH_BASE + 1) / FMC_PAGE_SIZE;
-    UINT32 erasePageNum = (ADDRESS_APP_END - ADDRESS_APP_START + 1) / FMC_PAGE_SIZE;
+    UINT32 startPageNum = (ADDRESS_APP2_START - FLASH_BASE + 1) / FMC_PAGE_SIZE;
+    UINT32 erasePageNum = (ADDRESS_APP_LEN + 1) / FMC_PAGE_SIZE;
 
     erase_page(startPageNum, erasePageNum);
     return true;
@@ -93,7 +104,6 @@ static UPDATE_SM boot_ProcessUpdateReq(const BootPkt_T *pReq)
     UINT32 startAddr;
     bool isCrcOK;
 
-    g_resendCount = 0;
     switch (msg->head) // 128*256 =
     {
         case XMODEM_SOH:
@@ -111,22 +121,31 @@ static UPDATE_SM boot_ProcessUpdateReq(const BootPkt_T *pReq)
                 return UPDATE_SM_ERROR_TRYAGAIN;
             }
             if (g_UpdatingSM == UPDATE_SM_START) {
-                g_updateChannleBak = pReq->Channel; // It will only be recorded once and will not be changed in the future
-                boot_setPrintUartPeriph(USART1);
+                g_transferState.isChannleConfirmed = true;
+                g_transferState.channle = pReq->Channel; // It will only be recorded once and will not be changed in the future
+                if (g_transferState.channle == SERIAL_CHANNEL_TYPE) {
+                    boot_setPrintUartPeriph(USART1);
+                }
                 boot_eraseAllPage();
             }
-            if (((UINT8)(lastPn + 1)) != msg->pn){
+            if (lastPn == msg->pn) { // Duplicate packet
+                // boot_sendMsg2Dev(XMODEM_ACK);
+                LOG_D("update Recv error Duplicate packet %d\r\n", msg->pn);
+                return UPDATE_SM_PROGRAMING;
+            } else if (((UINT8)(lastPn + 1)) != msg->pn) {
+                LOG_D("update Recv error packet num  %d\r\n", msg->pn);
                 return UPDATE_SM_ERROR_TRYAGAIN;
             }
             lastPn = msg->pn;
             if (msg->pn == 0) {
                 pnPage += 256;
             }
-            startAddr = ADDRESS_APP_START + (pnPage + msg->pn - 1) * XMODEM_PAKGE_LENGTH;
+            startAddr = ADDRESS_APP2_START + (pnPage + msg->pn - 1) * XMODEM_PAKGE_LENGTH;
 
             LOG_D("update addr = %#X, page Num = %d \r\n", startAddr, pnPage + msg->pn);
-            if ((startAddr + XMODEM_PAKGE_LENGTH) > ADDRESS_APP_END) {
+            if ((startAddr + XMODEM_PAKGE_LENGTH) > (ADDRESS_APP2_START + ADDRESS_APP_LEN)) {
                 boot_sendMsg2Dev(XMODEM_NAK);
+                LOG_D("update Recv error over APP LEN %d\r\n", ADDRESS_APP_LEN);
                 return UPDATE_SM_ERROR_TRYAGAIN;
             }
             boot_sendMsg2Dev(XMODEM_ACK);
@@ -165,15 +184,39 @@ static UPDATE_SM boot_ProcessUpdateReq(const BootPkt_T *pReq)
 }
 void boot_sendMsg2Dev(UINT8 msg)
 {
-    if(g_updateChannleBak == SERIAL_CHANNEL_TYPE){
-        usart_data_transmit(USART0, msg); while (RESET == usart_flag_get(USART0, USART_FLAG_TBE)) ;
-    } else {// NM_PRIMARY_IPMB_BUS || NM_SECONDARY_IPMB_BUS
-        uint8_t sendbuff[10];
-        uint8_t idx = 0;
-        sendbuff[idx++] = SubDevice_GetMySlaveAddress(BOOT_I2C_BUS);
-        sendbuff[idx++] = BOOT_I2C_SPECIAL_IDENTIFICATION;
-        sendbuff[idx++] = msg;
-        i2c_write(BOOT_I2C_BUS, sendbuff, idx);
+    xmodeClientAckProtocol_T ack;
+    uint8_t bus;
+    switch (g_transferState.channle) {
+        case SERIAL_CHANNEL_TYPE:
+            usart_data_transmit(USART0, msg);
+            while (RESET == usart_flag_get(USART0, USART_FLAG_TBE)) {
+                ;
+            }
+            break;
+        case NM_PRIMARY_IPMB_BUS:
+        case NM_SECONDARY_IPMB_BUS:
+            bus = g_transferState.channle == NM_SECONDARY_IPMB_BUS ? NM_SECONDARY_IPMB_BUS : NM_PRIMARY_IPMB_BUS;
+            ack.destAddr = SubDevice_GetDestAddress();
+            ack.identification = BOOT_I2C_SPECIAL_IDENTIFICATION;
+            ack.msg = msg;
+            i2c_write(bus, (uint8_t *)&ack, sizeof(ack));
+            break;
+        default:
+            break;
+    }
+    // switch it, if not confirmed yet
+    if (!g_transferState.isChannleConfirmed) {
+        switch (g_transferState.channle) {
+            case NM_PRIMARY_IPMB_BUS:
+                g_transferState.channle = NM_SECONDARY_IPMB_BUS;
+                break;
+            case NM_SECONDARY_IPMB_BUS:
+                g_transferState.channle = SERIAL_CHANNEL_TYPE;
+                break;
+            case SERIAL_CHANNEL_TYPE:
+            default:
+                g_transferState.channle = NM_PRIMARY_IPMB_BUS;
+                break;
+        }
     }
 }
-
