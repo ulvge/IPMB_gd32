@@ -62,7 +62,21 @@ static char *const arglist[] ={
         "--scan",
         NULL
 };
-
+static bool i2cCheckBus(uint8_t bus)
+{
+    switch (bus)
+    {
+        case I2C_BUS_0:
+        case I2C_BUS_1:
+	#ifdef I2C2
+        case I2C_BUS_2:
+	#endif
+        case I2C_BUS_S0:
+            return true;
+        default:
+            return false;
+    }
+}
 int i2cTest(int argc, char *argv[])
 {
     int retval = 0;
@@ -72,7 +86,12 @@ int i2cTest(int argc, char *argv[])
 
     if (operation_mode == SCAN_MODE)
     {
-        retval = do_scan(g_bus);
+        if (i2cCheckBus(g_bus))
+        {
+            retval = do_scan(g_bus);
+        } else {
+            LOG_E("i2c specifies Bus[%d] not support\r\n", g_bus);
+        }
     }
 
     if (retval < 0)

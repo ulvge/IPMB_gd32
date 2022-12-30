@@ -504,7 +504,7 @@ static void SubDevice_SampleAll()
         SubDevice_SetOnLine(dev , isDevOnline);
     }
 }
-static void SubDevice_staticOnlineSwitchBus(void)
+static void SubDevice_statisticsOnlineSwitchBus(void)
 {
     for (SUB_DEVICE_MODE dev = SUB_DEVICE_MODE_MIN; dev < SUB_DEVICE_MODE_MAX; dev++)
     {
@@ -544,7 +544,7 @@ void SubDevice_uploadTask(void *pvParameters)
 
         if (switchBusCount++ >= SUB_DEVICES_TIMER_SWITCH_IPMB_BUS_XMS / SUB_DEVICES_TASK_DELAY_MS){
             switchBusCount = 0;
-            //SubDevice_staticOnlineSwitchBus();
+            SubDevice_statisticsOnlineSwitchBus();
         }
     }
 }
