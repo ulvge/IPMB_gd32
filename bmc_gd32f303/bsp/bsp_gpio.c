@@ -88,18 +88,30 @@ void GPIO_bspInit(void)
 }
 static const GPIOConfig *GPIO_findGpio(BMC_GPIO_enum alias)
 {
-    if (g_pGpioConfig_Handler == NULL)
-    {
-        return NULL;
-    }
-    UINT8 num = g_pGpioConfig_Handler->gpioCfgSize;
+    UINT8 num;
     const GPIOConfig *p_gpioCfg;
-    for (UINT8 i = 0; i < num; i++)
+    if (g_pGpioConfig_Handler != NULL)
     {
-        p_gpioCfg = (g_pGpioConfig_Handler->gpioCfg) + i;
-        if (p_gpioCfg->alias == alias)
+        num = g_pGpioConfig_Handler->gpioCfgSize;
+        for (UINT8 i = 0; i < num; i++)
         {
-            return p_gpioCfg;
+            p_gpioCfg = (g_pGpioConfig_Handler->gpioCfg) + i;
+            if (p_gpioCfg->alias == alias)
+            {
+                return p_gpioCfg;
+            }
+        }
+    }
+    if (g_gpioConfigComm != NULL)
+    {
+        num = ARRARY_SIZE(g_gpioConfigComm);
+        for (UINT8 i = 0; i < num; i++)
+        {
+            p_gpioCfg = &g_gpioConfigComm[i];
+            if (p_gpioCfg->alias == alias)
+            {
+                return p_gpioCfg;
+            }
         }
     }
     return NULL;

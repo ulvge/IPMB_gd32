@@ -26,8 +26,8 @@
 
 #define SUB_DEVICES_TASK_DELAY_MS 500
 #define SUB_DEVICES_TIMER_SAMPLE_PERIOD_XMS 2000
-#define SUB_DEVICES_TIMER_UPLOAD_PERIOD_XMS 2000
-#define SUB_DEVICES_TIMER_SWITCH_IPMB_BUS_XMS 10000
+#define SUB_DEVICES_TIMER_UPLOAD_PERIOD_XMS 1100
+#define SUB_DEVICES_TIMER_SWITCH_IPMB_BUS_XMS 2000
 
 typedef enum
 {
@@ -309,7 +309,7 @@ static void SubDevice_SwitchBus(SUB_DEVICE_MODE mode)
 }
 static void SubDevice_SendDataSpilt(char *pstr)
 {
-#define SEND_LENGTH_PRE 30
+#define SEND_LENGTH_PRE     (UART1_BUFF_SIZE / 2)
     uint32_t len = strlen(pstr);
     uint32_t offset;
 
@@ -318,18 +318,19 @@ static void SubDevice_SendDataSpilt(char *pstr)
         offset = i * SEND_LENGTH_PRE;
         if ((offset + SEND_LENGTH_PRE) <= len)
         {
-            if (UART_sendData(CPU_UART_PERIPH, (uint8_t *)pstr + offset, SEND_LENGTH_PRE))
+            if (UART_sendDataBlock(CPU_UART_PERIPH, (uint8_t *)pstr + offset, SEND_LENGTH_PRE))
             {
                 i++;
+                vTaskDelay(2);// 0.1ms/byte
             }
             else
             {
-                vTaskDelay(2);// 0.1ms/byte
+                vTaskDelay(20);// 0.1ms/byte
             }
         }
         else
         { // last
-            if (UART_sendData(CPU_UART_PERIPH, (uint8_t *)pstr + offset, len - offset))
+            if (UART_sendDataBlock(CPU_UART_PERIPH, (uint8_t *)pstr + offset, len - offset))
             {
                 return;
             }
@@ -404,9 +405,13 @@ static void SubDevice_Upload()
     }
     else
     {
+        char *newLine = "\r\n";
+        while (!UART_sendDataBlock(CPU_UART_PERIPH, (uint8_t *)newLine, strlen(newLine)));
         SubDevice_SendDataSpilt(pstr);
         cJSON_Delete(pCJType);
         vPortFree(pstr);
+
+        while (!UART_sendDataBlock(CPU_UART_PERIPH, (uint8_t *)newLine, strlen(newLine)));
         LOG_D("\t\tupload success, free byte = %d\n", xPortGetFreeHeapSize());
     }
 }
@@ -520,9 +525,9 @@ static void SubDevice_statisticsOnlineSwitchBus(void)
 /// @param pvParameters 
 void SubDevice_uploadTask(void *pvParameters)
 {
-    uint32_t sampleCount = 0;
-    uint32_t uploadCount = 0;
-    uint32_t switchBusCount = 0;
+    uint32_t sampleTimeStamp = 0;
+    uint32_t uploadTimeStamp = 0;
+    uint32_t switchBusTimeStamp = 0;
     cJSON_Hooks hooks;
     hooks.malloc_fn = pvPortMalloc;
     hooks.free_fn = vPortFree;
@@ -532,18 +537,18 @@ void SubDevice_uploadTask(void *pvParameters)
     while (1)
     {
         vTaskDelay(SUB_DEVICES_TASK_DELAY_MS);
-        if (sampleCount++ >= SUB_DEVICES_TIMER_SAMPLE_PERIOD_XMS / SUB_DEVICES_TASK_DELAY_MS){
-            sampleCount = 0;
+        if ((GetTickMs() - sampleTimeStamp) >= SUB_DEVICES_TIMER_SAMPLE_PERIOD_XMS){
+            sampleTimeStamp = GetTickMs();
             SubDevice_SampleAll();
         }
 
-        if (uploadCount++ >= SUB_DEVICES_TIMER_UPLOAD_PERIOD_XMS / SUB_DEVICES_TASK_DELAY_MS){
-            uploadCount = 0;
+        if ((GetTickMs() - uploadTimeStamp) >= SUB_DEVICES_TIMER_UPLOAD_PERIOD_XMS){
+            uploadTimeStamp = GetTickMs();
             SubDevice_Upload();
         }
 
-        if (switchBusCount++ >= SUB_DEVICES_TIMER_SWITCH_IPMB_BUS_XMS / SUB_DEVICES_TASK_DELAY_MS){
-            switchBusCount = 0;
+       if ((GetTickMs() - switchBusTimeStamp) >= SUB_DEVICES_TIMER_SWITCH_IPMB_BUS_XMS){
+            switchBusTimeStamp = GetTickMs();
             SubDevice_statisticsOnlineSwitchBus();
         }
     }

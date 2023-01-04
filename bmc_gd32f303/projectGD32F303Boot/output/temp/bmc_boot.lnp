@@ -33,7 +33,7 @@
 ".\output\temp\gd32f30x_wwdgt.o"
 ".\output\temp\gd32f30x_dbg.o"
 ".\output\temp\gd32f30x_pmu.o"
-".\output\temp\startup_gd32f30x_hd.o"
+".\output\temp\startup_gd32f30x_xd.o"
 ".\output\temp\croutine.o"
 ".\output\temp\event_groups.o"
 ".\output\temp\list.o"

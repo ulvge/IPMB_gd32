@@ -53,7 +53,7 @@ __IO uint32_t g_localtime;
 void bsp_systick_config(void)
 {
     /* setup systick timer for 1000Hz interrupts */
-    if (SysTick_Config(SystemCoreClock / 1000U))
+    if (SysTick_Config(SystemCoreClock / configTICK_RATE_HZ))
     {
         /* capture error */
         while (1)

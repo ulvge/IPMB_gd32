@@ -33,7 +33,7 @@ typedef struct {
     const UART_CONFIG_STRUCT    *config;
 }UART_PARA_STRUCT;
 
-void UART_sendDataBlock(uint32_t usart_periph, const uint8_t *str, uint16_t len);
+bool UART_sendDataBlock(uint32_t usart_periph, const uint8_t *str, uint16_t len);
 //int fputc(int ch, FILE *f);
 void COM_init(UART_PARA_STRUCT *uartPara);
 

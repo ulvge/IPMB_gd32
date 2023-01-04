@@ -7,7 +7,26 @@
 #include "FreeRTOS.h"
 #include "task.h"
 
-		
+extern __asm uint32_t vPortGetIPSR(void);
+static __inline uint32_t API_EnterCirtical(void) 
+{
+    if (vPortGetIPSR()) {
+        return taskENTER_CRITICAL_FROM_ISR();
+    }
+    else {
+        taskENTER_CRITICAL();
+        return 0;
+    }
+}
+static __inline void API_ExitCirtical(uint32_t x) 
+{
+    if (vPortGetIPSR()) {
+        taskEXIT_CRITICAL_FROM_ISR(x);
+    }
+    else{
+        taskEXIT_CRITICAL();
+    }
+}
 /************************************************************************************************************
    FIFO  底层接口层
 ******************************************************************/
@@ -33,13 +52,13 @@ BOOLEAN FIFO_Write(FIFO *fifo, INT8U data)
     if (fifo->occupy >= fifo->deepth) {
 		return FALSE;
     }
-    uint32_t x=taskENTER_CRITICAL_FROM_ISR();
+    uint32_t x=API_EnterCirtical();
     *fifo->wp++ = data;
     if (fifo->wp >= fifo->limit) {
 		fifo->wp = fifo->array;
 	}
     fifo->occupy++;
-    taskEXIT_CRITICAL_FROM_ISR(x);
+    API_ExitCirtical(x);
     return TRUE;
 }
 
@@ -48,7 +67,7 @@ BOOLEAN FIFO_Writes(FIFO *fifo, INT8U *data, INT16U dataSize)
     if (dataSize > (fifo->deepth - fifo->occupy)) {
 		return FALSE;
 	}
-    uint32_t x=taskENTER_CRITICAL_FROM_ISR();
+    uint32_t x=API_EnterCirtical();
     for (; dataSize > 0; dataSize--) { 
        *fifo->wp++ = *data++;
        if (fifo->wp >= fifo->limit){
@@ -56,7 +75,7 @@ BOOLEAN FIFO_Writes(FIFO *fifo, INT8U *data, INT16U dataSize)
 	   }
        fifo->occupy++;
     }
-    taskEXIT_CRITICAL_FROM_ISR(x);   
+    API_ExitCirtical(x);
     return TRUE;
 }
 
@@ -74,13 +93,13 @@ BOOLEAN FIFO_Read(FIFO *fifo, INT8U *data)
     if (fifo->occupy == 0) {
 		return false;
 	}
-    uint32_t x=taskENTER_CRITICAL_FROM_ISR();
+    uint32_t x=API_EnterCirtical();
     *data = *fifo->rp++;
     if (fifo->rp >= fifo->limit) {
 		fifo->rp = fifo->array;
 	}
     fifo->occupy--;
-    taskEXIT_CRITICAL_FROM_ISR(x);
+    API_ExitCirtical(x);
     return true;
 }
 
@@ -89,7 +108,7 @@ BOOLEAN FIFO_ReadN(FIFO *fifo, INT8U *data, INT16U dataSize, INT16U *readLen)
     if (fifo->occupy == 0) {
 		return false;
 	}
-    uint32_t x=taskENTER_CRITICAL_FROM_ISR();
+    uint32_t x=API_EnterCirtical();
     if (dataSize < fifo->occupy) {
         *readLen = dataSize;
     } else {
@@ -103,7 +122,7 @@ BOOLEAN FIFO_ReadN(FIFO *fifo, INT8U *data, INT16U dataSize, INT16U *readLen)
         }
     }
     fifo->occupy -= *readLen;
-    taskEXIT_CRITICAL_FROM_ISR(x);
+    API_ExitCirtical(x);
     return true;
 }
 

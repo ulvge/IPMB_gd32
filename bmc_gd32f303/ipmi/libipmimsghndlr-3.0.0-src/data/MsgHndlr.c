@@ -189,7 +189,7 @@ void *MsgCoreHndlr(void *pArg)
     MsgHndlrInit();
 
     if (errCOULD_NOT_ALLOCATE_REQUIRED_MEMORY ==                                             
-		xTaskCreate(vTaskResponseDatWrite, "Task ResponseDatWrite", 128, NULL, TASK_PRIO_MSG_RESPONSE_HANDLE, &xHandleTaskResponseDatWrite)) {
+		xTaskCreate(vTaskResponseDatWrite, "Task ResponseDatWrite", configMINIMAL_STACK_SIZE * 2, NULL, TASK_PRIO_MSG_RESPONSE_HANDLE, &xHandleTaskResponseDatWrite)) {
         LOG_E("vTaskResponseDatWrite create task ERR!");
     }
     RecvDatMsg_Queue = xQueueCreate(2, sizeof(MsgPkt_T));  //10

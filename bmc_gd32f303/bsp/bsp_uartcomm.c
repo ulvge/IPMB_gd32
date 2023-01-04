@@ -114,7 +114,7 @@ bool UART_sendData(uint32_t usart_periph, uint8_t *str, uint16_t len)
 /// @param usart_periph 
 /// @param str 
 /// @param len 
-void UART_sendDataBlock(uint32_t usart_periph, const uint8_t *str, uint16_t len)
+bool UART_sendDataBlock(uint32_t usart_periph, const uint8_t *str, uint16_t len)
 {
     int i = 0;
     for (i = 0; i < len; i++)
@@ -123,6 +123,7 @@ void UART_sendDataBlock(uint32_t usart_periph, const uint8_t *str, uint16_t len)
         while (RESET == usart_flag_get(usart_periph, USART_FLAG_TBE))
             ;
     }
+    return true;
 }
 
 /// @brief read one byte from fifo,and start transmit

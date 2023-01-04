@@ -268,7 +268,7 @@ void updateDev_task(void *arg)
         }
     }
     vTaskDelay(100);
-    taskENTER_CRITICAL();         
+    taskENTER_CRITICAL();
     if (SubDevice_IsSelfMaster()) {
         vTaskResume(xHandleUploadTask);
     }

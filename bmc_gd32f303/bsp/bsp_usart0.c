@@ -22,7 +22,7 @@ static const UART_CONFIG_STRUCT g_uart0Config= {
 
     .rxPort = GPIOA,
     .rxPin = GPIO_PIN_10,
-    .rxPinMode = GPIO_MODE_IN_FLOATING,
+    .rxPinMode = GPIO_MODE_IPU,
     .rxPinSpeed = GPIO_OSPEED_50MHZ,
 
     .rcuUart = RCU_USART0,
@@ -96,7 +96,7 @@ void USART0_IRQHandler(void)
 		{
 			/* receive data */
             //UART_sendByte(COM_NUM, res);  //loopback
-			FIFO_Write(&g_UARTPara.fifo.rfifo, (INT8U)res); // only save
+			FIFO_Write(&g_UARTPara.fifo.rfifo, (INT8U)res);
 		}
 	}
 

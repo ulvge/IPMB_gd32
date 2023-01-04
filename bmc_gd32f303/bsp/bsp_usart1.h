@@ -6,6 +6,7 @@
 #include <stdio.h>
 #include <stdbool.h>  
 
+#define UART1_BUFF_SIZE 	(200)
 #define UART1_REMAP
 
 #ifdef UART1_REMAP

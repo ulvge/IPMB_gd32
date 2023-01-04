@@ -34,7 +34,7 @@ static uint8_t   i2cs0_WaitAck        (void);
 static void      i2cs0_Ack            (void);
 static void      i2cs0_NAck           (void);
 
-xSemaphoreHandle g_I2CS0_semaphore = NULL;
+static xSemaphoreHandle g_I2CS0_semaphore = NULL;
 #define I2CS0_TAKE_SEMAPHORE_TIMEOUT      100
 
 /*
