@@ -424,11 +424,6 @@
               <FilePath>..\sub_devices\dev_power.c</FilePath>
             </File>
             <File>
-              <FileName>dev_storage0.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\sub_devices\dev_storage0.c</FilePath>
-            </File>
-            <File>
               <FileName>dev_switch.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\sub_devices\dev_switch.c</FilePath>
@@ -439,14 +434,19 @@
               <FilePath>..\sub_devices\dev_fsm.c</FilePath>
             </File>
             <File>
+              <FileName>dev_storage0.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\sub_devices\dev_storage0.c</FilePath>
+            </File>
+            <File>
               <FileName>dev_storage1.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\sub_devices\dev_storage1.c</FilePath>
             </File>
             <File>
-              <FileName>dev_storage3.c</FileName>
+              <FileName>dev_storage2.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\sub_devices\dev_storage3.c</FilePath>
+              <FilePath>..\sub_devices\dev_storage2.c</FilePath>
             </File>
           </Files>
         </Group>

@@ -99,12 +99,6 @@ Section Cross References
     dev_power.o(.data) refers to dev_power.o(.text) for DevPower_printStateAlias
     dev_power.o(shellCommand) refers to dev_power.o(.constdata) for shellCmdps
     dev_power.o(shellCommand) refers to dev_power.o(.text) for DevPower_shellPowerState
-    dev_storage0.o(.text) refers to tasks.o(.text) for vTaskDelay
-    dev_storage0.o(.text) refers to printfa.o(i.__0printf) for __2printf
-    dev_storage0.o(.text) refers to main.o(.data) for g_debugLevel
-    dev_storage0.o(.constdata) refers to dev_storage0.o(.conststring) for .conststring
-    dev_storage0.o(.constdata) refers to dev_storage0.o(.bss) for g_sensorVal_storage0
-    dev_storage0.o(.constdata) refers to dev_storage0.o(.text) for DevTaskHandler
     dev_switch.o(.text) refers to tasks.o(.text) for vTaskDelay
     dev_switch.o(.text) refers to printfa.o(i.__0printf) for __2printf
     dev_switch.o(.text) refers to bsp_gpio.o(.text) for GPIO_setPinStatus
@@ -115,18 +109,24 @@ Section Cross References
     dev_fsm.o(.text) refers to printfa.o(i.__0printf) for __2printf
     dev_fsm.o(.text) refers to systick.o(.text) for GetTickMs
     dev_fsm.o(.text) refers to main.o(.data) for g_debugLevel
+    dev_storage0.o(.text) refers to tasks.o(.text) for vTaskDelay
+    dev_storage0.o(.text) refers to printfa.o(i.__0printf) for __2printf
+    dev_storage0.o(.text) refers to main.o(.data) for g_debugLevel
+    dev_storage0.o(.constdata) refers to dev_storage0.o(.conststring) for .conststring
+    dev_storage0.o(.constdata) refers to dev_storage0.o(.bss) for g_sensorVal_storage0
+    dev_storage0.o(.constdata) refers to dev_storage0.o(.text) for DevTaskHandler
     dev_storage1.o(.text) refers to tasks.o(.text) for vTaskDelay
     dev_storage1.o(.text) refers to printfa.o(i.__0printf) for __2printf
     dev_storage1.o(.text) refers to main.o(.data) for g_debugLevel
     dev_storage1.o(.constdata) refers to dev_storage1.o(.conststring) for .conststring
     dev_storage1.o(.constdata) refers to dev_storage1.o(.bss) for g_sensorVal_storage1
     dev_storage1.o(.constdata) refers to dev_storage1.o(.text) for DevTaskHandler
-    dev_storage3.o(.text) refers to tasks.o(.text) for vTaskDelay
-    dev_storage3.o(.text) refers to printfa.o(i.__0printf) for __2printf
-    dev_storage3.o(.text) refers to main.o(.data) for g_debugLevel
-    dev_storage3.o(.constdata) refers to dev_storage3.o(.conststring) for .conststring
-    dev_storage3.o(.constdata) refers to dev_storage3.o(.bss) for g_sensorVal_storage3
-    dev_storage3.o(.constdata) refers to dev_storage3.o(.text) for DevTaskHandler
+    dev_storage2.o(.text) refers to tasks.o(.text) for vTaskDelay
+    dev_storage2.o(.text) refers to printfa.o(i.__0printf) for __2printf
+    dev_storage2.o(.text) refers to main.o(.data) for g_debugLevel
+    dev_storage2.o(.constdata) refers to dev_storage2.o(.conststring) for .conststring
+    dev_storage2.o(.constdata) refers to dev_storage2.o(.bss) for g_sensorVal_storage2
+    dev_storage2.o(.constdata) refers to dev_storage2.o(.text) for DevTaskHandler
     api_adc.o(.text) refers to bsp_adc.o(.text) for adc_init_channle
     api_adc.o(.text) refers to gd32f30x_rcu.o(.text) for rcu_periph_clock_enable
     api_adc.o(.text) refers to gd32f30x_adc.o(.text) for adc_watchdog_threshold_config
@@ -206,7 +206,7 @@ Section Cross References
     api_sensor.o(.data) refers to dev_power.o(.constdata) for g_devHandler_power
     api_sensor.o(.data) refers to dev_storage0.o(.constdata) for g_devHandler_storage0
     api_sensor.o(.data) refers to dev_storage1.o(.constdata) for g_devHandler_storage1
-    api_sensor.o(.data) refers to dev_storage3.o(.constdata) for g_devHandler_storage3
+    api_sensor.o(.data) refers to dev_storage2.o(.constdata) for g_devHandler_storage2
     cjson.o(.text) refers to scanf_fp.o(.text) for _scanf_real
     cjson.o(.text) refers to printfa.o(i.__0sprintf) for __2sprintf
     cjson.o(.text) refers to tolower.o(.text) for tolower
@@ -467,7 +467,7 @@ Section Cross References
     bsp_gpio.o(.data) refers to dev_power.o(.constdata) for g_gpioConfigHandler_power
     bsp_gpio.o(.data) refers to dev_storage0.o(.constdata) for g_gpioConfigHandler_storage0
     bsp_gpio.o(.data) refers to dev_storage1.o(.constdata) for g_gpioConfigHandler_storage1
-    bsp_gpio.o(.data) refers to dev_storage3.o(.constdata) for g_gpioConfigHandler_storage3
+    bsp_gpio.o(.data) refers to dev_storage2.o(.constdata) for g_gpioConfigHandler_storage2
     bsp_net_gpio.o(.text) refers to gd32f30x_rcu.o(.text) for rcu_periph_clock_enable
     bsp_net_gpio.o(.text) refers to gd32f30x_gpio.o(.text) for gpio_init
     bsp_timer.o(.text) refers to gd32f30x_misc.o(.text) for nvic_irq_enable
@@ -1143,16 +1143,16 @@ Removing Unused input sections from the image.
     Removing dev_main.o(.revsh_text), (4 bytes).
     Removing dev_power.o(.rev16_text), (4 bytes).
     Removing dev_power.o(.revsh_text), (4 bytes).
-    Removing dev_storage0.o(.rev16_text), (4 bytes).
-    Removing dev_storage0.o(.revsh_text), (4 bytes).
     Removing dev_switch.o(.rev16_text), (4 bytes).
     Removing dev_switch.o(.revsh_text), (4 bytes).
     Removing dev_fsm.o(.rev16_text), (4 bytes).
     Removing dev_fsm.o(.revsh_text), (4 bytes).
+    Removing dev_storage0.o(.rev16_text), (4 bytes).
+    Removing dev_storage0.o(.revsh_text), (4 bytes).
     Removing dev_storage1.o(.rev16_text), (4 bytes).
     Removing dev_storage1.o(.revsh_text), (4 bytes).
-    Removing dev_storage3.o(.rev16_text), (4 bytes).
-    Removing dev_storage3.o(.revsh_text), (4 bytes).
+    Removing dev_storage2.o(.rev16_text), (4 bytes).
+    Removing dev_storage2.o(.revsh_text), (4 bytes).
     Removing api_adc.o(.rev16_text), (4 bytes).
     Removing api_adc.o(.revsh_text), (4 bytes).
     Removing api_fan.o(.rev16_text), (4 bytes).
@@ -1571,7 +1571,7 @@ Image Symbol Table
     ..\\sub_devices\\dev_power.c             0x00000000   Number         0  dev_power.o ABSOLUTE
     ..\\sub_devices\\dev_storage0.c          0x00000000   Number         0  dev_storage0.o ABSOLUTE
     ..\\sub_devices\\dev_storage1.c          0x00000000   Number         0  dev_storage1.o ABSOLUTE
-    ..\\sub_devices\\dev_storage3.c          0x00000000   Number         0  dev_storage3.o ABSOLUTE
+    ..\\sub_devices\\dev_storage2.c          0x00000000   Number         0  dev_storage2.o ABSOLUTE
     ..\\sub_devices\\dev_switch.c            0x00000000   Number         0  dev_switch.o ABSOLUTE
     ..\\user\\main.c                         0x00000000   Number         0  main.o ABSOLUTE
     ..\\user\\systick.c                      0x00000000   Number         0  systick.o ABSOLUTE
@@ -1665,7 +1665,7 @@ Image Symbol Table
     ..\sub_devices\dev_power.c               0x00000000   Number         0  dev_power.o ABSOLUTE
     ..\sub_devices\dev_storage0.c            0x00000000   Number         0  dev_storage0.o ABSOLUTE
     ..\sub_devices\dev_storage1.c            0x00000000   Number         0  dev_storage1.o ABSOLUTE
-    ..\sub_devices\dev_storage3.c            0x00000000   Number         0  dev_storage3.o ABSOLUTE
+    ..\sub_devices\dev_storage2.c            0x00000000   Number         0  dev_storage2.o ABSOLUTE
     ..\sub_devices\dev_switch.c              0x00000000   Number         0  dev_switch.o ABSOLUTE
     ..\user\main.c                           0x00000000   Number         0  main.o ABSOLUTE
     ..\user\systick.c                        0x00000000   Number         0  systick.o ABSOLUTE
@@ -1731,16 +1731,16 @@ Image Symbol Table
     DevPower_shellPowerState                 0x08009a23   Thumb Code    48  dev_power.o(.text)
     DevPower_SampleMAC5023                   0x08009a53   Thumb Code   160  dev_power.o(.text)
     DevTaskHandler                           0x08009af3   Thumb Code    92  dev_power.o(.text)
-    .text                                    0x08009bc0   Section        0  dev_storage0.o(.text)
-    DevTaskHandler                           0x08009bc1   Thumb Code    90  dev_storage0.o(.text)
-    .text                                    0x08009c8c   Section        0  dev_switch.o(.text)
-    DevTaskHandler                           0x08009c8d   Thumb Code    96  dev_switch.o(.text)
-    .text                                    0x08009d58   Section        0  dev_fsm.o(.text)
-    fsm_findTrans                            0x08009d59   Thumb Code    54  dev_fsm.o(.text)
+    .text                                    0x08009bc0   Section        0  dev_switch.o(.text)
+    DevTaskHandler                           0x08009bc1   Thumb Code    96  dev_switch.o(.text)
+    .text                                    0x08009c8c   Section        0  dev_fsm.o(.text)
+    fsm_findTrans                            0x08009c8d   Thumb Code    54  dev_fsm.o(.text)
+    .text                                    0x08009da0   Section        0  dev_storage0.o(.text)
+    DevTaskHandler                           0x08009da1   Thumb Code    90  dev_storage0.o(.text)
     .text                                    0x08009e6c   Section        0  dev_storage1.o(.text)
     DevTaskHandler                           0x08009e6d   Thumb Code    90  dev_storage1.o(.text)
-    .text                                    0x08009f38   Section        0  dev_storage3.o(.text)
-    DevTaskHandler                           0x08009f39   Thumb Code    90  dev_storage3.o(.text)
+    .text                                    0x08009f38   Section        0  dev_storage2.o(.text)
+    DevTaskHandler                           0x08009f39   Thumb Code    90  dev_storage2.o(.text)
     .text                                    0x0800a004   Section        0  api_adc.o(.text)
     adc_InitADCs                             0x0800a005   Thumb Code    76  api_adc.o(.text)
     adc_InitWDGBattery                       0x0800a061   Thumb Code    96  api_adc.o(.text)
@@ -2143,21 +2143,21 @@ Image Symbol Table
     g_sensor_power                           0x080245c4   Data         160  dev_power.o(.constdata)
     g_FSM_StateAlias                         0x08024680   Data          48  dev_power.o(.constdata)
     g_powerStateTran                         0x080246b0   Data          48  dev_power.o(.constdata)
-    .constdata                               0x08024700   Section      236  dev_storage0.o(.constdata)
-    g_gpioConfig_storage0                    0x08024700   Data          40  dev_storage0.o(.constdata)
-    g_adcChannlConfig_storage0               0x08024730   Data          96  dev_storage0.o(.constdata)
-    g_sensor_storage0                        0x08024790   Data          64  dev_storage0.o(.constdata)
-    .constdata                               0x080247ec   Section      336  dev_switch.o(.constdata)
-    g_gpioConfig_switch                      0x080247ec   Data         100  dev_switch.o(.constdata)
-    g_adcChannlConfig_switch                 0x08024858   Data         120  dev_switch.o(.constdata)
-    g_sensor_switch                          0x080248d0   Data          80  dev_switch.o(.constdata)
+    .constdata                               0x08024700   Section      336  dev_switch.o(.constdata)
+    g_gpioConfig_switch                      0x08024700   Data         100  dev_switch.o(.constdata)
+    g_adcChannlConfig_switch                 0x0802476c   Data         120  dev_switch.o(.constdata)
+    g_sensor_switch                          0x080247e4   Data          80  dev_switch.o(.constdata)
+    .constdata                               0x08024850   Section      236  dev_storage0.o(.constdata)
+    g_gpioConfig_storage0                    0x08024850   Data          40  dev_storage0.o(.constdata)
+    g_adcChannlConfig_storage0               0x08024880   Data          96  dev_storage0.o(.constdata)
+    g_sensor_storage0                        0x080248e0   Data          64  dev_storage0.o(.constdata)
     .constdata                               0x0802493c   Section      236  dev_storage1.o(.constdata)
     g_gpioConfig_storage1                    0x0802493c   Data          40  dev_storage1.o(.constdata)
     g_adcChannlConfig_storage1               0x0802496c   Data          96  dev_storage1.o(.constdata)
     g_sensor_storage1                        0x080249cc   Data          64  dev_storage1.o(.constdata)
-    .constdata                               0x08024a28   Section      156  dev_storage3.o(.constdata)
-    g_adcChannlConfig_storage3               0x08024a30   Data          72  dev_storage3.o(.constdata)
-    g_sensor_storage3                        0x08024a78   Data          48  dev_storage3.o(.constdata)
+    .constdata                               0x08024a28   Section      156  dev_storage2.o(.constdata)
+    g_adcChannlConfig_storage2               0x08024a30   Data          72  dev_storage2.o(.constdata)
+    g_sensor_storage2                        0x08024a78   Data          48  dev_storage2.o(.constdata)
     .constdata                               0x08024ac4   Section       56  api_fan.o(.constdata)
     g_pwmChannleConfig                       0x08024ac4   Data          56  api_fan.o(.constdata)
     .constdata                               0x08024afc   Section       48  api_utc.o(.constdata)
@@ -2224,8 +2224,8 @@ Image Symbol Table
     .conststring                             0x08025928   Section       92  api_subdevices.o(.conststring)
     .conststring                             0x08025984   Section       89  dev_main.o(.conststring)
     .conststring                             0x080259e0   Section      213  dev_power.o(.conststring)
-    .conststring                             0x08025ab8   Section       10  dev_storage0.o(.conststring)
-    .conststring                             0x08025ac4   Section        9  dev_switch.o(.conststring)
+    .conststring                             0x08025ab8   Section        9  dev_switch.o(.conststring)
+    .conststring                             0x08025ac4   Section       10  dev_storage0.o(.conststring)
     .conststring                             0x08025ad0   Section       48  api_utc.o(.conststring)
     .conststring                             0x08025b00   Section      422  tools.o(.conststring)
     .conststring                             0x08025ca8   Section       81  log.o(.conststring)
@@ -2383,14 +2383,14 @@ Image Symbol Table
     g_sensorVal_main                         0x200006d8   Data          64  dev_main.o(.bss)
     .bss                                     0x20000718   Section       80  dev_power.o(.bss)
     g_sensorVal_power                        0x20000718   Data          80  dev_power.o(.bss)
-    .bss                                     0x20000768   Section       32  dev_storage0.o(.bss)
-    g_sensorVal_storage0                     0x20000768   Data          32  dev_storage0.o(.bss)
-    .bss                                     0x20000788   Section       40  dev_switch.o(.bss)
-    g_sensorVal_switch                       0x20000788   Data          40  dev_switch.o(.bss)
+    .bss                                     0x20000768   Section       40  dev_switch.o(.bss)
+    g_sensorVal_switch                       0x20000768   Data          40  dev_switch.o(.bss)
+    .bss                                     0x20000790   Section       32  dev_storage0.o(.bss)
+    g_sensorVal_storage0                     0x20000790   Data          32  dev_storage0.o(.bss)
     .bss                                     0x200007b0   Section       32  dev_storage1.o(.bss)
     g_sensorVal_storage1                     0x200007b0   Data          32  dev_storage1.o(.bss)
-    .bss                                     0x200007d0   Section       24  dev_storage3.o(.bss)
-    g_sensorVal_storage3                     0x200007d0   Data          24  dev_storage3.o(.bss)
+    .bss                                     0x200007d0   Section       24  dev_storage2.o(.bss)
+    g_sensorVal_storage2                     0x200007d0   Data          24  dev_storage2.o(.bss)
     .bss                                     0x200007e8   Section       24  api_fan.o(.bss)
     g_Fan                                    0x200007e8   Data          24  api_fan.o(.bss)
     .bss                                     0x20000800   Section       15  cjson.o(.bss)
@@ -2546,7 +2546,7 @@ Image Symbol Table
     SubDevice_GetSelf                        0x08008ad3   Thumb Code     6  api_subdevices.o(.text)
     SubDevice_GetBus                         0x08008c1f   Thumb Code    42  api_subdevices.o(.text)
     SubDevice_uploadTask                     0x080092c9   Thumb Code   106  api_subdevices.o(.text)
-    fsm_Handler                              0x08009d8f   Thumb Code   136  dev_fsm.o(.text)
+    fsm_Handler                              0x08009cc3   Thumb Code   136  dev_fsm.o(.text)
     adc_init                                 0x0800a051   Thumb Code    16  api_adc.o(.text)
     adc_sampleVal2Temp1                      0x0800a10d   Thumb Code   272  api_adc.o(.text)
     adc_sample_all                           0x0800a34d   Thumb Code   542  api_adc.o(.text)
@@ -3517,14 +3517,14 @@ Image Symbol Table
     g_devHandler_power                       0x08024664   Data          28  dev_power.o(.constdata)
     shellCmdps                               0x080246e0   Data           3  dev_power.o(.constdata)
     shellDescps                              0x080246e3   Data          26  dev_power.o(.constdata)
-    g_gpioConfigHandler_storage0             0x08024728   Data           8  dev_storage0.o(.constdata)
-    g_devHandler_storage0                    0x080247d0   Data          28  dev_storage0.o(.constdata)
-    g_gpioConfigHandler_switch               0x08024850   Data           8  dev_switch.o(.constdata)
-    g_devHandler_switch                      0x08024920   Data          28  dev_switch.o(.constdata)
+    g_gpioConfigHandler_switch               0x08024764   Data           8  dev_switch.o(.constdata)
+    g_devHandler_switch                      0x08024834   Data          28  dev_switch.o(.constdata)
+    g_gpioConfigHandler_storage0             0x08024878   Data           8  dev_storage0.o(.constdata)
+    g_devHandler_storage0                    0x08024920   Data          28  dev_storage0.o(.constdata)
     g_gpioConfigHandler_storage1             0x08024964   Data           8  dev_storage1.o(.constdata)
     g_devHandler_storage1                    0x08024a0c   Data          28  dev_storage1.o(.constdata)
-    g_gpioConfigHandler_storage3             0x08024a28   Data           8  dev_storage3.o(.constdata)
-    g_devHandler_storage3                    0x08024aa8   Data          28  dev_storage3.o(.constdata)
+    g_gpioConfigHandler_storage2             0x08024a28   Data           8  dev_storage2.o(.constdata)
+    g_devHandler_storage2                    0x08024aa8   Data          28  dev_storage2.o(.constdata)
     shellCmdi2cTest                          0x08024b5c   Data           8  tools.o(.constdata)
     shellDesci2cTest                         0x08024b64   Data           9  tools.o(.constdata)
     shellCmdreboot                           0x08024b6d   Data           7  tools.o(.constdata)
@@ -3665,11 +3665,11 @@ Memory Map of the image
     0x0800876c   0x0800876c   0x00000c28   Code   RO          460    .text               api_subdevices.o
     0x08009394   0x08009394   0x000004ac   Code   RO          665    .text               dev_main.o
     0x08009840   0x08009840   0x00000380   Code   RO          703    .text               dev_power.o
-    0x08009bc0   0x08009bc0   0x000000cc   Code   RO          739    .text               dev_storage0.o
-    0x08009c8c   0x08009c8c   0x000000cc   Code   RO          767    .text               dev_switch.o
-    0x08009d58   0x08009d58   0x00000114   Code   RO          795    .text               dev_fsm.o
+    0x08009bc0   0x08009bc0   0x000000cc   Code   RO          739    .text               dev_switch.o
+    0x08009c8c   0x08009c8c   0x00000114   Code   RO          767    .text               dev_fsm.o
+    0x08009da0   0x08009da0   0x000000cc   Code   RO          793    .text               dev_storage0.o
     0x08009e6c   0x08009e6c   0x000000cc   Code   RO          821    .text               dev_storage1.o
-    0x08009f38   0x08009f38   0x000000cc   Code   RO          849    .text               dev_storage3.o
+    0x08009f38   0x08009f38   0x000000cc   Code   RO          849    .text               dev_storage2.o
     0x0800a004   0x0800a004   0x00000630   Code   RO          877    .text               api_adc.o
     0x0800a634   0x0800a634   0x00000364   Code   RO          903    .text               api_fan.o
     0x0800a998   0x0800a998   0x0000006c   Code   RO          938    .text               api_cpu.o
@@ -3833,10 +3833,10 @@ Memory Map of the image
     0x080241ac   0x080241ac   0x00000268   Data   RO          667    .constdata          dev_main.o
     0x08024414   0x08024414   0x000002e9   Data   RO          705    .constdata          dev_power.o
     0x080246fd   0x080246fd   0x00000003   PAD
-    0x08024700   0x08024700   0x000000ec   Data   RO          741    .constdata          dev_storage0.o
-    0x080247ec   0x080247ec   0x00000150   Data   RO          769    .constdata          dev_switch.o
+    0x08024700   0x08024700   0x00000150   Data   RO          741    .constdata          dev_switch.o
+    0x08024850   0x08024850   0x000000ec   Data   RO          795    .constdata          dev_storage0.o
     0x0802493c   0x0802493c   0x000000ec   Data   RO          823    .constdata          dev_storage1.o
-    0x08024a28   0x08024a28   0x0000009c   Data   RO          851    .constdata          dev_storage3.o
+    0x08024a28   0x08024a28   0x0000009c   Data   RO          851    .constdata          dev_storage2.o
     0x08024ac4   0x08024ac4   0x00000038   Data   RO          905    .constdata          api_fan.o
     0x08024afc   0x08024afc   0x00000030   Data   RO          960    .constdata          api_utc.o
     0x08024b2c   0x08024b2c   0x000000a2   Data   RO          982    .constdata          tools.o
@@ -3883,10 +3883,10 @@ Memory Map of the image
     0x080259dd   0x080259dd   0x00000003   PAD
     0x080259e0   0x080259e0   0x000000d5   Data   RO          706    .conststring        dev_power.o
     0x08025ab5   0x08025ab5   0x00000003   PAD
-    0x08025ab8   0x08025ab8   0x0000000a   Data   RO          742    .conststring        dev_storage0.o
-    0x08025ac2   0x08025ac2   0x00000002   PAD
-    0x08025ac4   0x08025ac4   0x00000009   Data   RO          770    .conststring        dev_switch.o
-    0x08025acd   0x08025acd   0x00000003   PAD
+    0x08025ab8   0x08025ab8   0x00000009   Data   RO          742    .conststring        dev_switch.o
+    0x08025ac1   0x08025ac1   0x00000003   PAD
+    0x08025ac4   0x08025ac4   0x0000000a   Data   RO          796    .conststring        dev_storage0.o
+    0x08025ace   0x08025ace   0x00000002   PAD
     0x08025ad0   0x08025ad0   0x00000030   Data   RO          961    .conststring        api_utc.o
     0x08025b00   0x08025b00   0x000001a6   Data   RO          983    .conststring        tools.o
     0x08025ca6   0x08025ca6   0x00000002   PAD
@@ -3961,10 +3961,10 @@ Memory Map of the image
     0x200006a8        -       0x00000030   Zero   RW          461    .bss                api_subdevices.o
     0x200006d8        -       0x00000040   Zero   RW          666    .bss                dev_main.o
     0x20000718        -       0x00000050   Zero   RW          704    .bss                dev_power.o
-    0x20000768        -       0x00000020   Zero   RW          740    .bss                dev_storage0.o
-    0x20000788        -       0x00000028   Zero   RW          768    .bss                dev_switch.o
+    0x20000768        -       0x00000028   Zero   RW          740    .bss                dev_switch.o
+    0x20000790        -       0x00000020   Zero   RW          794    .bss                dev_storage0.o
     0x200007b0        -       0x00000020   Zero   RW          822    .bss                dev_storage1.o
-    0x200007d0        -       0x00000018   Zero   RW          850    .bss                dev_storage3.o
+    0x200007d0        -       0x00000018   Zero   RW          850    .bss                dev_storage2.o
     0x200007e8        -       0x00000018   Zero   RW          904    .bss                api_fan.o
     0x20000800        -       0x0000000f   Zero   RW         1157    .bss                cjson.o
     0x2000080f   COMPRESSED   0x00000001   PAD
@@ -4029,7 +4029,7 @@ Image component sizes
        896        114        974         20         80       9594   dev_power.o
        204        114        246          0         32       4011   dev_storage0.o
        204        114        236          0         32       4011   dev_storage1.o
-       204        114        156          0         24       3967   dev_storage3.o
+       204        114        156          0         24       3967   dev_storage2.o
        204        108        345          0         40       4001   dev_switch.o
        646          0          0          0          0       3577   eeprom.o
        420          0          0          0          0      12652   fifo.o

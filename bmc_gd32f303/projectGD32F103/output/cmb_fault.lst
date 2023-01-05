@@ -79,9 +79,9 @@ ARM Macro Assembler    Page 2
 Command Line: --debug --xref --diag_suppress=9931 --cpu=Cortex-M3 --apcs=interw
 ork --depend=.\output\temp\cmb_fault.d -o.\output\temp\cmb_fault.o -Id:\Users\A
 rm\Packs\GigaDevice\GD32F10x_DFP\2.0.2\Device\Include -Id:\Keil_v5\ARM\CMSIS\In
-clude --predefine="__MICROLIB SETA 1" --predefine="__UVISION_VERSION SETA 535" 
---predefine="GD32F10X_MD SETA 1" --predefine="USE_STDPERIPH_DRIVER SETA 1" --li
-st=.\output\cmb_fault.lst ..\api\cm_backtrace\cmb_fault.S
+clude --predefine="__UVISION_VERSION SETA 535" --predefine="GD32F10X_MD SETA 1"
+ --predefine="USE_STDPERIPH_DRIVER SETA 1" --list=.\output\cmb_fault.lst ..\api
+\cm_backtrace\cmb_fault.S
 
 
 
@@ -128,4 +128,4 @@ Symbol: HardFault_Handler_bt
       At line 41 in file ..\api\cm_backtrace\cmb_fault.S
 Comment: HardFault_Handler_bt used once
 1 symbol
-338 symbols in table
+337 symbols in table

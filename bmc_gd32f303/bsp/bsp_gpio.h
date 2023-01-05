@@ -118,7 +118,7 @@ extern const GPIOConfig_Handler g_gpioConfigHandler_switch;
 extern const GPIOConfig_Handler g_gpioConfigHandler_power;
 extern const GPIOConfig_Handler g_gpioConfigHandler_storage0;
 extern const GPIOConfig_Handler g_gpioConfigHandler_storage1;
-extern const GPIOConfig_Handler g_gpioConfigHandler_storage3;
+extern const GPIOConfig_Handler g_gpioConfigHandler_storage2;
 
 void      GPIO_bspInit     (void);
 uint8_t   get_board_addr     (void);

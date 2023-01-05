@@ -288,9 +288,9 @@ ARM Macro Assembler    Page 5
    [WEAK]
   159 00000000                 IMPORT           __main
   160 00000000                 IMPORT           SystemInit
-  161 00000000 4806            LDR              R0, =SystemInit
+  161 00000000 4809            LDR              R0, =SystemInit
   162 00000002 4780            BLX              R0
-  163 00000004 4806            LDR              R0, =__main
+  163 00000004 4809            LDR              R0, =__main
   164 00000006 4700            BX               R0
   165 00000008                 ENDP
   166 00000008         
@@ -580,30 +580,43 @@ ARM Macro Assembler    Page 9
   346 0000001C         ; user Initial Stack & Heap
   347 0000001C         
   348 0000001C                 IF               :DEF:__MICROLIB
-  349 0000001C         
-  350 0000001C                 EXPORT           __initial_sp
-  351 0000001C                 EXPORT           __heap_base
+  355 0000001C         
+  356 0000001C                 IMPORT           __use_two_region_memory
+  357 0000001C                 EXPORT           __user_initial_stackheap
 
 
 
 ARM Macro Assembler    Page 10 
 
 
-  352 0000001C                 EXPORT           __heap_limit
-  353 0000001C         
-  354 0000001C                 ELSE
-  369                          ENDIF
-  370 0000001C         
-  371 0000001C                 END
+  358 0000001C         
+  359 0000001C         __user_initial_stackheap
+                               PROC
+  360 0000001C 4804            LDR              R0, =  Heap_Mem
+  361 0000001E 4905            LDR              R1, =(Stack_Mem + Stack_Size)
+  362 00000020 4A05            LDR              R2, = (Heap_Mem +  Heap_Size)
+  363 00000022 4B06            LDR              R3, = Stack_Mem
+  364 00000024 4770            BX               LR
+  365 00000026                 ENDP
+  366 00000026         
+  367 00000026 00 00           ALIGN
+  368 00000028         
+  369 00000028                 ENDIF
+  370 00000028         
+  371 00000028                 END
               00000000 
+              00000000 
+              00000000 
+              00000200 
+              00000200 
               00000000 
 Command Line: --debug --xref --diag_suppress=9931 --cpu=Cortex-M3 --apcs=interw
 ork --depend=.\output\temp\startup_gd32f10x_hd.d -o.\output\temp\startup_gd32f1
 0x_hd.o -Id:\Users\Arm\Packs\GigaDevice\GD32F10x_DFP\2.0.2\Device\Include -Id:\
-Keil_v5\ARM\CMSIS\Include --predefine="__MICROLIB SETA 1" --predefine="__UVISIO
-N_VERSION SETA 535" --predefine="GD32F10X_MD SETA 1" --predefine="USE_STDPERIPH
-_DRIVER SETA 1" --list=.\output\startup_gd32f10x_hd.lst ..\firmware\GD32F10x\CM
-SIS\GD\GD32F10x\Source\ARM\startup_gd32f10x_hd.s
+Keil_v5\ARM\CMSIS\Include --predefine="__UVISION_VERSION SETA 535" --predefine=
+"GD32F10X_MD SETA 1" --predefine="USE_STDPERIPH_DRIVER SETA 1" --list=.\output\
+startup_gd32f10x_hd.lst ..\firmware\GD32F10x\CMSIS\GD\GD32F10x\Source\ARM\start
+up_gd32f10x_hd.s
 
 
 
@@ -626,8 +639,11 @@ Symbol: Stack_Mem
       At line 46 in file ..\firmware\GD32F10x\CMSIS\GD\GD32F10x\Source\ARM\star
 tup_gd32f10x_hd.s
    Uses
-      None
-Comment: Stack_Mem unused
+      At line 361 in file ..\firmware\GD32F10x\CMSIS\GD\GD32F10x\Source\ARM\sta
+rtup_gd32f10x_hd.s
+      At line 363 in file ..\firmware\GD32F10x\CMSIS\GD\GD32F10x\Source\ARM\sta
+rtup_gd32f10x_hd.s
+
 __initial_sp 00000200
 
 Symbol: __initial_sp
@@ -637,9 +653,7 @@ tup_gd32f10x_hd.s
    Uses
       At line 71 in file ..\firmware\GD32F10x\CMSIS\GD\GD32F10x\Source\ARM\star
 tup_gd32f10x_hd.s
-      At line 350 in file ..\firmware\GD32F10x\CMSIS\GD\GD32F10x\Source\ARM\sta
-rtup_gd32f10x_hd.s
-
+Comment: __initial_sp used once
 3 symbols
 
 
@@ -663,8 +677,11 @@ Symbol: Heap_Mem
       At line 58 in file ..\firmware\GD32F10x\CMSIS\GD\GD32F10x\Source\ARM\star
 tup_gd32f10x_hd.s
    Uses
-      None
-Comment: Heap_Mem unused
+      At line 360 in file ..\firmware\GD32F10x\CMSIS\GD\GD32F10x\Source\ARM\sta
+rtup_gd32f10x_hd.s
+      At line 362 in file ..\firmware\GD32F10x\CMSIS\GD\GD32F10x\Source\ARM\sta
+rtup_gd32f10x_hd.s
+
 __heap_base 00000000
 
 Symbol: __heap_base
@@ -672,9 +689,8 @@ Symbol: __heap_base
       At line 57 in file ..\firmware\GD32F10x\CMSIS\GD\GD32F10x\Source\ARM\star
 tup_gd32f10x_hd.s
    Uses
-      At line 351 in file ..\firmware\GD32F10x\CMSIS\GD\GD32F10x\Source\ARM\sta
-rtup_gd32f10x_hd.s
-Comment: __heap_base used once
+      None
+Comment: __heap_base unused
 __heap_limit 00000200
 
 Symbol: __heap_limit
@@ -682,9 +698,8 @@ Symbol: __heap_limit
       At line 59 in file ..\firmware\GD32F10x\CMSIS\GD\GD32F10x\Source\ARM\star
 tup_gd32f10x_hd.s
    Uses
-      At line 352 in file ..\firmware\GD32F10x\CMSIS\GD\GD32F10x\Source\ARM\sta
-rtup_gd32f10x_hd.s
-Comment: __heap_limit used once
+      None
+Comment: __heap_limit unused
 4 symbols
 
 
@@ -1674,7 +1689,17 @@ tup_gd32f10x_hd.s
       At line 215 in file ..\firmware\GD32F10x\CMSIS\GD\GD32F10x\Source\ARM\sta
 rtup_gd32f10x_hd.s
 
-72 symbols
+__user_initial_stackheap 0000001C
+
+Symbol: __user_initial_stackheap
+   Definitions
+      At line 359 in file ..\firmware\GD32F10x\CMSIS\GD\GD32F10x\Source\ARM\sta
+rtup_gd32f10x_hd.s
+   Uses
+      At line 357 in file ..\firmware\GD32F10x\CMSIS\GD\GD32F10x\Source\ARM\sta
+rtup_gd32f10x_hd.s
+Comment: __user_initial_stackheap used once
+73 symbols
 
 
 
@@ -1690,7 +1715,9 @@ tup_gd32f10x_hd.s
    Uses
       At line 58 in file ..\firmware\GD32F10x\CMSIS\GD\GD32F10x\Source\ARM\star
 tup_gd32f10x_hd.s
-Comment: Heap_Size used once
+      At line 362 in file ..\firmware\GD32F10x\CMSIS\GD\GD32F10x\Source\ARM\sta
+rtup_gd32f10x_hd.s
+
 Stack_Size 00000200
 
 Symbol: Stack_Size
@@ -1700,7 +1727,9 @@ tup_gd32f10x_hd.s
    Uses
       At line 46 in file ..\firmware\GD32F10x\CMSIS\GD\GD32F10x\Source\ARM\star
 tup_gd32f10x_hd.s
-Comment: Stack_Size used once
+      At line 361 in file ..\firmware\GD32F10x\CMSIS\GD\GD32F10x\Source\ARM\sta
+rtup_gd32f10x_hd.s
+
 __Vectors_Size 00000130
 
 Symbol: __Vectors_Size
@@ -1738,5 +1767,14 @@ rtup_gd32f10x_hd.s
       At line 163 in file ..\firmware\GD32F10x\CMSIS\GD\GD32F10x\Source\ARM\sta
 rtup_gd32f10x_hd.s
 Comment: __main used once
-2 symbols
-423 symbols in table
+__use_two_region_memory 00000000
+
+Symbol: __use_two_region_memory
+   Definitions
+      At line 356 in file ..\firmware\GD32F10x\CMSIS\GD\GD32F10x\Source\ARM\sta
+rtup_gd32f10x_hd.s
+   Uses
+      None
+Comment: __use_two_region_memory unused
+3 symbols
+426 symbols in table

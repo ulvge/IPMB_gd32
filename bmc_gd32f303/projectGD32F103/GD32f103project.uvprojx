@@ -189,7 +189,7 @@
             <hadIRAM2>0</hadIRAM2>
             <hadIROM2>0</hadIROM2>
             <StupSel>8</StupSel>
-            <useUlib>1</useUlib>
+            <useUlib>0</useUlib>
             <EndSel>0</EndSel>
             <uLtcg>0</uLtcg>
             <nSecure>0</nSecure>
@@ -276,7 +276,7 @@
               <OCR_RVCT4>
                 <Type>1</Type>
                 <StartAddress>0x8008000</StartAddress>
-                <Size>0x1f000</Size>
+                <Size>0x18000</Size>
               </OCR_RVCT4>
               <OCR_RVCT5>
                 <Type>1</Type>
@@ -444,9 +444,9 @@
               <FilePath>..\sub_devices\dev_storage1.c</FilePath>
             </File>
             <File>
-              <FileName>dev_storage3.c</FileName>
+              <FileName>dev_storage2.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\sub_devices\dev_storage3.c</FilePath>
+              <FilePath>..\sub_devices\dev_storage2.c</FilePath>
             </File>
           </Files>
         </Group>

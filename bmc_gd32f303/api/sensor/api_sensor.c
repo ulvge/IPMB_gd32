@@ -20,7 +20,7 @@ extern const Dev_Handler g_devHandler_switch;
 extern const Dev_Handler g_devHandler_power;
 extern const Dev_Handler g_devHandler_storage0;
 extern const Dev_Handler g_devHandler_storage1;
-extern const Dev_Handler g_devHandler_storage3;
+extern const Dev_Handler g_devHandler_storage2;
 
 const static Dev_Handler *g_pDev_Handler = NULL;
 static const Dev_Handler *g_AllDevices[] = {
@@ -29,7 +29,7 @@ static const Dev_Handler *g_AllDevices[] = {
     &g_devHandler_power,
     &g_devHandler_storage0,
     &g_devHandler_storage1,
-    &g_devHandler_storage3,
+    &g_devHandler_storage2,
 };
 
 bool api_sensorGetUnitType(INT8U destMode, UINT32 sensorNum, uint8_t *unitType)

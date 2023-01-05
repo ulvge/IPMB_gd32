@@ -380,8 +380,8 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>..\sub_devices\dev_storage0.c</PathWithFileName>
-      <FilenameWithoutPath>dev_storage0.c</FilenameWithoutPath>
+      <PathWithFileName>..\sub_devices\dev_switch.c</PathWithFileName>
+      <FilenameWithoutPath>dev_switch.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>
@@ -392,8 +392,8 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>..\sub_devices\dev_switch.c</PathWithFileName>
-      <FilenameWithoutPath>dev_switch.c</FilenameWithoutPath>
+      <PathWithFileName>..\sub_devices\dev_fsm.c</PathWithFileName>
+      <FilenameWithoutPath>dev_fsm.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>
@@ -404,8 +404,8 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>..\sub_devices\dev_fsm.c</PathWithFileName>
-      <FilenameWithoutPath>dev_fsm.c</FilenameWithoutPath>
+      <PathWithFileName>..\sub_devices\dev_storage0.c</PathWithFileName>
+      <FilenameWithoutPath>dev_storage0.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>
@@ -428,8 +428,8 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>..\sub_devices\dev_storage3.c</PathWithFileName>
-      <FilenameWithoutPath>dev_storage3.c</FilenameWithoutPath>
+      <PathWithFileName>..\sub_devices\dev_storage2.c</PathWithFileName>
+      <FilenameWithoutPath>dev_storage2.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>

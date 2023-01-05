@@ -67,7 +67,7 @@ static const SubDeviceName_T g_SubDeviceConfigName[] = {
     {SUB_DEVICE_MODE_SWITCH, "switch"},
     {SUB_DEVICE_MODE_STORAGE0, "storage0"},
     {SUB_DEVICE_MODE_STORAGE1, "storage1"},
-    {SUB_DEVICE_MODE_STORAGE3, "storage2"},
+    {SUB_DEVICE_MODE_STORAGE2, "storage2"},
 };
 
 char *SubDevice_GetModeName(SUB_DEVICE_MODE mode)

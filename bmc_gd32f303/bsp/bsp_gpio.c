@@ -32,7 +32,7 @@ const static GPIOConfig_Handler *g_gpioAllDevices[] = {
     &g_gpioConfigHandler_power,
     &g_gpioConfigHandler_storage0,
     &g_gpioConfigHandler_storage1,
-    &g_gpioConfigHandler_storage3,
+    &g_gpioConfigHandler_storage2,
 };
 
 
