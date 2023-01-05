@@ -146,7 +146,7 @@
 /***************************************************************************************************************/
 #define configUSE_TIMERS				        1                               //Ϊ1ʱ����������ʱ��
 #define configTIMER_TASK_PRIORITY		        (configMAX_PRIORITIES-1)        //������ʱ�����ȼ�
-#define configTIMER_QUEUE_LENGTH		        3                               //������ʱ�����г���
+#define configTIMER_QUEUE_LENGTH		        5                               //������ʱ�����г���
 #define configTIMER_TASK_STACK_DEPTH	        (configMINIMAL_STACK_SIZE*1)    //������ʱ�������ջ���?
 
 /***************************************************************************************************************/

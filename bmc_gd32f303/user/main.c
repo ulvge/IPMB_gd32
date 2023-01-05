@@ -191,25 +191,10 @@ void vApplicationIdleHook(void)
 __attribute__((unused)) static void watch_dog_init()
 {
     /* check if the system has resumed from FWDGT reset */
-    if (SET == rcu_flag_get(RCU_FLAG_FWDGTRST))
-    {
-        LOG_W("system reset reason: FWDG\r\n");
-    }
-    else if (SET == rcu_flag_get(RCU_FLAG_PORRST))
-    {
-        LOG_W("system reset reason: power on\r\n");
-    }
-    else if (SET == rcu_flag_get(RCU_FLAG_SWRST))
-    {
-        LOG_W("system reset reason: soft\r\n");
-    }
-    else if (SET == rcu_flag_get(RCU_FLAG_EPRST))
-    {
-        LOG_W("system reset reason: external PIN\r\n");
-    }
-	else {
-        LOG_W("system reset reason: unkown\r\n");
-	}
+    uint32_t resetCause = update_BkpDateRead(MCU_RESET_CAUSE_ADDR_H) << 16;
+    resetCause |= update_BkpDateRead(MCU_RESET_CAUSE_ADDR_L);
+    common_printfResetCause((rcu_flag_enum)resetCause);
+
     rcu_all_reset_flag_clear();
     /* confiure FWDGT counter clock: 40KHz(IRC40K) / 64 = 0.625 KHz */
     fwdgt_config(2 * 500, FWDGT_PSC_DIV64);

@@ -7,6 +7,7 @@
 #include "dev_fsm.h"
 #include "shell_ext.h"
 #include "shell_port.h"
+#include "jump.h"
 
 #define DEV_POWER_TASK_DELAY_XMS  10
 #define MAC5023_SAMPLE_PERIOD_XMS 1000
@@ -221,11 +222,17 @@ static void DevPower_printStateAlias(FSM_State curState)
 }
 static int DevPower_shellPowerState(int argc, char *argv[])
 {
-    DevPower_printStateAlias(g_powerSM.curState);
+    uint32_t resetCause = update_BkpDateRead(MCU_RESET_CAUSE_ADDR_H) << 16;
+    resetCause |= update_BkpDateRead(MCU_RESET_CAUSE_ADDR_L);
+    common_printfResetCause((rcu_flag_enum)resetCause);
+
+    if (SubDevice_GetMyMode() == SUB_DEVICE_MODE_POWER) {
+        DevPower_printStateAlias(g_powerSM.curState);
+    }
     return 0;
 }
 
-SHELL_EXPORT_CMD(SHELL_CMD_PERMISSION(0) | SHELL_CMD_TYPE(SHELL_TYPE_CMD_MAIN) | SHELL_CMD_DISABLE_RETURN, ps, DevPower_shellPowerState, power state);
+SHELL_EXPORT_CMD(SHELL_CMD_PERMISSION(0) | SHELL_CMD_TYPE(SHELL_TYPE_CMD_MAIN) | SHELL_CMD_DISABLE_RETURN, ps, DevPower_shellPowerState, power state & reset cause);
 
 // *******************   StateMachine end   *******************
 static void DevPower_SampleMAC5023(void)

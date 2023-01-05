@@ -45,7 +45,9 @@ void boot_updateTask(void *arg)
 
         vTaskSuspend(updateMonitorHandle);
         g_UpdatingSM = boot_ProcessUpdateReq(&reqMsg);
-		g_resendCount = 0;
+        if (g_UpdatingSM != UPDATE_SM_INIT) {
+            g_resendCount = 0;
+        }
         vTaskResume(updateMonitorHandle);
     }
 }

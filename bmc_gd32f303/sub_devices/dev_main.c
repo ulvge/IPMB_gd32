@@ -6,7 +6,24 @@
 #include "MsgHndlr.h"
 #include "ipmi_common.h"
 
-										 
+#define CPU_LOSE_MSG_XMS 3000
+#define CPU_LED_FLASH_XMS 500
+typedef enum
+{
+    CPU_RUN_STATE_ALARM = 0,
+    CPU_RUN_STATE_NORMAL = 1,
+} CPURunState;
+
+typedef struct
+{
+    CPURunState runState;
+    ControlStatus ledLastState;
+    uint8_t rcvCmd;
+    uint32_t rcvCmdTimerStamp;
+} CPURunStateCtrl;
+static CPURunStateCtrl g_CPURunStateCtrl = {
+	.rcvCmdTimerStamp = (uint32_t)(-CPU_LOSE_MSG_XMS),
+};
 static void DevTaskHandler(void *pArg);
 // config GPIO
 static const GPIOConfig g_gpioConfig_main[] = {
@@ -20,10 +37,10 @@ static const GPIOConfig g_gpioConfig_main[] = {
     {GPIO_CPLD_MCU_6,                   GPIOD, GPIO_PIN_14,RCU_GPIOD, GPIO_MODE_IN_FLOATING, GPIO_OSPEED_10MHZ, 1}, //unused
     {GPIO_CPLD_MCU_5,                   GPIOD, GPIO_PIN_15,RCU_GPIOD, GPIO_MODE_IN_FLOATING, GPIO_OSPEED_10MHZ, 1}, //unused
 
-    {GPIO_CPLD_MCU_4,                   GPIOC, GPIO_PIN_6,RCU_GPIOC, GPIO_MODE_IN_FLOATING, GPIO_OSPEED_10MHZ, 1}, //unused
+    {GPIO_CPLD_MCU_4,                   GPIOC, GPIO_PIN_6,RCU_GPIOC, GPIO_MODE_OUT_PP, GPIO_OSPEED_10MHZ, 1}, // CPU run state
     {GPIO_CPLD_MCU_3,                   GPIOC, GPIO_PIN_7,RCU_GPIOC, GPIO_MODE_IN_FLOATING, GPIO_OSPEED_10MHZ, 1}, //unused
     {GPIO_CPLD_MCU_2,                   GPIOC, GPIO_PIN_8,RCU_GPIOC, GPIO_MODE_IN_FLOATING, GPIO_OSPEED_10MHZ, 1}, //unused
-    {GPIO_CPLD_MCU_1,                   GPIOC, GPIO_PIN_9,RCU_GPIOC, GPIO_MODE_OUT_PP, GPIO_OSPEED_10MHZ, 1}, // CPU run state
+    {GPIO_CPLD_MCU_1,                   GPIOC, GPIO_PIN_9,RCU_GPIOC, GPIO_MODE_IN_FLOATING, GPIO_OSPEED_10MHZ, 1}, //unused
 };
 
 const GPIOConfig_Handler g_gpioConfigHandler_main = {
@@ -31,11 +48,6 @@ const GPIOConfig_Handler g_gpioConfigHandler_main = {
     CREATE_CONFIG_HANDLER(gpio, g_gpioConfig_main),
 };
 static const  ADCChannlesConfig g_adcChannlConfig_main[] = {
-#ifdef GD32F1x
-    {ADC_CHANNEL_8,         ADC_CONFIG_GROUP_DEAULT, GPIOB, RCU_GPIOB, GPIO_PIN_0},
-    {ADC_CHANNEL_0,      	ADC_CONFIG_GROUP_DEAULT, GPIOA, RCU_GPIOA, GPIO_PIN_0},
-    {ADC_CHANNEL_10,        ADC_CONFIG_GROUP_DEAULT, GPIOC, RCU_GPIOC, GPIO_PIN_0},
-#else
     {ADC_CHANNEL_10,        ADC_CONFIG_GROUP_DEAULT, GPIOC, RCU_GPIOC, GPIO_PIN_0},
     {ADC_CHANNEL_11,        ADC_CONFIG_GROUP_DEAULT, GPIOC, RCU_GPIOC, GPIO_PIN_1},
     {ADC_CHANNEL_13,        ADC_CONFIG_GROUP_DEAULT, GPIOC, RCU_GPIOC, GPIO_PIN_3},
@@ -45,15 +57,9 @@ static const  ADCChannlesConfig g_adcChannlConfig_main[] = {
     {ADC_CHANNEL_6,         ADC_CONFIG_GROUP_DEAULT, GPIOA, RCU_GPIOA, GPIO_PIN_6},
     {ADC_CHANNEL_7,         ADC_CONFIG_GROUP_DEAULT, GPIOA, RCU_GPIOA, GPIO_PIN_7},
     {ADC_CHANNEL_14,        ADC_CONFIG_GROUP_DEAULT, GPIOC, RCU_GPIOC, GPIO_PIN_4},
-#endif
 };
 
 static const  SensorConfig g_sensor_main[] = {
-#ifdef GD32F1x
-    {ADC_CHANNEL_8,         SUB_DEVICE_SDR_TEMP,        "X100_temp"},
-    {ADC_CHANNEL_0,      	SUB_DEVICE_SDR_P1V8,        "P1V8_VCC"},
-    {ADC_CHANNEL_10,        SUB_DEVICE_SDR_P12V_10_1,   "P12V_standby"},
-#else
     {ADC_CHANNEL_10,        SUB_DEVICE_SDR_P0V9, "P0V9_VCORE"},
     {ADC_CHANNEL_11,        SUB_DEVICE_SDR_P2V5, "CPU_P2V5_DDR4"},
     {ADC_CHANNEL_13,        SUB_DEVICE_SDR_P1V2, "P1V2_VDDQ"},
@@ -63,7 +69,6 @@ static const  SensorConfig g_sensor_main[] = {
     {ADC_CHANNEL_6,         SUB_DEVICE_SDR_P12V, "P12V"},
     {ADC_CHANNEL_7,         SUB_DEVICE_SDR_P3V3, "P3V3"},
     {ADC_CHANNEL_14,        SUB_DEVICE_SDR_TEMP, "CPU_TEMP"},
-#endif
 };
 
 static SubDevice_Reading_T g_sensorVal_main[ARRARY_SIZE(g_sensor_main)];
@@ -103,11 +108,29 @@ static void CPU_MsgCoreHndlr(void)
             return;
         }
         cmd = recvPkt.Data[0];
-        ControlStatus isActive = (cmd == 1) ? ENABLE : DISABLE;
-        GPIO_setPinStatus(GPIO_CPLD_MCU_1, isActive);
+        // 没收到 | 进入系统的时候 : 灭
+        // 报警 : 闪
+        // 正常进入系统后 : 常亮
+        g_CPURunStateCtrl.rcvCmd = cmd;
+        g_CPURunStateCtrl.rcvCmdTimerStamp = GetTickMs(); 
+        LOG_D("CPU_MsgCoreHndlr rcvCmd = %s", cmd == CPU_RUN_STATE_ALARM ? "alarm" : " normal");
     }
 }
 
+static void TimerCpuRunStateCallBack(xTimerHandle pxTimer)
+{
+    UNUSED(pxTimer);
+    if (GetTickMs() - g_CPURunStateCtrl.rcvCmdTimerStamp > CPU_LOSE_MSG_XMS) {
+        GPIO_setPinStatus(GPIO_CPLD_MCU_4, DISABLE);
+    } else {
+        if (g_CPURunStateCtrl.rcvCmd == CPU_RUN_STATE_ALARM) {
+            GPIO_setPinStatus(GPIO_CPLD_MCU_4, g_CPURunStateCtrl.ledLastState);
+            g_CPURunStateCtrl.ledLastState = (g_CPURunStateCtrl.ledLastState == DISABLE ? ENABLE : DISABLE);
+        } else if (g_CPURunStateCtrl.rcvCmd == CPU_RUN_STATE_NORMAL) {
+            GPIO_setPinStatus(GPIO_CPLD_MCU_4, ENABLE);
+        }
+    }
+}
 TaskHandle_t xHandleUploadTask = NULL;
 static void DevTaskHandler(void *pArg)
 {
@@ -122,11 +145,16 @@ static void DevTaskHandler(void *pArg)
         LOG_E("SubDevice_uploadTask create ERR!");
         errCreate++;
     }
+    TimerHandle_t xTimersCpuRunState = xTimerCreate("TimerCpuRunState", CPU_LED_FLASH_XMS / portTICK_RATE_MS, pdTRUE, 
+                                    (void*)0, TimerCpuRunStateCallBack);
+    if (pdFAIL == xTimerStart(xTimersCpuRunState, portMAX_DELAY)) {
+        LOG_E("DevTaskHandler init create  TimerCpuRunState failed");
+    }
     if (errCreate != 0) {
         LOG_E("DevTaskHandler init error DevTaskHandler");
         vTaskDelete(NULL);
     }
-
+    
     while (1) {
         vTaskDelay(500);
         CPU_MsgCoreHndlr();

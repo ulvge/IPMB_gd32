@@ -170,7 +170,7 @@ static void vTaskResponseDatWrite(void *pvParameters)
             {
                 LOG_RAW("%02x ", ResMsg->Data[i]);
             }
-            LOG_D("\r\n");
+            LOG_RAW("\r\n");
         }
     }
 }

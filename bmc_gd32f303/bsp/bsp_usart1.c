@@ -91,6 +91,7 @@ void USART1_IRQHandler(void)
             }
         }
 
+        //UART_sendByte(USART0, res);  //loopback
         // use FIFO store all
         if (is_start == false) {
             /* receive data */

@@ -7,7 +7,29 @@ Code shared by app&bootloader
 #include <string.h>
 
 typedef void (*pFunction)(void);
-
+typedef struct
+{
+    rcu_flag_enum cause;
+    char *description;
+} ResetCause;
+static const ResetCause g_resetCause[] = {
+    {(rcu_flag_enum)NULL, "system reset reason: normal\r\n"},
+    {RCU_FLAG_FWDGTRST, "system reset reason: FWDG\r\n"},
+    {RCU_FLAG_WWDGTRST, "system reset reason: WWDGT\r\n"},
+    {RCU_FLAG_PORRST, "system reset reason: power on\r\n"},
+    {RCU_FLAG_SWRST, "system reset reason: soft\r\n"},
+    {RCU_FLAG_EPRST, "system reset reason: external PIN\r\n"},
+    {RCU_FLAG_LPRST, "system reset reason: low-power reset\r\n"},
+};
+void common_printfResetCause(rcu_flag_enum cause)
+{
+    for (uint32_t i = 0; i < ARRARY_SIZE(g_resetCause); i++)
+    {
+        if (g_resetCause[i].cause == cause) {
+            LOG_W("%s", g_resetCause[i].description);
+        }
+    }
+}
 void update_JumpToRun(uint32_t jumpCodeAddr)
 {
     /* 关闭全局中断 */
@@ -67,6 +89,3 @@ void update_JumpToRun(uint32_t jumpCodeAddr)
         ;
     }
 }
-
-
-

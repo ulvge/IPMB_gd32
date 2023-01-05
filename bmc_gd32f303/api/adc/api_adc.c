@@ -145,7 +145,7 @@ __attribute__((unused)) static void adc_test(void)
 	LOG_D("adc_test humanVal = %.3f\r\n", valHuman);
     StackFlow();
 }
-#define ADC_SAMPLE_TIMES 3
+#define ADC_SAMPLE_TIMES 1
 #define ADC_SAMPLE_DEALYTIMES 10
 /// @brief consume time = ADC_SAMPLE_TIMES * ADC_SAMPLE_DEALYTIMES * num
 void adc_sample_all(void)

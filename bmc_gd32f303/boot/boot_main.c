@@ -219,22 +219,26 @@ void vApplicationIdleHook(void)
 /// @brief interrupt FWDGT_IRQHandler
 __attribute__((unused)) static void watch_dog_init()
 {
+    rcu_flag_enum resetCause;
     /* check if the system has resumed from FWDGT reset */
     if (SET == rcu_flag_get(RCU_FLAG_FWDGTRST)) {
-        LOG_W("system reset reason: FWDG\r\n");
+        resetCause = RCU_FLAG_FWDGTRST;
     } else if (SET == rcu_flag_get(RCU_FLAG_WWDGTRST)) {
-        LOG_W("system reset reason: WWDGT\r\n");
+        resetCause = RCU_FLAG_WWDGTRST;
     } else if (SET == rcu_flag_get(RCU_FLAG_PORRST)) {
-        LOG_W("system reset reason: power on\r\n");
+        resetCause = RCU_FLAG_PORRST;
     } else if (SET == rcu_flag_get(RCU_FLAG_SWRST)) {
-        LOG_W("system reset reason: soft\r\n");
+        resetCause = RCU_FLAG_SWRST;
     } else if (SET == rcu_flag_get(RCU_FLAG_EPRST)) {
-        LOG_W("system reset reason: external PIN\r\n");
+        resetCause = RCU_FLAG_EPRST;
     } else if (SET == rcu_flag_get(RCU_FLAG_LPRST)) {
-        LOG_W("system reset reason: low-power reset\r\n");
+        resetCause = RCU_FLAG_LPRST;
     } else {
-        LOG_W("system reset reason: unkown\r\n");
+        resetCause = (rcu_flag_enum)NULL;
     }
+    common_printfResetCause(resetCause);
+    update_BkpDateWrite(MCU_RESET_CAUSE_ADDR_H, (resetCause >> 16)&0xffff);
+    update_BkpDateWrite(MCU_RESET_CAUSE_ADDR_L, resetCause & 0xffff);
     rcu_all_reset_flag_clear();
     /* confiure FWDGT counter clock: 40KHz(IRC40K) / 64 = 0.625 KHz */
     fwdgt_config(2 * 500, FWDGT_PSC_DIV64);

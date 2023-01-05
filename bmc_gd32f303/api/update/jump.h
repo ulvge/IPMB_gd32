@@ -45,11 +45,7 @@ typedef __packed struct
     INT8U   identification;
     INT8U   msg;
 } xmodeClientAckProtocol_T;
-#ifdef GD32F1x  //@
-#define BOOT_I2C_BUS  I2C_BUS_1
-#else
 #define BOOT_I2C_BUS  I2C_BUS_0
-#endif
 
 /*   **********   xmode   end   ***********/
 
@@ -77,8 +73,12 @@ typedef __packed struct
 
 #define I2C_UPDATE_MODE_ADDR    BKP_DATA_2
 
+#define MCU_RESET_CAUSE_ADDR_H    BKP_DATA_3
+#define MCU_RESET_CAUSE_ADDR_L    BKP_DATA_4
+
 
 void update_JumpToRun(uint32_t jumpCodeAddr);
+void common_printfResetCause(rcu_flag_enum cause);
 void update_BkpDateWrite(bkp_data_register_enum register_number, uint16_t data);
 uint16_t update_BkpDateRead(bkp_data_register_enum register_number);
 

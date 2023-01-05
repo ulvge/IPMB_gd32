@@ -25,7 +25,7 @@
 #define SUB_DEVICES_SENDMSG_WAIT_TIMEOUT_XMS 20
 
 #define SUB_DEVICES_TASK_DELAY_MS 500
-#define SUB_DEVICES_TIMER_SAMPLE_PERIOD_XMS 2000
+#define SUB_DEVICES_TIMER_SAMPLE_PERIOD_XMS 1000
 #define SUB_DEVICES_TIMER_UPLOAD_PERIOD_XMS 1100
 #define SUB_DEVICES_TIMER_SWITCH_IPMB_BUS_XMS 2000
 
@@ -67,7 +67,7 @@ static const SubDeviceName_T g_SubDeviceConfigName[] = {
     {SUB_DEVICE_MODE_SWITCH, "switch"},
     {SUB_DEVICE_MODE_STORAGE0, "storage0"},
     {SUB_DEVICE_MODE_STORAGE1, "storage1"},
-    {SUB_DEVICE_MODE_STORAGE3, "storage3"},
+    {SUB_DEVICE_MODE_STORAGE3, "storage2"},
 };
 
 char *SubDevice_GetModeName(SUB_DEVICE_MODE mode)
@@ -137,7 +137,7 @@ bool SubDevice_CheckAndPrintMode(void)
         SubDevice_PrintModeName();
         return false;
     }
-    LOG_I("\r\n\r\nThis borad as [%s]]\r\n", SubDevice_GetModeName(mode));
+    LOG_I("\r\n\r\nThis borad as [%s]\r\n", SubDevice_GetModeName(mode));
     sprintf(buff, "This borad as [%s]\r\n", SubDevice_GetModeName(mode));
     EEP_WriteDataCheckFirst(EEP_ADDR_SAVE_MODE, (uint8_t *)buff, strlen(buff));
     SubDevice_InitAllMode();
@@ -307,7 +307,7 @@ static void SubDevice_SwitchBus(SUB_DEVICE_MODE mode)
         }
     }
 }
-static void SubDevice_SendDataSpilt(char *pstr)
+static void SubDevice_SendDataSpilt(uint32_t usart_periph, char *pstr)
 {
 #define SEND_LENGTH_PRE     (UART1_BUFF_SIZE / 2)
     uint32_t len = strlen(pstr);
@@ -318,19 +318,19 @@ static void SubDevice_SendDataSpilt(char *pstr)
         offset = i * SEND_LENGTH_PRE;
         if ((offset + SEND_LENGTH_PRE) <= len)
         {
-            if (UART_sendDataBlock(CPU_UART_PERIPH, (uint8_t *)pstr + offset, SEND_LENGTH_PRE))
+            if (UART_sendDataBlock(usart_periph, (uint8_t *)pstr + offset, SEND_LENGTH_PRE))
             {
                 i++;
                 vTaskDelay(2);// 0.1ms/byte
             }
             else
             {
-                vTaskDelay(20);// 0.1ms/byte
+                vTaskDelay((SEND_LENGTH_PRE / 10) + 5);// 0.1ms/byte
             }
         }
         else
         { // last
-            if (UART_sendDataBlock(CPU_UART_PERIPH, (uint8_t *)pstr + offset, len - offset))
+            if (UART_sendDataBlock(usart_periph, (uint8_t *)pstr + offset, len - offset))
             {
                 return;
             }
@@ -406,12 +406,16 @@ static void SubDevice_Upload()
     else
     {
         char *newLine = "\r\n";
+        SubDevice_SendDataSpilt(CPU_UART_PERIPH, pstr);
         while (!UART_sendDataBlock(CPU_UART_PERIPH, (uint8_t *)newLine, strlen(newLine)));
-        SubDevice_SendDataSpilt(pstr);
+        
+        if (g_debugLevel >= DBG_LOG) {
+            SubDevice_SendDataSpilt(DEBUG_UART_PERIPH, pstr);
+            while (!UART_sendDataBlock(DEBUG_UART_PERIPH, (uint8_t *)newLine, strlen(newLine)));
+        }
         cJSON_Delete(pCJType);
         vPortFree(pstr);
 
-        while (!UART_sendDataBlock(CPU_UART_PERIPH, (uint8_t *)newLine, strlen(newLine)));
         LOG_D("\t\tupload success, free byte = %d\n", xPortGetFreeHeapSize());
     }
 }
@@ -515,9 +519,9 @@ static void SubDevice_statisticsOnlineSwitchBus(void)
     {
         if (!SubDevice_IsOnLine(dev)) {
             SubDevice_SwitchBus(dev);
-            LOG_W("[ %d : %s ] is offline, switch ipmb bus to %d\r\n", dev, SubDevice_GetModeName(dev), SubDevice_GetBus(dev));
+            LOG_W("[ %d : %-10s ] is offline, switch ipmb bus to %d\r\n", dev, SubDevice_GetModeName(dev), SubDevice_GetBus(dev));
         } else {
-            LOG_D("[ %d : %s ] is online\r\n", dev, SubDevice_GetModeName(dev));
+            LOG_D("[ %d : %-10s ] is online\r\n", dev, SubDevice_GetModeName(dev));
         }
     }
 }

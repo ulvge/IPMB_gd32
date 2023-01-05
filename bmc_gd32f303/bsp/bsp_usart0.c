@@ -34,8 +34,8 @@ static UART_PARA_STRUCT g_UARTPara = {
     .config = &g_uart0Config,
 };
 
-#define UART0_BUFF_SIZE 	(50)
-static INT8U g_buffSend[400];
+#define UART0_BUFF_SIZE 	(200)
+static INT8U g_buffSend[2048];
 static INT8U g_buffRec[UART0_BUFF_SIZE];
 
 void UART0_init(void)

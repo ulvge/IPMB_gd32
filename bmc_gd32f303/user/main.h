@@ -44,7 +44,7 @@ OF SUCH DAMAGE.
 #endif
 
 #define    HARDWARE_VERSION     "1.0"
-#define    BOOT_VERSION         "1.0"
+#define    BOOT_VERSION         "1.1"
 #define    BMC_VERSION          "1.1"
 
 #ifdef BOOTLOADER
