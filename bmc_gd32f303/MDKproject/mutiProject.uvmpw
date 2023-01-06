@@ -8,14 +8,6 @@
   <WorkspaceName>WorkSpace</WorkspaceName>
 
   <project>
-    <PathAndName>..\projectGD32F103Boot\GD32F103Boot.uvprojx</PathAndName>
-  </project>
-
-  <project>
-    <PathAndName>..\projectGD32F103\GD32f103project.uvprojx</PathAndName>
-  </project>
-
-  <project>
     <PathAndName>..\projectGD32F303Boot\GD32F303Boot.uvprojx</PathAndName>
   </project>
 
