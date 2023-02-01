@@ -4,7 +4,8 @@
 
 #include "project_select.h"
 #include <stdbool.h>
-#include "main.h"     
+#include "main.h"
+#include "shell.h"     
 #include "api_subdevices.h"
 
 
@@ -113,12 +114,17 @@ typedef struct {
 
 #define CREATE_CONFIG_HANDLER(name, config)   .name##CfgSize = ARRARY_SIZE(config),  .name##Cfg = config 
 
-extern const GPIOConfig_Handler g_gpioConfigHandler_main;
-extern const GPIOConfig_Handler g_gpioConfigHandler_switch;
-extern const GPIOConfig_Handler g_gpioConfigHandler_power;
-extern const GPIOConfig_Handler g_gpioConfigHandler_storage0;
-extern const GPIOConfig_Handler g_gpioConfigHandler_storage1;
-extern const GPIOConfig_Handler g_gpioConfigHandler_storage2;
+#define CMD_GPIO_CONFIG_EXPORT(_name, _mode, config, confitSize, level) \
+    const GPIOConfig_Handler _name SECTION("modeGPIOConfig"level) =  \
+    { \
+        .mode = _mode,  \
+        .gpioCfgSize = confitSize,\
+        .gpioCfg = config \
+    }
+
+#define GPIO_CONFIG_START_EXPORT(_name, _mode, config, confitSize) 	CMD_GPIO_CONFIG_EXPORT(_name, _mode, config, confitSize, ".0.end")
+#define GPIO_CONFIG_EXPORT(_name, _mode, config, confitSize) 		CMD_GPIO_CONFIG_EXPORT(_name, _mode, config, confitSize, ".1")
+#define GPIO_CONFIG_END_EXPORT(_name, _mode, config, confitSize) 	CMD_GPIO_CONFIG_EXPORT(_name, _mode, config, confitSize, ".1.end")
 
 void      GPIO_bspInit     (void);
 uint8_t   get_board_addr     (void);

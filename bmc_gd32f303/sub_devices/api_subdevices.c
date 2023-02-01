@@ -409,7 +409,7 @@ static void SubDevice_Upload()
         SubDevice_SendDataSpilt(CPU_UART_PERIPH, pstr);
         while (!UART_sendDataBlock(CPU_UART_PERIPH, (uint8_t *)newLine, strlen(newLine)));
         
-        if (g_debugLevel >= DBG_LOG) {
+        if (g_debugLevel >= DBG_WARNING) {
             SubDevice_SendDataSpilt(DEBUG_UART_PERIPH, pstr);
             while (!UART_sendDataBlock(DEBUG_UART_PERIPH, (uint8_t *)newLine, strlen(newLine)));
         }

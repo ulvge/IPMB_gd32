@@ -25,16 +25,9 @@ const static GPIOConfig g_gpioConfigComm[] = {
     {GPIO_I2CS0_SDA, I2CS0_SDA_GPIO_PORT, I2CS0_SDA_PIN, I2CS0_SDA_CLK, GPIO_MODE_OUT_OD, GPIO_OSPEED_10MHZ, 0},
 };
 
+GPIO_CONFIG_START_EXPORT(g_gpioConfigHandler_start, SUB_DEVICE_MODE_MAX, NULL, 0);
+GPIO_CONFIG_END_EXPORT(g_gpioConfigHandler_end, SUB_DEVICE_MODE_MAX, NULL, 0);
 const static GPIOConfig_Handler *g_pGpioConfig_Handler = NULL;
-const static GPIOConfig_Handler *g_gpioAllDevices[] = {
-    &g_gpioConfigHandler_main,
-    &g_gpioConfigHandler_switch,
-    &g_gpioConfigHandler_power,
-    &g_gpioConfigHandler_storage0,
-    &g_gpioConfigHandler_storage1,
-    &g_gpioConfigHandler_storage2,
-};
-
 
 static void GPIO_InitGPIOs(const GPIOConfig *config, UINT8 size)
 {
@@ -60,13 +53,11 @@ static bool GPIO_CheckMode(void)
         return false;
     }
     SUB_DEVICE_MODE myMode = SubDevice_GetMyMode();
-
-    for (size_t i = 0; i < ARRARY_SIZE(g_gpioAllDevices); i++)
+    for (const GPIOConfig_Handler *phandler = (&g_gpioConfigHandler_start) + 1; phandler < &g_gpioConfigHandler_end; phandler++)
     {
-        const GPIOConfig_Handler **phandler = (g_gpioAllDevices + i);
-        if ((*phandler)->mode == myMode)
+        if (phandler->mode == myMode)
         {
-            g_pGpioConfig_Handler = *phandler;
+            g_pGpioConfig_Handler = phandler;
             GPIO_InitGPIOs(g_pGpioConfig_Handler->gpioCfg, g_pGpioConfig_Handler->gpioCfgSize);
             return true;
         }

@@ -5,12 +5,8 @@
 #include "api_sensor.h" 
 
 static void DevTaskHandler(void *pArg);
-// config GPIO
-const GPIOConfig_Handler g_gpioConfigHandler_storage2 = {
-    .mode = SUB_DEVICE_MODE_STORAGE2,
-    .gpioCfgSize = 0,
-    .gpioCfg = NULL,
-};
+// config GPIO                        GPIO
+GPIO_CONFIG_EXPORT(g_gpioConfigHandler_storage2, SUB_DEVICE_MODE_STORAGE2, NULL, 0);
 
 // config ADC
 static const  ADCChannlesConfig g_adcChannlConfig_storage2[] = {

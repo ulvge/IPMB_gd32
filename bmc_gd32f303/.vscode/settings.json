@@ -55,6 +55,9 @@
         "project_select.h": "c",
         "stdio.h": "c",
         "boot_update.h": "c",
-        "bsp_uartcomm.h": "c"
+        "bsp_uartcomm.h": "c",
+        "bsp_gpio.h": "c",
+        "shell.h": "c",
+        "string.h": "c"
     }
 }

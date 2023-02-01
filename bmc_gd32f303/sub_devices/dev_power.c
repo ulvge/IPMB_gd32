@@ -39,11 +39,7 @@ const static GPIOConfig g_gpioConfig_power[] = {
     {GPIO_OUT_P5V_EN,       GPIOC, GPIO_PIN_9,  RCU_GPIOC, GPIO_MODE_OUT_PP,      GPIO_OSPEED_10MHZ, 1},
 };
 
-const GPIOConfig_Handler g_gpioConfigHandler_power = {
-    .mode = SUB_DEVICE_MODE_POWER,
-    CREATE_CONFIG_HANDLER(gpio, g_gpioConfig_power),
-};
-
+GPIO_CONFIG_EXPORT(g_gpioConfigHandler_power, SUB_DEVICE_MODE_POWER, g_gpioConfig_power, ARRARY_SIZE(g_gpioConfig_power));
 
 // config ADC
 static const  ADCChannlesConfig g_adcChannlConfig_power[] = {
@@ -225,7 +221,7 @@ static int DevPower_shellPowerState(int argc, char *argv[])
     uint32_t resetCause = update_BkpDateRead(MCU_RESET_CAUSE_ADDR_H) << 16;
     resetCause |= update_BkpDateRead(MCU_RESET_CAUSE_ADDR_L);
     common_printfResetCause((rcu_flag_enum)resetCause);
-
+    LOG_E("\r\n\r\nThis borad as [%s]\r\n", SubDevice_GetModeName(SubDevice_GetMyMode()));
     if (SubDevice_GetMyMode() == SUB_DEVICE_MODE_POWER) {
         DevPower_printStateAlias(g_powerSM.curState);
     }

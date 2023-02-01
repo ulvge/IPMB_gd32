@@ -43,10 +43,8 @@ static const GPIOConfig g_gpioConfig_main[] = {
     {GPIO_CPLD_MCU_1,                   GPIOC, GPIO_PIN_9,RCU_GPIOC, GPIO_MODE_IN_FLOATING, GPIO_OSPEED_10MHZ, 1}, //unused
 };
 
-const GPIOConfig_Handler g_gpioConfigHandler_main = {
-    .mode = SUB_DEVICE_MODE_MAIN,
-    CREATE_CONFIG_HANDLER(gpio, g_gpioConfig_main),
-};
+GPIO_CONFIG_EXPORT(g_gpioConfigHandler_main, SUB_DEVICE_MODE_MAIN, g_gpioConfig_main, ARRARY_SIZE(g_gpioConfig_main));
+
 static const  ADCChannlesConfig g_adcChannlConfig_main[] = {
     {ADC_CHANNEL_10,        ADC_CONFIG_GROUP_DEAULT, GPIOC, RCU_GPIOC, GPIO_PIN_0},
     {ADC_CHANNEL_11,        ADC_CONFIG_GROUP_DEAULT, GPIOC, RCU_GPIOC, GPIO_PIN_1},

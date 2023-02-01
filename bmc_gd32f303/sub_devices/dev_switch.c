@@ -6,7 +6,7 @@
 
 static void DevTaskHandler(void *pArg);
 // config GPIO
-const static GPIOConfig g_gpioConfig_switch[] = {
+static const GPIOConfig g_gpioConfig_switch[] = {
     {GPIO_OUT_WX_NRST,       GPIOD, GPIO_PIN_8,  RCU_GPIOD, GPIO_MODE_OUT_OD,       GPIO_OSPEED_10MHZ, 1},
 
     {GPIO_IN_P0V9_PWRGD,     GPIOC, GPIO_PIN_6,  RCU_GPIOC, GPIO_MODE_IN_FLOATING,  GPIO_OSPEED_10MHZ, 1},//unused
@@ -15,10 +15,7 @@ const static GPIOConfig g_gpioConfig_switch[] = {
     {GPIO_OUT_P1V8_EN,       GPIOC, GPIO_PIN_9,  RCU_GPIOC, GPIO_MODE_IN_FLOATING,  GPIO_OSPEED_10MHZ, 1},//unused
 };
 
-const GPIOConfig_Handler g_gpioConfigHandler_switch = {
-    .mode = SUB_DEVICE_MODE_SWITCH,
-    CREATE_CONFIG_HANDLER(gpio, g_gpioConfig_switch),
-};
+GPIO_CONFIG_EXPORT(g_gpioConfigHandler_switch, SUB_DEVICE_MODE_SWITCH, g_gpioConfig_switch, ARRARY_SIZE(g_gpioConfig_switch));
 
 // config ADC
 static const  ADCChannlesConfig g_adcChannlConfig_switch[] = {
