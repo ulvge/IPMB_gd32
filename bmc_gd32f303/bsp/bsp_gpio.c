@@ -25,8 +25,8 @@ const static GPIOConfig g_gpioConfigComm[] = {
     {GPIO_I2CS0_SDA, I2CS0_SDA_GPIO_PORT, I2CS0_SDA_PIN, I2CS0_SDA_CLK, GPIO_MODE_OUT_OD, GPIO_OSPEED_10MHZ, 0},
 };
 
-GPIO_CONFIG_START_EXPORT(g_gpioConfigHandler_start, SUB_DEVICE_MODE_MAX, NULL, 0);
-GPIO_CONFIG_END_EXPORT(g_gpioConfigHandler_end, SUB_DEVICE_MODE_MAX, NULL, 0);
+static GPIO_CONFIG_START_EXPORT(g_gpioConfigHandler_start, SUB_DEVICE_MODE_MAX, NULL, 0);
+static GPIO_CONFIG_END_EXPORT(g_gpioConfigHandler_end, SUB_DEVICE_MODE_MAX, NULL, 0);
 const static GPIOConfig_Handler *g_pGpioConfig_Handler = NULL;
 
 static void GPIO_InitGPIOs(const GPIOConfig *config, UINT8 size)

@@ -15,7 +15,7 @@ static const GPIOConfig g_gpioConfig_switch[] = {
     {GPIO_OUT_P1V8_EN,       GPIOC, GPIO_PIN_9,  RCU_GPIOC, GPIO_MODE_IN_FLOATING,  GPIO_OSPEED_10MHZ, 1},//unused
 };
 
-GPIO_CONFIG_EXPORT(g_gpioConfigHandler_switch, SUB_DEVICE_MODE_SWITCH, g_gpioConfig_switch, ARRARY_SIZE(g_gpioConfig_switch));
+static GPIO_CONFIG_EXPORT(g_gpioConfigHandler_switch, SUB_DEVICE_MODE_SWITCH, g_gpioConfig_switch, ARRARY_SIZE(g_gpioConfig_switch));
 
 // config ADC
 static const  ADCChannlesConfig g_adcChannlConfig_switch[] = {

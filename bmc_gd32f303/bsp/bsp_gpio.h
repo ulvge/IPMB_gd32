@@ -114,17 +114,17 @@ typedef struct {
 
 #define CREATE_CONFIG_HANDLER(name, config)   .name##CfgSize = ARRARY_SIZE(config),  .name##Cfg = config 
 
-#define CMD_GPIO_CONFIG_EXPORT(_name, _mode, config, confitSize, level) \
+#define CMD_GPIO_CONFIG_EXPORT(_name, _mode, config, configSize, level) \
     const GPIOConfig_Handler _name SECTION("modeGPIOConfig"level) =  \
     { \
         .mode = _mode,  \
-        .gpioCfgSize = confitSize,\
+        .gpioCfgSize = configSize,\
         .gpioCfg = config \
     }
 
-#define GPIO_CONFIG_START_EXPORT(_name, _mode, config, confitSize) 	CMD_GPIO_CONFIG_EXPORT(_name, _mode, config, confitSize, ".0.end")
-#define GPIO_CONFIG_EXPORT(_name, _mode, config, confitSize) 		CMD_GPIO_CONFIG_EXPORT(_name, _mode, config, confitSize, ".1")
-#define GPIO_CONFIG_END_EXPORT(_name, _mode, config, confitSize) 	CMD_GPIO_CONFIG_EXPORT(_name, _mode, config, confitSize, ".1.end")
+#define GPIO_CONFIG_START_EXPORT(_name, _mode, config, configSize) 	CMD_GPIO_CONFIG_EXPORT(_name, _mode, config, configSize, ".0.end")
+#define GPIO_CONFIG_EXPORT(_name, _mode, config, configSize) 		CMD_GPIO_CONFIG_EXPORT(_name, _mode, config, configSize, ".1")
+#define GPIO_CONFIG_END_EXPORT(_name, _mode, config, configSize) 	CMD_GPIO_CONFIG_EXPORT(_name, _mode, config, configSize, ".1.end")
 
 void      GPIO_bspInit     (void);
 uint8_t   get_board_addr     (void);

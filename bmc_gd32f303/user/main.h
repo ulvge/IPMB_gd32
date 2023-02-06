@@ -45,7 +45,7 @@ OF SUCH DAMAGE.
 
 #define    HARDWARE_VERSION     "1.0"
 #define    BOOT_VERSION         "1.1"
-#define    BMC_VERSION          "1.1"
+#define    BMC_VERSION          "1.2"
 
 #ifdef BOOTLOADER
 extern unsigned int g_bootDebugUartPeriph;

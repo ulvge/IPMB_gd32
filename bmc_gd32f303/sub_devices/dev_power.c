@@ -16,7 +16,7 @@
 #define WAIT_POWERON_STABILIZE_XMS  100
 #define WAIT_POWERDOWN_STABILIZE_XMS  100
 
-#define BATTERY_SAMPLE_PERIOD   10 * 1000
+#define BATTERY_SAMPLE_PERIOD_XMS   60 * 1000
 
 static void DevTaskHandler(void *pArg);
 // config GPIO
@@ -39,7 +39,7 @@ const static GPIOConfig g_gpioConfig_power[] = {
     {GPIO_OUT_P5V_EN,       GPIOC, GPIO_PIN_9,  RCU_GPIOC, GPIO_MODE_OUT_PP,      GPIO_OSPEED_10MHZ, 1},
 };
 
-GPIO_CONFIG_EXPORT(g_gpioConfigHandler_power, SUB_DEVICE_MODE_POWER, g_gpioConfig_power, ARRARY_SIZE(g_gpioConfig_power));
+static GPIO_CONFIG_EXPORT(g_gpioConfigHandler_power, SUB_DEVICE_MODE_POWER, g_gpioConfig_power, ARRARY_SIZE(g_gpioConfig_power));
 
 // config ADC
 static const  ADCChannlesConfig g_adcChannlConfig_power[] = {
@@ -80,8 +80,8 @@ const Dev_Handler g_devHandler_power = {
 
 static bool DevPower_VBATSampleHookBefore(void)
 {                                                             
-    static UINT32 lastSampleTickBak = BATTERY_SAMPLE_PERIOD * 1000;
-    if (GetTickMs() - lastSampleTickBak >= BATTERY_SAMPLE_PERIOD) {
+    static UINT32 lastSampleTickBak = BATTERY_SAMPLE_PERIOD_XMS * 1000;
+    if (GetTickMs() - lastSampleTickBak >= BATTERY_SAMPLE_PERIOD_XMS) {
         GPIO_setPinStatus(GPIO_OUT_VBAT_EN, ENABLE);
         lastSampleTickBak = GetTickMs();
         vTaskDelay(25);

@@ -151,20 +151,20 @@ __attribute__((unused)) static void adc_test(void)
 void adc_sample_all(void)
 {
     uint8_t ipmbVal;
-	uint8_t sensorNum;
+    uint8_t sensorNum;
     const ADCChannlesConfig *pAdcCfg;
     int sensorSize = g_pADCConfig_Handler->sensorCfgSize;
     if (sensorSize == 0) {
         return;
     }
-    uint16_t temp_vals[ADC_SAMPLE_TIMES][10] = {0};
+    uint16_t temp_vals[ADC_SAMPLE_TIMES][ADC_CHANNEL_MAX] = {0};
 
     // sample
     for (UINT32 i = 0; i < ADC_SAMPLE_TIMES; i++)
     {
         for (UINT32 j = 0; j < sensorSize; j++)
         {
-			sensorNum = g_pADCConfig_Handler->sensorCfg[j].sensorNum;
+            sensorNum = g_pADCConfig_Handler->sensorCfg[j].sensorNum;
             if(sensorNum >= ADC_CHANNEL_MAX) {
                 continue;
             }

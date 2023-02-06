@@ -11,7 +11,7 @@ const static GPIOConfig g_gpioConfig_storage0[] = {
     {GPIO_IN_P3V3_PWRGD,    GPIOB, GPIO_PIN_13, RCU_GPIOB, GPIO_MODE_IN_FLOATING, GPIO_OSPEED_10MHZ, 1}, //unused
 };
 
-GPIO_CONFIG_EXPORT(g_gpioConfigHandler_storage0, SUB_DEVICE_MODE_STORAGE0, g_gpioConfig_storage0, ARRARY_SIZE(g_gpioConfig_storage0));
+static GPIO_CONFIG_EXPORT(g_gpioConfigHandler_storage0, SUB_DEVICE_MODE_STORAGE0, g_gpioConfig_storage0, ARRARY_SIZE(g_gpioConfig_storage0));
 
 
 // config ADC
