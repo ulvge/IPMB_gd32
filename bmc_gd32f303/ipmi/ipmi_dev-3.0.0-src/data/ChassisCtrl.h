@@ -21,6 +21,7 @@
 #ifndef _CHASSIS_CTRL_H_
 #define _CHASSIS_CTRL_H_
 #include "Types.h"
+#include "Message.h"
 
 /**
  * @def Parameters to controle the Chassis actions

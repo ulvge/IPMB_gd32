@@ -39,6 +39,9 @@ typedef enum {
 }SUB_DEVICE_SDR_IDX ;
 
 
+#define GPIO_ALIAS_TO_CPLD_RESET  GPIO_CPLD_MCU_2
+#define GPIO_ALIAS_TO_CPLD_POWER_ONOFF  GPIO_CPLD_MCU_1
+
 typedef enum {
     SUB_DEVICE_REG_ERR_EXIST  = -10,
     SUB_DEVICE_REG_ERR_,
@@ -80,6 +83,7 @@ SubDeviceModeStatus_T *SubDevice_GetSelf(void);
 uint8_t SubDevice_modeConvertSlaveAddr(SUB_DEVICE_MODE mode);
 char *SubDevice_GetModeName(SUB_DEVICE_MODE mode);
 void SubDevice_PrintModeName(void);
+bool DevPower_IsPowerGood(void);
 
 #ifdef __cplusplus
 }

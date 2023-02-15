@@ -36,6 +36,7 @@
 #include "IPMIConf.h"
 //#include "featuredef.h"
 #include "cpu/api_cpu.h"
+#include "api_subdevices.h"
 
 /* Reserved bit macro definitions */
 #define RESERVED_BITS_CHASSISCONTROL                    0xF0 //(BIT7 | BIT6 | BIT5 |BIT4)
@@ -164,7 +165,7 @@ GetChassisStatus (INT8U* pReq, INT8U ReqLen, INT8U* pRes,int BMCInst)
     pGetChassisStatusRes->CompletionCode = CC_NORMAL;
 
     //pGetChassisStatusRes->ChassisPowerState.PowerState = (TRUE == PSGood) ? 0x01: 0x00;
-    pGetChassisStatusRes->ChassisPowerState.PowerState = 0x01;
+    pGetChassisStatusRes->ChassisPowerState.PowerState = DevPower_IsPowerGood();
     IPMI_DBG_PRINT ("\nGET Chassis STATUS = %d\n", pGetChassisStatusRes->ChassisPowerState.PowerState);
 
     return sizeof (GetChassisStatusRes_T) ; 

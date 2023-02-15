@@ -39,8 +39,8 @@ static const GPIOConfig g_gpioConfig_main[] = {
 
     {GPIO_CPLD_MCU_4,                   GPIOC, GPIO_PIN_6,RCU_GPIOC, GPIO_MODE_OUT_PP, GPIO_OSPEED_10MHZ, 1}, // CPU run state
     {GPIO_CPLD_MCU_3,                   GPIOC, GPIO_PIN_7,RCU_GPIOC, GPIO_MODE_IN_FLOATING, GPIO_OSPEED_10MHZ, 1}, //unused
-    {GPIO_CPLD_MCU_2,                   GPIOC, GPIO_PIN_8,RCU_GPIOC, GPIO_MODE_IN_FLOATING, GPIO_OSPEED_10MHZ, 1}, //unused
-    {GPIO_CPLD_MCU_1,                   GPIOC, GPIO_PIN_9,RCU_GPIOC, GPIO_MODE_IN_FLOATING, GPIO_OSPEED_10MHZ, 1}, //unused
+    {GPIO_CPLD_MCU_2,                   GPIOC, GPIO_PIN_8,RCU_GPIOC, GPIO_MODE_OUT_PP, GPIO_OSPEED_10MHZ, 0}, //reset from MCU to CPLD
+    {GPIO_CPLD_MCU_1,                   GPIOC, GPIO_PIN_9,RCU_GPIOC, GPIO_MODE_OUT_PP, GPIO_OSPEED_10MHZ, 0}, //upower on/off from MCU to CPLD
 };
 
 static GPIO_CONFIG_EXPORT(g_gpioConfigHandler_main, SUB_DEVICE_MODE_MAIN, g_gpioConfig_main, ARRARY_SIZE(g_gpioConfig_main));

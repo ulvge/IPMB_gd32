@@ -58,6 +58,8 @@
         "bsp_uartcomm.h": "c",
         "bsp_gpio.h": "c",
         "shell.h": "c",
-        "string.h": "c"
+        "string.h": "c",
+        "chassisctrl.h": "c",
+        "*.rh": "c"
     }
 }

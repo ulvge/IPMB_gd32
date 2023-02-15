@@ -13,12 +13,12 @@ typedef struct
     char *description;
 } ResetCause;
 static const ResetCause g_resetCause[] = {
-    {(rcu_flag_enum)NULL, "system reset reason: normal\r\n"},
-    {RCU_FLAG_FWDGTRST, "system reset reason: FWDG\r\n"},
-    {RCU_FLAG_WWDGTRST, "system reset reason: WWDGT\r\n"},
-    {RCU_FLAG_PORRST, "system reset reason: power on\r\n"},
-    {RCU_FLAG_SWRST, "system reset reason: soft\r\n"},
-    {RCU_FLAG_EPRST, "system reset reason: external PIN\r\n"},
+    {(rcu_flag_enum)NULL, "system reset reason: normal reset\r\n"},
+    {RCU_FLAG_FWDGTRST, "system reset reason: FWDG reset\r\n"},
+    {RCU_FLAG_WWDGTRST, "system reset reason: WWDGT reset\r\n"},
+    {RCU_FLAG_PORRST, "system reset reason: power reset\r\n"},
+    {RCU_FLAG_SWRST, "system reset reason: soft reset\r\n"},
+    {RCU_FLAG_EPRST, "system reset reason: external PIN \r\n"},
     {RCU_FLAG_LPRST, "system reset reason: low-power reset\r\n"},
 };
 void common_printfResetCause(rcu_flag_enum cause)
@@ -27,6 +27,7 @@ void common_printfResetCause(rcu_flag_enum cause)
     {
         if (g_resetCause[i].cause == cause) {
             LOG_W("%s", g_resetCause[i].description);
+            break;
         }
     }
 }
