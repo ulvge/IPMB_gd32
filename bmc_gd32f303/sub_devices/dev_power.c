@@ -223,8 +223,8 @@ bool DevPower_IsPowerGood(void)
     switch (SubDevice_GetMyMode())
     {
         case SUB_DEVICE_MODE_MAIN:
-            p12v = api_sensorGetValHuman(ADC_CHANNEL_6);
-            p3v3 = api_sensorGetValHuman(ADC_CHANNEL_7);
+            p12v = api_sensorGetModeValHuman(SUB_DEVICE_MODE_POWER, ADC_CHANNEL_6);
+            p3v3 = api_sensorGetModeValHuman(SUB_DEVICE_MODE_POWER, ADC_CHANNEL_7);
             if ((p12v > 1.0f) || (p3v3 > 1.0f)){
                 return true;
             }
@@ -243,9 +243,8 @@ static int DevPower_shellPowerState(int argc, char *argv[])
     uint32_t resetCause = update_BkpDateRead(MCU_RESET_CAUSE_ADDR_H) << 16;
     resetCause |= update_BkpDateRead(MCU_RESET_CAUSE_ADDR_L);
     common_printfResetCause((rcu_flag_enum)resetCause); // output reset cause
-    LOG_E("\r\n\r\nThis borad as [%s]\r\n", SubDevice_GetModeName(SubDevice_GetMyMode()));
     if (SubDevice_GetMyMode() == SUB_DEVICE_MODE_POWER) {
-        DevPower_printStateAlias(g_powerSM.curState); // output reset cause
+        DevPower_printStateAlias(g_powerSM.curState); // output Power State
     }
     return 0;
 }

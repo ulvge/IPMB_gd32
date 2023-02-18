@@ -9,11 +9,11 @@
 
   <project>
     <PathAndName>..\projectGD32F303Boot\GD32F303Boot.uvprojx</PathAndName>
-    <NodeIsActive>1</NodeIsActive>
   </project>
 
   <project>
     <PathAndName>..\projectGD32F303\GD32f303project.uvprojx</PathAndName>
+    <NodeIsActive>1</NodeIsActive>
   </project>
 
 </ProjectWorkspace>

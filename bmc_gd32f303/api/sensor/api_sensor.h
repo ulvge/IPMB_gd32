@@ -66,6 +66,7 @@ void api_sensorSetValHuman(uint8_t sensorNum, float humanVal);
 const Dev_Handler *api_getDevHandler(SUB_DEVICE_MODE destMode);
 uint8_t api_sensorGetValIPMB(UINT16 sensorNum);
 float api_sensorGetValHuman(UINT16 sensorNum);
+float api_sensorGetModeValHuman(SUB_DEVICE_MODE dev, UINT16 sensorNum);
 
 #ifdef __cplusplus
 }

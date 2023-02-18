@@ -65,7 +65,7 @@ static BaseType_t ChassisCtrlTimerCreate(INT32U cmd, INT32U delayMs)
 }
 void ChassisCtrl(SamllMsgPkt_T *msg)
 {
-    INT32U delayMs = 100; // CPLD delay deglitch = 0xffff(clk=1k)  == 65ms
+    INT32U delayMs = GPIO_ACTIVE_PULSE_TIME_MS; // CPLD delay deglitch = 0xffff(clk=50M)  == 2ms
     switch (msg->Cmd) {
         case CHASSIS_SOFT_OFF:
         case CHASSIS_POWER_OFF:
@@ -84,7 +84,6 @@ void ChassisCtrl(SamllMsgPkt_T *msg)
             return;
         case CHASSIS_POWER_RESET:
             GPIO_setPinStatus(GPIO_ALIAS_TO_CPLD_RESET, ENABLE);
-            delayMs = GPIO_ACTIVE_PULSE_TIME_MS;
             break;
         default:
             LOG_E("Sorry, CMD doesn't support it yet\n");

@@ -83,17 +83,31 @@ uint8_t api_sensorGetValIPMB(UINT16 sensorNum)
     }
     return ipmbVal;
 }
-float api_sensorGetValHuman(UINT16 sensorNum)
+/// @brief only SUB_DEVICE_MODE_MAIN can call others
+/// @param dev 
+/// @param sensorNum 
+/// @return 
+float api_sensorGetModeValHuman(SUB_DEVICE_MODE dev, UINT16 sensorNum)
 {
-    SUB_DEVICE_MODE dev = SubDevice_GetMyMode();
-    const Dev_Handler *pDev_Handler = api_getDevHandler(dev);
-    for (uint8_t numIdex = 0; numIdex < api_sensorGetSensorCount(); numIdex++)
-    {
-        if (pDev_Handler->sensorCfg[numIdex].sensorNum == sensorNum) {
-            return pDev_Handler->val[numIdex].human;
+    SUB_DEVICE_MODE myDev = SubDevice_GetMyMode();
+    if ((myDev == dev) || (myDev == SUB_DEVICE_MODE_MAIN)) {
+        const Dev_Handler *pDev_Handler = api_getDevHandler(dev);
+        if (pDev_Handler == NULL) {
+            return 0;
+        }
+        for (uint8_t numIdex = 0; numIdex < pDev_Handler->sensorCfgSize; numIdex++)
+        {
+            if (pDev_Handler->sensorCfg[numIdex].sensorNum == sensorNum) {
+                return pDev_Handler->val[numIdex].human;
+            }
         }
     }
     return 0;
+}
+float api_sensorGetValHuman(UINT16 sensorNum)
+{
+    SUB_DEVICE_MODE dev = SubDevice_GetMyMode();
+    return api_sensorGetModeValHuman(dev, sensorNum);
 }
 uint8_t api_sensorGetSensorCount(void)
 {

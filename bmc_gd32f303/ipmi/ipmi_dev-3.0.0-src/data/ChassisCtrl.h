@@ -33,7 +33,7 @@
 #define ON_POWER_EVENT_DETECTED         0x03
 #define ON_SET_RESTART_CAUSE            0x04
 
-#define GPIO_ACTIVE_PULSE_TIME_MS 1500
+#define GPIO_ACTIVE_PULSE_TIME_MS 100
 
 /**
  * @brief Initialize Chassis Control module.

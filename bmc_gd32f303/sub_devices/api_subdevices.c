@@ -84,6 +84,17 @@ char *SubDevice_GetModeName(SUB_DEVICE_MODE mode)
     }
     return "\n";
 }
+
+static int SubDevice_GetMyID(int argc, char *argv[])
+{
+    LOG_E("\r\n\r\nThis borad as [%s]\r\n", SubDevice_GetModeName(SubDevice_GetMyMode()));
+
+    LOG_E("\tThese are the reference tables\r\n");
+    SubDevice_PrintModeName();
+    return 0;
+}
+SHELL_EXPORT_CMD(SHELL_CMD_PERMISSION(0) | SHELL_CMD_TYPE(SHELL_TYPE_CMD_MAIN) | SHELL_CMD_DISABLE_RETURN, id, SubDevice_GetMyID, who am i);
+
 static SubDeviceModeStatus_T g_AllModesStatus[SUB_DEVICE_MODE_MAX];
 
 static void SubDevice_InitAllMode(void)
