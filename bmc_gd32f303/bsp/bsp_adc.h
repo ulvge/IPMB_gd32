@@ -9,7 +9,7 @@
 #include "Types.h"
 #include "api_subdevices.h"
 #include "IPMI_SDRRecord.h"
-							   
+
 #define ADC_WDG_GROUP ADC0
 #define ADC_CONFIG_GROUP_DEAULT   ADC1, RCU_ADC1
 

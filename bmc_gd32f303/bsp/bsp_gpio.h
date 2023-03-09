@@ -102,12 +102,14 @@ typedef enum
 typedef struct {
     BMC_GPIO_enum     	alias;
     uint32_t      		gpioPort;
-    uint32_t      		pin;
     rcu_periph_enum     gpioClk;
+    uint32_t      		pin;
     uint8_t             pinMode;
     uint8_t             pinSpeed;
     uint8_t             activeMode; // if output, hi or low active
 } GPIOConfig;
+
+#define GPIO_RCU_CONFIG(GPIO) GPIO, RCU_##GPIO
 
 typedef struct {
     SUB_DEVICE_MODE mode;
