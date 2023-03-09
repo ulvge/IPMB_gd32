@@ -221,7 +221,7 @@ static int modever(int argc, char *argv[])
     INT16U destVer = GetBmcFirmwareVersion(BMC_VERSION);
     for (SUB_DEVICE_MODE mode = SUB_DEVICE_MODE_MIN; mode < SUB_DEVICE_MODE_MAX; mode++) {
         if (mode == SubDevice_GetMyMode()) {
-            LOG_I("updateDev check ver. mode[%d], name[%s], modeVer[%d.%d]\r\n",
+            LOG_I("check ver. mode[%d], name[%s], modeVer[%d.%d]\r\n",
                   mode, SubDevice_GetModeName(mode), (destVer >> 8) & 0xff, destVer & 0xff);
 			continue;
         }

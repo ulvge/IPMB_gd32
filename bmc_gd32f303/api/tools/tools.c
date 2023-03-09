@@ -337,7 +337,7 @@ extern void updateDev_task(void *arg);
 static void updateUsage(void)
 {
     SUB_DEVICE_MODE mode = SubDevice_GetMyMode();
-    LOG_RAW("current  --------mode[%d], name[%s]\r\n", mode, SubDevice_GetModeName(mode));
+    LOG_RAW("id     ----------mode[%d], name[%s]\r\n", mode, SubDevice_GetModeName(mode));
     LOG_RAW("update ----------update self\r\n");
     LOG_RAW("update num ------Specifies the module number\r\n");
     LOG_RAW("update all ------update others mode if the version of mode is lower, not include self\r\n");

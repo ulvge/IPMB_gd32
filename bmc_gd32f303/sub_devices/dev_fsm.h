@@ -1,10 +1,10 @@
 #ifndef __DEV_FSM_H
-#define	__DEV_FSM_H
+#define __DEV_FSM_H
 
 #ifdef __cplusplus
- extern "C" {
+extern "C" {
 #endif
-	 
+
 #include <stdbool.h>
 #include <stdint.h>
 
@@ -18,6 +18,13 @@ typedef enum {
     DEV_ST_P5VP3V_DIS,
 } FSM_State;
 
+typedef struct {
+    UINT32 isLastPressed : 1; // May be invalid
+    UINT32 isPreesed : 1;     // valid Preesed
+    UINT32 isReleased : 1;
+    BMC_GPIO_enum pin;
+    UINT32 preesedStartTick;
+} Key_ScanST;
 
 typedef struct {
     FSM_State state;
@@ -31,10 +38,10 @@ typedef enum {
 typedef bool (*FSM_Action)(void *pSM, FSM_EventID eventId);
 typedef void (*FSM_PrintState)(FSM_State curState);
 typedef struct {
-    FSM_State curState;  //当前状态
-    FSM_EventID eventId; //事件ID
-    FSM_State nextState; //下个状态
-    FSM_Action action;       //具体表现
+    FSM_State curState;  // 当前状态
+    FSM_EventID eventId; // 事件ID
+    FSM_State nextState; // 下个状态
+    FSM_Action action;   // 具体表现
 } FSM_StateTransform;
 
 typedef struct {
@@ -45,6 +52,7 @@ typedef struct {
     UINT32 lastHandlerTimeStamp;
 } FSM_StateMachine;
 
+UINT32 KeyPressedDurationMs(Key_ScanST *key);
 void fsm_Handler(FSM_StateMachine *pSM, const FSM_EventID evt);
 
 #ifdef __cplusplus

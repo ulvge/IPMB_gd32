@@ -94,44 +94,6 @@ static bool DevPower_VBATSampleHookAfter(void)
     return GPIO_setPinStatus(GPIO_OUT_VBAT_EN, DISABLE);
 }
 
-typedef struct {
-    UINT32 isLastPressed:1; // May be invalid
-    UINT32 isPreesed : 1;   // valid Preesed
-    UINT32 isReleased : 1;
-    BMC_GPIO_enum  pin;    
-    UINT32 preesedStartTick;
-} Key_ScanST;
-/// @brief count pluse ms of the pin
-/// @param pin 
-/// @param lastMs 
-/// @return The duration of the key pressed
-static UINT32 KeyPressedDurationMs(Key_ScanST *key)
-{
-    #define KEY_JITTER_DELAY  20
-    uint32_t durationMs;
-    BMC_GPIO_enum pin = key->pin;
-    if (GPIO_isPinActive(pin)) {
-        key->isLastPressed = true;
-        durationMs = GetTickMs() - key->preesedStartTick;
-        if (durationMs >= KEY_JITTER_DELAY) {
-            key->isPreesed = true;
-        }
-        return durationMs;
-    }else{
-        if (key->isLastPressed == true) {
-            key->isLastPressed = false; 
-            key->isPreesed = false;
-            key->isReleased = true;
-            durationMs = GetTickMs() - key->preesedStartTick;
-        } else{
-            key->isReleased = false;
-			durationMs = 0;
-        }
-        key->preesedStartTick = GetTickMs(); //update to newest tick
-        return durationMs;
-    }
-}
-
 // *******************   StateMachine start   *******************
 static bool DevPowerSM_P12VEn(void *pSM, FSM_EventID eventId)
 {

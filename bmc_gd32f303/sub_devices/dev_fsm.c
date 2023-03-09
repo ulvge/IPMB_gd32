@@ -6,6 +6,37 @@
 #include "dev_fsm.h"
 //#include <debug_print.h>
 
+/// @brief count pluse ms of the pin
+/// @param pin 
+/// @param lastMs 
+/// @return The duration of the key pressed
+UINT32 KeyPressedDurationMs(Key_ScanST *key)
+{
+    #define KEY_JITTER_DELAY  20
+    uint32_t durationMs;
+    BMC_GPIO_enum pin = key->pin;
+    if (GPIO_isPinActive(pin)) {
+        key->isLastPressed = true;
+        durationMs = GetTickMs() - key->preesedStartTick;
+        if (durationMs >= KEY_JITTER_DELAY) {
+            key->isPreesed = true;
+        }
+        return durationMs;
+    }else{
+        if (key->isLastPressed == true) {
+            key->isLastPressed = false; 
+            key->isPreesed = false;
+            key->isReleased = true;
+            durationMs = GetTickMs() - key->preesedStartTick;
+        } else{
+            key->isReleased = false;
+			durationMs = 0;
+        }
+        key->preesedStartTick = GetTickMs(); //update to newest tick
+        return durationMs;
+    }
+}
+
 static const FSM_StateTransform *fsm_findTrans(FSM_StateMachine *pSM, const FSM_EventID evt)
 {
     int i;

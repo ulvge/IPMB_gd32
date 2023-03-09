@@ -60,6 +60,8 @@
         "shell.h": "c",
         "string.h": "c",
         "chassisctrl.h": "c",
-        "*.rh": "c"
+        "*.rh": "c",
+        "dev_fsm.h": "c",
+        "api_sensor.h": "c"
     }
 }
