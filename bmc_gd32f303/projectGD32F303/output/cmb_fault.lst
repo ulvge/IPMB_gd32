@@ -77,10 +77,10 @@ ARM Macro Assembler    Page 2
    46 0000000C         
    47 0000000C                 END
 Command Line: --debug --xref --diag_suppress=9931 --cpu=Cortex-M4.fp.sp --apcs=
-interwork --depend=.\output\temp\cmb_fault.d -o.\output\temp\cmb_fault.o -Id:\U
+interwork --depend=.\output\temp\cmb_fault.d -o.\output\temp\cmb_fault.o -ID:\U
 sers\Arm\Packs\GigaDevice\GD32F30x_DFP\2.2.1\Device\Include -Id:\Keil_v5\ARM\CM
 SIS\Include --predefine="__MICROLIB SETA 1" --predefine="__UVISION_VERSION SETA
- 535" --predefine="GD32F30X_XD SETA 1" --list=.\output\cmb_fault.lst ..\api\cm_
+ 538" --predefine="GD32F30X_XD SETA 1" --list=.\output\cmb_fault.lst ..\api\cm_
 backtrace\cmb_fault.S
 
 
